@@ -1,25 +1,26 @@
 \documentclass[a4paper]{article}
+
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[applemac]{inputenc}
+
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage[colorlinks=true]{hyperref}
-\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true} 
-\usepackage{algorithm,algorithmic}
+\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true}
 \usepackage{listings}
 \usepackage{amssymb}
 \usepackage{setspace}
-\usepackage{listings}
 \usepackage{lscape}
-\usepackage{multimedia}
-\usepackage[toc,page]{appendix} 
-\usepackage[final]{pdfpages} 
+\usepackage[final]{pdfpages}
 
+\usepackage{bibentry}
+\nobibliography*
 
 \pagestyle{headings}
 \thispagestyle{empty}
 \geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
+
 \begin{document}
 \large
 \setlength{\parskip}{10mm plus2mm minus2mm}
@@ -44,31 +45,24 @@
 Encadrante : Anne-Elisabeth Baert
 \par}
 
-{{\bfseries Articles lus par le groupe entier}
+{\bfseries Les tâches à effectuer pour ce TER sont les suivantes :}
+\begin{description}
+	\item Mieux cerner la problématique
+	\item Faire l'état de l'art. Lire les articles suivants :
+	\begin{itemize}
+		\item Toute l'équipe : \emph{\bibentry{DLBIP}}
+		\item Toute l'équipe : \emph{\bibentry{lifetime}}
+		\item Toute l'équipe : \emph{\bibentry{WSNET}}
+		\item Chloé Desdouits : \emph{\bibentry{Chang00}}
+		\item Zahir Kali : \emph{\bibentry{Akyildiz02}}
+		\item Rabah Laouadi : \emph{\bibentry{Dong05}}
+		\item Samuel Rouquie : \emph{\bibentry{Rodoplu98}}
+	\end{itemize}
+	\item Faire la synthèse des connaissances acquises en lisant des articles
+	\item Programmation / simulation WSNET
+	\item Analyse des résultats de simulation
+\end{description}
 
-\begin{itemize}
-\item \emph{Dynamic Localized Broadcast Incremental Power Protocol and Lifetime in Wireless Ad Hoc and Sensor Networks} : Julien Champ, Anne-Elisabeth Baert and Vincent Boudet
-\item \emph{Lifetime in Wireless Sensor Networks} : Julien Champ, Clément Saad, Anne-Elisabeth Baert
-\end{itemize}
-}
-
-
-{{\bfseries Tâches}
-
-Chloé :\\
-Lecture de \emph{Energy conserving routing in wireless ad-hoc networks} : J.-H.Chang, L.Tassiulas. Réflexion et programmation.
-
-
-Zahir :\\
-Lecture de \emph{Wireless sensor networks: a survey} : I. F. Akyildiz, W. Su, Y. Sankarasubramaniam, and E. Cayirci. Réflexion et programmation.
-
-Rabah :\\
-Lecture de \emph{Maximizing system lifetime in wireless sensor networks} : Q.Dong. Réflexion et programmation.
-
-Samuel :\\
-\emph{Minimum energy mobile wireless networks} : V. Rodoplu and T.H. Meng. Réflexion.
-
-\par}
 
 \begin{landscape}
 
@@ -83,5 +77,9 @@ Samuel :\\
 \end{figure}
 
 \end{landscape}
+
+
+\bibliographystyle{plain}
+\bibliography{../Bib}
 
 \end{document}
