@@ -1,0 +1,1 @@
+CLASSPATH=@datadir@/java/ java -Xmx256m topogen $*

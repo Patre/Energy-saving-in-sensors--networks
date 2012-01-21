@@ -1,0 +1,38 @@
+libwsens_srv_a-worldsens_pkt.o libwsens_srv_a-worldsens_pkt.o:  \
+ worldsens_pkt.c ../../include/worldsens_pkt.h /usr/include/inttypes.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h /usr/include/_types.h \
+  /usr/include/sys/_types.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/stdint.h /usr/include/stdio.h \
+  /usr/include/Availability.h /usr/include/AvailabilityInternal.h \
+  /usr/include/secure/_stdio.h /usr/include/secure/_common.h
+
+../../include/worldsens_pkt.h:
+
+/usr/include/inttypes.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/sys/_symbol_aliasing.h:
+
+/usr/include/sys/_posix_availability.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/stdint.h:
+
+/usr/include/stdio.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/secure/_stdio.h:
+
+/usr/include/secure/_common.h:
