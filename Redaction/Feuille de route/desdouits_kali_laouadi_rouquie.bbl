@@ -1,0 +1,38 @@
+\begin{thebibliography}{1}
+
+\bibitem{WSNET}
+Wsnet : an event-driven simulator for large scale wireless sensor networks.
+
+\bibitem{Akyildiz02}
+I.~F. Akyildiz, W.~Su, Y.~Sankarasubramaniam, and E.~Cayirci.
+\newblock Wireless sensor networks: a survey.
+\newblock {\em Computer Networks}, 4(38):393--422, 2002.
+
+\bibitem{DLBIP}
+Julien Champ, Anne-Elisabeth Baert, and Vincent Boudet.
+\newblock Dynamic localized broadcast incremental power protocol and lifetime
+  in wireless ad hoc and sensor networks.
+\newblock 2012.
+
+\bibitem{lifetime}
+Julien Champ, Cl{\'e}ment Saad, and Anne-Elisabeth Baert.
+\newblock Lifetime in wireless sensor networks.
+
+\bibitem{Chang00}
+Jae-Hwan Chang and Leandros Tassiulas.
+\newblock Energy conserving routing in wireless ad-hoc networks.
+\newblock {\em INFOCOM}, pages 22--31, 2000.
+
+\bibitem{Dong05}
+Q.~Dong.
+\newblock Maximizing system lifetime in wireless sensor networks.
+\newblock {\em IPSN '05: Proceedings of the 4th international symposium on
+  Information processing in sensor networks}, page~3, 2005.
+
+\bibitem{Rodoplu98}
+V.~Rodoplu and T.H. Meng.
+\newblock Minimum energy mobile wireless networks.
+\newblock {\em Proc. of IEEE International Conference on Communications (ICC)},
+  1998.
+
+\end{thebibliography}
