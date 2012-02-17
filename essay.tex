@@ -1,0 +1,112 @@
+\documentclass[a4paper]{report}
+
+% Différentes options pour la classe :
+% - taille de la fonte    : 10pt, 11pt, 12pt
+% - recto ou recto-verso    : oneside, twoside
+% - stade de développement    : draft, final
+
+% Chargement d'extensions
+\usepackage[latin1]{inputenc}    % Pour utiliser les lettres accentuées
+\usepackage[francais]{babel}    % Pour la langue française
+
+% Informations le titre, le(s) auteur(s), la date
+\title{Titre du livre}
+\author{Prénom 1 Nom 1 \and Prénom 2 Nom 2}
+\date{\today}
+
+% Début du document
+\begin{document}
+
+\maketitle
+
+    \chapter*{Introduction}
+    \addcontentsline{toc}{chapter}{Introduction}
+     Les réseaux de capteurs sans fil  (Wireless Sensor Network WSN)  sont un type particulier de réseau Ad-hoc. Ces réseaux sont formés d'une multitude de petits dispositifs autonomes (capteurs), capables de s'auto-organiser pour communiquer entre eux via des liens radio, et ainsi travailler pour la collecte, le partage et le traitement coopératif des informations sur leur environnement sans intervention humaine.
+     \\
+     Le fort potentiel d'application des réseaux de capteurs en fait un domaine de recherche très actif. Ces dernières années ont vu le passage d'applications anecdotiques à de véritables applications à large échelle. La réduction de plus en plus importante de la taille des capteurs, leur coût de plus en plus faible, ainsi que l'étendue du type de capteurs disponibles (thermique, optique, cinétique, chimique, etc.), permettent aux réseaux de capteurs d'envahir de très nombreux domaines d'application (militaire, sécurité, environnementale, médicale et vétérinaire et commerciale).
+     \\
+     Les caractéristiques particulières des WSN modifient les critères de performances par rapport aux réseaux sans fil traditionnels où les critères les plus pertinents sont le débit, la latence et la qualité de service. En revanche, dans les réseaux de capteurs conçus pour surveiller des zones d'intérêt,  la longévité du réseau est fondamentale. De ce fait, la conservation de l'énergie est devenue un critère de performance prépondérant et se pose en premier lieu tandis que les autres critères sont devenus secondaires[Wireless Sensor Networks a Survey].
+    
+    \chapter*{État de l'art}
+    \addcontentsline{toc}{chapter}{État de l'art}
+    \section{L'énergie dans les réseaux de capteur sans fils}
+    \subsection{La consommation d'énergie}
+    \subsection{Méthode de minimisation de consommation d'énergie}
+    
+    \section{Regroupement des algorithmes}
+    \subsection{difficultés}
+    
+    \section{Pré-traitement}
+    \subsection{RNG}
+    \subsection{MST}
+    \subsubsection{LMST}
+    
+    
+    \section{Basé Diffusion (Broadcast)}
+    \subsubsection{Sans ajustement de portée }
+    \subsection{Neighbor Elimination Scheme (NES)}
+    L'algorithme de NES est une heuristique, le but de NES est qu'un n?ud n'a pas besoin de rebroadcasté  le message si tous ces voisins sont couverts par la précédente transmissions [broad-tpds] [LBIP][rmwn-Ingelrest].
+    \\\\
+    Message \textbf{m} transmis de \textbf{v} pour \textbf{u} : \textbf{\textit{recevez(u,m,v)}}.
+    \\\\
+    On notera \textbf{N(x)} les voisins de n\oe ud \textbf{x} et \textbf{NE(x)} c'est les voisins de \textbf{x} qu'ils n'ont pas reçu le message \textbf{m}.
+    \\
+    \subsubsection{Algorithme de NES}
+    \textit{\textbf{recevez(u,m,v) } }  \\
+    \textbf{\textit{si} première fois (m) \textit{ faire}}     \\
+    \textbf{ NE(u)=N(u).}\\ 
+    \textbf{le rebroadcast apres un timeout} \\
+    \textbf{\textit{fin si}}\\\\
+     
+    \textbf{\textit{pour} chaque w $ \in $ N(v)  \textit{faire}}\\ 
+    \textbf{ \textit{si} w $ \in $  NE(u)\textit{ fair}}e\\
+     \textbf{NE(u)=NE(u)-w.}\\ 
+     \textbf{\textit{fin si}}\\
+    	\textbf{\textit{fin pour.}}
+    \subsubsection{Remarque a enlever}
+    D'après ce que je vois : le problème c'est la durée de timeout parce que si tous les n\oe uds on le même timeout, alors en fonction de réception de message (le plus cité dans les articles), l'algorithme de NES n'aura aucune effet.   
+    \subsection{Border Node Retransmission }
+    Dans l'approche probabiliste, les messages sont rebroadcasté avec une probabilité \textbf{\textit{p}} qui peut être fixe pour chaque n\oe ud ou calculé par des paramètres de  n\oe ud lui-même (son énergie par exemple) ou celles de  son voisinage ou les deux en même temps [rmwn-Ingelrest]. 
+    \\
+    \textbf{BNP  (Border Node Retransmission)} est un protocole proposé par [CS03b], où le calcule de probabilité \textbf{\textit{p}} est basé sur la densité local de chaque n?ud, la distance par apport à la source. Dans cette article [CS03b] plusieurs fonctions de calcule de \textbf{\textit{p}} sont proposées.
+    
+    \subsubsection{Algorithme de BNP}
+    \textbf{\textit{recevez(u,m,v)}}\\
+     \textbf{p=calcule(m)}\\
+    \textbf{x=random(0,1)}\\
+    \textbf{\textit{si} x $\leq $ p \textit{faire}}\\
+                           	\textbf{rebroadcasté(m)}\\  
+      	 \textbf{\textit{fin s}i}\\
+    \\
+    Où \textbf{calcul (m)} c'est une des fonctions suivantes : \\
+    	1.	Le paramètre   \textbf{\textit{p}} est fixe pour tous les n\oe uds.\\
+    	2.	Le paramètre   \textbf{\textit{p}} est calculé à partir de la densité locale de chaque n\oe ud 
+    		\textbf{calcule(m)}=$\frac{k}{n}$
+    		
+    
+    
+    
+    \subsection{Multi-Point Relay}
+    
+    \subsubsection{Avec ajustement de portée}
+    \subsection{Broadcast Incremental Power (BIP)}
+    \subsection{Localized BIP}
+    \subsection{Dynamic LBIP}
+    
+    \subsection{Broadcast Oriented Protocol (BOP)}
+    \subsection{LMST-BOP et RNG-BOP}
+    \subsection{TR-LBOP}
+
+    \section{Basé routage}
+
+
+    \chapter*{Conclusion et discussion}
+    \addcontentsline{toc}{chapter}{Conclusion et discussion}
+
+    % Les différentes tables
+    \tableofcontents    % Table des matières
+    \listoffigures        % Liste des figures
+    \listoftables        % Liste des tableaux
+
+% Fin du document
+\end{document}
