@@ -1,0 +1,226 @@
+\documentclass[a4paper]{article}
+
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[applemac]{inputenc}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[final]{pdfpages}
+\usepackage{algorithm, algorithmic}
+\usepackage{amsmath}
+
+
+\pagestyle{headings}
+\thispagestyle{empty}
+\geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\normalsize
+\setlength{\parskip}{10mm plus2mm minus2mm}
+\setlength{\textwidth}{530pt}
+
+ChloŽ Desdouits \hfill 1 fŽvrier 2012
+
+
+{\centering \Large \bfseries RŽsumŽ de l'article de Jae-Hwan Chang et Leandros Tassiulas
+Energy Conservating Routing in Wireless Ad-hoc Networks \par}
+
+La dŽfinition de la durŽe de vie du rŽseau est le temps qui s'Žcoule jusqu'au moment o le premier capteur tombe en panne de batterie (TTFF). 
+Les rŽseaux considŽrŽs comprennent une ou plusieurs composantes o chaque composante contient un ensemble de nÏuds sources et un ensemble de nÏuds destination.
+
+Voici la formule qui donne le temps de vie du rŽseau :
+\begin{displaymath}
+T_{sys}(q) = min_{i \in N}\frac{E_i}{\sum \limits_{j \in S_i} {e_{ij}} \sum \limits_{c \in C} {q_{ij}^{(c)}}}
+\end{displaymath}
+avec :
+\begin{itemize}
+\item $q$ le flot
+\item $N$ l'ensemble des nÏuds du graphe (les capteurs)
+\item $E_i$ la quantitŽ d'Žnergie initiale du nÏud $i$
+\item $S_i$ l'ensemble des voisins du nÏud $i$
+\item $e_{ij}$ l'Žnergie requise pour transmettre une unitŽ d'information du nÏud i au nÏud j
+\item $C$ l'ensemble des composantes du rŽseau
+\item $q_{ij}^{(c)}$ le taux d'information de la composante c transmise du nÏud $i$ au nÏud $j$
+\end{itemize}
+~\\
+L'auteur voit le problme comme un problme de flot maximum et propose donc un algorithme d'augmentation de flot (FA). Il Žtend Žgalement un algorithme de redirection de flot au cas o il y a plusieurs composantes dans le rŽseau.
+
+
+\section{Algorithme $FA(x_1, x_2, x_3)$ d'augmentation de flot}
+L'idŽe consiste ˆ utiliser un algorithme de plus court chemin existant (comme l'algorithme distribuŽ de Bellman-Ford) et de lui passer trois paramtres ($x_1$, $x_2$ et $x_3$) qui dŽtermineront sa fonction de poids sur les arcs. Ces paramtres coefficienteront les trois facteurs suivants : le cožt de transmission du nÏud $i$ au nÏud $j$ ($e_{ij}$) ; l'Žnergie rŽsiduelle du nÏud $i$ ($\underline{E}_i$), et l'Žnergie initiale du nÏud $i$ ($E_i$). Voici la formule qui donne le poids de l'arc $(i,j)$ en fonction des paramtres :
+\begin{displaymath}
+c_{ij} = e_{ij}^{x_1} \underline{E}_i^{-x_2} E_i^{x_3}
+\end{displaymath}
+
+\begin{algorithm}[H]
+\caption{$FA(x_1,x_2,x_3)$}
+\label{algo_FA}
+\begin{algorithmic}
+\REQUIRE a network $ G(N,A) $
+
+\WHILE {each node $i$ has some energy}
+	\FOR {each commodity $c \in C$}
+		\FOR{each origin node $o \in O^{(c)}$}
+			\STATE compute the shortest cost path from $o$ to $D^{(c)}$
+			\STATE augment the flow on this path by an amount of $\lambda Q_i^{(c)}$
+		\ENDFOR
+	\ENDFOR
+\ENDWHILE
+
+\RETURN the total flow q in the network
+\end{algorithmic}
+\end{algorithm}
+
+
+\section{Algorithme FR de redirection de flot}
+Cet algorithme est basŽ sur le fait que le flot trouvŽ est optimal ssi pour tous les chemins de l'origine ˆ la destination portants un flot positif, la durŽe de vie minimum est la mme. Le principe consiste donc ˆ rediriger une partie du flot de chaque nÏud ˆ travers un autre chemin vers la destination tel que la durŽe de vie de chaque chemin portant du flot augmente (ou au moins reste stable). Le flot initial a pour valeur la quantitŽ totale d'informations gŽnŽrŽes par le rŽseau.
+
+
+Pour chaque nÏud dans le rŽseau, on compare les chemins sortants de ce nÏud vers la destination. On construit un ordre total sur ces chemins en les classant en fonction de leur nÏud qui possde la plus courte durŽe de vie (puis par nombre de nÏuds).
+
+Si le nÏud dont la durŽe de vie est la plus courte sur le chemin est le nÏud source ($i$), alors on a deux choix. On regarde les voisins sortants de ($i$). Soit on redirige un des flots qui passe par le voisin ($j$) dont le cožt de transmission $e_{ij}$ est le plus grand vers un des chemins qui passe par le voisin ($j$) dont le cožt de transmission $e_{ij}$ est le moindre. Soit on redirige un flot quelconque vers le chemin le plus petit dans l'ordre total parmi ceux qui passe par le voisin ($j$) dont le cožt de transmission $e_{ij}$ est le moindre.
+
+Si, en revanche, le nÏud dont la durŽe de vie est la plus courte sur le chemin n'est pas le nÏud source, on a Žgalement deux possibilitŽs. Dans les deux cas on redirige le flot le plus petit dans l'ordre total. Soit on redirige vers le chemin le plus grand dans l'ordre total. Soit on redirige vers le chemin qui passe par le voisin ($j$) dont le cožt de transmission $e_{ij}$ est le moindre parmi les chemins supŽrieurs dans l'ordre total au chemin redirigŽ.
+
+
+Une fois que l'algorithme a dŽfini pour un nÏud donnŽ les deux chemins, il dŽtermine la quantitŽ de flot ˆ rediriger.
+
+\begin{algorithm}[h]
+\caption{$FR()$}
+\label{algo_FR}
+\begin{algorithmic}
+\REQUIRE a network G(N, A)
+
+add to $G$ an imaginary super destination node $\tilde{d}^{(c)}$
+\FOR{all $d \in D^{(c)}$}
+	\STATE $\tilde{d}^{(c)} \in S_d$
+	\STATE $e_{d \tilde{d}^{(c)}} = 0$
+\ENDFOR
+
+let $q$ be the initial flow
+\FOR{all $o \in O^{(c)}$}
+	\STATE $q_{o \tilde{d}^{(c)}} = Q_o^{(c)}$
+\ENDFOR
+
+\FOR{each $c \in C$}
+	\FOR{each $i \in N - D^{(c)}$}
+		\STATE (Determine the Two Paths)
+		\STATE (Calculate $\epsilon_i^{(c)}$)
+		\STATE (Redirect the flow)
+	\ENDFOR
+\ENDFOR
+
+\RETURN 
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+\caption{Determine the Two Paths}
+\label{algo_detPaths}
+\begin{algorithmic}
+
+		\STATE Form $G_F^{(c)}(N, A_F^{(c)})$ of $G(N,A)$ where $A_F^{(c)} = \{(i,j)|q_{ij}^{(c)} > 0, (i,j) \in A\}$
+		\STATE Let $P_i^{(c)}$ be the set of all paths in $G_F^{(c)}$ from node $i$ to any $d \in D^{(c)}$
+		\FOR{each path $p \in P_i^{(c)}$}
+			\STATE Define $L_p(q)$ as a vector of lifetimes of all the nodes in the path $p$
+		\ENDFOR
+		\STATE Let's define a total order on these paths such that a path $p$ is smaller than another path $p'$ iff the smallest element in $p$ is smaller than the smallest element in $p'$
+		\STATE Use the Bellman-Ford algorithm to obtain the shortest length paths distributively
+		\STATE Let $sp^{(c)}(i)$ be the shortest path from $i$ to $\tilde{d}^{(c)}$ in $G_F^{(c)}$
+		\STATE Let $lp^{(c)}(i)$ be the longest path from $i$ to $\tilde{d}^{(c)}$ in $G$
+		\STATE Let $g \in S_i$ be the giver : the node from which path the flow will be subtracted
+		\STATE Let $t \in S_i$ be the taker : the node from which path the flow will be added
+		\IF{ $T_i(q) \leq min[L_{sp^{(c)}(i)}(q)]$ }
+			\STATE OR :
+			\STATE $g = \underset{j : j \in S_i, q_{ij}^{(c)} > 0}{argmax} e_{ij}$
+			\STATE $t = \underset{j : j \in S_i}{argmin}\ e_{ij}$
+			\STATE OR :
+			\STATE $t = \underset{j : j \in S_i, e_{ij} < e_{ig}}{argmax}\ L_{lp^{(c)}(j)}(q)$
+			\STATE $g = $ any node with non-minimum energy expenditure
+		\ELSIF{ $T_i(q) > min[L_{sp^{(c)}(i)}(q)]$ }
+			\STATE $g$ is the next hop node of node $i$ in $sp^{(c)}(i)$
+			\STATE OR :
+			\STATE $t = \underset{j : j \in S_i}{argmax}\ L_{lp^{(c)}(j)}(q)$
+			\STATE OR :
+			\STATE $t = \underset{j : j \in S_i, min[L_{lp^{(c)}(j)}(q]>min[L_{sp^{(c)}(j)}(q]}{argmin}\ e_{ij}$
+		\ENDIF
+		\STATE The path composed of $(i,g)$ and $sp^{(c)}(g)$ will be re-routed to the path composed of $(i,t)$ and $lp^{(c)}(t)$
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+\caption{Calculate $\epsilon_i^{(c)}$}
+\label{algo_calcEps}
+\begin{algorithmic}
+
+\STATE Choose $\epsilon_i$ such that :
+\FOR{each link $(i,j)$ in $sp^{(c)}(g)$}
+	\STATE $\epsilon_i \leq q_{ig}^{(c)}$
+	\STATE $\epsilon_i \leq q_{jk}^{(c)}$
+\ENDFOR
+
+\IF{$T_i(q) \leq min[L_{sp^{(c)}(i)}(q)]$}
+	\FOR{each link $(j,k)$ in $lp^{(c)}(t)$}
+		\STATE $$\frac{1}{T_j(q)} + \frac{e_{jk} \epsilon_i^{(c)}}{E_j} \leq \frac{1}{T_i(q)}$$
+	\ENDFOR
+\ELSIF{$T_i(q) > min[L_{sp^{(c)}(i)}(q)]$}
+	\STATE $$\frac{1}{T_j(q)} + \frac{e_{jk} \epsilon_i^{(c)}}{E_j} \leq \frac{1}{min[L_{sp^{(c)}(i)}(q)]}$$
+	\IF{$e_{it} > e_{ig}$}
+		\STATE $$\frac{1}{T_j(q)} + \frac{(e_{it} - e_{ig}) \epsilon_i^{(c)}}{E_i} \leq \frac{1}{min[L_{sp^{(c)}(i)}(q)]}$$
+	\ENDIF
+\ENDIF
+
+\end{algorithmic}
+\end{algorithm}
+
+\section{RŽsultats des tests}
+Soit $R_X$ le ratio de la durŽe de vie du rŽseau obtenue par l'algorithme $X$ sur la durŽe de vie optimale.
+
+\begin{table}[h]
+\centering
+\caption{Performance des algorithmes dans un rŽseau ˆ une seule composante}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Algorithme X & avg $R_X$ & min $R_X$ & $Pr{R_X > 0.9}$ \\
+\hline
+MTE & 0.7310 & 0.1837 & 33\% \\
+\hline
+FR & 0.9596 & 0.6878 & 88\% \\
+\hline
+MREP & 0.9572 & 0.8110 & 89\% \\
+\hline
+FA(1,1,1) & 0.9744 & 0.7347 & 94\% \\
+\hline
+FA(1,50,50) & 0.9985 & 0.9911 & 100\% \\
+\hline
+\end{tabular}\label{test}
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Performance des algorithmes dans un rŽseau ˆ plusieurs composantes}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Algorithme X & avg $R_X$ & min $R_X$ & $Pr{R_X > 0.9}$ \\
+\hline
+MTE & 0.6982 & 0.2201 & 25\% \\
+\hline
+FR & 0.8862 & 0.4297 & 54\% \\
+\hline
+MREP & 0.9349 & 0.7298 & 69\% \\
+\hline
+FA(1,1,1) & 0.9565 & 0.7178 & 86\% \\
+\hline
+FA(1,50,50) & 0.9974 & 0.9906 & 100\% \\
+\hline
+\end{tabular}\label{test}
+\end{table}
+
+
+\end{document}

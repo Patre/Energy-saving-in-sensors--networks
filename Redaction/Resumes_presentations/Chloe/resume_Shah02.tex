@@ -1,0 +1,79 @@
+\documentclass[a4paper]{article}
+
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[applemac]{inputenc}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[final]{pdfpages}
+\usepackage{algorithm, algorithmic}
+\usepackage{amsmath}
+
+
+\pagestyle{headings}
+\thispagestyle{empty}
+\geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\normalsize
+\setlength{\parskip}{10mm plus2mm minus2mm}
+\setlength{\textwidth}{530pt}
+
+Chloé Desdouits \hfill 12 février 2012
+
+
+{\centering \Large \bfseries Résumé de l'article de Rahul C. Shah et Jan M. Rabaey\\
+Energy Aware Routing for Low Energy Ad Hoc Sensor Networks \par}
+
+
+\begin{algorithm}[h]
+\caption{Setup phase}
+\label{algo_EAR_sp}
+\begin{algorithmic}
+
+\STATE $Cost(N_D) = 0$
+
+\COMMENT{Flood the network from $N_D$ to $N_S$ :}
+\FOR{each intermediate node $N_i$}
+	\FOR{each neighbor $N_j$ of $N_i$}
+		\IF{$d(N_i,N_S) \geq d(N_j, N_S)$ and $d(N_i,N_D) \leq d(N_j, N_D)$}
+			\STATE Forward the request from $N_i$ to $N_j$
+		\ENDIF
+	\ENDFOR
+\ENDFOR
+\STATE
+\FOR{each intermediate node $N_i$}
+	\FOR{each neighbor $N_j$ of $N_i$}
+		\STATE On receiving a request :
+		\STATE $C_{N_j,N_i} = Cost(N_i)+Metric(N_j,N_i)$
+		\STATE $FT_j = \{i | C_{N_j,N_i} \leq \alpha (\underset{k}{min}\ C_{N_j,N_k})\}$
+		\STATE
+		\STATE $P_{N_j,N_i} = \dfrac{\dfrac{1}{C_{N_j,N_i}}}{\sum \limits_{k \in FT_j} \dfrac{1}{C_{N_j,N_k}}}$
+		\STATE
+		\STATE $Cost(N_j) = \sum \limits_{i \in FT_j} {P_{N_j,N_i} C_{N_j,N_i}}$
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+  a
+
+\begin{algorithm}[h]
+\caption{Data communication phase}
+\label{algo_EAR_dcp}
+\begin{algorithmic}
+
+\STATE $N_S$ chooses randomly a number
+\STATE This number points a neighbor in the forwarding table $FT_S$ out
+\STATE Send the packet from $N_S$ to this neighbor $N_j$
+\STATE Do the same thing for all intermediate nodes until the packet reaches the destination
+
+\end{algorithmic}
+\end{algorithm}
+
+\end{document}
