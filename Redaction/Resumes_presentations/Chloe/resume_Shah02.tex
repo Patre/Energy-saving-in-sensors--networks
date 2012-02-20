@@ -13,16 +13,18 @@
 \usepackage[final]{pdfpages}
 \usepackage{algorithm, algorithmic}
 \usepackage{amsmath}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true} 
 
 
-\pagestyle{headings}
-\thispagestyle{empty}
 \geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
 
-\begin{document}
+
 \normalsize
-\setlength{\parskip}{10mm plus2mm minus2mm}
-\setlength{\textwidth}{530pt}
+\setlength{\parskip}{8mm plus2mm minus2mm}
+
+
+\begin{document}
 
 Chloé Desdouits \hfill 12 février 2012
 
@@ -30,6 +32,15 @@ Chloé Desdouits \hfill 12 février 2012
 {\centering \Large \bfseries Résumé de l'article de Rahul C. Shah et Jan M. Rabaey\\
 Energy Aware Routing for Low Energy Ad Hoc Sensor Networks \par}
 
+Cet article traite des différents aspects du projet PicoRadio. Ce projet consiste à utiliser un réseau de capteurs (PicoNodes) pour gérer la consommation énergétique d'un bâtiment. Ces PicoNodes sont des petits capteurs de moins d'un centimètre cube qui coûtent moins d'un dollar.
+
+Le début de cet article traite des couches physique, liaison et réseau des PicoNodes. La couche réseau s'occupe des adresses des capteurs. L'auteur a choisi de former ces adresses par le triplet suivant : <Position géographique, Type de nœud (capteur, contrôleur , déclencheur), Sous-type de nœud (capteur de température, humidité…)>.
+
+Toute la deuxième moitié de l'article traite des protocoles de routage. Il existe deux types de protocoles : les proactifs et les réactifs.
+	Les protocoles proactifs font en sorte que tous les nœuds ait toujours une vision correcte de l'ensemble du réseau. Ainsi, tous les changements de topologie sont immédiatement transmis à tout le réseau. Exemples de protocoles proactifs : DSDV (Destination-Sequenced Distance-Vector Routing protocol) \cite{Perkins1994} ; Link-state Routing \cite{Jacquet2001}.
+	Les protocoles réactifs, quant à eux, ne découvrent un chemin entre deux nœuds qu'en cas de besoin. Certains protocoles initient la découverte d'un chemin depuis la source vers la destination ; d'autre partent de la destination vers la source. Exemples : AODV (Ad-Hoc On-Demand Distance Vector Routing) \cite{Perkins1999} ; DSR (Dynamic Source Routing) \cite{Johnson2001} ; Directed Diffusion \cite{Intanagonwiwat2003}.
+	
+L'auteur propose un nouveau protocole de routage : Energy Aware Routing. Ce protocole est réactif et les requêtes sont initiées depuis la destination. Il se décline en trois phases : la phase d'initialisation qui permet de trouver tous les chemins de la source à la destination ; la phase de communication de données ; et la maintenance des routes. Les deux premières phases sont détaillées dans les algorithmes ci-dessous.
 
 \begin{algorithm}[h]
 \caption{Setup phase}
@@ -61,7 +72,6 @@ Energy Aware Routing for Low Energy Ad Hoc Sensor Networks \par}
 \end{algorithmic}
 \end{algorithm}
 
-  a
 
 \begin{algorithm}[h]
 \caption{Data communication phase}
@@ -75,5 +85,9 @@ Energy Aware Routing for Low Energy Ad Hoc Sensor Networks \par}
 
 \end{algorithmic}
 \end{algorithm}
+
+
+\bibliographystyle{plain}
+\bibliography{../../Bib}
 
 \end{document}
