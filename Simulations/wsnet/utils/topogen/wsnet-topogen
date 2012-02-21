@@ -1,1 +1,0 @@
-CLASSPATH=/usr/local/wsnet-2.0/share/java/ java -Xmx256m topogen $*
