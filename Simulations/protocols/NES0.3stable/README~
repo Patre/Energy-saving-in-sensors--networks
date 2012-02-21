@@ -1,0 +1,13 @@
+les affichage sont dans la fonction 
+**unsetnode** (FICHIER mpr.c)
+
+
+et les appelle se font dans la fonction 
+**bootstrap** (FICHIER mpr.c)
+get_one_hop()
+
+a condition que dans nodedata  ya 
+list N1;
+
+
+
