@@ -1,0 +1,78 @@
+\documentclass[a4paper]{article}
+
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[applemac]{inputenc}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[final]{pdfpages}
+\usepackage{algorithm, algorithmic}
+\usepackage{amsmath}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true} 
+
+
+\geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
+
+
+\normalsize
+\setlength{\parskip}{8mm plus2mm minus2mm}
+
+
+\begin{document}
+
+Chloé Desdouits \hfill 12 février 2012
+
+
+{\centering \Large \bfseries Résumé de l'article de François Ingelrest and David Simplot-Ryl\\
+Localized Broadcast Incremental Power Protocol for Wireless Ad Hoc Networks \par}
+
+
+\begin{algorithm}[h]
+\caption{LBIP setup phase}
+\label{algo_LBIP_sp}
+\begin{algorithmic}
+
+\FOR{each node $N_i$}
+	\STATE Broadcast a HELLO message
+\ENDFOR
+
+\STATE On receiving a message, put the sender in the 1-hop neighborhood
+
+\FOR{each node $N_i$}
+	\STATE Broadcast a HELLO message which contains the $N_i$ 1-hop neighborhood to compute the $N_i$ 2-hops neighborhood
+\ENDFOR
+
+\COMMENT{each node has a BIP tree of its 2-hops neighborhood}
+
+\end{algorithmic}
+\end{algorithm}
+
+a
+
+\begin{algorithm}[h]
+\caption{LBIP}
+\label{algo_LBIP}
+\begin{algorithmic}
+
+\STATE The source node $s$ sends a packet which contains instructions for relayer nodes
+\IF{A node $u$ receives a packet from a node $v$ for the first time :}
+	\IF{The packet contains some instructions for u}
+		\STATE $u$ starts constructing a BIP tree within its own 2-hop neighborhood with ranges previously computed
+	\ENDIF
+\ENDIF
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+%\bibliographystyle{plain}
+%\bibliography{../../Bib}
+
+\end{document}
