@@ -42,6 +42,23 @@ void list2_affiche(list2 *l)
     }
     printf("\n\n");
 }
+/***********************TRENSFORMER**************************/
+void list2_to_list(list **l,list2 *l2)
+{
+    while(l2)
+    {
+        if(!list_recherche(*l,l2->node)) list_insert(l,l2->node);
+        int i=0;
+        for(i=0;i<list_taille(l2->peres);i++)
+        {
+            int node= list_get(l2->peres,i);
+            if(!list_recherche(*l,node)) list_insert(l,node);
+        }
+
+        l2=l2->suiv;
+    }
+}
+
 /***********************TAILLE**************************/
 int list2_taille(list2 *l)
 {

@@ -8,7 +8,6 @@
 #define false 0
 
 #define DEBUG   //l'instrection qui suit est utiliser pour le debug
-#define N 50    //Nobre de Voisin
 
 
 //HELLO one HOP
@@ -24,8 +23,10 @@
 #define NES     200                 //le paquet NES
 
 //MPR
-#define MPR     300                 //le paquet NES
+#define MPR     300                 //le paquet MPR
 
+//MPR
+#define LBIP    400                 //le paquet LBIP
 
 /* ************************************************** */
 /* ************************************************** */
