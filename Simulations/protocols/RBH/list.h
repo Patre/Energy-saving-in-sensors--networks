@@ -1,6 +1,6 @@
 #ifndef  _LIST_RBH
 #define  _LIST_RBH
-
+#include "list_connected.h"
 
 #define Nullptr(type) (type *)0
 
@@ -132,6 +132,15 @@ void list_intersection(list **l1,list *l2)
                 if(list_recherche(*l1,l2->val))	list_delete(l1,l2->val);
                 l2=l2->suiv;
         }
+}
+/***********************TRENSFORMER**************************/
+void list_to_listC(listC **l,list *l2,int node)
+{
+    while(l2)
+    {
+        if(!list_con_recherche(*l,node,l2->val)) list_con_insert(l,node,l2->val,0);
+        l2=l2->suiv;
+    }
 }
 
 #endif //_LIST_RBH

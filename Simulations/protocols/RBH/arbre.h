@@ -26,19 +26,19 @@ void arbre_add_pere(arbre **a, int val)
     while(i--)  (*a)->fils[i]=Nullptr(arbre);
 
 }
-
+/**************************************************************/
 void arbre_add_fils(arbre *l,int in,int fils)
 {
     if(l->node==in)
     {
-        printf("je suis la ajoute %d dans le pere %d a l'indice %d\n",fils,in,l->size);
+        //printf("je suis la ajoute %d dans le pere %d a l'indice %d\n",fils,in,l->size);
         arbre_add_pere(&l->fils[l->size],fils);
         l->size++;
         return;
     }
     else
     {
-        printf("je suis la MM\n");
+        //printf("je veux inserer %d dans %d\n",fils,in);
 
         int i=l->size;
         while(i--)
@@ -51,14 +51,15 @@ void arbre_add_fils(arbre *l,int in,int fils)
 /***************affichage *****************/
 void arbre_affiche(arbre *l)
 {
-    printf("(%d,%d) ", l->node,l->size);
-
+    printf("N %d : {",l->node);
     int i=l->size;
+    while(i--)      printf("%d,",l->fils[i]->node);
+    printf("}\n");
+
+    i=l->size;
     while(i--)      arbre_affiche(l->fils[i]);
     //printf("\n");
 }
-
-
 
 
 #endif // ARBRE_RBH
