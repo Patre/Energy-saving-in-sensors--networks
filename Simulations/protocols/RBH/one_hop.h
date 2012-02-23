@@ -53,6 +53,8 @@ int init_one_hop(call_t *c, void *args) {
 
     //L'envoi
     TX(&c0,packet);
+    //tous c'est bien passé
+    return 1;
 }
 
 
@@ -112,6 +114,9 @@ int rx_one_hop(call_t *c, packet_t *packet) {
     //liberer le packet
     packet_dealloc(packet);
 
+    //tous c'est bien passé
+    return 1;
+
 }
 
 
@@ -132,6 +137,8 @@ void rx_one_hop_reponse(call_t *c, packet_t *packet) {
     if(!list_recherche(nodedata->N1,data->source))
         list_insert(&nodedata->N1,data->source);
 
+    //tous c'est bien passé
+    return;
 }
 
 #endif //ONE_HOP_RBH

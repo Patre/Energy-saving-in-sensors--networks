@@ -1,6 +1,8 @@
 #ifndef _TIME_RBH
 #define _TIME_RBH
 
+#include <include/modelutils.h>
+
 /*LES FONCTION DANS CE FICHIER*/
 uint64_t get_time_now();
 double time_nanos_to_seconds(uint64_t x);

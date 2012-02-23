@@ -32,7 +32,7 @@
 -->
 
 <entity name="lbip-sensor" library="application_lbip">
-<init alpha="2" c="0" period_evnt="5s" debut="3s" />
+<init alpha="4" c="100000000" period_evnt="5s" debut="3s" />
 <default eps="0.01" />
 </entity>
 <!--
@@ -84,7 +84,4 @@
 <!--
 == Nodes =====================================================
 -->
-<node id="0">
-<for entity="static-pos" x="99" y="99" z="0.0" />
-</node>
 </worldsens>

@@ -6,7 +6,7 @@
 #include "../RBH/list.h"
 #include "../RBH/list_de_list.h"
 #include "../RBH/arbre.h"
-#include "list_paquet_LBIP.h"
+#include "list_paquet.h"
 
 
 /* ************************************************** */
@@ -20,10 +20,10 @@ struct nodedata {
   double eps;
 
   //packet REcus
-  list_LBIP *paquets;
+  list_PACKET *paquets;
 
   //LBIP voisin
-  arbre *tree_LBIP;
+  arbre *tree_LBIP;     //l'arbre de lbip original
 
   //les voisin
   //1-hop
@@ -42,26 +42,29 @@ struct nodedata {
 /* ************************************************** */
 /* VARIABLE de L'APPLICATION LBIP */
 struct entitydataLBIP {
-  double   alpha;           //alpha de modele d'energie
-  double c;                 //le C de modele d'energie
-  uint64_t debut;           //l'instant de debut de l'application (detection de premier evenement
-  uint64_t periodEVE;       //delta temps entre chaque evenement
+  double    alpha;           //alpha de modele d'energie
+  double    c;                 //le C de modele d'energie
+  uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
+  uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
 
 /* ************************************************** */
 /* ************************************************** */
 /*Paquet de LBIP*/
 #ifndef PACKET_LBIP_RBH
-#define PACKET_LBIP_RBH  ///IMPORTANT:  SI MODIFIER il faut MODIFIER aussi dans list_paquet_LBIP.h
+#define PACKET_LBIP_RBH
 
 struct _packet_lbip
 {
     int     type;               //pour le type
-    int     source;             //la source de paquet
+    int     source;             //la source racine de paquet
     int     seq;                //la sequance de paquet
     int     redirected_by;      //le noeud qui a rediriger  le paquet
 
-    list    *N1;
+    /**************************************************/
+    list    *covred;                   //le noeud couvert
+    list    *destinations;            //les noeuds de destination de packet
+    arbre   *pere_arbre;              //ARBRE of pere (redirected_by)
 
 };
 typedef struct _packet_lbip packet_LBIP;

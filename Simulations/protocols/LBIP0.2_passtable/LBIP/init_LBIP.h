@@ -6,10 +6,28 @@
 #include "RBH/list.h"
 #include "RBH/list_de_list.h"
 #include "RBH/arbre.h"
+#include "RBH/time_RBH.h"
+
 #include "struct_LBIP.h"
 
 /*LES FONCTION DE CE FICHIER*/
+void get_LBIP_init(call_t *c, double eps);
 double   calcule_enrgie(int A,int B,double alpha,double c);
+void prim_tree(int node,arbre **a,listC *l,int nbrNode);
+void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c);
+void init_lbip_tree(call_t *c, void *args);
+
+
+/* ************************************************** */
+/* ************************************************** */
+//INIT LBIP
+void get_LBIP_init(call_t *c, double eps)
+{
+    int count=get_node_count()*2;
+    uint64_t fin_two_hop=count*time_seconds_to_nanos(eps)+time_seconds_to_nanos(eps);
+    uint64_t at=fin_two_hop;
+    scheduler_add_callback(at, c, init_lbip_tree, NULL);
+}
 
 /* ************************************************** */
 /* ************************************************** */
@@ -58,7 +76,7 @@ void prim_tree(int node,arbre **a,listC *l,int nbrNode)
     /*
       * Recuperer le minimum  a partir de node racine node
       */
-    double min_poids=99999999999999;
+    double min_poids=9999999999999999999999.00;
     int node_min=-1;
     int node_couvrant=-1;
 
@@ -70,7 +88,7 @@ void prim_tree(int node,arbre **a,listC *l,int nbrNode)
         tmp2=deja_couvert;
 
         //RENIALISER LES PARAMETRE
-        min_poids=99999999999999;
+        min_poids=999999999999999999999999999999999.00;
         node_min=-1;
         node_couvrant=-1;
 
@@ -146,7 +164,6 @@ void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c
     list2_to_listC(&connect,N2);
 
     listC *tmp=connect;
-    printf("\n\n");
     while(tmp)
     {
         double x=calcul_energie(tmp->node1,tmp->node2,alpha,c);
@@ -159,12 +176,11 @@ void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c
     list2_to_list(&g,N2);
 
     DEBUG;
-    printf("TOUS ces VOISINAGE DE 1 HOPE et 2 HOP\n");
+    /*printf("\n*************************************************************\n"
+           "TOUS ces VOISINAGE DE 1 HOPE et 2 HOP de NODE %d\n",node);
     list_affiche(g);
-
     printf("\nTOUS les connection LOCAL (node1,node2, POIDs)\n");
-
-    list_con_affiche(connect);
+    list_con_affiche(connect);*/
 
     prim_tree(node,a,connect,list_taille(g));
 
@@ -179,7 +195,11 @@ void init_lbip_tree(call_t *c, void *args)
     struct entitydataLBIP *entitydata=get_entity_private_data(c);
 
     prim_tree_lbip(c->node,&nodedata->tree_LBIP,nodedata->N1,nodedata->N2, entitydata->alpha, entitydata->c);
-    printf("j'ete appellé\n");
+
+    DEBUG;
+    /*printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
+          get_time_now_second());//*/
+    //arbre_detruire(&nodedata->tree_LBIP);
 }
 
 #endif // INIT_LBIP_H

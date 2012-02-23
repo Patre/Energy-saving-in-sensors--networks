@@ -36,10 +36,16 @@ int setnode(call_t *c, void *params) {
 
     /* default values */
     nodedata->eps       = 0.1;
-    nodedata->N1        = Nullptr(list);
-    nodedata->N2        = Nullptr(list2);
-    nodedata->tree_LBIP   = Nullptr(arbre);
-    nodedata->paquets   = Nullptr(packet_LBIP);
+
+    //les voisinages
+    nodedata->N1        = NULL;
+    nodedata->N2        = NULL;
+
+    //Les abre de LBIP
+    nodedata->tree_LBIP   = Nullptr(struct _arbre);
+
+    //les packets
+    nodedata->paquets   = Nullptr(list_PACKET);
 
 
     //ajout de la racine de l'arbre
@@ -163,24 +169,20 @@ int bootstrap(call_t *c) {
         }
     }
 
-    DEBUG;
-    /*if(c->node==0) printf("TOMax:%"PRId64"  TOMin:%"PRId64" PR:%"PRId64"  D:%"PRId64"\n",entitydata->timeoutMax,
-                          entitydata->timeoutMin,
-                          entitydata->periodEVE,
-                          entitydata->debut);//*/
 
     //RECUPERER LE VOSINAGE a UN SAUT
     get_one_hop(c,nodedata->eps);
-
-
+    //RECUPERER LE VOSINAGE a DEUX SAUT
     get_two_hop(c,nodedata->eps);
 
+    //INITIALISATION DE L'ARBRE
+    get_LBIP_init(c,nodedata->eps);
+
     //Commencé l'application
-    //initialiser LBIP
     if(c->node==0)
     {
         uint64_t at=entitydata->debut+get_random_time_range(0,entitydata->periodEVE);
-        scheduler_add_callback(at, c, init_lbip_tree, NULL);
+        scheduler_add_callback(at, c, lbip, NULL);
     }//*/
 
     return 0;
@@ -192,7 +194,7 @@ int bootstrap(call_t *c) {
 void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    struct packet_general *data = (struct packet_general *) (packet->data + nodedata->overhead[0]);
+    packet_LBIP *data = (packet_LBIP *) (packet->data + nodedata->overhead[0]);
 
     //printf("je suis %d J'ai recu un packet de type %d de %d\n",c->node, data->type, packet->node);
 
@@ -218,13 +220,20 @@ void rx(call_t *c, packet_t *packet) {
     /*******************************LBIP***************************/
     else if(data->type == LBIP)
     {
-        rx_lbip(c,packet);
-    }
 
+        //list_affiche(data->destinations);
+        //S'il ya des instrucion pour lui
+        if(list_recherche(data->destinations,c->node))//&&
+                //!list_PACKET_recherche_tout(nodedata->paquets,data->source,data->seq))
+        {
+            DEBUG;
+            printf("S: %d to %d\n",data->redirected_by,c->node);
+            rx_lbip(c,packet);
+        }
+    }
 
     /*******************************NON RECONNU***************************/
     else    printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
-
 }
 
 /* ************************************************** */
@@ -234,33 +243,39 @@ int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
     DEBUG; /* Vosinage 1 hop*/
-    if(c->node==0){
+    /*if(c->node==0){
            printf("VOISINAGE A un HOP\n");printf("N:%d -> ",c->node);
     list_affiche(nodedata->N1);}//*/
 
 
     DEBUG;/*voisinage 2 hop*/
-    if(c->node==0){
+    /*if(c->node==0)
+    {
         printf("VOISINAGE A un 2 HOP\n");
-    list2_affiche(nodedata->N2);
-    }
+        list2_affiche(nodedata->N2);
+        list *g=Nullptr(list);
+        list2_to_list(&g,nodedata->N2);
+        printf("TOUS ces VOISINAGE DE 1 HOPE et 2 HOP de CE NODE\n");
+        list_affiche(g);
+        list_detruire(&g);
+    }//*/
+
 
     DEBUG; /*ARBRE DE LBIP*/
     if(c->node==0){     printf("ARBRE DE BIP\n");
-arbre_affiche(nodedata->tree_LBIP);}
+    arbre_affiche(nodedata->tree_LBIP);}//*/
 
     DEBUG;  //PAQUETs
-    /*int i=0;
-    printf("%d:{ ",c->node);
-    for(i=0;i<list_LBIP_taille(nodedata->paquets);i++)    printf("(%d,%d),",list_LBIP_get(nodedata->paquets,i).source,list_LBIP_get(nodedata->paquets,i).seq);
-    printf("} nbrv: %d\n",list_LBIP_taille(nodedata->paquets));//*/
+    printf("Node : %d ->",c->node);
+    list_PACKET_affiche(nodedata->paquets);//*/
 
+    //liberatio d'espace memoire
+    //PAR USER PROTOCOLE
+    list_detruire(&nodedata->N1);                   //1-HOP
+    list2_detruire(&nodedata->N2);                  //2-HOP
+    arbre_detruire(&nodedata->tree_LBIP);           //LBIP tree
 
-
-    //liberation d'espace memoire
-    if(nodedata->N1) {
-        list_detruire(&nodedata->N1);
-    }
+    //PAR WSNET
     if (nodedata->overhead) {
         free(nodedata->overhead);
     }

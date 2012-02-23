@@ -12,6 +12,20 @@ struct _list
 
 typedef struct _list list;
 
+
+/****FONCTION DANS CE FICHIER*********/
+void list_insert(list **l,int val);
+void list_affiche(list *l);
+int list_taille(list *l);
+int list_get(list *l,int index);
+void list_detruire(list **l);
+int list_recherche(list *l,int val);
+void list_copy(list **des,list *src);
+int  list_delete(list **l, int val);
+void list_intersection(list **l1,list *l2);
+void list_to_listC(listC **l,list *l2,int node);
+void list_union(list **l1,list *l2);
+
 /***********************AJOUTE**************************/
 void list_insert(list **l,int val)
 {
@@ -54,7 +68,7 @@ int list_taille(list *l)
 /***********************RECUPERER UN ELEMENT**************************/
 int list_get(list *l,int index)
 {
-    if(index>=list_taille(l))	return Nullptr(list);
+    if(index>=list_taille(l))	return -1;
         else
         {
                 while(index)
@@ -142,5 +156,15 @@ void list_to_listC(listC **l,list *l2,int node)
         l2=l2->suiv;
     }
 }
+
+void list_union(list **l1,list *l2)
+{
+        while(l2)
+        {
+                if(!list_recherche(*l1,l2->val))	list_insert(l1,l2->val);
+                l2=l2->suiv;
+        }
+}
+
 
 #endif //_LIST_RBH

@@ -49,4 +49,6 @@ struct packet_hello2 {
   list      *N1;
 };
 
+/*DIFFIRANCIE Les paquets */
+
 #endif //STRUCT_RBH

@@ -58,6 +58,9 @@ int init_two_hop(call_t *c, void *args) {
 
     //L'envoi
     TX(&c0,packet);
+
+    //tous c'est bien passé
+    return 1;
 }
 
 
@@ -115,6 +118,8 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     //liberer le packet
     packet_dealloc(packet);
 
+    //tous c'est bien passé
+    return 1;
 }
 
 

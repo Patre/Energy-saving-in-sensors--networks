@@ -16,6 +16,19 @@ struct _list_of_list
 };
 
 typedef struct _list_of_list list2;
+/*FONCTION DANS CE FICHIER*/
+void list2_insert(list2 **l,int nodeid, list *peres);
+void list2_affiche(list2 *l);
+int list2_taille(list2 *l);
+void list2_detruire(list2 **l);
+int list2_recherche(list2 *l,int val);
+int list2_recherche_pere(list2 *l,int val);
+void list2_copy(list2 **des,list2 *src);
+int  list2_delete(list2 **l, int val);
+int  list2_delete_pere_from_fils(list2 *l,int fils, int pere);
+void list2_to_list(list **l,list2 *l2);
+void list2_to_listC(listC **l,list2 *l2);
+
 
 /***********************AJOUTE**************************/
 void list2_insert(list2 **l,int nodeid, list *peres)
@@ -36,6 +49,7 @@ void list2_insert(list2 **l,int nodeid, list *peres)
 }
 
 /***********************AFFICHAGE**************************/
+
 void list2_affiche(list2 *l)
 {
     while(l)
@@ -48,6 +62,7 @@ void list2_affiche(list2 *l)
 }
 
 /***********************TAILLE**************************/
+
 int list2_taille(list2 *l)
 {
         int nbr=0;
@@ -58,26 +73,8 @@ int list2_taille(list2 *l)
         }
         return nbr;
 }
-/***********************RECUPERER UN ELEMENT**************************/
-list2 list2_get(list2 *l,int index)
-{
-
-                while(index)
-                {
-                        l=l->suiv;
-                        index--;
-                }
-
-                list2 tmp;
-                tmp.node=l->node;
-                tmp.peres=Nullptr(list);
-                list_copy(&tmp.peres,l->peres);
-                tmp.suiv=Nullptr(list2);
-
-                return tmp;
-
-}
 /***********************DESTRUCTION**************************/
+
 void list2_detruire(list2 **l)
 {
         list2 *tmp=*l;
@@ -100,7 +97,6 @@ int list2_recherche(list2 *l,int val)
         }
         return bol;
 }
-
 int list2_recherche_pere(list2 *l,int val)
 {
         int bol=0;
@@ -125,6 +121,7 @@ void list2_copy(list2 **des,list2 *src)
 
 
 /*************************************SUPPRIME***********************/
+
 int  list2_delete(list2 **l, int val)
 {
         if(!list2_recherche(*l,val))	return 0;
@@ -150,6 +147,7 @@ int  list2_delete(list2 **l, int val)
         return 1;
 }
 //supression d'un pere
+
 int  list2_delete_pere_from_fils(list2 *l,int fils, int pere)
 {
     if(!list2_recherche_pere(   l,pere))	return 0;
@@ -159,6 +157,7 @@ int  list2_delete_pere_from_fils(list2 *l,int fils, int pere)
         if(l->node==fils)   list_delete(&l->peres,pere);
         l=l->suiv;
     }
+    return 1;
 }
 /***********************TRENSFORMER**************************/
 void list2_to_list(list **l,list2 *l2)
