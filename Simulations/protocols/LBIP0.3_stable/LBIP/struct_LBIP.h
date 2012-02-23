@@ -18,12 +18,17 @@
 struct nodedata {
   int *overhead;
   double eps;
+  int firsttime;
 
   //packet REcus
   list_PACKET *paquets;
 
   //LBIP voisin
   arbre *tree_LBIP;     //l'arbre de lbip original
+  arbre *tree_LBIP_re;     //l'arbre de lbip redirection
+
+  //list pere LBIP
+  list *source_packet;
 
   //les voisin
   //1-hop
@@ -62,9 +67,9 @@ struct _packet_lbip
     int     redirected_by;      //le noeud qui a rediriger  le paquet
 
     /**************************************************/
-    list    *covred;                   //le noeud couvert
     list    *destinations;            //les noeuds de destination de packet
     arbre   *pere_arbre;              //ARBRE of pere (redirected_by)
+
 
 };
 typedef struct _packet_lbip packet_LBIP;

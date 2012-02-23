@@ -75,16 +75,16 @@ void list_PACKET_insert_tout(list_PACKET **l,int source,int seq, int redirected_
 /***********************AFFICHAGE**************************/
 void list_PACKET_affiche(list_PACKET *l)
 {
+    int x=list_PACKET_taille(l);
     printf("{");
     while(l)
     {
-        printf("(S:%d,Se%d,R%d)",l->packet.source,
-               l->packet.seq,
-               l->packet.redirected_by);
+        printf("(%d,%d)",l->packet.source,
+               l->packet.seq);
 
         l=l->suiv;
     }
-    printf("}\n");
+    printf("}(totale: %d)\n",x);
 }
 
 /***********************TAILLE**************************/

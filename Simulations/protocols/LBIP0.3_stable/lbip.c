@@ -36,6 +36,7 @@ int setnode(call_t *c, void *params) {
 
     /* default values */
     nodedata->eps       = 0.1;
+    nodedata->firsttime = true;
 
     //les voisinages
     nodedata->N1        = NULL;
@@ -43,6 +44,8 @@ int setnode(call_t *c, void *params) {
 
     //Les abre de LBIP
     nodedata->tree_LBIP   = Nullptr(struct _arbre);
+    nodedata->tree_LBIP_re= Nullptr(arbre);
+    nodedata->source_packet = Nullptr(list);
 
     //les packets
     nodedata->paquets   = Nullptr(list_PACKET);
@@ -221,13 +224,11 @@ void rx(call_t *c, packet_t *packet) {
     else if(data->type == LBIP)
     {
 
-        //list_affiche(data->destinations);
         //S'il ya des instrucion pour lui
-        if(list_recherche(data->destinations,c->node))//&&
-                //!list_PACKET_recherche_tout(nodedata->paquets,data->source,data->seq))
+        if(list_recherche(data->destinations,c->node))
         {
             DEBUG;
-            printf("S: %d to %d\n",data->redirected_by,c->node);
+            printf("S: %d to %d ->",data->redirected_by,c->node);
             rx_lbip(c,packet);
         }
     }
@@ -247,7 +248,6 @@ int unsetnode(call_t *c) {
            printf("VOISINAGE A un HOP\n");printf("N:%d -> ",c->node);
     list_affiche(nodedata->N1);}//*/
 
-
     DEBUG;/*voisinage 2 hop*/
     /*if(c->node==0)
     {
@@ -262,7 +262,8 @@ int unsetnode(call_t *c) {
 
 
     DEBUG; /*ARBRE DE LBIP*/
-    if(c->node==0){     printf("ARBRE DE BIP\n");
+    /*if(c->node==0)
+    {     printf("ARBRE DE BIP\n");
     arbre_affiche(nodedata->tree_LBIP);}//*/
 
     DEBUG;  //PAQUETs

@@ -6,6 +6,7 @@
 #include "../RBH/time_RBH.h"
 #include "../RBH/list.h"
 #include "struct_LBIP.h"
+#include "init_LBIP.h"
 
 /*LES FONCTION DE CE FICHIER*/
 int lbip(call_t *c, void *args);
@@ -16,6 +17,7 @@ int rx_lbip(call_t *c, packet_t *packet);
 //LBIP LANCEMENT
 int lbip(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct entitydataLBIP *entitydata =get_entity_private_data(c);
 
     //augmanter le nbr d'evenement
     nodedata->nbr_evenement++;
@@ -41,20 +43,17 @@ int lbip(call_t *c, void *args) {
     //initilailser les données
     data->type=LBIP;
     data->source=data->source;
-    data->seq=data->seq;
+    data->seq=nodedata->nbr_evenement;
     data->redirected_by=c->node;
 
-    //couvert node
-    data->covred=Nullptr(list);
-    list_insert(&data->covred,c->node);
 
     //envoi au voisin 1 de l'arbre
-    list *voisin1_arbre=Nullptr(list);
-    arbre_to_list_fils(&voisin1_arbre,nodedata->tree_LBIP);
+    list *destinations=Nullptr(list);
+    arbre_get_fils(&destinations,nodedata->tree_LBIP,c->node);
 
     //copier dans distination
     data->destinations=Nullptr(list);
-    list_copy(&data->destinations,voisin1_arbre);
+    list_copy(&data->destinations,destinations);
 
     //envoyer aussi l'arbre pere
     data->pere_arbre=Nullptr(arbre);
@@ -73,6 +72,12 @@ int lbip(call_t *c, void *args) {
     //L'envoi
     TX(&c0,packet);
 
+    //LE CALCULE de PROCHAINE EVENEMENT
+    //PROCHAINE EVENEMENT
+    uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
+    scheduler_add_callback(at, c, lbip, NULL);//*/
+
+
     //tous c'est bien passé
     return 1;
 }
@@ -82,77 +87,89 @@ int lbip(call_t *c, void *args) {
 //RECEPTION de LBIP
 int rx_lbip(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct entitydataLBIP *entitydata =get_entity_private_data(c);
 
     packet_LBIP *data=(packet_LBIP *) (packet->data + nodedata->overhead[0]);
 
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->source,data->seq,data->redirected_by);
 
-    DEBUG;
-    /*printf("le noeud %d a recu de %d at %lf\n",c->node,
-           data->redirected_by,
-           get_time_now_second());
+    if(!list_recherche(nodedata->source_packet,data->redirected_by)) nodedata->firsttime=true;
+
+    if(nodedata->firsttime)
+    {
+        nodedata->firsttime=false;
+
+        //copier l'arbre data localement afin que ce traitement sera fait une seul fois
+        arbre_copy(&nodedata->tree_LBIP_re,data->pere_arbre);
+
+        //list d'element deja dans l'arbre
+        list *deja=Nullptr(list);
+        arbre_to_list(&deja,nodedata->tree_LBIP_re);
 
 
-    //RECUPERER LES instructions (les noeuds a Qui envoyer)
-    /*
-      *ETAPE 1 recuperer les noueds atteint pas le pere sans lui
-      */
-    list *deja_couvert=Nullptr(list);
-    arbre_to_list_sauf(&deja_couvert,data->pere_arbre,c->node);
-    list_union(&deja_couvert,data->covred);
 
-    DEBUG;/*affichge de resultat*/
-    /*list *l=Nullptr(list);
-    arbre_to_list(&l,nodedata->tree_LBIP);
-    printf("neouds dans l'originale de %d ->",c->node);
-    list_affiche(l);
-    list *l1=Nullptr(list);
-    arbre_to_list(&l1,data->pere_arbre);
-    printf("neouds dans l'arbre recu sont de node %d ->",data->pere_arbre->node);
-    list_affiche(l1);
-    printf("le noued couvert par d'autres' est ->");
-    list_affiche(deja_couvert);//*/
+        //RECUPERER le connexion vers les noeuds
+        listC *connect=Nullptr(listC);
+        list2_to_listC(&connect,nodedata->N2);
+
+        DEBUG;
+        /*printf("les connextion traiter ->");
+        list_con_affiche(connect);//*/
 
 
-    /*
-      *ETAPE 2 suppression de tout les noeud deja atteint de son arbre LBIP
-      */
-    arbre *lbip_re=Nullptr(arbre);              //contient le nouveua arbre
-    arbre_copy(&lbip_re,nodedata->tree_LBIP);   //faire une copy de l'arbre originale
 
-    arbre_moins_list(lbip_re,deja_couvert);     //supprimer de l'arbre tout les noeud deja couvert
+        listC *connectN=Nullptr(listC);
+        //Suppresion de tout les connection deja traiter
+        listC *parc=Nullptr(listC);
+        parc=connect;
+        while(parc)
+        {
 
-    DEBUG;
-    /*list *l=Nullptr(list);
-    arbre_to_list(&l,nodedata->tree_LBIP);
-    printf("neouds dans l'originale de %d ->",c->node);
-    list_affiche(l);
-    list *l1=Nullptr(list);
-    arbre_to_list(&l1,lbip_re);
-    printf("neouds pas encore couvert de %d ->",c->node);
-    list_affiche(l1);
-    printf("neouds  couvert d'autre' ->");
-    list_affiche(deja_couvert);//*/
-
-    //arbre_affiche(lbip_re);
+            if(!list_recherche(deja,parc->node1)
+                    || !list_recherche(deja, parc->node2))  list_con_insert(&connectN,parc->node1,
+                                                                            parc->node2,
+                                                                            calcul_energie(parc->node1,parc->node2,
+                                                                                           entitydata->alpha,
+                                                                                           entitydata->c));
+            parc=parc->suiv;
+        }
 
 
-    /*
-      * ETAPE 3  rebroadcasté avec le nouveua arbre lbip_re
-      */
-    DEBUG;/*Affichage des prochain destination*/
-    /*printf("**********************************************\n"
-           "le noued %d recu de %d at %lf va en voyer a : \n",c->node,data->redirected_by,get_time_now_second());
-    list *l=Nullptr(list);
-    arbre_to_list_fils(&l,lbip_re);
-    list_affiche(l);
 
-    /*printf("L'arbre original de ce NOued est ");
-    arbre_affiche(nodedata->tree_LBIP);
-    printf("\n\nL'arbre apres l'elmination de ce NOued est ");
-    arbre_affiche(lbip_re);//*/
+        list *g=Nullptr(list);
+        list2_to_list(&g,nodedata->N2);
+        list_intersection(&g,deja);
 
+        list *deb=Nullptr(list);
+        listC_to_list(&deb,connectN);
+        list_intersection(&deb,g);
+
+        DEBUG;
+        /*printf("les noued de l'arbre ->");
+        list_affiche(deja);
+        printf("le noeud Non traiter sont ->");
+        list_affiche(g);
+        printf("la liste de commencement ->");
+        list_affiche(deb);
+        printf("les connextion non traiter ->");
+        list_con_affiche(connectN);
+        //*/
+
+        DEBUG;/*les elements des*/
+        /*printf("les noeuds atteint  par l'arbre pere sauf les sien");
+        list_affiche(lst);//*/
+        /*printf("**************************************"
+               "l'arbre arriver\n");
+        arbre_affiche(nodedata->tree_LBIP_re);//*/
+
+        prim_tree2(deb,&nodedata->tree_LBIP_re,connectN,g);
+
+        /*printf("l'arbre apres\n");
+        arbre_affiche(nodedata->tree_LBIP_re);
+        //printf("**************************************\n");//*/
+
+    }
 
 
 
@@ -174,24 +191,24 @@ int rx_lbip(call_t *c, packet_t *packet) {
     redata->seq=data->seq;
     redata->redirected_by=c->node;
 
-
-    //envoi au voisin 1 de l'arbre
-    list *voisin1_arbre=Nullptr(list);
-    arbre_to_list_fils(&voisin1_arbre,lbip_re);
-
-    //copier dans distination
-    data->destinations=Nullptr(list);
-    list_copy(&redata->destinations,voisin1_arbre);
+    //RECUPERE LA DESTINATION
+    list *destinations=Nullptr(list);
+    arbre_get_fils(&destinations,nodedata->tree_LBIP_re,c->node);
 
 
-    //envoi au voisin 1 de l'arbre
+    DEBUG;
+    if(data->seq==1){printf("prochaine destinations -> ");
+    list_affiche(destinations);}//*/
+
+
+    //copier la destination
+    redata->destinations=Nullptr(list);
+    list_copy(&redata->destinations,destinations);
+
+    //envoyer aussi l'arbre apres l'ajoute
     redata->pere_arbre=Nullptr(arbre);
-    arbre_copy(&redata->pere_arbre,nodedata->tree_LBIP);
+    arbre_copy(&redata->pere_arbre,nodedata->tree_LBIP_re);
 
-    //copier les noeud deja couvert
-    redata->covred=Nullptr(list);
-    list_insert(&redata->covred,c->node);
-    list_copy(&redata->covred,deja_couvert);
 
     if (SET_HEADER(&c0, repacket, &destination) == -1) {
             packet_dealloc(repacket);
