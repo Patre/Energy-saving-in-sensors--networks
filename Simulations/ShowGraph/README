@@ -1,4 +1,12 @@
 OUTIL de VISULAISATION DES GRAPH
+un projet SOUS QT -> Multi platforme
+
+
+COMPILATION
+ouvrir .pro par QT CREATOR
+COMPILER et c'est BON
+
+
 
 
 APARTIR DE WSNET IL FAUT GENERER LE FICHIER COMME DANS example_synataxe.h
