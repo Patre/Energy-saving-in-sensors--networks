@@ -19,7 +19,7 @@ int lbip(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydataLBIP *entitydata =get_entity_private_data(c);
 
-    //augmanter le nbr d'evenement
+    //augmenter le nbr d'evenements
     nodedata->nbr_evenement++;
 
     //L'EVENEMENT
@@ -40,7 +40,7 @@ int lbip(call_t *c, void *args) {
     packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(packet_LBIP));
     packet_LBIP *data = (packet_LBIP *) (packet->data + nodedata->overhead[0]);
 
-    //initilailser les données
+    //initialiser les données
     data->type=LBIP;
     data->source=data->source;
     data->seq=nodedata->nbr_evenement;
@@ -51,7 +51,7 @@ int lbip(call_t *c, void *args) {
     list *destinations=Nullptr(list);
     arbre_get_fils(&destinations,nodedata->tree_LBIP,c->node);
 
-    //copier dans distination
+    //copier dans destination
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
 
@@ -120,27 +120,23 @@ int rx_lbip(call_t *c, packet_t *packet) {
 
 
         listC *connectN=Nullptr(listC);
-        //Suppresion de tout les connection deja traiter
+        //Suppression de toutes les connections deja traitees
         listC *parc=Nullptr(listC);
         parc=connect;
         while(parc)
         {
-
+			
             if(!list_recherche(deja,parc->node1)
-                    || !list_recherche(deja, parc->node2))  list_con_insert(&connectN,parc->node1,
-                                                                            parc->node2,
-                                                                            calcul_energie(parc->node1,parc->node2,
-                                                                                           entitydata->alpha,
-                                                                                           entitydata->c));
+			   || !list_recherche(deja, parc->node2))  list_con_insert(&connectN,parc->node1, parc->node2, calcul_energie(parc->node1,parc->node2, entitydata->alpha, entitydata->c));
             parc=parc->suiv;
         }
-
-
-
+		
+		
+		
         list *g=Nullptr(list);
         list2_to_list(&g,nodedata->N2);
         list_intersection(&g,deja);
-
+		
         list *deb=Nullptr(list);
         listC_to_list(&deb,connectN);
         list_intersection(&deb,g);

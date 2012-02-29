@@ -95,7 +95,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
      packet_t *rpacket = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello2));
      struct packet_hello2 *rhello = (struct packet_hello2 *) (rpacket->data + nodedata->overhead[0]);
 
-     //initilailser les données
+     //initialiser les données
      rhello->type     =   REP_HELLO2;
      rhello->source   =   c->node;
      rhello->N1       =   Nullptr(list);
@@ -125,7 +125,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 
 /***********************************************************************************************/
 /***********************************************************************************************/
-//RECEPTION DE LA REPONSE DE PAKET HELLO
+//RECEPTION DE LA REPONSE DE PACKET HELLO
 void rx_two_hop_reponse(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 

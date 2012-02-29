@@ -175,7 +175,7 @@ int bootstrap(call_t *c) {
 
     //RECUPERER LE VOSINAGE a UN SAUT
     get_one_hop(c,nodedata->eps);
-    //RECUPERER LE VOSINAGE a DEUX SAUT
+    //RECUPERER LE VOISINAGE a DEUX SAUT
     get_two_hop(c,nodedata->eps);
 
     //INITIALISATION DE L'ARBRE
@@ -224,7 +224,7 @@ void rx(call_t *c, packet_t *packet) {
     else if(data->type == LBIP)
     {
 
-        //S'il ya des instrucion pour lui
+        //S'il y a des instructions pour lui
         if(list_recherche(data->destinations,c->node))
         {
             DEBUG;

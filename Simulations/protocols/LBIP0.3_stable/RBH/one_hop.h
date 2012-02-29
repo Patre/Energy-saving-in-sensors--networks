@@ -37,7 +37,7 @@ int init_one_hop(call_t *c, void *args) {
     packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello));
     struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
 
-    //initilailser les données
+    //initialiser les données
     hello->type=HELLO;
     hello->source=c->node;
 
@@ -80,7 +80,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
         list_insert(&nodedata->N1,hello->source);
 
 
-    //REPONSE DE PAKET HELLO
+    //REPONSE DE PACKET HELLO
 
     //recuperer le support de communication MAC
      entityid_t *down = get_entity_links_down(c);
@@ -122,7 +122,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 
 /***********************************************************************************************/
 /***********************************************************************************************/
-//RECEPTION DE LA REPONSE DE PAKET HELLO
+//RECEPTION DE LA REPONSE DE PACKET HELLO
 void rx_one_hop_reponse(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 

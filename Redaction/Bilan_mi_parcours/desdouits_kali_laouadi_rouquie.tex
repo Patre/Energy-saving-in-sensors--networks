@@ -22,7 +22,6 @@
 \begin{document}
 \large
 \setlength{\parskip}{10mm plus2mm minus2mm}
-\setlength{\evensidemargin}{-2cm}
 \setlength{\textwidth}{530pt}
 \setlength{\parindent}{0cm}
 
@@ -45,29 +44,30 @@ Nom du groupe : WSN
 
 Encadrante : Anne-Elisabeth Baert
 \par}
-\renewcommand\labelitemi{\textbullet}
 {\bfseries Les tâches réalisées à ce jour sont les suivantes :}\\
 \begin{itemize}\addtolength{\itemsep}{0.3cm}
-	\item Lecture de quelques articles : \cite{Chang2000} \cite{Shah2002} (Chloé Desdouits), \cite{Cartigny2003LMEB} \cite{Cartigny2005} (Sofiane Zahir Kali), \cite{Ingelrest2005} (Rabah Laouadi), (Samuel Rouquie).
+\renewcommand\labelitemi{\textbullet}
+	\item Lecture de quelques articles
+	\begin{description}
+	\renewcommand{\makelabel}[1]{\normalsize \textbf{#1}}
+		\item[Chloé Desdouits] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Chang2000} \cite{Shah2002}
+		\item[Sofiane Zahir Kali] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Cartigny2003LMEB} \cite{Cartigny2005}
+		\item[Rabah Laouadi] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Ingelrest2005}
+		\item[Samuel Rouquie] \cite{Champ2009DLBIP} \cite{Champ2009lifetime}
+	\end{description}
 	\item Résumés des articles.
-	\item Synthèse des connaissances acquises (Samuel Rouquie).
-	\item Programmation d'algorithmes sous WSNET :  $FA$ \cite{Chang2000} (Chloé Desdouits), $LBIP$, $MPR$ et $NES$ (Rabah Laouadi), (Zahir Kali).
+	\item Synthèse des connaissances acquises ; écriture de l'état de l'art du rapport (Samuel Rouquie).
+	\item Écriture de l'introduction du rapport (Rabah Laouadi et Chloé Desdouits).
+	\item Programmation d'algorithmes sous WSNET
+	\begin{description}
+	\renewcommand{\makelabel}[1]{\normalsize \textbf{#1}}
+		\item[Chloé Desdouits] $FA$ \cite{Chang2000}
+		\item[Sofiane Zahir Kali] 
+		\item[Rabah Laouadi] $LBIP$, $MPR$ et $NES$
+	\end{description}
 \end{itemize}
-
-
-\begin{landscape}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.98]{diagramme}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.98]{diagramme2}
-\end{figure}
-
-\end{landscape}
+~\\
+{\bfseries Les problèmes rencontrés sont les suivants :}\\
 
 
 \bibliographystyle{plain}
