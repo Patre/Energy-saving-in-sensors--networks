@@ -7,7 +7,7 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage[colorlinks=true]{hyperref}
-\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
 \usepackage{listings}
 \usepackage{amssymb}
 \usepackage{setspace}
@@ -21,7 +21,7 @@
 
 \begin{document}
 \large
-\setlength{\parskip}{10mm plus2mm minus2mm}
+\setlength{\parskip}{6mm plus2mm minus2mm}
 \setlength{\textwidth}{530pt}
 \setlength{\parindent}{0cm}
 
@@ -30,45 +30,58 @@
 
 {\centering \Large \bfseries Analyse et conception d'algorithmes économes en énergie dans les réseaux de capteurs \par}
 
-{
-Nom du groupe : WSN
-
-Étudiants :
+{\emph{Nom du groupe} : WSN\\ \\
+\emph{Étudiants} :
 \begin{description}
 \item Chloé DESDOUITS \hfill chloe.desdouits@etud.univ-montp2.fr
 \item Sofiane Zahir KALI \hfill zahir.kali@etud.univ-montp2.fr
 \item Rabah LAOUADI \hfill rabah.laouadi@etud.univ-montp2.fr
 \item Samuel ROUQUIE \hfill samuel.rouquie@etud.univ-montp2.fr
-\item
 \end{description}
-
-Encadrante : Anne-Elisabeth Baert
+~\\
+\emph{Encadrante} : Anne-Elisabeth BAERT
 \par}
+
 {\bfseries Les tâches réalisées à ce jour sont les suivantes :}\\
-\begin{itemize}\addtolength{\itemsep}{0.3cm}
+\begin{itemize}\addtolength{\itemsep}{0.2cm}
 \renewcommand\labelitemi{\textbullet}
-	\item Lecture de quelques articles
+	\item Lecture et écriture des résumés de dix articles
 	\begin{description}
 	\renewcommand{\makelabel}[1]{\normalsize \textbf{#1}}
 		\item[Chloé Desdouits] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Chang2000} \cite{Shah2002}
 		\item[Sofiane Zahir Kali] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Cartigny2003LMEB} \cite{Cartigny2005}
 		\item[Rabah Laouadi] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Ingelrest2005}
-		\item[Samuel Rouquie] \cite{Champ2009DLBIP} \cite{Champ2009lifetime}
+		\item[Samuel Rouquie] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Abba2006} \cite{Dietrich2009} \cite{Agarwal2005}
 	\end{description}
-	\item Résumés des articles.
-	\item Synthèse des connaissances acquises ; écriture de l'état de l'art du rapport (Samuel Rouquie).
 	\item Écriture de l'introduction du rapport (Rabah Laouadi et Chloé Desdouits).
-	\item Programmation d'algorithmes sous WSNET
+	\item Synthèse des connaissances acquises ; écriture de l'état de l'art du rapport (Samuel Rouquie).
+	\item Programmation d'algorithmes sous WSNET (simulateur événementiel de réseaux)
 	\begin{description}
 	\renewcommand{\makelabel}[1]{\normalsize \textbf{#1}}
 		\item[Chloé Desdouits] $FA$ \cite{Chang2000}
-		\item[Sofiane Zahir Kali] 
-		\item[Rabah Laouadi] $LBIP$, $MPR$ et $NES$
+		\item[Sofiane Zahir Kali] $LMST$ \cite{Cartigny2005}
+		\item[Rabah Laouadi] $LBIP$ \cite{Ingelrest2008}, $MPR$ \cite{Lehsaini2007} et $NES$ \cite{Stojmenovic2002}
 	\end{description}
 \end{itemize}
 ~\\
-{\bfseries Les problèmes rencontrés sont les suivants :}\\
-
+{\bfseries Voici les problèmes que nous avons rencontrés :}\\
+\begin{itemize}\addtolength{\itemsep}{0.3cm}
+\renewcommand\labelitemi{\textbullet}
+	\item La mise en place et l'utilisation d'un outil de travail collaboratif : git.
+	\item L'utilisation de \LaTeX{} pour la rédaction des documents.
+	\item La prise en main de WSNET car ce framework est en langage C mais événementiel et possède une architecture particulière.
+	\item La problématique des algorithmes économes en énergie dans les réseaux de capteurs est une problématique large. Nous devons donc décider de traiter une sous-partie de cette problématique (par exemple les algorithmes de broadcast).
+\end{itemize}
+~\\
+{\bfseries Les tâches qui nous reste à effectuer sont les suivantes :}\\
+\begin{itemize}\addtolength{\itemsep}{0.2cm}
+\renewcommand\labelitemi{\textbullet}
+	\item Lecture d'autres articles.
+	\item Rédaction de la synthèse des articles que nous aurons lu.
+	\item Programmation de quelques autres algorithmes existants ($DLBIP$, $TRLOB$…).
+	\item Prototypage de notre propre algorithme.
+	\item Rédaction de la suite du rapport.
+\end{itemize}
 
 \bibliographystyle{plain}
 \bibliography{../Bib}
