@@ -14,15 +14,25 @@
 \usepackage{lscape}
 \usepackage{mathabx}
 
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{textcomp}
+\usepackage{enumerate}
+\usetikzlibrary[arrows,automata,decorations.pathmorphing,decorations.text,backgrounds,petri,positioning,fit,shapes,snakes]
+
+
 \geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
 
 
 \setlength{\parskip}{5mm plus2mm minus2mm}
 \lstset{language=C, showstringspaces=false, numbers=left, numberstyle=\tiny, tabsize=4}
 
-\title{Analyse et conception d’algorithmes économes en énergie dans les réseaux de capteurs}
-\author{Chloé DESDOUITS \and Sofiane Zahir KALI \and Rabah LAOUADI \and Samuel ROUQUIE}
-\date{2012}
+
+
+\theoremstyle{definition}
+\newtheorem{mydef}{Définition}
+\newtheorem{mylem}{Lemme}
+
 
 
 \begin{document}
@@ -75,13 +85,7 @@ Anne-Élisabeth BAERT
 
 \input{intro/intro}
 
-\chapter{État de l'art}\label{etatArt}
-
-\section{Notions préliminaires}
-
-\section{Travaux relatifs}
-
-\section{Synthèse}
+\input{Etat_de_l'art/etat_art}
 
 
 \chapter{Analyse et réflexion}\label{analyse}
