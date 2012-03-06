@@ -1,3 +1,4 @@
+% !TEX encoding = UTF-8 Unicode
 
 \pagestyle{plain} 	%numéro de page centré en pieds de page
 
@@ -10,7 +11,7 @@
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.9]{source/layer.pdf}
+\includegraphics[scale=0.9]{Etat_de_l'art/source/layer.pdf}
 \caption{\label{Layer} Les couches dans les WSNs}
 \end{figure}
 
@@ -55,7 +56,7 @@ $$E = \{ (u,v) \in V ^{2} \mid d(u,v) \leq R \}$$
  On appelera $G= (V,E,\gamma)$ le \textit{graphe unité} du WSN et $\gamma$ son rayon de communication.
 \end{mydef}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ùVoisinage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%‚àöœÄVoisinage
 \begin{mydef}
 On note le 1-voisinage de $u$ :$N_1(u) = \{ v \in V  \mid (u,v) \in E \}$ \\
 On note le 2-voisinage de $u$ :$N_2(u) = \{ v \in V \mid  \exists w \in V :\{(u,w);(w,v)\} \in E ^2\}$ \\
@@ -70,7 +71,7 @@ Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u
  
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.5]{source/graph1.png}
+\includegraphics[scale=0.5]{Etat_de_l'art/source/graph1.png}
 \caption{Graphe unité}
 \end{figure} 
 
@@ -92,7 +93,7 @@ Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u
 Tout les capteurs $i$ offrant les même caracteristiques, ils peuvent modifier leur rayon d'émission $r_i$ entre $r_i=0$ et $r_i=\gamma$.
 Nous considererons que chaque capteur $i$ a une énergie initiale $E_{init}=\beta$.
 Nous noterons $E_i$ l'energie restante de $i$.
-L'envoie d'un message de $i$ avec un rayon $r$ coute $$E(r)=\begin{cases} r^\alpha + c & \text{si }i\neq j \\ 0 & \text{sinon}  \end{cases}$$
+%L'envoie d'un message de $i$ avec un rayon $r$ coute $$E(r)=\begin{cases} r^\alpha + c & \text{si }i\neq j \\ 0 & \text{sinon}  \end{cases}$$
 L'envoie d'un message de $i$ à $j$ ($d_e(i,j)\leq \gamma$) coute  $ E_{ij}=E(d_e(i,j))$.
 L'energie consommée lors de la réception de message, du traitement et des calculs propres aux capteurs est négligée.
 
@@ -351,12 +352,12 @@ ou $P_{ij}$ est le cout reel de transmition et $P(i)$ le cout de broadcast de $i
    \STATE $m \leftarrow Choisir (M,d)$
    \STATE $M \leftarrow Supprimer (m,M)$
    \STATE $z \leftarrow pp[m]$
-   \STATE $v \leftarrow coût (m,z,G)$
-   \STATE $T \leftarrow Ajout arête <m,z> de coût v à T$
-   \FOR{ $i = 1 \to d° m \in G$} 
-     \STATE $y \leftarrow← i ième_succ_de m dans G$
+   \STATE $v \leftarrow co‚àö¬™t (m,z,G)$
+   \STATE $T \leftarrow Ajout arête <m,z> de co‚àö¬™t v à T$
+   \FOR{ $i = 1 \to d¬¨‚àû m \in G$} 
+     \STATE $y \leftarrow i ième_succ_de m dans G$
      \IF{ $y  M et (cout(m,y,G) < d[y]$)}
-       \STATE $d[y] \leftarrow coût(m,y,G)$
+       \STATE $d[y] \leftarrow co‚àö¬™t(m,y,G)$
        \STATE $pp[y] \leftarrow m$
      \ENDIF
     \ENDFOR
@@ -464,7 +465,7 @@ Bip de construit pas forcement un arbre de poids minimum.
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=1,angle=90]{source/classification}
+\includegraphics[scale=1,angle=90]{Etat_de_l'art/source/classification}
 \caption{Description, Figure 1 : Graphe de synthèse}
 \end{figure} 
 
