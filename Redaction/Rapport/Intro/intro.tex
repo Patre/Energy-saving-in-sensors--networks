@@ -3,11 +3,10 @@
 
 \chapter{Introduction}\label{intro}
 
+
 Les réseaux sans fil font depuis plus d'une dizaine d'années partie intégrante de la vie quotidienne des entreprises, des particuliers, de l'industrie et d'autres organisations. Ils
 représentent aujourd'hui une des briques de base sur lesquelles vont se fonder les systèmes
 intelligents omniprésents qui vont constituer une des technologies de l'avenir. Cependant, la majeure partie de ces technologies sans fils, à commencer par le Wifi, elle est basée  sur des infrastructures fixes, limitant la mobilité des utilisateurs. Pour faciliter cette mobilité, il existe  un autre type de réseau, de plus en plus courant, qui  permet aux nœuds du réseau de communiquer directement entre eux sans nécessiter d’infrastructure : ce sont les réseaux ad hoc.
-
-On distingue donc deux principales classes de réseaux sans fils, les classiques structurés et les non structurés comme les réseaux ad hoc. Les réseaux ad hoc offrent la possibilité de connecter différents dispositifs sans avoir à préinstaller une infrastructure fixe comme dans les réseaux traditionnels. Dans les réseaux ad hoc, l’ensemble des nœuds communiquent directement entre eux (voir figure \ref{reseauAdHoc}). Nous nous allons nous intéresser un des types particulier des réseaux ad hoc on nommera les (WSN, VANET, VSN) qui seront expliqués plus en détail dans ce qui suit.
 
 \begin{figure}[h]
 \centering
@@ -15,53 +14,13 @@ On distingue donc deux principales classes de réseaux sans fils, les classiques
 \caption{\label{reseauAdHoc} Réseau ad hoc}
 \end{figure}
 
-
-\section{Les capteurs}
-
-On dénombre de types de capteurs :
-\renewcommand\labelitemi{\textbullet}
-\begin{itemize}
-
-\item \textbf{Model de mesure :} un capteur est un dispositif équipé de fonctionnalités de sensation avancées. Il mesure ou détecte un événement réel, comme le mouvement, la chaleur ou la lumière et convertit la valeur mesurée dans une représentation analogique ou numérique. Il prélève des informations et élabore à partir d’une grandeur physique (information d’entrée), une autre grandeur physique de nature électrique.
-
-\item \textbf{Capteur intelligent :} Les capteurs intelligents (Smart Sensors) sont des dispositifs matériels dans lesquels coexistent le(s) capteur(s) et les circuits de traitement et de communication. Leurs relations avec des couches de traitement supérieures vont bien au-delà d’une simple « transduction de signal ». Les capteurs intelligents sont des « capteurs d’informations » et non pas simplement des capteurs et des circuits de traitement du signal juxtaposés. De plus, les « Smart Sensors » ne sont pas des dispositifs banalisés car chacun de leurs constituants a été conçu dans l’objectif d’une application bien spécifique.
-
-\end{itemize}
-
-En résumé les capteurs sont des petits entités électroniques à faible coût qui ont pour but de récolter des informations de leurs environnement proches comme la température, la vitesse, le bruit, la pression… et éventuellement de les traiter.
-
- Un capteur intelligent contient quatre unités de base (voir Figure \ref{archiCapteur}). :
- \begin{itemize}
-
-\item \textbf{L'unité d’acquisition :} composée d’un capteur qui obtient des mesures sur les paramètres environnementaux et d’un convertisseur Analogique/Numérique qui convertit l’information relevée et la transmet à l’unité de traitement.
-
-\item \textbf{L'unité de traitement :} composée d’un processeur et d’une mémoire intégrant un système d’exploitation spécifique. Cette unité possède deux interfaces, une interface pour l’unité d’acquisition et une interface pour l’unité de communication. Elle acquiert les informations en provenance de l’unité d’acquisition et les envoie à l’unité de communication. Cette unité est chargée aussi d’exécuter les protocoles de communications qui permettent de faire collaborer le capteur avec d’autres capteurs. Elle peut aussi analyser les données captées.
-
-\item \textbf{L'unité de communication : } unité responsable de toutes les émissions et réceptions de données via un support de communication radio. Elle peut être de type optique, ou de type radiofréquence.
-
-\item \textbf{L'unité de contrôle d'énergie (batterie) :} un capteur est muni d’une batterie pour alimenter tous ses composants. Cependant, à cause de sa taille réduite, la batterie dont il dispose est limitée et généralement irremplaçable. Pour cela, l’énergie est la ressource la plus précieuse puisqu’elle influe directement sur la durée de vie des capteurs.
-
-\end{itemize}
-
-Selon le domaine d'application, il peut aussi contenir des modules supplémentaires comme le système de positionnement GPS (Global Positioning System) et un mobilisateur lui permettant le déplacement.
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.8]{intro/archiCapteur}
-\caption{\label{archiCapteur} Architecture d’un capteur}
-\end{figure}
+On distingue donc deux principales classes de réseaux sans fils, les classiques structurés et les non structurés comme les réseaux ad hoc. Les réseaux ad hoc offrent la possibilité de connecter différents dispositifs sans avoir à préinstaller une infrastructure fixe comme dans les réseaux traditionnels. Dans les réseaux ad hoc, l’ensemble des nœuds communiquent directement entre eux (voir figure \ref{reseauAdHoc}). Nous allons nous intéresser à un type particulier de réseau ad hoc :  les réseaux de capteurs. Ces réseaux ont de nombreuses applications pratiques dans le médicale, la physique, la chimie, le multimédia, l'automobile, la climatologie…
 
 
-\section{Caractéristiques principales d’un capteur}
-Deux entités sont fondamentales dans le fonctionnement d’un capteur : l’unité d’acquisition qui est le cœur physique permettant la prise de mesure et l’unité de communication qui réalise la transmission de celle-ci  vers d’autres dispositifs électroniques. Ainsi, fonctionnellement chaque capteur  possède un rayon de communication (Rc) et un rayon de sensation (Rs).  La  Figure \ref{percept} montre les zones définies par ces deux rayons pour le capteur A. La zone de communication est la zone où le capteur A peut communiquer avec les autres capteurs (le capteur B dans la Figure \ref{percept}). D’autre part, la zone de sensation est la zone où le capteur A peut capter l’événement.
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.8]{intro/percept}
-\caption{\label{percept} Rayon de communication et de sensation}
-\end{figure}
+\section{Capteurs}
 
-Pour qu’un capteur ait une portée de communication suffisamment grande, il est nécessaire d’utiliser un signal  assez puissant. Cependant, l’énergie consommée serait importante. Il existe dans le monde plusieurs fabricants de capteurs Crossbow, Cisco, Dalsa, EuroTherm, et Sens2B. Parmi ces capteurs, il existe quelques-uns qui sont capables de varier la puissance du signal émis afin d’élargir/réduire le rayon de communication et en conséquence la zone de communication. La  Figure \ref{imageCapteur}  montre un capteur sans fil.
+Les capteurs sont des petites entités électroniques à faible coût qui ont pour but de récolter des informations dans leur environnement proche comme la température, la vitesse, le bruit, la pression, le mouvement, la chaleur ou la lumière… La valeur mesurée est convertie dans une représentation analogique ou numérique.
 
 \begin{figure}[h]
 \centering
@@ -69,47 +28,62 @@ Pour qu’un capteur ait une portée de communication suffisamment grande, il es
 \caption{\label{imageCapteur} Capteur sans fil}
 \end{figure}
 
+Il existe des \textbf{capteurs intelligents} (Smart Sensors) dans lesquels coexistent le(s) capteur(s) et les circuits de traitement et de communication. Leurs relations avec des couches de traitement supérieures vont bien au-delà d’une simple « transduction de signal ». Les capteurs intelligents sont des « capteurs d’informations » et non pas simplement des capteurs et des circuits de traitement du signal juxtaposés. De plus, les « Smart Sensors » ne sont pas des dispositifs banalisés car chacun de leurs constituants a été conçu dans l’objectif d’une application bien spécifique.
 
-\section{Caractéristiques des capteurs actuels}
-Nous voyons donc rapidement les contraintes que vont rencontrer les capteurs :
-\begin{itemize}
+Lorsque nous parlerons de capteur plus loin dans ce rapport, il s'agira d'un capteur intelligent. Un tel capteur contient quatre unités de base (voir Figure \ref{archiCapteur}) : 
+ 
+ \begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{intro/archiCapteur}
+\caption{\label{archiCapteur} Architecture d’un capteur}
+\end{figure}
+ 
+ \begin{description}
+\item[L'unité d’acquisition] est composée d’un capteur qui obtient des mesures sur les paramètres environnementaux et d’un convertisseur Analogique/Numérique qui convertit l’information relevée et la transmet à l’unité de traitement. La perception d'un capteur est limitée par un rayon de sensation (Rs). La  Figure \ref{percept} illustre ce principe.
 
-\item \textbf{Une faible puissance de calcul} : quand les PCs nouvelle génération peuvent avoir jusqu’à4 processeurs, chacun cadencé à 3GHz, ou quand les derniers Smartphones peuvent fonctionner jusqu’à 800MHz, un capteur actuel est à peine plus puissant qu’une calculatrice graphique produite dans les années 90.
+\item[L'unité de traitement] est composée d’un processeur et d’une mémoire intégrant un système d’exploitation spécifique. Cette unité possède deux interfaces, une interface pour l’unité d’acquisition et une interface pour l’unité de communication. Elle acquiert les informations en provenance de l’unité d’acquisition et les envoie à l’unité de communication. Cette unité est chargée aussi d’exécuter les protocoles de communications qui permettent de faire collaborer le capteur avec d’autres capteurs. Elle peut aussi analyser les données captées.
 
-\item \textbf{Un espace de stockage mémoire limité} de quelques kilos à quelques mégaoctets nécessite des algorithmes distribués, localisés et collaboratifs.
+\item[L'unité de communication] est l'unité responsable de toutes les émissions et réceptions de données via un support de communication radio. Elle peut être de type optique, ou de type radiofréquence. Fonctionnellement chaque capteur possède un rayon de communication (Rc). La  figure \ref{percept} montre la zone dans laquelle le capteur peut communiquer. Certains capteurs peuvent moduler leur rayon de communication.
 
-\item \textbf{Une puissance radio limitée} : l’ordre de grandeur des portées actuellement atteignables par les principaux capteurs est d’une centaine de mètres en extérieur et de quelques dizaines de mètres en intérieur. Cette portée est largement dépendante de la fréquence utilisée et de l’environnement. Elle nécessite un routage multi-saut pour l’acheminement des données vers une entité de collecte, le puits : les capteurs ne peuvent communiquer qu’avec les capteurs de leur voisinage direct qui vont relayer les communications.
+\item[L'unité de contrôle d'énergie (batterie)] sert à alimenter tous les composants. Cependant, à cause de la taille réduite du capteur, la batterie est limitée et généralement irremplaçable. Ainsi, l’énergie est la ressource la plus précieuse puisqu’elle influe directement sur la durée de vie des capteurs.
+\end{description}
 
-\item \textbf{Un débit faible} : les composants radio d’un capteur sont limités à quelques centaines de kilo-octets par seconde.
+Selon son domaine d'application, un capteur peut contenir des modules supplémentaires comme le système de positionnement GPS (Global Positioning System) ou un système lui permettant de se déplacer.
 
-\item \textbf{Une réserve d’énergie réduite} : même s’il existe des mécanismes de recharge d’énergie, la durée de vie d’un capteur reste directement liée au niveau de sa batterie. Cette réserve d’énergie est partagée par chaque unité d’un capteur mais l’unité de communication va en consommer près de 95\% lors du fonctionnement actif du capteur. Il est donc naturel qu’une forte recherche s’effectue à la fois sur l’augmentation des capacités des batteries, sur les dispositifs de transmission radio ultra-basse consommation, les architectures basse consommation, et enfin, sur les mécanismes d’endormissement et sur des protocoles de communication spécifique.
-
-\end{itemize}
-
-De par leurs contraintes On doit donc bien comprendre que la force d’un réseau de capteurs ne tient pas à la qualité des capteurs individuellement mais à leur collaboration : l’ensemble du réseau est supérieur à la somme des capteurs qui le composent. Cette collaboration est possible grâce à des protocoles.
-
-
-\section{Exemple d’application des capteurs}
-Dans cette partie nous aller présenter quelque exemple d’application des capteurs.
-\begin{itemize}
-
-\item \textbf{capteurs de mesures physiques} : pression force accélération, position,température champ magnétique, radioactivité, débit (liquide ou gaz).
-
-\item \textbf{capteurs chimiques} : humidité relative de l'air, capteurs de gaz, capteurs électrochimiques, biocapteurs
-
-\item \textbf{capteurs multimédia} : capteurs optiques et d'image, son
-
-\item \textbf{applications médicales} : mesures d'impédance, instrumentation ambulatoire imagerie médicale, tomographie-imagerie, dermatologie, post urologie, tissus biologiques
-
-\item \textbf{capteurs pour l'automobile} : contrôle de combustion, sécurité et aide au pilotage le pilotage assisté, hypovigilance et sécurité, gadgets contemporains.
-
-\item \textbf{capteurs pour la climatologie} : capteurs de pluie, les capteurs de vent, capteurs d'ensoleillement.
-
-\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.8]{intro/percept}
+\caption{\label{percept} Rayon de communication et de sensation}
+\end{figure}
 
 
-\section{Réseau de capteur sans fil (Wireless sensors network)}
-Les réseaux de capteurs sans fil  WSN  sont un type particulier de réseau Ad-hoc .Ces réseaux sont formés d’une multitude de petits dispositifs autonomes, capables de s’auto-organiser pour communiquer entre eux via des liens radio, et ainsi travailler pour la collecte, le partage et le traitement coopératif des informations sur leur environnement, le tout sans intervention humaine. Ces dispositifs sont peu coûteux, mais peu performants, et peuvent être utilisés en masse sans prendre soin de s’occuper de chacun d’eux. Dans un tel réseau, chaque nœud est un dispositif électronique qui possède une capacité de calcul, de stockage, de communication et d’énergie. Ils sont l’ultime signe actuel de l’informatisation de masse et du besoin absolu de réseautage (Networking) Un  exemple de réseaux de capteurs est fourni  dans la  (Figure \ref{WSN}).
+
+
+\section{Caractéristiques techniques des capteurs actuels}
+
+\begin{description}
+\item[Une faible puissance de calcul] : quand les ordinateurs peuvent avoir jusqu'à 4 processeurs, chacun cadencé à 3GHz, ou quand les derniers Smartphones peuvent fonctionner jusqu’à 800MHz, un capteur actuel est à peine plus puissant qu’une calculatrice graphique produite dans les années 90.
+
+\item[Un espace de stockage mémoire limité] à quelques kilo-octets ou quelques méga-octets impose l'utilisation d'algorithmes distribués, localisés et collaboratifs.
+
+\item[Une puissance radio limitée] : l’ordre de grandeur des portées actuellement atteignables par les principaux capteurs est d’une centaine de mètres en extérieur et de quelques dizaines de mètres en intérieur. Cette portée est largement dépendante de la fréquence utilisée et de l’environnement. Elle nécessite un routage multi-saut pour l’acheminement des données vers une entité de collecte : le puits. Les capteurs ne peuvent communiquer qu’avec leur voisinage direct qui va relayer les communications.
+
+\item[Un débit faible] : les composants radio d’un capteur sont limités à quelques centaines de kilo-octets par seconde.
+
+\item[Une réserve d’énergie réduite] : même s’il existe des mécanismes de recharge d’énergie, la durée de vie d’un capteur reste directement liée au niveau de sa batterie. Cette réserve d’énergie est partagée par chaque unité d’un capteur mais l’unité de communication va en consommer près de 95\% lors du fonctionnement actif du capteur. Les enjeux actuels portent donc sur :
+	\begin{itemize}
+	\item l’augmentation des capacités des batteries
+	\item les dispositifs de transmission radio ultra-basse consommation
+	\item les architectures basse consommation
+	\item des mécanismes d’endormissement
+	\item des protocoles de communication spécifiques
+	\end{itemize}
+\end{description}
+
+
+
+\section{Réseau de capteurs sans fil (Wireless sensors network)}
+Les réseaux de capteurs sans fil sont un type particulier de réseau ad-hoc. Ces réseaux sont formés d’une multitude de capteurs, capables de s’auto-organiser et ainsi de travailler pour la collecte, le partage et le traitement coopératif des informations sur leur environnement ; le tout sans intervention humaine. Ces dispositifs sont peu coûteux, mais peu performants. Depuis quelques décennies, le besoin croissant d’observer et de contrôler des phénomènes physiques tels que la température, la pression ou encore la luminosité a conduit au déploiement de nombreux réseaux de capteurs.
 
 \begin{figure}[h]
 \centering
@@ -117,12 +91,13 @@ Les réseaux de capteurs sans fil  WSN  sont un type particulier de réseau Ad-h
 \caption{\label{WSN} Réseaux de capteurs}
 \end{figure}
 
+Dans l'exemple de la figure \ref{WSN}, les capteurs sont déployés d’une manière aléatoire dans une zone d’intérêt, et une station de base, située à l’extrémité de cette zone, est chargée de récupérer les données collectées par les capteurs. Lorsqu’un capteur détecte un événement pertinent, un message d’alerte est envoyé à la station de base par le biais d’une  communication entre les capteurs. Les données collectées sont traitées et analysées par des machines puissantes.
 
-\subsection{Fonctionnement}
-Les capteurs sont déployés d’une manière aléatoire dans une zone d’intérêt, et une station de base, située à l’extrémité de cette zone, est chargée de récupérer les données collectées par les capteurs. Lorsqu’un capteur détecte un événement pertinent, un message d’alerte est envoyé à la station de base par le biais d’une  communication entre les capteurs. Les données collectées sont traitées et analysées par des machines puissantes. Les  réseaux de capteurs viennent  en  soutien  de l’environnement et de l’industrie grâce aux récents développements réalisés dans le domaine  des techniques sans  fils.  Depuis  quelques décennies, le besoin d’observer et de contrôler des phénomènes physiques tels que la température, la pression ou encore la  luminosité  est essentiel pour de nombreuses applications industrielles et scientifiques.
 
 
 \subsection{Architecture d’un réseau de capteurs sans fil}
+
+
 
 \begin{figure}[h]
 \centering
@@ -130,22 +105,20 @@ Les capteurs sont déployés d’une manière aléatoire dans une zone d’inté
 \caption{\label{archiWSN} architecture d’un réseau WSN}
 \end{figure}
 
-La  Figure \ref{archiWSN} représente l’architecture habituelle des réseaux de capteurs sans fils. Ils sont construits autour des quatre principales entités suivantes :
+Les réseaux de capteurs sans fils sont construits autour des quatre principales entités suivantes :
 
-\begin{itemize}
+\begin{description}
+\item[Les capteurs] décrits précédemment.
 
-\item \textbf{Le capteur (sensor)} : décrit précédemment.
+\item[L’agrégateur] est en charge d’agréger les messages qu’il reçoit de plusieurs capteurs puis de les envoyer en un seul message au puits. Cette opération a pour principal but de limiter le trafic sur le réseau et donc de prolonger la durée de vie globale du réseau de capteur.
 
-\item \textbf{L’agrégateur (aggregator)} : Il est en charge d’agréger les messages qu’il reçoit de plusieurs capteurs puis de les envoyer en un seul message au puits (sink). Cette opération a pour principal but de limiter le trafic sur le réseau et donc de prolonger la durée de vie globale du réseau de capteur. Il correspond généralement à la tête d’une grappe (cluster head).
+\item[Le puits] est le nœud final  du réseau. C’est à lui qu’est  envoyé l’ensemble des valeurs mesurées par le réseau.  Il peut arriver qu’il y ait plusieurs puits sur un même réseau de capteurs.
 
-\item \textbf{Le puits (sink)} : Le puits est le nœud final  du réseau. C’est à lui qu’est  envoyé l’ensemble des valeurs mesurées par le réseau.  Il peut arriver qu’il y’ait plusieurs puits sur un  même réseau de capteurs.
-
-\item \textbf{La passerelle (gateway)} : La passerelle est un dispositif qui a la particularité d’avoir deux interfaces réseau. Il permet de relier le réseau de capteurs  sans fils  à un réseau plus traditionnel, typiquement l’internet.   
-En effet, habituellement  le réseau de capteurs  ne sert  qu’à  faire remonter les 
+\item[La passerelle] est un dispositif qui a la particularité d’avoir deux interfaces réseau. Elle permet de relier le réseau de capteurs  sans fils  à un réseau plus traditionnel, typiquement l’internet. Habituellement  le réseau de capteurs  ne sert  qu’à  faire remonter les 
 mesures, les applications traitant ces informations étant exécutées sur la machine 
 de l’utilisateur final.
+\end{description}
 
-\end{itemize}
 
 
 \subsection{Caractéristiques}
