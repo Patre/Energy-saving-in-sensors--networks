@@ -95,7 +95,7 @@ Dans l'exemple de la figure \ref{WSN}, les capteurs sont déployés d’une mani
 
 
 
-\subsection{Architecture d’un réseau de capteurs sans fil}
+\subsection{Architecture}
 
 
 
@@ -122,92 +122,55 @@ de l’utilisateur final.
 
 
 \subsection{Caractéristiques}
-Les caractéristiques particulières des WSN modifient les critères de performances par rapport aux réseaux sans fil traditionnels. Dans les réseaux locaux filaires ou les réseaux cellulaires, les critères les plus pertinents sont le débit, la latence et la qualité de service car les nouvelles Activités telles que le transfert d’images,  le  transfert de vidéos, et la navigation sur Internet requièrent un débit important, une faible latence, et une bonne qualité de service. En revanche, dans les réseaux de capteurs conçus pour surveiller une zone d’intérêt,  la longévité du réseau est fondamentale. De ce fait, la conservation de l’énergie est devenue un critère de performance prépondérant et se pose en premier lieu tandis que les autres critères comme le débit ou l’utilisation de la bande passante sont devenus secondaires. Nous verrons dans ce qui suit quelque caractéristique des WSN.
 
-\begin{itemize}
+\begin{description}
+\item[L'absence d’infrastructure] préexistante et de tout genre d’administration centralisée.
 
-\item \textbf{Absence d’infrastructure} : d’absence d’infrastructure préexistante et de tout genre d’administration centralisée.
+\item[Des interférences] : les liens radio ne sont pas isolés, deux transmissions simultanées sur une même fréquence, ou utilisant des fréquences proches, peuvent interférer.
 
-\item \textbf{Interférences} : les liens radio ne sont pas isolés, deux transmissions simultanées sur une même fréquence, ou utilisant des fréquences proches, peuvent interférer.
+\item[Une taille importante] : un réseau de capteurs peut contenir des milliers de nœuds.
 
-\item \textbf{Taille importante} : un réseau de capteurs peut contenir des milliers de nœuds.
+\item[L'hétérogénéité des nœuds] : plusieurs types de capteurs différents connectés entre eux.
 
-\item \textbf{Hétérogénéité des nœuds} : plusieurs types différents connectant entre eux.
+\item[Une topologie dynamique] : les capteurs peuvent être attachés à des objets mobiles qui se déplacent d’une façon libre et arbitraire rendant ainsi la topologie du réseau fréquemment changeante.
 
-\item \textbf{Topologie dynamique} : les capteurs peuvent être attachés à des objets mobiles qui se déplacent d’une façon libre et arbitraire rendant ainsi la topologie du réseau fréquemment changeante.
+\item[Des contraintes énergétiques] : la caractéristique la plus critique dans les réseaux de capteurs est la modestie de ses ressources énergétiques (batterie).
 
-\item \textbf{Contrainte d’énergie} : la caractéristique la plus critique dans les réseaux de capteurs est la modestie de ses ressources énergétiques (batterie).
+\item[La capacité de stockage et la puissance de calcul] sont limitées dans un capteur.
 
-\item \textbf{La capacité de stockage et la puissance de calcul} sont limitées dans un capteur.
+\item[Une bande passante limitée] en raison des caractéristiques techniques des radios.
 
-\item \textbf{sécurité physique limitée} : Cela se justifie par les contraintes et limitations physiques.
+\item[Le faible coût du matériel] qui facilite une redondance des liens pour assurer une connexité du réseau en cas de panne d’un ou plusieurs capteurs.
 
-\item \textbf{bande passante limitée} : la bande passante réservée à un nœud est limitée.
+\item[L’impossibilité de remplacer manuellement les nœuds] dans le cas où leur position est inconnue (déploiement rapide dans des conditions difficiles ; absence de puce GPS…).
 
-\item \textbf{Le faible coût du matériel} : Ce qui facilite une redondance des liens pour assurer une connexité du réseau en cas de panne d’un ou plusieurs capteurs
+\item[Le caractère aléatoire de la topologie du réseau] : celui-ci est déployé en fonction des zones d'intérêt ou aléatoirement.
+\end{description}
 
-\end{itemize}
-
-Une des forces d’un réseau de capteurs est sa capacité à être déployé rapidement dans des conditions difficiles. Le Positionnement des nœuds est donc aléatoire. Ces conditions de déploiement conduisent à des contraintes supplémentaires :
-
-\begin{itemize}
-
-\item \textbf{L’impossibilité de remplacer manuellement les nœuds} : pour position inconnu.
-
-\item \textbf{Méconnaissance globale de la topologie du réseau} : due une forte densité et une forte cardinalité du réseau.
-
-\end{itemize}
-
-
-\subsection{Application des WSN}
-Le fort potentiel d’application des réseaux de capteurs en fait un domaine de recherche très actif. Ces dernières années ont vu le passage d’applications anecdotiques à de véritables applications à large échelle. La réduction de plus en plus importante de la taille des capteurs, leur coût de plus en plus faible, ainsi que l’étendue du type de capteurs disponibles (thermique, optique, cinétique, chimique, etc.), permettent aux réseaux de capteurs d’envahir de très nombreux domaines d’application.
-
-On dénombre 3 grandes familles d’applications pour réseaux de capteurs :
-\begin{itemize}
-
-\item \textbf{le relevé d’informations} : dans lequel chaque capteur collecte simplement les données et les envoie périodiquement au puits.
-
-\item \textbf{la détection d’événements} : où chaque nœud décide s’il envoie des données au puits en fonction des données qu’il a collectées. Cette décision peut nécessiter au capteur un dialogue avec son voisinage.
-
-\item \textbf{le contrôle intelligent} : dans lequel chaque capteur collecte différentes sortes de données, échange ses informations à travers le réseau et collabore pour former une description de l’état de l’objet ciblé.
-
-\end{itemize}
-
-Il a également été définit un ensemble de scénarios viables visé par les réseaux de capteurs
-
-\begin{itemize}
-
-\item Supervision de l'habitat écologique
-\item Surveillance militaire et traque de cibles
-\item Supervision des structures et des phénomènes liés à l’environnement (séisme, volcan)
-\item Détection en réseau dans l'industrie et le commerce
-\item Bâtiment intelligent
-\item Domotique
-\item Surveillance de l’environnement (volcan, météo…)
-\item Santé  (La surveillance des fonctions vitales d'un organisme vivant)
-\item Sécurité industrielle et Domestique
-
-\end{itemize}
 
 
 \subsection{Problématique et Défis}
+
+Les caractéristiques particulières des réseaux de capteurs modifient les critères de performance par rapport aux réseaux sans fil traditionnels. Dans les réseaux locaux filaires ou les réseaux cellulaires, les critères les plus pertinents sont le débit, la latence et la qualité de service. En effet, les nouvelles activités telles que le transfert d’images,  le  transfert de vidéos, et la navigation sur Internet requièrent de bonnes performances selon ces trois critères.
+
+En revanche, dans les réseaux de capteurs conçus pour surveiller une zone d’intérêt,  la longévité du réseau est fondamentale. De ce fait, la conservation de l’énergie est devenue un critère de performance prépondérant et se pose en premier lieu tandis que les autres critères comme le débit ou l’utilisation de la bande passante sont devenus secondaires.
+
 Les perspectives d’application des réseaux de capteurs sont enthousiasmantes mais les défis qu’elles posent n’en sont pas moins nombreux et complexes. Parmi les problématiques cruciales, nous pouvons citer :
-\begin{itemize}
 
-\item \textbf{L’énergie} : cette contrainte impose de concevoir des protocoles économes en énergie.
+\begin{description}
+\item[L’énergie] : cette contrainte impose de concevoir des protocoles économes en énergie.
 
-\item \textbf{Le routage} : Le problème de routage consiste à déterminer un acheminement optimal des paquets à travers le réseau au sens d’un certain critère de performance (Energie par exemple).
+\item[Le routage] : le problème de routage consiste à déterminer un acheminement optimal des paquets à travers le réseau au sens d’un certain critère de performance (l'énergie par exemple).
 
-\item \textbf{Sécurité} : La puissance de calcul limité des entités d’un capteur ouvre de véritables défis pour concevoir des algorithmes de cryptages distribués et des politiques de confiance spécifiques.
+\item[La sécurité] : la puissance de calcul limitée d’un capteur ouvre de véritables défis pour concevoir des algorithmes de cryptages distribués et des politiques de confiance spécifiques.
 
-\item \textbf{La collecte de données} : récupérer les données des capteurs et les assemblés.
+\item[La collecte de données] : récupérer les données des capteurs et les assembler.
 
-\item \textbf{Auto-configuration} : Une partie des applications visée appartient au domaine des applications domestiques. Il est donc important que le routage, l’intégration et l’adaptation à l’environnement soient transparents pour l’utilisateur.
+\item[L'auto-configuration] : une partie des applications visées appartient au domaine des applications domestiques. Il est donc important que le routage, l’intégration et l’adaptation à l’environnement soient transparents pour l’utilisateur.
 
-\item \textbf{Autoréparation} : Nous venons de le voir, les capteurs sont parfois inaccessibles (intégrés dans un mur, installés chez un particulier, déployés dans une zone dangereuse, etc.) et parfois de conception peu sûre (faible coût de production). Une solution complète doit donc gérer efficacement la perte ou l’ajout d’un nœud dans son réseau.
+\item[L'autoréparation] : les capteurs sont parfois inaccessibles (intégrés dans un mur, installés chez un particulier, déployés dans une zone dangereuse, etc.) et de conception peu sûre (faible coût de production). Une solution complète doit donc gérer efficacement la perte ou l’ajout d’un nœud dans le réseau.
 
-\item \textbf{Localisation} : Il s’agit de concevoir des mécanismes de localisation réalistes vis-à-vis des contraintes et des applications propres aux réseaux de capteurs. Les solutions actuellement proposées reposent sur des solutions, soit imprécises, soit coûteuses en énergie ou en matériel.
-
-\end{itemize}
+\item[La localisation] : il s’agit de concevoir des mécanismes de localisation réalistes vis-à-vis des contraintes et des applications propres aux réseaux de capteurs. Les solutions actuellement proposées sont soit imprécises, soit coûteuses en énergie ou en matériel.
+\end{description}
 
 
