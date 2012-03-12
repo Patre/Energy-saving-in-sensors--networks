@@ -1,11 +1,13 @@
+% !TEX encoding = UTF-8 Unicode
+
 \documentclass[a4paper]{report}
+
 \usepackage[francais]{babel}
 \usepackage[T1]{fontenc}
-\usepackage[applemac]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage[colorlinks=true]{hyperref}
-\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true} 
 \usepackage{algorithm,algorithmic}
 \usepackage{listings}
 \usepackage{amssymb}
@@ -13,16 +15,21 @@
 \usepackage{listings}
 \usepackage{lscape}
 \usepackage{mathabx}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{textcomp}
+\usepackage{enumerate}
 
+
+\hypersetup{urlcolor=blue,linkcolor=black,colorlinks=true} 
 \geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
-
-
 \setlength{\parskip}{5mm plus2mm minus2mm}
 \lstset{language=C, showstringspaces=false, numbers=left, numberstyle=\tiny, tabsize=4}
 
-\title{Analyse et conception d’algorithmes économes en énergie dans les réseaux de capteurs}
-\author{Chloé DESDOUITS \and Sofiane Zahir KALI \and Rabah LAOUADI \and Samuel ROUQUIE}
-\date{2012}
+\theoremstyle{definition}
+\newtheorem{mydef}{D\'efinition}
+\newtheorem{mylem}{Lemme}
+
 
 
 \begin{document}
@@ -33,11 +40,11 @@
 
 \begin{titlepage}
 
-\begin{minipage}[c][4cm][t]{8cm}
+\begin{minipage}[c][4cm][t]{7.8cm}
 \raggedright 
 \includegraphics[width=6cm]{./logo_um2}
 \end{minipage}
-\begin{minipage}[c][4cm][t]{8cm}
+\begin{minipage}[c][4cm][t]{7.8cm}
 \raggedleft
 \includegraphics[width=6cm]{./LogoLIRMM}
 \end{minipage}
@@ -48,12 +55,12 @@
 \textsc{\Large TER M1 Informatique}\\[0.5cm]
 
 \hspace{0.4cm}
-{ \huge \bfseries Analyse et conception d’algorithmes économes en énergie dans les réseaux de capteurs}\\[3cm]
+{ \huge \bfseries Analyse et conception d'algorithmes \'economes en \'energie dans les r\'eseaux de capteurs}\\[3cm]
 
 \begin{minipage}[c][4cm][t]{0.4\textwidth}
 \raggedright \large
 \emph{Auteurs:}\\
-Chloé DESDOUITS\\
+Chlo\'e DESDOUITS\\
 Sofiane Zahir KALI\\
 Rabah LAOUADI\\
 Samuel ROUQUIE
@@ -61,7 +68,7 @@ Samuel ROUQUIE
 \begin{minipage}[c][4cm][t]{0.4\textwidth}
 \raggedleft \large
 \emph{Encadrante:} \\
-Anne-Élisabeth BAERT
+Anne-\'elisabeth BAERT
 \end{minipage}
 
 \vfill
@@ -75,27 +82,21 @@ Anne-Élisabeth BAERT
 
 \input{intro/intro}
 
-\chapter{État de l'art}\label{etatArt}
-
-\section{Notions préliminaires}
-
-\section{Travaux relatifs}
-
-\section{Synthèse}
+\input{Etat_de_l'art/etat_art}
 
 
-\chapter{Analyse et réflexion}\label{analyse}
+\chapter{Analyse et r\'eflexion}\label{analyse}
 
 
 
-\chapter{Simulations et résultats}\label{intro}
+\chapter{Simulations et r\'esultats}\label{simu}
 
 
 
-\chapter{Conclusion}\label{intro}
+\chapter{Conclusion}\label{conclusion}
 
 
 \vfill
-{\raggedleft Réalisé avec \LaTeX{} \par}
+{\raggedleft R\'ealis\'e avec \LaTeX{} \par}
 
 \end{document}
