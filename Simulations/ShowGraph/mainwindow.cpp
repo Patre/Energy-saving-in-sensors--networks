@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //INITALISATION
     graph_view=new GraphView();
 
+    zoom = 5;
     //AFFICHAGE
     setCentralWidget(graph_view);
 
@@ -37,8 +38,8 @@ void MainWindow::lireFile(QString filename)
         {
             Element ele;
             ele.node = QVariant(lst.at(1)).toInt();
-            ele.nodePosition.setX(QVariant(lst.at(2)).toReal());
-            ele.nodePosition.setY(QVariant(lst.at(3)).toReal());
+            ele.nodePosition.setX(QVariant(lst.at(2)).toReal()*zoom);
+            ele.nodePosition.setY(QVariant(lst.at(3)).toReal()*zoom);
             nodes.append(ele);
         }
         else if(lst.at(0)=="G:")

@@ -1,55 +1,11 @@
 ************************
+//la nouvelle version 
 
-Lisez les README des protocoles
+ya QUE LE BIP
 
-
-IL FAUT AJOUTER LE DOSSIER RBH DANS TOUS les DEUX PROTOCOLES
-
-RBH / contient les fonctions appeller 
-par tous les protocole
-
+c'est apres l'organisation
+et le passage pour le Routing
+je le ferai DEMAIN
 
 
-
-
-ajoute de RBH/arbre.h
-                     pour les arbres de LBIP
-ET
-       RBH/list_connected.h
-          {
-                int node1;                ///literal1
-                int node2;	          ///literal2
-                double poids;             ///poid entre 1 et 2
-                list*;
-          }
-
-IMPORTANT dans vos algorithmes vous pouvez utiliser LIST_CONNCETED
-RNG ou LMST ou le ROUTAGE
-
-pour recuperer les connexion dans  GRAPH LOCAL a un node
-c'est avec 
-
-    listC *connect=Nullptr(listC);
-    list_to_listC(&connect,nodedata->N1,c->node);
-    list2_to_listC(&connect,nodedata->N2);
-
-PAR DEFAULT POIDS =0;
-
-pour set de POIDS c'est AVEC
-    listC *tmp=connect;
-    printf("\n\n");
-    while(tmp)
-    {
-        double x=calcul_energie(tmp->node1,tmp->node2,alpha,c);
-        list_set_poids(tmp,tmp->node1,tmp->node2,x);
-        tmp=tmp->suiv;
-    }
-
-
-ET pour recuperer les noeuds de graph locals 
-    list *g=Nullptr(list);
-    list2_to_list(&g,nodedata->N2);
-
-
-
-*********************
+*//////////////////

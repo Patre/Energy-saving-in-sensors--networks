@@ -1,0 +1,77 @@
+#ifndef BIP_DEC_RBH
+#define BIP_DEC_RBH
+
+#include <include/modelutils.h>
+#include "../includes/include.h"
+#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
+/* ************************************************** */
+/* ************************************************** */
+/*data des noeud dans l'application BIP*/
+
+
+//Functions
+void init_files()
+{
+    //REPLAY
+    FILE *replay;
+    replay=fopen("replay","w");
+    fclose(replay);
+
+    //GRAPH
+    FILE *topo;
+    topo=fopen("graphBIP","w");
+    fclose(topo);
+
+}
+
+struct nodedata {
+  int *overhead;
+
+  //packet REcus
+  list_PACKET *paquets;
+
+  //les voisin
+  //1-hop
+  list  *N1;
+
+  //PROTOCOLE
+  arbre *tree_BIP;     //l'arbre de bip original
+  list2 *NodesV1;
+
+  //ajouter par rabah
+  int nbr_evenement;
+};
+
+/* ************************************************** */
+/* ************************************************** */
+/* VARIABLE de L'APPLICATION LBIP */
+struct protocoleData {
+  double    alpha;           //alpha de modele d'energie
+  double    c;                 //le C de modele d'energie
+  double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)
+  uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
+  uint64_t  periodEVE;       //delta temps entre chaque evenement
+};
+
+/* ************************************************** */
+/* ************************************************** */
+
+/*Paquet de BIP*/
+
+struct _packet_bip
+{
+    int     type;               //pour le type
+    int     source;             //la source racine de paquet
+    int     seq;                //la sequance de paquet
+    int     redirected_by;      //le noeud qui a rediriger  le paquet
+
+    /**************************************************/
+    list    *destinations;            //les noeuds de destination de packet
+    arbre   *pere_arbre;              //ARBRE of pere (redirected_by)
+
+
+};
+typedef struct _packet_bip packet_PROTOCOLE;
+
+
+#endif //PROTOCOLE DECLARATION

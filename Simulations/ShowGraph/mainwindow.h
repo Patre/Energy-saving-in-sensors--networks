@@ -31,6 +31,7 @@ private:
     GraphView       *graph_view;
     QList<GraphElement> list_graph;
     QList<Element>  nodes;
+    int zoom;
 };
 
 #endif // MAINWINDOW_H

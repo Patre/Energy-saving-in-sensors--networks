@@ -1,0 +1,33 @@
+#ifndef PROTOCOLE_RBH
+#define PROTOCOLE_RBH
+
+#include "../includes/include.h"
+
+#include "Implementation.h"
+#include "Initialisation.h"
+
+
+/*LES FONCTION DE CE FICHIER*/
+int PROTOCOLE_appelle(call_t *c, void *args);
+int PROTOCOLE_reception(call_t *c, packet_t *packet);
+
+
+/* ************************************************** */
+/*************************************************** */
+//LANCEMENT
+int PROTOCOLE_appelle(call_t *c, void *args) {
+
+    //tous c'est bien passé
+    return 1;
+}
+
+
+/***********************************************************************************************/
+/***********************************************************************************************/
+//RECEPTION
+int PROTOCOLE_reception(call_t *c, packet_t *packet) {
+        //tous c'est bien passé
+    return 1;
+}
+
+#endif //PROTOCOLE_RBH
