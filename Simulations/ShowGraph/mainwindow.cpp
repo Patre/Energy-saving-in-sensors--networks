@@ -13,7 +13,18 @@ MainWindow::MainWindow(QWidget *parent) :
     zoom = 5;
     //AFFICHAGE
     setCentralWidget(graph_view);
-
+}
+void MainWindow::genererTopologie()
+{
+    TopoGenerate *ss=new TopoGenerate();
+    ss->setSizeTopo(ui->widthTopo->value(),ui->heigthTopo->value());
+    ss->setSizeCarreau(ui->widthCar->value(),ui->heigthCar->value());
+    if(!ss->calculeIndexs())
+        QMessageBox::information(0,"ll","GEneration des index");
+    else if(!ss->genererNeoudes())
+        QMessageBox::information(0,"fff","GEneration des noueds");
+    else if(!ss->genererFichier())
+        QMessageBox::information(0,"ss","generation de ficjoier");//*/
 }
 
 MainWindow::~MainWindow()

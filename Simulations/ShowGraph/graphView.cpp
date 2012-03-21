@@ -8,7 +8,7 @@ GraphView::GraphView(QWidget *parent)
     //INITAILISATION
     haveNodes=false;
     haveGraph=false;
-    zoom = 4;
+    zoom = 1;
 
 
     shape = Polygon;

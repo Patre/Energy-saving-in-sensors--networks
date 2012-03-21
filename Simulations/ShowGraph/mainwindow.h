@@ -5,6 +5,7 @@
 #include <QFile>
 #include "graphView.h"
 #include "graphelement.h"
+#include "topogenerate.h"
 
 namespace Ui {
     class MainWindow;
@@ -25,6 +26,7 @@ public slots:
     void afficherNodes();
     void afficherGraph();
     void clearGraph();
+    void genererTopologie();
 
 private:
     Ui::MainWindow  *ui;
