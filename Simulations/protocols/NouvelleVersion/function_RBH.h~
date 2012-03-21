@@ -1,9 +1,0 @@
-uint64_t get_time_now()
-{
-	return get_time();
-}
-
-double get_time_now_second(double x)
-{
-	return get_time()* 0.000000001;
-}
