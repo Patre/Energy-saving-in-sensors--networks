@@ -1,0 +1,33 @@
+\begin{thebibliography}{1}
+
+\bibitem{Intanagonwiwat2003}
+C.~Intanagonwiwat, R.~Govindan, D.~Estrin, J.~Heidemann, and F.~Silva.
+\newblock Directed diffusion for wireless sensor networking.
+\newblock {\em Networking, IEEE/ACM Transactions on}, 11(1):2--16, 2003.
+
+\bibitem{Jacquet2001}
+P.~Jacquet, P.~Muhlethaler, T.~Clausen, A.~Laouiti, A.~Qayyum, and L.~Viennot.
+\newblock Optimized link state routing protocol for ad hoc networks.
+\newblock In {\em Multi Topic Conference, 2001. IEEE INMIC 2001. Technology for
+  the 21st Century. Proceedings. IEEE International}, pages 62--68. IEEE, 2001.
+
+\bibitem{Johnson2001}
+D.B. Johnson, D.A. Maltz, J.~Broch, et~al.
+\newblock Dsr: The dynamic source routing protocol for multi-hop wireless ad
+  hoc networks.
+\newblock {\em Ad hoc networking}, 5:139--172, 2001.
+
+\bibitem{Perkins1994}
+C.E. Perkins and P.~Bhagwat.
+\newblock Highly dynamic destination-sequenced distance-vector routing (dsdv)
+  for mobile computers.
+\newblock {\em ACM SIGCOMM Computer Communication Review}, 24(4):234--244,
+  1994.
+
+\bibitem{Perkins1999}
+C.E. Perkins and E.M. Royer.
+\newblock Ad-hoc on-demand distance vector routing.
+\newblock In {\em Mobile Computing Systems and Applications, 1999. Proceedings.
+  WMCSA'99. Second IEEE Workshop on}, pages 90--100. IEEE, 1999.
+
+\end{thebibliography}

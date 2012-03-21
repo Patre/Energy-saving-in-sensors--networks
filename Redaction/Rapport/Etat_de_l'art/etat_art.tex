@@ -8,9 +8,9 @@
 %\setcounter{tocdepth}{4}     % Dans la table des matieres
 
 
-\section{Modelisation des Reseaux de Capteurs sans fil}
+\section{Modélisation des Réseaux de Capteurs sans fil}
 
-\subsection{Modele de base}
+\subsection{Modèle de base}
 
 \begin{figure}[h]
 \centering
@@ -18,40 +18,37 @@
 \caption{\label{Layer} Les couches dans les WSNs}
 \end{figure}
 
-Pour l'étude et la conception d'algorithmes dans les reseaux de capteurs sans fil(WSN), il est indispensable de définir le probleme precis, d'établir un cadre rigoureux,formel et sans ambiguités. Au vue de la figure \ref{Layer}, notre étude se 
-placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche applications\\
+Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (WSN), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.\\
 
-  La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$}:
+La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$}:
 \begin{itemize}
- \item Tout les capteurs sont identiques (batterie,portée, capacité de calcul..).
- \item le reseau est initialement connexe (chaque capteur est lié directement ou indirectement à tout les autres).
- \item Dans un plan euclidien à deux dimensions ( distance euclidienne)
+ \item Tout les capteurs sont identiques (batterie, portée, capacité de calcul..).
+ \item le réseau est initialement connexe (chaque capteur est lié directement ou indirectement à tout les autres).
+ \item Dans un plan euclidien à deux dimensions (distance euclidienne)
  \item Sans mobilité des capteurs : nous supposerons que les capteurs sont fixes
- \item Sans ajout de capteurs: Le reseau comprends un nombre fixe de capteurs $n$. Aucun ajout de capteurs en court de fonctionnement n'est possible.
- \item Dans des conditions de transmition de message ideale: aucunes interferences entre les messages, pas de perturbations des ondes, systeme d'identifiants unique.
- \item Fiabilité des capteurs: aucune pannes possible, energie des capteurs infinie \\
-
+ \item Sans ajout de capteurs: le réseau comprend un nombre fixe de capteurs $n$. Aucun ajout de capteurs en cours de fonctionnement n'est possible.
+ \item Dans des conditions de transmission de message idéale: aucune interférence entre les messages, pas de perturbations des ondes, système d'identifiants unique.
+ \item Fiabilité des capteurs: aucune panne possible, énergie des capteurs infinie \\
 \end{itemize}
 
   La modélisation \textbf{$M_2$} prendra de plus en compte :
+  
 \begin{itemize}
- \item Chaque capteur a une énergie initiale $E_i$ donnée. L'envoie de message consomme une quantité fonction du modèle énergétique choisie.Un capteur est eliminé lorsqu'il n'a plus d'énergie ou que son energie restante ne permet plus
-aucun envoie de message. Les capteurs ne tombent pas en panne en raison d'autres facteurs.   
- \item L'ajout de capteurs: Le reseau comprends un nombre variable de capteurs $n$. Les ajouts de capteurs en court de fonctionnement sont possibles.\\
+ \item Chaque capteur a une énergie initiale $E_i$ donnée. L'envoi de messages consomme une quantité d'énergie en fonction du modèle choisi. Un capteur est éliminé lorsqu'il n'a plus d'énergie ou que son énergie restante ne permet plus aucun envoi de message. Les capteurs ne tombent pas en panne en raison d'autres facteurs.   
+ \item L'ajout de capteurs: le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.\\
  
 \end{itemize}
 
-  La modélisation \textbf{$M_3$} prendra de plus en compte :
+La modélisation \textbf{$M_3$} prendra de plus en compte :
+
 \begin{itemize}
- \item Les capteurs peuvent tomber en panne en raisons de divers facteurs. Une loi de probabilité modélise ce phénomene  .   
+ \item Les capteurs peuvent tomber en panne en raisons de divers facteurs. Une loi de probabilité modélise ce phénomène.   
  \item La mobilité des capteurs.\\
  
 \end{itemize}
 
 
-  Un WSN peut etre représenté par un graphe $G= (V,E,\gamma)$ ou $V$ est un ensemble de noeuds(capteurs), $\gamma$ le rayon d'émission maximum et $E \subseteq V \textsuperscript{2}$ l'ensemble des arêtes représentants les communications
- possibles entre les capteurs: $(u,v)$ appartient à $E$ signifie que $u$ peut envoyer un  message à $v$. On note $ n=|V| $ la taille du WSN. En fait les éléments de E dépendent de la position des capteurs ainsi que de leur portée.Nous 
-supposerons que tout les capteurs ont la même portée maximale notée $\gamma$. Nous noterons $d_e(u,v)$ la distance euclidienne dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$.
+  Un WSN peut être représenté par un graphe $G= (V,E,\gamma)$ ou $V$ est un ensemble de noeuds (capteurs), $\gamma$ le rayon d'émission maximum et $E \subseteq V \textsuperscript{2}$ l'ensemble des arêtes représentant les communications possibles entre les capteurs: $(u,v)$ appartient à $E$ signifie que $u$ peut envoyer un  message à $v$. On note $ n=|V| $ la taille du WSN. En fait les éléments de E dépendent de la position des capteurs ainsi que de leur portée. Nous supposerons que tout les capteurs ont la même portée maximale notée $\gamma$. Nous noterons $d_e(u,v)$ la distance euclidienne dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$.
 $$E = \{ (u,v) \in V ^{2} \mid d(u,v) \leq R \}$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Graphe unité
@@ -61,15 +58,14 @@ $$E = \{ (u,v) \in V ^{2} \mid d(u,v) \leq R \}$$
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%‚àöœÄVoisinage
 \begin{mydef}
-On note le 1-voisinage de $u$ :$N_1(u) = \{ v \in V  \mid (u,v) \in E \}$ \\
-On note le 2-voisinage de $u$ :$N_2(u) = \{ v \in V \mid  \exists w \in V :\{(u,w);(w,v)\} \in E ^2\}$ \\
-On note le $k$-voisinage de $u$, $k \in \mathbb{N} : N_k(u) = \{ v \in V  \mid \exists $ un chemin $c (u,v): |c| \leq k\}$  On parlera de 1- 2- et k-voisins de $i$ pour désigner des noeud appartenant respectivement à $N_1(i),
-N_2(i),N_k(i)$. \\
+On note le 1-voisinage de $u$ : $N_1(u) = \{ v \in V  \mid (u,v) \in E \}$ \\
+On note le 2-voisinage de $u$ : $N_2(u) = \{ v \in V \mid  \exists w \in V :\{(u,w);(w,v)\} \in E ^2\}$ \\
+On note le $k$-voisinage de $u$, $k \in \mathbb{N} : N_k(u) = \{ v \in V  \mid \exists $ un chemin $c (u,v): |c| \leq k\}$  On parlera de 1- 2- et k-voisins de $i$ pour désigner des noeuds appartenant respectivement à $N_1(i), N_2(i),N_k(i)$. \\
 Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u\in A,(u,v) \in E \}$ \\
 \end{mydef}
 
 \begin{mydef}
- On appelera diametre de G $diametre_G=\max_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j}(d_G(i,j))$.
+ On appelera diamètre de G $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j} (d_G(i,j))$.
 \end{mydef}
  
 \begin{figure}[H]
@@ -81,7 +77,7 @@ Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u
 
 \begin{mydef}
  Le degré de $ u $ est le nombre  $N(u)=|N_1(u)|$.\\
- On note $d(u,v)$ la distance entre $ u $ et $ v $ : $d_G(u,v)= \min_{k \in \mathbb{N}}(k \mid v \in N_k(u))$
+ On note $d(u,v)$ la distance entre $ u $ et $ v $ : $d_G(u,v)= \min\limits_{k \in \mathbb{N}}(k \mid v \in N_k(u))$
 \end{mydef}
 
 \begin{mydef}%%Densité, distance moyenne
@@ -91,21 +87,21 @@ Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u
 
 \end{mydef}
 
-\subsection{Modele energetique}
+\subsection{Modèle énergétique}
 \subsubsection{Energie d'un capteur}
-Tout les capteurs $i$ offrant les même caracteristiques, ils peuvent modifier leur rayon d'émission $r_i$ entre $r_i=0$ et $r_i=\gamma$.
-Nous considererons que chaque capteur $i$ a une énergie initiale $E_{init}=\beta$.
-Nous noterons $E_i$ l'energie restante de $i$.
+Tous les capteurs $i$ offrant les mêmes caractéristiques, ils peuvent modifier leur rayon d'émission $r_i$ entre $r_i=0$ et $r_i=\gamma$.
+Nous considèrerons que chaque capteur $i$ a une énergie initiale $E_{init}=\beta$.
+Nous noterons $E_i$ l'énergie restante de $i$.
 %L'envoie d'un message de $i$ avec un rayon $r$ coute $$E(r)=\begin{cases} r^\alpha + c & \text{si }i\neq j \\ 0 & \text{sinon}  \end{cases}$$
-L'envoie d'un message de $i$ à $j$ ($d_e(i,j)\leq \gamma$) coute  $ E_{ij}=E(d_e(i,j))$.
-L'energie consommée lors de la réception de message, du traitement et des calculs propres aux capteurs est négligée.
+L'envoi d'un message de $i$ à $j$ ($d_e(i,j)\leq \gamma$) coûte  $ E_{ij}=E(d_e(i,j))$.
+L'énergie consommée lors de la réception de message, du traitement et des calculs propres aux capteurs est négligée.
 
 
 \subsubsection{Energie globale}
 \begin{mydef}
  L'énergie potentielle de G est la somme des énergies des capteurs :$$E_G=\sum_{i=1}^n{E_i}$$
- La consomation de  G est :$$C_G=n\beta - E_G$$
- Le cout moyen de transmition de  G est :$$c_G=E(d_e(G))$$
+ La consommation de  G est :$$C_G=n\beta - E_G$$
+ Le coût moyen de transmition de  G est :$$c_G=E(d_e(G))$$
 
 \end{mydef}
 
@@ -254,7 +250,7 @@ Le blind flooding ou broadcast aveugle est un algortihme glouton de broadcast. L
  ne fait rien.
 \subsubsection{Algorithme ABBA}
 'Area-based beaconless reliable broadcasting in
-sensor networks'\cite{ABBA06}.
+sensor networks'\cite{Abba2006}.
 
 L'idée maitresse de ABBA est assez simple. Nous supposons que les noeuds n'ont aucunes connaissance de leur voisinage. Cepandant ceux ci connaissent leurs position géographique (GPS par exemple).
 A la premiere réception d'un message broadcasté, le noeud initialise un timer. Avant expiration du timer, le noeud peut recoivoir d'autre copie du meme message. Chaque capteur a un rayon d'emission fixe $R$
@@ -294,7 +290,7 @@ A source node $s$ broadcasts a message $M$
 
 \subsection{Algorthimes globaux}
 \subsubsection{Algorithme BIP}
-Article \cite{Wieselthier00}
+Article \cite{Wieselthier2000}
 \begin{itemize}
  \item Pas de mobilité.
  \item Conditions de transmition des messages ideale(aucunes interferences,identifiants donnés ...)  et fixe
@@ -376,7 +372,7 @@ Bip de construit pas forcement un arbre de poids minimum.
 
 \subsection{Algorithmes de 2-voisinages}
 \subsubsection{Algorithme LBIP}
-`Localized Broadcast Incremental Power Protocol for Wireless Ad Hoc Networks' :\cite{Ingelrest04}
+`Localized Broadcast Incremental Power Protocol for Wireless Ad Hoc Networks' :\cite{Ingelrest2004}
 
 \begin{algorithm}[h]
 \caption{LBIP setup phase}
@@ -416,17 +412,17 @@ Bip de construit pas forcement un arbre de poids minimum.
 \end{algorithm}
 
 \subsubsection{Algorithme RRS}
-\cite{RNG03}
+\cite{Cartigny2003RNG}
 \subsubsection{Algorithme DLBIP}
 \cite{Baert07}
 \subsubsection{Algorithme RBOP}
-\cite{cartigny2005}
+\cite{Cartigny2005}
 \subsubsection{Algorithme LBOP}
-\cite{cartigny2005}
+\cite{Cartigny2005}
 \subsubsection{Algorithme DLBOP}
-\cite{DLBOP04}
+\cite{Cartigny2004}
 \subsubsection{Algorithme TR-LBOP}
-\cite{TRLBOP}
+\cite{Ingelrest2004}
 \subsubsection{Algorithme FONIA}
 
 
@@ -438,21 +434,21 @@ Bip de construit pas forcement un arbre de poids minimum.
 \subsubsection{Algorithme BWGOSSIP}
 \cite{lutzeler2011}
 \subsubsection{Algorithme Duty-Cycle-Aware Broadcast in WSN }
-\cite{Wang09},\cite{Wang10}
+\cite{Wang2009},\cite{Wang2010}
 \subsubsection{Algorithme HEED}
-\cite{Younis04}
+\cite{Younis2004}
 \subsubsection{Algorithme WMH}
-\cite{WMH05}
+\cite{Agarwal2005}
 \subsubsection{Algorithme IRRIGATOR  Firework}
 \cite{orecchia2004}
 \subsubsection{Algorithme ML2B}
 \cite{zhaobroadcast}
 \subsubsection{Algorithme MLE}
-\cite{Cheng06}
+\cite{Cheng2006}
 \subsubsection{Algorithme MPR}
 
 \subsubsection{Algorithme Power Adaptive Broadcasting with Local Information}
-\cite{chen2003}
+\cite{Chen2003}
 
 
 
@@ -473,7 +469,7 @@ Bip de construit pas forcement un arbre de poids minimum.
 \end{figure} 
 
 \subsection{Lifetime}
-Les definitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich09},\cite{Baert06},\cite{Elleithy11}.
+Les definitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich2009},\cite{Baert06},\cite{Elleithy11}.
 
 
 \subsubsection{Durée de vie du reseau, problématique}

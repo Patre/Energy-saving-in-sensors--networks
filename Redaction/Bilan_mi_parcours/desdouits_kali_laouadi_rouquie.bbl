@@ -1,0 +1,81 @@
+\begin{thebibliography}{10}
+
+\bibitem{Agarwal2005}
+Manish Agarwal, Lixin Gao, Joon~Ho Cho, and Jie Wu.
+\newblock {Energy Efficient Broadcast in Wireless Ad hoc Networks with
+  Hitch-hiking.}
+\newblock {\em MONET}, 10(6):897--910, 2005.
+
+\bibitem{Cartigny2005}
+J.~Cartigny, F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovic.
+\newblock Localized lmst and rng based minimum-energy broadcast protocols in ad
+  hoc networks.
+\newblock {\em Ad Hoc Networks}, 3(1):1--16, 2005.
+
+\bibitem{Cartigny2003LMEB}
+J.~Cartigny, D.~Simplot, and I.~Stojmenovic.
+\newblock Localized minimum-energy broadcasting in ad-hoc networks.
+\newblock In {\em INFOCOM 2003. Twenty-Second Annual Joint Conference of the
+  IEEE Computer and Communications. IEEE Societies}, volume~3, pages
+  2210--2217. IEEE, 2003.
+
+\bibitem{Champ2009DLBIP}
+J.~Champ, A.E. Baert, and V.~Boudet.
+\newblock Dynamic localized broadcast incremental power protocol and lifetime
+  in wireless ad hoc and sensor networks.
+\newblock {\em Wireless and Mobile Networking}, pages 286--296, 2009.
+
+\bibitem{Champ2009lifetime}
+J.~Champ, C.~Saad, and A.E. Baert.
+\newblock Lifetime in wireless sensor networks.
+\newblock In {\em Complex, Intelligent and Software Intensive Systems, 2009.
+  CISIS'09. International Conference on}, pages 293--298. IEEE, 2009.
+
+\bibitem{Chang2000}
+Jae-Hwan Chang and Leandros Tassiulas.
+\newblock Energy conserving routing in wireless ad-hoc networks.
+\newblock {\em INFOCOM}, pages 22--31, 2000.
+
+\bibitem{Dietrich2009}
+Isabel Dietrich and Falko Dressler.
+\newblock {On the lifetime of wireless sensor networks.}
+\newblock {\em TOSN}, 5(1), 2009.
+
+\bibitem{Ingelrest2005}
+F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovi{\'c}.
+\newblock Energy-efficient broadcasting in wireless mobile ad hoc networks.
+\newblock {\em Resource Management in Wireless Networking}, pages 543--582,
+  2005.
+
+\bibitem{Ingelrest2008}
+Fran{\c c}ois Ingelrest and David Simplot-Ryl.
+\newblock Localized broadcast incremental power protocol for wireless ad hoc
+  networks.
+\newblock {\em Wirel. Netw.}, 14:309--319, June 2008.
+
+\bibitem{Lehsaini2007}
+M.~Lehsaini, H.~Guyennet, and M.~Feham.
+\newblock Mpr-based broadcasting in ad hoc and wireless sensor networks with a
+  realistic environment.
+\newblock {\em IJCSNS}, 7(10):82, 2007.
+
+\bibitem{Abba2006}
+Francisco~Javier Ovalle-Mart{\'\i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
+  Carle, and David Simplot-Ryl.
+\newblock {Area-based beaconless reliable broadcasting in sensor networks.}
+\newblock {\em IJSNet}, 1(1/2):20--33, 2006.
+
+\bibitem{Shah2002}
+R.~C. Shah and J.~M. Rabaey.
+\newblock Energy aware routing for low energy ad hoc sensor networks.
+\newblock {\em Energy aware routing for low energy ad hoc sensor networks},
+  1:350--355, 2002.
+
+\bibitem{Stojmenovic2002}
+I.~Stojmenovic, M.~Seddigh, and J.~Zunic.
+\newblock Dominating sets and neighbor elimination-based broadcasting
+  algorithms in wireless networks.
+\newblock {\em Parallel and Distributed Systems, IEEE Transactions on},
+  13(1):14--25, 2002.
+
+\end{thebibliography}

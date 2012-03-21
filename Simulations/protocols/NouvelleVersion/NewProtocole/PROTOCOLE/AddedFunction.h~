@@ -1,8 +1,0 @@
-#ifndef ADDEDFUNCTION_H
-#define ADDEDFUNCTION_H
-
-#include "../includes/include.h"
-double   calcul_energie(int A,int B,double alpha,double c);
-void prim_tree(list *nodesDemarrage,arbre **arbreResult,listC *liste_connexion,list *nodes_de_liste_connexion);
-
-#endif
