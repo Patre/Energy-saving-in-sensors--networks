@@ -3,6 +3,8 @@
 
 #include <include/modelutils.h>
 #include "structure/include.h"
+#include "structure/listNodes.h"
+#include "structure/list_de_listNodes.h"
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 /* ************************************************** */
 /* ************************************************** */
