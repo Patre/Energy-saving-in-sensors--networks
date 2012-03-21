@@ -2,6 +2,7 @@
 #define BIP_IMPL_RBH
 
 #include "structure/include.h"
+#include "structure/time_wsnet.h"
 #include "BIP/Initialisation.h"
 
 

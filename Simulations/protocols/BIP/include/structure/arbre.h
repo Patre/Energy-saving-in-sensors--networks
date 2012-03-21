@@ -20,9 +20,6 @@ void arbre_affiche(arbre *arbreV);
 void arbre_detruire(arbre **arbreV);
 void arbre_delete_fils(arbre *arbreV,int node);
 void arbre_moins_list(arbre *arbreV,list *liste);
-void arbre_to_list(list **liste,arbre *arbreV);
-void arbre_to_list_sauf(list **liste,arbre *arbreV,int val);
-void arbre_to_list_fils(list **liste,arbre *arbreV);
 
 void arbre_copy(arbre **dest,arbre *source);
 void arbre_copy_fils(arbre *arbreV, arbre *arbreFils,int pere);

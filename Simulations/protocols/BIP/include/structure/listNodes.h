@@ -1,6 +1,10 @@
 #ifndef  _LISTNODES_RBH
 #define  _LISTNODES_RBH
+
+#include "structure/list_connected.h"
+#include "structure/list.h"
 #include "structure/include.h"
+
 #define Nullptr(type) (type *)0
 
 struct _listeNodes

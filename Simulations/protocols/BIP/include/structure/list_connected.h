@@ -1,7 +1,11 @@
+/* Liste chainee */
+
 #ifndef LIST_CONNECTED_H
 #define LIST_CONNECTED_H
 
-#include "structure/list.h"
+#include <stdlib.h>
+#include <stdio.h>
+
 #define Nullptr(type) (type *)0
 
 struct _list_con

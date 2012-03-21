@@ -1,6 +1,9 @@
 #ifndef LIST_PAQUET_LBIP_H
 #define LIST_PAQUET_LBIP_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define Nullptr(type) (type *)0
 
 struct _packet_

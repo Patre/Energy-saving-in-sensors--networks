@@ -1,7 +1,10 @@
+
+
+
 #include "structure/one_hop.h"
 /***********************************************************************************************/
 /***********************************************************************************************/
-// LANCEMENT DE L'APLLICATION
+// LANCEMENT DE L'APPLICATION
 
 void get_one_hop(call_t *c, double eps)
 {
@@ -23,15 +26,17 @@ int init_one_hop(call_t *c, void *args) {
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
 	
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello));
+    packet_t *packet = packet_alloc(c,
+									nodedata->overhead[0] + 
+									sizeof(struct packet_hello));
     struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
 	
     //initilailser les données
     hello->type=HELLO;
     hello->source=c->node;
-    hello->postion.x=get_node_position(c->node)->x;
-    hello->postion.y=get_node_position(c->node)->y;
-    hello->postion.z=get_node_position(c->node)->z;
+    hello->position.x=get_node_position(c->node)->x;
+    hello->position.y=get_node_position(c->node)->y;
+    hello->position.z=get_node_position(c->node)->z;
 	
     if (SET_HEADER(&c0, packet, &destination) == -1) {
 		packet_dealloc(packet);
@@ -40,7 +45,7 @@ int init_one_hop(call_t *c, void *args) {
 	
     DEBUG;
     /*printf("Node %d (%lf %lf %lf) broadcast a packet hello, at %lf\n", c->node,                                 //id de Noeud
-	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la postion x, y,z de Noeud
+	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la position x, y,z de Noeud
 	 get_time_now_second());//*/                                                                              //l'instant d'envoi.
 	
     //L'envoi
@@ -69,8 +74,8 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	
     //l'ajoute de voisin
     if(!listeNodes_recherche(nodedata->N1,hello->source))
-        listeNodes_insert_values(&nodedata->N1,hello->source,hello->postion.x,
-                                 hello->postion.y, hello->postion.z);
+        listeNodes_insert_values(&nodedata->N1,hello->source,hello->position.x,
+                                 hello->position.y, hello->position.z);
 	
 	
     //REPONSE DE PAKET HELLO
@@ -89,9 +94,9 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	//initilailser les données
 	rhello->type     =   REP_HELLO;
 	rhello->source   =   c->node;
-	rhello->postion.x=get_node_position(c->node)->x;
-	rhello->postion.y=get_node_position(c->node)->y;
-	rhello->postion.z=get_node_position(c->node)->z;
+	rhello->position.x=get_node_position(c->node)->x;
+	rhello->position.y=get_node_position(c->node)->y;
+	rhello->position.z=get_node_position(c->node)->z;
 	
 	if (SET_HEADER(&c0, rpacket, &destination) == -1) {
 		packet_dealloc(rpacket);
@@ -100,7 +105,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	
 	DEBUG;
 	/*printf("Node %d (%lf %lf %lf) repond a %d  packet hello, at %lf\n", c->node,                               //id de Noeud de noeud encours
-	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la postion x, y,z de Noeud
+	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la position x, y,z de Noeud
 	 hello->source,                                                                                       //id de noued de destination
 	 get_time_now_second()); //*/                                                                             //l'instant d'envoi.
 	
@@ -131,8 +136,8 @@ void rx_one_hop_reponse(call_t *c, packet_t *packet) {
 	
     //l'ajoute de voisin
     if(!listeNodes_recherche(nodedata->N1,data->source))
-        listeNodes_insert_values(&nodedata->N1,data->source,data->postion.x,
-                                 data->postion.y,data->postion.z);
+        listeNodes_insert_values(&nodedata->N1,data->source,data->position.x,
+                                 data->position.y,data->position.z);
 	
     //tous c'est bien passé
     return;

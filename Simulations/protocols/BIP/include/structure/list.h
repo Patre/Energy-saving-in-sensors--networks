@@ -1,6 +1,7 @@
+/* Liste chainee */
+
 #ifndef  _LIST_RBH
 #define  _LIST_RBH
-#include "list_connected.h"
 
 #define Nullptr(type) (type *)0
 
@@ -21,8 +22,6 @@ int list_recherche(list *liste,int val);
 void list_copy(list **destination,list *source);
 int  list_delete(list **liste, int val);
 void list_intersection(list **liste1,list *liste_a_enlever_de_la_premiere);
-void list_to_listC(listC **liste_connected,list *liste,int node);
-void listC_to_list(list **liste,listC *liste_connected);
 void list_union(list **liste1,list *liste2);
 
 

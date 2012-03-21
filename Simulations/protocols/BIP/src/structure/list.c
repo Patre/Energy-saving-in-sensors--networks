@@ -123,25 +123,7 @@ void list_intersection(list **l1,list *l2)
                 l2=l2->suiv;
         }
 }
-/***********************TRENSFORMER**************************/
-void list_to_listC(listC **l,list *l2,int node)
-{
-    while(l2)
-    {
-        if(!list_con_recherche(*l,node,l2->val)) list_con_insert(l,node,l2->val,0);
-        l2=l2->suiv;
-    }
-}
 
-void listC_to_list(list **l,listC *c)
-{
-    while(c)
-    {
-        if(!list_recherche(*l,c->node1)) list_insert(l,c->node1);
-        if(!list_recherche(*l,c->node2)) list_insert(l,c->node2);
-        c=c->suiv;
-    }
-}
 
 /*****************UNION******************************/
 void list_union(list **l1,list *l2)

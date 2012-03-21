@@ -17,9 +17,6 @@ void get_two_hop(call_t *c, double eps)
 int init_two_hop(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    DEBUG;
-    //printf("lancemend de processus two hop Node:%d at %lf\n",c->node,get_time_now_second());
-
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
@@ -39,12 +36,7 @@ int init_two_hop(call_t *c, void *args) {
             packet_dealloc(packet);
             return -1;
     }
-
-    DEBUG;
-    /*printf("Node %d (%lf %lf %lf) broadcast a packet hello, at %lf\n", c->node,                                 //id de Noeud
-           get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la postion x, y,z de Noeud
-           get_time_now_second());//*/                                                                              //l'instant d'envoi.
-
+	
     //L'envoi
     TX(&c0,packet);
 
@@ -63,13 +55,6 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     //RECEPTION  DE PACKET HELLO
     struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
 
-    DEBUG;
-    /*printf("NOde %d a recu un HELLO2 de %d at %lf\n",c->node,
-           hello->source,
-           get_time_now_second());//*/
-
-
-
 
     //REPONSE DE PAKET HELLO
 
@@ -87,19 +72,13 @@ int rx_two_hop(call_t *c, packet_t *packet) {
      //initilailser les données
      rhello->type     =   REP_HELLO2;
      rhello->source   =   c->node;
-     rhello->N1       =   Nullptr(list);
-     list_copy(&rhello->N1,nodedata->N1);
+     rhello->N1       =   Nullptr(listeNodes);
+     listeNodes_copy(&rhello->N1,nodedata->N1);
 
      if (SET_HEADER(&c0, rpacket, &destination) == -1) {
          packet_dealloc(rpacket);
          return -1;
      }
-
-     DEBUG;
-     /*printf("Node %d (%lf %lf %lf) repond a %d  packet hello, at %lf\n", c->node,                               //id de Noeud de noeud encours
-                get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la postion x, y,z de Noeud
-                hello->source,                                                                                       //id de noued de destination
-                get_time_now_second()); //*/                                                                             //l'instant d'envoi.
 
     //L'envoi
     TX(&c0,rpacket);
@@ -120,14 +99,8 @@ void rx_two_hop_reponse(call_t *c, packet_t *packet) {
 
     struct packet_hello2 *data = (struct packet_hello2 *) (packet->data + nodedata->overhead[0]);
 
-
-    DEBUG;
-    /*printf("je suis le noeud %d j'ai recu la REPONSE de %d avec ",c->node,
-            data->source);
-    list_affiche(data->N1);//*/
-
-    list_delete(&data->N1,c->node);
-    list2_insert(&nodedata->N2,data->source,data->N1);
+    listeNodes_delete(&data->N1,c->node);
+    list2N_insert(&nodedata->NodesV1,data->source,data->N1);
 
     //l'ajoute de voisin
     /*if(!list_recherche(nodedata->N1,data->source))

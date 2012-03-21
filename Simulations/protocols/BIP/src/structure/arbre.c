@@ -107,35 +107,6 @@ void arbre_moins_list(arbre *a,list *l)
 }
 
 
-/****************TRANSFORMATION********************************/
-//TOUs l'arbre
-void arbre_to_list(list **lst,arbre *a)
-{
-    list_insert(lst,a->node);
-    int i=a->size;
-    i=a->size;
-    while(i--)      arbre_to_list(lst,a->fils[i]);
-}
-////TOUs l'arbre moins celui de val
-void arbre_to_list_sauf(list **lst,arbre *a,int val)
-{
-    if(a->node!=val)
-    {
-        list_insert(lst,a->node);
-        int i=a->size;
-        i=a->size;
-        while(i--)      arbre_to_list_sauf(lst,a->fils[i],val);
-    }
-}
-
-//avec ces fils de premier seulement
-void arbre_to_list_fils(list **lst,arbre *a)
-{
-    int i=a->size;
-    i=a->size;
-    while(i--)      list_insert(lst,a->fils[i]->node);
-}
-
 /*********************COPY******************************/
 void arbre_copy_fils(arbre *a, arbre *c,int pere)
 {

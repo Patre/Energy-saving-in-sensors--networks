@@ -7,6 +7,8 @@
 
 
 #include "structure/include.h"
+#include "structure/time_wsnet.h"
+#include "BIP/Declaration.h"
 #include "structure/one_hop.h"
 #include "BIP/Initialisation.h"
 #include "BIP/Implementation.h"
@@ -26,6 +28,21 @@ model_t model =  {
 
 /***********************************************************************************************/
 /***********************************************************************************************/
+
+void init_files()
+{
+    //REPLAY
+    FILE *replay;
+    replay=fopen("replay","w");
+    fclose(replay);
+	
+    //GRAPH
+    FILE *topo;
+    topo=fopen("graphBIP","w");
+    fclose(topo);
+	
+}
+
 //INITIALISATION DE NOEUD DE FICHIER XML
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));

@@ -53,7 +53,6 @@ uint64_t get_time_next(uint64_t debuut,uint64_t period,uint64_t timeNow)
     double debut=peri * nbr + deb;
     uint64_t at=time_seconds_to_nanos(debut) + get_random_time_range(0,period);//*/
 
-    DEBUG;
         //    printf("TA: %lf nbr: %d (+ %lf =)DB: %lf\n",time_app,nbr,time_nanos_to_seconds(entitydata->debut),debut);//*/
 
     return at;

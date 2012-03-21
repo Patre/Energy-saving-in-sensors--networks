@@ -2,9 +2,11 @@
 #define BIP_DEC_RBH
 
 #include <include/modelutils.h>
-#include "structure/include.h"
 #include "structure/listNodes.h"
 #include "structure/list_de_listNodes.h"
+#include "structure/list_paquet.h"
+#include "structure/arbre.h"
+
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 /* ************************************************** */
 /* ************************************************** */
@@ -12,19 +14,7 @@
 
 
 //Functions
-void init_files()
-{
-    //REPLAY
-    FILE *replay;
-    replay=fopen("replay","w");
-    fclose(replay);
-	
-    //GRAPH
-    FILE *topo;
-    topo=fopen("graphBIP","w");
-    fclose(topo);
-	
-}
+
 
 struct nodedata {
 	int *overhead;

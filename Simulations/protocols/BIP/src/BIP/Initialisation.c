@@ -1,4 +1,5 @@
 
+#include "structure/time_wsnet.h"
 #include "BIP/Initialisation.h"
 
 /* ************************************************** */

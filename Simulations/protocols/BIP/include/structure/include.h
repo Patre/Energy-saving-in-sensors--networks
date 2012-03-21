@@ -2,13 +2,6 @@
 #define INCLUDE_RBH
 
 #include <include/modelutils.h>
-#include "structure/list.h"
-#include "structure/list_connected.h"
-#include "structure/list_de_list.h"
-#include "structure/list_paquet.h"
-#include "structure/time_wsnet.h"
-
-#include "structure/arbre.h"
 
 #define true 1
 #define false 0
@@ -53,18 +46,7 @@ struct packet_general
     int type;
 };
 
-/* Paquet HELLO */
-struct packet_hello {
-  int       type;
-  int       source;
-};
 
-/*Paquet HELLO2*/
-struct packet_hello2 {
-  int       type;
-  int       source;
-  list      *N1;
-};
 
 
 #endif //STRUCT_RBH

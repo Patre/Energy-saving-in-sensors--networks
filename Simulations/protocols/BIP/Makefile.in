@@ -81,6 +81,19 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libapplication_bip_la_LIBADD =
 am_libapplication_bip_la_OBJECTS =  \
+	libapplication_bip_la-list_connected.lo \
+	libapplication_bip_la-list.lo libapplication_bip_la-arbre.lo \
+	libapplication_bip_la-list_de_list.lo \
+	libapplication_bip_la-list_paquet.lo \
+	libapplication_bip_la-time_wsnet.lo \
+	libapplication_bip_la-listNodes.lo \
+	libapplication_bip_la-list_de_listNodes.lo \
+	libapplication_bip_la-one_hop.lo \
+	libapplication_bip_la-two_hop.lo \
+	libapplication_bip_la-AddedFunction.lo \
+	libapplication_bip_la-Initialisation.lo \
+	libapplication_bip_la-Implementation.lo \
+	libapplication_bip_la-Implementation.lo \
 	libapplication_bip_la-BIP_Protocole.lo
 libapplication_bip_la_OBJECTS = $(am_libapplication_bip_la_OBJECTS)
 libapplication_bip_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
@@ -243,8 +256,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4 
 lib_LTLIBRARIES = libapplication_bip.la  
-libapplication_bip_la_CFLAGS = $(CFLAGS) $(GLIB_FLAGS) -Wall -I./include -I./src
-libapplication_bip_la_SOURCES = src/BIP/BIP_Protocole.c
+libapplication_bip_la_CFLAGS = $(CFLAGS) $(GLIB_FLAGS) -Wall -I./include -I./src 
+libapplication_bip_la_SOURCES = src/structure/list_connected.c src/structure/list.c  src/structure/arbre.c src/structure/list_de_list.c src/structure/list_paquet.c src/structure/time_wsnet.c src/structure/listNodes.c src/structure/list_de_listNodes.c src/structure/one_hop.c src/structure/two_hop.c src/BIP/AddedFunction.c src/BIP/Initialisation.c src/BIP/Implementation.c src/BIP/Implementation.c src/BIP/BIP_Protocole.c
 libapplication_bip_la_LDFLAGS = -module
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -340,7 +353,20 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-AddedFunction.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-BIP_Protocole.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-Implementation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-Initialisation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-arbre.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-list.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-listNodes.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-list_connected.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-list_de_list.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-list_de_listNodes.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-list_paquet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-one_hop.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-time_wsnet.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libapplication_bip_la-two_hop.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -362,6 +388,97 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+
+libapplication_bip_la-list_connected.lo: src/structure/list_connected.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-list_connected.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-list_connected.Tpo -c -o libapplication_bip_la-list_connected.lo `test -f 'src/structure/list_connected.c' || echo '$(srcdir)/'`src/structure/list_connected.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-list_connected.Tpo $(DEPDIR)/libapplication_bip_la-list_connected.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/list_connected.c' object='libapplication_bip_la-list_connected.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-list_connected.lo `test -f 'src/structure/list_connected.c' || echo '$(srcdir)/'`src/structure/list_connected.c
+
+libapplication_bip_la-list.lo: src/structure/list.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-list.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-list.Tpo -c -o libapplication_bip_la-list.lo `test -f 'src/structure/list.c' || echo '$(srcdir)/'`src/structure/list.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-list.Tpo $(DEPDIR)/libapplication_bip_la-list.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/list.c' object='libapplication_bip_la-list.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-list.lo `test -f 'src/structure/list.c' || echo '$(srcdir)/'`src/structure/list.c
+
+libapplication_bip_la-arbre.lo: src/structure/arbre.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-arbre.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-arbre.Tpo -c -o libapplication_bip_la-arbre.lo `test -f 'src/structure/arbre.c' || echo '$(srcdir)/'`src/structure/arbre.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-arbre.Tpo $(DEPDIR)/libapplication_bip_la-arbre.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/arbre.c' object='libapplication_bip_la-arbre.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-arbre.lo `test -f 'src/structure/arbre.c' || echo '$(srcdir)/'`src/structure/arbre.c
+
+libapplication_bip_la-list_de_list.lo: src/structure/list_de_list.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-list_de_list.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-list_de_list.Tpo -c -o libapplication_bip_la-list_de_list.lo `test -f 'src/structure/list_de_list.c' || echo '$(srcdir)/'`src/structure/list_de_list.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-list_de_list.Tpo $(DEPDIR)/libapplication_bip_la-list_de_list.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/list_de_list.c' object='libapplication_bip_la-list_de_list.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-list_de_list.lo `test -f 'src/structure/list_de_list.c' || echo '$(srcdir)/'`src/structure/list_de_list.c
+
+libapplication_bip_la-list_paquet.lo: src/structure/list_paquet.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-list_paquet.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-list_paquet.Tpo -c -o libapplication_bip_la-list_paquet.lo `test -f 'src/structure/list_paquet.c' || echo '$(srcdir)/'`src/structure/list_paquet.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-list_paquet.Tpo $(DEPDIR)/libapplication_bip_la-list_paquet.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/list_paquet.c' object='libapplication_bip_la-list_paquet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-list_paquet.lo `test -f 'src/structure/list_paquet.c' || echo '$(srcdir)/'`src/structure/list_paquet.c
+
+libapplication_bip_la-time_wsnet.lo: src/structure/time_wsnet.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-time_wsnet.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-time_wsnet.Tpo -c -o libapplication_bip_la-time_wsnet.lo `test -f 'src/structure/time_wsnet.c' || echo '$(srcdir)/'`src/structure/time_wsnet.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-time_wsnet.Tpo $(DEPDIR)/libapplication_bip_la-time_wsnet.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/time_wsnet.c' object='libapplication_bip_la-time_wsnet.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-time_wsnet.lo `test -f 'src/structure/time_wsnet.c' || echo '$(srcdir)/'`src/structure/time_wsnet.c
+
+libapplication_bip_la-listNodes.lo: src/structure/listNodes.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-listNodes.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-listNodes.Tpo -c -o libapplication_bip_la-listNodes.lo `test -f 'src/structure/listNodes.c' || echo '$(srcdir)/'`src/structure/listNodes.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-listNodes.Tpo $(DEPDIR)/libapplication_bip_la-listNodes.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/listNodes.c' object='libapplication_bip_la-listNodes.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-listNodes.lo `test -f 'src/structure/listNodes.c' || echo '$(srcdir)/'`src/structure/listNodes.c
+
+libapplication_bip_la-list_de_listNodes.lo: src/structure/list_de_listNodes.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-list_de_listNodes.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-list_de_listNodes.Tpo -c -o libapplication_bip_la-list_de_listNodes.lo `test -f 'src/structure/list_de_listNodes.c' || echo '$(srcdir)/'`src/structure/list_de_listNodes.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-list_de_listNodes.Tpo $(DEPDIR)/libapplication_bip_la-list_de_listNodes.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/list_de_listNodes.c' object='libapplication_bip_la-list_de_listNodes.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-list_de_listNodes.lo `test -f 'src/structure/list_de_listNodes.c' || echo '$(srcdir)/'`src/structure/list_de_listNodes.c
+
+libapplication_bip_la-one_hop.lo: src/structure/one_hop.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-one_hop.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-one_hop.Tpo -c -o libapplication_bip_la-one_hop.lo `test -f 'src/structure/one_hop.c' || echo '$(srcdir)/'`src/structure/one_hop.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-one_hop.Tpo $(DEPDIR)/libapplication_bip_la-one_hop.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/one_hop.c' object='libapplication_bip_la-one_hop.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-one_hop.lo `test -f 'src/structure/one_hop.c' || echo '$(srcdir)/'`src/structure/one_hop.c
+
+libapplication_bip_la-two_hop.lo: src/structure/two_hop.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-two_hop.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-two_hop.Tpo -c -o libapplication_bip_la-two_hop.lo `test -f 'src/structure/two_hop.c' || echo '$(srcdir)/'`src/structure/two_hop.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-two_hop.Tpo $(DEPDIR)/libapplication_bip_la-two_hop.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/structure/two_hop.c' object='libapplication_bip_la-two_hop.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-two_hop.lo `test -f 'src/structure/two_hop.c' || echo '$(srcdir)/'`src/structure/two_hop.c
+
+libapplication_bip_la-AddedFunction.lo: src/BIP/AddedFunction.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-AddedFunction.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-AddedFunction.Tpo -c -o libapplication_bip_la-AddedFunction.lo `test -f 'src/BIP/AddedFunction.c' || echo '$(srcdir)/'`src/BIP/AddedFunction.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-AddedFunction.Tpo $(DEPDIR)/libapplication_bip_la-AddedFunction.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/BIP/AddedFunction.c' object='libapplication_bip_la-AddedFunction.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-AddedFunction.lo `test -f 'src/BIP/AddedFunction.c' || echo '$(srcdir)/'`src/BIP/AddedFunction.c
+
+libapplication_bip_la-Initialisation.lo: src/BIP/Initialisation.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-Initialisation.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-Initialisation.Tpo -c -o libapplication_bip_la-Initialisation.lo `test -f 'src/BIP/Initialisation.c' || echo '$(srcdir)/'`src/BIP/Initialisation.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-Initialisation.Tpo $(DEPDIR)/libapplication_bip_la-Initialisation.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/BIP/Initialisation.c' object='libapplication_bip_la-Initialisation.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-Initialisation.lo `test -f 'src/BIP/Initialisation.c' || echo '$(srcdir)/'`src/BIP/Initialisation.c
+
+libapplication_bip_la-Implementation.lo: src/BIP/Implementation.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-Implementation.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-Implementation.Tpo -c -o libapplication_bip_la-Implementation.lo `test -f 'src/BIP/Implementation.c' || echo '$(srcdir)/'`src/BIP/Implementation.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libapplication_bip_la-Implementation.Tpo $(DEPDIR)/libapplication_bip_la-Implementation.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/BIP/Implementation.c' object='libapplication_bip_la-Implementation.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -c -o libapplication_bip_la-Implementation.lo `test -f 'src/BIP/Implementation.c' || echo '$(srcdir)/'`src/BIP/Implementation.c
 
 libapplication_bip_la-BIP_Protocole.lo: src/BIP/BIP_Protocole.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libapplication_bip_la_CFLAGS) $(CFLAGS) -MT libapplication_bip_la-BIP_Protocole.lo -MD -MP -MF $(DEPDIR)/libapplication_bip_la-BIP_Protocole.Tpo -c -o libapplication_bip_la-BIP_Protocole.lo `test -f 'src/BIP/BIP_Protocole.c' || echo '$(srcdir)/'`src/BIP/BIP_Protocole.c
