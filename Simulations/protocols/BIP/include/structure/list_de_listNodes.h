@@ -27,9 +27,5 @@ void list2N_copy(list2N **destination,list2N *source);
 int  list2N_delete(list2N **list_de_list, int node);
 int  list2N_delete_pere_from_fils(list2N *list_de_list,int fils, int pere);
 
-void list2N_to_list(list **liste,list2N *list_de_list);
-
-
-void list2N_to_listC(listC **liste_connected,list2N *list_de_list);
 
 #endif // LIST_DE_LISTNODES_H

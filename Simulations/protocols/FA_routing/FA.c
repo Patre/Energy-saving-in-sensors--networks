@@ -419,18 +419,9 @@ void rx(call_t *c, packet_t *packet) {
 
 void tx( call_t *c , packet_t * packet )
 {
-	struct nodedata *nodedata = get_node_private_data(c);
-    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
-    struct routing_header *header = (struct routing_header *) (packet->data + nodedata->overhead);
-    
-	printf("[TX from %d to %d]\n", c->node, header->dst);
-	
-	call_t cen = {-1, c->node, -1};
-	double enRemPost = battery_remaining(&cen);
-	printf("\t[Node %d battery %lf]\n", c->node, enRemPost);
-	
-    nodedata->data_tx++;
-    TX(&c0, packet);
+    printf("J'ENVOI\n");
+    //call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+    //TX(&c0, packet);
 }
 
 int set_header( call_t *c , packet_t * packet , destination_t * dst )

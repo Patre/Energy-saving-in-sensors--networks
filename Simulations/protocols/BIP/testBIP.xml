@@ -31,8 +31,8 @@
 == APPLICATION =====================================================
 -->
 
-<entity name="bip-sensor" library="application_bip">
-<init alpha="4" c="100000000" period_evnt="5s" debut="3s" eps="0.01" />
+<entity name="app-sensor" library="application_app">
+<init period="10s" debut="3s"/>
 <default />
 </entity>
 <!--
@@ -41,6 +41,13 @@
 <entity name="static-pos" library="mobility_static">
 <default x="random" y="random" z="0.0"/>
 </entity>
+
+<!-- == ROUTING ========================================= -->
+<entity name="routing-bip" library="routing_bip">
+<init alpha="4" c="100000000" eps="0.01" />
+<default />
+</entity>
+
 <!--
 
 == Energy =====================================================
@@ -64,19 +71,26 @@
 <mobility entity="static-pos"/>
 <energy entity="linear" />
 <antenna entity="omnidirectionnal">
-
-<up entity="radio"/>
+    <up entity="radio"/>
 </antenna>
+
 <with entity="radio">
 <up entity="mac"/>
 <down entity="omnidirectionnal"/>
 </with>
+
 <with entity="mac">
-<up entity="bip-sensor"/>
+<up entity="routing-bip"/>
 <down entity="radio"/>
 </with>
-<with entity="bip-sensor">
+
+<with entity="routing-bip">
+<up entity="app-sensor"/>
 <down entity="mac"/>
+</with>
+
+<with entity="app-sensor">
+<down entity="routing-bip"/>
 </with>
 </bundle>
 

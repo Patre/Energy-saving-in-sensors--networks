@@ -22,7 +22,7 @@ void init_bip_tree(call_t *c, void *args)
     struct nodedata *nodedata = get_node_private_data(c);
 	
     DEBUG;
-    printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
+    /*printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
 		   get_time_now_second());//*/
 	
     //RECUPERER L4ENSEMBLE DE GRAPH

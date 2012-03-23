@@ -129,35 +129,3 @@ int  list2_delete_pere_from_fils(list2 *l,int fils, int pere)
     }
     return 1;
 }
-/***********************TRENSFORMER**************************/
-void list2_to_list(list **l,list2 *l2)
-{
-    while(l2)
-    {
-        if(!list_recherche(*l,l2->node)) list_insert(l,l2->node);
-        int i=0;
-        for(i=0;i<list_taille(l2->peres);i++)
-        {
-            int node= list_get(l2->peres,i);
-            if(!list_recherche(*l,node)) list_insert(l,node);
-        }
-
-        l2=l2->suiv;
-    }
-}
-//LIST CONNECTER
-void list2_to_listC(listC **l,list2 *l2)
-{
-    while(l2)
-    {
-        int i=0;
-        for(i=0;i<list_taille(l2->peres);i++)
-        {
-            int node= list_get(l2->peres,i);
-            if(!list_con_recherche(*l,l2->node,node)) list_con_insert(l,l2->node,node,0);
-        }
-
-        l2=l2->suiv;
-    }
-}
-
