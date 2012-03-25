@@ -1,3 +1,0 @@
-librouting_bip_la-list.lo: src/structure/list.c include/structure/list.h
-
-include/structure/list.h:

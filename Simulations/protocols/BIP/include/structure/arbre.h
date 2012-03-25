@@ -4,6 +4,9 @@
 #include "structure/list.h"
 #define FILS_MAX    20
 
+#include <stdio.h>
+#include <stdlib.h>
+
 struct _arbre
 {
     int node;

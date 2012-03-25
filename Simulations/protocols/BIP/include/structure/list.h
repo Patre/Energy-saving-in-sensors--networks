@@ -3,6 +3,9 @@
 #ifndef  _LIST_RBH
 #define  _LIST_RBH
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define Nullptr(type) (type *)0
 
 struct _list

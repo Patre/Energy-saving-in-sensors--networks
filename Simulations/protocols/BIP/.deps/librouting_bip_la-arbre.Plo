@@ -1,6 +1,0 @@
-librouting_bip_la-arbre.lo: src/structure/arbre.c \
- include/structure/arbre.h include/structure/list.h
-
-include/structure/arbre.h:
-
-include/structure/list.h:

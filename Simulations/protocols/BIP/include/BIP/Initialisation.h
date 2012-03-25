@@ -3,6 +3,7 @@
 
 #include "BIP/Declaration.h"
 #include "BIP/AddedFunction.h"
+#include "structure/conversion.h"
 
 /*LES FONCTION DE CE FICHIER*/
 void get_PROTOCOLE_init(call_t *c, double eps);
