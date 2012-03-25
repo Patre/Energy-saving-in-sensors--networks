@@ -2,7 +2,9 @@
 #define ONE_HOP_RBH
 
 #include <include/modelutils.h>
+
 #include "structure/listNodes.h"
+#include "structure/time_wsnet.h"
 #include "BIP/Declaration.h"
 
 

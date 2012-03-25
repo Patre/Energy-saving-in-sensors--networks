@@ -17,7 +17,7 @@
 
 
 struct nodedata {
-	int *overhead;
+	int overhead;
 	
 	//packet REcus
 	list_PACKET *paquets;
@@ -55,12 +55,12 @@ struct _packet_bip
 {
     int     type;               //pour le type
     int     source;             //la source racine de paquet
-    int     seq;                //la sequance de paquet
-    int     redirected_by;      //le noeud qui a rediriger  le paquet
+    int     seq;                //la sequence de paquet
+    int     redirected_by;      //le noeud qui a redirigé le paquet
 	
     /**************************************************/
     list    *destinations;            //les noeuds de destination de packet
-    arbre   *pere_arbre;              //ARBRE of pere (redirected_by)
+    arbre   *pere_arbre;              //ARBRE du pere (redirected_by)
 	
 	
 };

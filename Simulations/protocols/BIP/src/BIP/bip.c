@@ -42,8 +42,8 @@ void init_files()
 //INITIALISATION DE NOEUD DE FICHIER XML
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
-    int i = get_entity_links_down_nbr(c);
 	
+	nodedata->overhead = -1;
     //les voisinages
     nodedata->N1        = Nullptr(listeNodes);
     nodedata->NodesV1   = Nullptr(list2N);
@@ -61,28 +61,13 @@ int setnode(call_t *c, void *params) {
     nodedata->nbr_evenement = 0;
 	
 	
-	
-    /* alloc overhead memory */
-    if (i) {
-        nodedata->overhead = malloc(sizeof(int) * i);
-    } else {
-        nodedata->overhead = NULL;
-        goto error;
-    }
-	
     set_node_private_data(c, nodedata);
 	
     DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);//*/
 	
     return 0;
-	
-error:
-    free(nodedata);
-    return -1;
 }
-/* ************************************************** */
-/* ************************************************** */
 
 /* RECUPERATION DES PROPRIETE DE PROTOCOLE*/
 int init(call_t *c, void *params) {
@@ -150,19 +135,9 @@ int bootstrap(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
 	
-    int i = get_entity_links_down_nbr(c);
-    entityid_t *down = get_entity_links_down(c);
-	
-    while (i--) {
-        call_t c0 = {down[i], c->node};
-		
-        if ((get_entity_type(&c0) != MODELTYPE_ROUTING)
-            && (get_entity_type(&c0) != MODELTYPE_MAC)) {
-            nodedata->overhead[i] = 0;
-        } else {
-            nodedata->overhead[i] = GET_HEADER_SIZE(&c0);
-        }
-    }
+    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+	/* get mac header overhead */
+    nodedata->overhead = GET_HEADER_SIZE(&c0);
 	
 	
     //RECUPERER LE VOSINAGE a UN SAUT
@@ -187,30 +162,57 @@ int bootstrap(call_t *c) {
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
+	array_t *up = get_entity_bindings_up(c);
+	int i;
 	
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead[0]);
+    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+	
+	printf("BIP - Paquet de type %d recu par %d depuis %d et pour ", data->type, c->node, data->source);
+	//list_affiche(data->destinations);
+	printf("\n");
 	
     //printf("je suis %d J'ai recu un packet de type %d de %d\n",c->node, data->type, packet->node);
 	
     /*******************************HELLO 1 vosinage***************************/
-    if(data->type == HELLO)
-    {
-        rx_one_hop(c,packet);
-    }
-    else if(data->type == REP_HELLO)
-    {
-        rx_one_hop_reponse(c,packet);
-    }
-	
-    /*******************************LBIP***************************/
-    else if(data->type == BIP)
-    {
-        if(list_recherche(data->destinations,c->node))
-            PROTOCOLE_reception(c,packet);
-    }
-	
-    /*******************************NON RECONNU***************************/
-    else    printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
+	switch(data->type)
+	{	
+		case HELLO:
+		{
+			rx_one_hop(c,packet);
+			break;
+		}
+		case REP_HELLO:
+		{
+			rx_one_hop_reponse(c,packet);
+			break;
+		}
+		case BIP:
+		{
+			if(list_recherche(data->destinations,c->node))
+				PROTOCOLE_reception(c,packet);
+			break;
+		}
+		case APP:
+		{
+			// forward ???
+			
+			call_t c_up = {up->elts[i], c->node, c->entity};
+			packet_t *packet_up;	     
+			if (i > 0) 
+			{
+				packet_up = packet_clone(packet);         
+			}
+			else 
+			{
+				packet_up = packet;
+			}
+			RX(&c_up, packet_up);
+			break;
+		}
+		default:
+			printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
+			break;
+	}
 }
 
 /* ************************************************** */
@@ -241,16 +243,15 @@ int unsetnode(call_t *c) {
     printf("Node : %d ->",c->node);
     list_PACKET_affiche(nodedata->paquets);//*/
 	
-    //liberatio d'espace memoire
+	
+	
+    //liberation d'espace memoire
     //PAR USER PROTOCOLE
+	list_PACKET_detruire(&nodedata->paquets);
     listeNodes_detruire(&nodedata->N1);                   //1-HOP
     list2N_detruire(&nodedata->NodesV1);                  //Nodes
     arbre_detruire(&nodedata->tree_BIP);           //BIP tree
 	
-    //PAR WSNET
-    if (nodedata->overhead) {
-        free(nodedata->overhead);
-    }
     free(nodedata);
     return 0;
 }
@@ -268,12 +269,15 @@ void tx( call_t *c , packet_t * packet )
 {
     //DEBUG
     struct nodedata *nodedata = get_node_private_data(c);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead[0]);
-    printf("J'envoi %d at %.2lf avec %d %d %d\n",c->node,get_time_now_second(),data->source,data->seq,data->redirected_by);
+    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+	
+	
+	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->source);
+	list_affiche(data->destinations);
+   // printf("J'envoi %d at %.2lf avec %d %d %d type %d\n",c->node,get_time_now_second(),data->source,data->seq,data->redirected_by, data->type);
 
-    //retresemtre
-    entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
+    //retransmettre
+    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 
     TX(&c0,packet);
 }
@@ -282,16 +286,19 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead[0]);
+    packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+	destination_t destination;
 
-    //augmanter le nbr d'evenement
+    //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
 
+	
     //remplissage de packet de Routage
-    data->type=BIP;
-    data->source=c->node;
-    data->seq=nodedata->nbr_evenement;
-    data->redirected_by=c->node;
+    header->type=APP;
+    header->source=c->node;
+    header->seq=nodedata->nbr_evenement;
+    header->redirected_by=c->node;
 
 
     //envoi au voisin 1 de l'arbre
@@ -299,21 +306,20 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     arbre_get_fils(&destinations,nodedata->tree_BIP,c->node);
 
     //copier dans distination
-    data->destinations=Nullptr(list);
-    list_copy(&data->destinations,destinations);
+    header->destinations=Nullptr(list);
+    list_copy(&header->destinations,destinations);
 
     //envoyer aussi l'arbre pere
-    data->pere_arbre=Nullptr(arbre);
-    arbre_copy(&data->pere_arbre,nodedata->tree_BIP);
+    header->pere_arbre=Nullptr(arbre);
+    arbre_copy(&header->pere_arbre,nodedata->tree_BIP);
 
-
-    //ENVOI
-    //recuperer le support de communication DOWN
-    entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
 
     //destination de paquet
-    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
+	destination.id = BROADCAST_ADDR;
+	destination.position.x = -1;
+	destination.position.y = -1;
+	destination.position.z = -1;
+	
     return SET_HEADER(&c0, packet, &destination);
 }
 

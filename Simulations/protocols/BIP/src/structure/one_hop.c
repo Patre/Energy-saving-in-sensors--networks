@@ -20,16 +20,16 @@ int init_one_hop(call_t *c, void *args) {
 	
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
+    call_t c0 = {down[0], c->node, c->entity};
 	
     //destination de paquet
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
 	
     //creation de paquet et initialisation de son data
     packet_t *packet = packet_alloc(c,
-									nodedata->overhead[0] + 
+									nodedata->overhead + 
 									sizeof(struct packet_hello));
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
+    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
 	
     //initilailser les données
     hello->type=HELLO;
@@ -48,6 +48,7 @@ int init_one_hop(call_t *c, void *args) {
 	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la position x, y,z de Noeud
 	 get_time_now_second());//*/                                                                              //l'instant d'envoi.
 	
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", hello->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);
     //tous c'est bien passé
@@ -63,7 +64,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	
     //RECEPTION  DE PACKET HELLO
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
+    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
 	
     DEBUG;
     /*printf("NOde %d a recu un HELLO de %d (%lf %lf %lf) at %lf\n",c->node,
@@ -88,8 +89,8 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	destination_t destination = {hello->source, {get_node_position(hello->source)->x,get_node_position(hello->source)->y,get_node_position(hello->source)->z}};
 	
 	//creation de paquet et initialisation de son data
-	packet_t *rpacket = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello));
-	struct packet_hello *rhello = (struct packet_hello *) (rpacket->data + nodedata->overhead[0]);
+	packet_t *rpacket = packet_alloc(c, nodedata->overhead + sizeof(struct packet_hello));
+	struct packet_hello *rhello = (struct packet_hello *) (rpacket->data + nodedata->overhead);
 	
 	//initilailser les données
 	rhello->type     =   REP_HELLO;
@@ -109,6 +110,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	 hello->source,                                                                                       //id de noued de destination
 	 get_time_now_second()); //*/                                                                             //l'instant d'envoi.
 	
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", rhello->type, c->node, destination.id);
 	//L'envoi
 	TX(&c0,rpacket);
 	
@@ -127,7 +129,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 void rx_one_hop_reponse(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	
-    struct packet_hello *data = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
+    struct packet_hello *data = (struct packet_hello *) (packet->data + nodedata->overhead);
 	
 	
     DEBUG;

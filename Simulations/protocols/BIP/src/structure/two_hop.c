@@ -25,8 +25,8 @@ int init_two_hop(call_t *c, void *args) {
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
 
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello));
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
+    packet_t *packet = packet_alloc(c, nodedata->overhead + sizeof(struct packet_hello));
+    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
 
     //initilailser les données
     hello->type=HELLO2;
@@ -37,6 +37,7 @@ int init_two_hop(call_t *c, void *args) {
             return -1;
     }
 	
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", hello->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);
 
@@ -53,7 +54,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 
     //RECEPTION  DE PACKET HELLO
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead[0]);
+    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
 
 
     //REPONSE DE PAKET HELLO
@@ -66,8 +67,8 @@ int rx_two_hop(call_t *c, packet_t *packet) {
      destination_t destination = {hello->source, {get_node_position(hello->source)->x,get_node_position(hello->source)->y,get_node_position(hello->source)->z}};
 
      //creation de paquet et initialisation de son data
-     packet_t *rpacket = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_hello2));
-     struct packet_hello2 *rhello = (struct packet_hello2 *) (rpacket->data + nodedata->overhead[0]);
+     packet_t *rpacket = packet_alloc(c, nodedata->overhead + sizeof(struct packet_hello2));
+     struct packet_hello2 *rhello = (struct packet_hello2 *) (rpacket->data + nodedata->overhead);
 
      //initilailser les données
      rhello->type     =   REP_HELLO2;
@@ -80,6 +81,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
          return -1;
      }
 
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", rhello->type, c->node, destination.id);
     //L'envoi
     TX(&c0,rpacket);
 
@@ -97,7 +99,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 void rx_two_hop_reponse(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    struct packet_hello2 *data = (struct packet_hello2 *) (packet->data + nodedata->overhead[0]);
+    struct packet_hello2 *data = (struct packet_hello2 *) (packet->data + nodedata->overhead);
 
     listeNodes_delete(&data->N1,c->node);
     list2N_insert(&nodedata->NodesV1,data->source,data->N1);

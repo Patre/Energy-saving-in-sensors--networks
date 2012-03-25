@@ -16,8 +16,8 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
      */
 	
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(packet_PROTOCOLE));
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead[0]);
+    packet_t *packet = packet_alloc(c, nodedata->overhead + sizeof(packet_PROTOCOLE));
+    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
     //initilailser les données
     data->type=BIP;
@@ -54,7 +54,7 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     DEBUG;
     if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 	
-	
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
 	
@@ -74,7 +74,7 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
 	
-    packet_PROTOCOLE *dataRecu=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead[0]);
+    packet_PROTOCOLE *dataRecu=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
 	
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,dataRecu->source,dataRecu->seq,dataRecu->redirected_by);
@@ -83,10 +83,10 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 	 Creation de Packet
 	 */
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(packet_PROTOCOLE));
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead[0]);
+    packet_t *packet = packet_alloc(c, nodedata->overhead + sizeof(packet_PROTOCOLE));
+    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-    //initilailser les données
+    //initialiser les données
     data->type=BIP;
     data->source=dataRecu->source;
     data->seq=dataRecu->seq;
@@ -121,13 +121,14 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     DEBUG;
     if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 	
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
 	
     //Liberer l'espace memoire;
     //packet_dealloc(packetRecu);
 	
-    //tous c'est bien passé
+    //tout c'est bien passé
     return 1;
 }
 

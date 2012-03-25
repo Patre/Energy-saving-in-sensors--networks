@@ -189,8 +189,8 @@ int callmeback(call_t *c, void *args) {
 	    return -1;
     }
         
-
-    TX(&c0, packet);
+	//printf("APP - broadcast paquet depuis %d\n", header->source);
+   // TX(&c0, packet);
     
 
     /* we schedule a new callback after actualtime+period */
