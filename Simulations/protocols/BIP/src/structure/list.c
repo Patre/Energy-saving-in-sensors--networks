@@ -26,18 +26,18 @@ void list_affiche(list *l)
         printf("%d,",l->val);
         l=l->suiv;
     }
-    printf("} (totale : %d)\n",x);
+    printf("} (total : %d)\n",x);
 }
 /***********************TAILLE**************************/
 int list_taille(list *l)
 {
-        int nbr=0;
-        while(l)
-        {
-                nbr++;
-                l=l->suiv;
-        }
-        return nbr;
+	int nbr=0;
+	while(l)
+	{
+		nbr++;
+		l=l->suiv;
+	}
+	return nbr;
 }
 /***********************RECUPERER UN ELEMENT**************************/
 int list_get(list *l,int index)

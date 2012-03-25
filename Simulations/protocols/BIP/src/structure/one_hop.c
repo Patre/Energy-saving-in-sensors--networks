@@ -26,17 +26,16 @@ int init_one_hop(call_t *c, void *args) {
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
 	
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c,
-									nodedata->overhead + 
-									sizeof(struct packet_hello));
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
+    packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
+    packet_PROTOCOLE *hello = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
     //initilailser les données
     hello->type=HELLO;
-    hello->source=c->node;
-    hello->position.x=get_node_position(c->node)->x;
-    hello->position.y=get_node_position(c->node)->y;
-    hello->position.z=get_node_position(c->node)->z;
+    hello->src=c->node;
+    hello->src_pos.x=get_node_position(c->node)->x;
+    hello->src_pos.y=get_node_position(c->node)->y;
+    hello->src_pos.z=get_node_position(c->node)->z;
+	hello->dst = -1;
 	
     if (SET_HEADER(&c0, packet, &destination) == -1) {
 		packet_dealloc(packet);
@@ -64,7 +63,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	
     //RECEPTION  DE PACKET HELLO
-    struct packet_hello *hello = (struct packet_hello *) (packet->data + nodedata->overhead);
+    packet_PROTOCOLE *hello = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
     DEBUG;
     /*printf("NOde %d a recu un HELLO de %d (%lf %lf %lf) at %lf\n",c->node,
@@ -74,9 +73,8 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	
 	
     //l'ajoute de voisin
-    if(!listeNodes_recherche(nodedata->N1,hello->source))
-        listeNodes_insert_values(&nodedata->N1,hello->source,hello->position.x,
-                                 hello->position.y, hello->position.z);
+    if(!listeNodes_recherche(nodedata->N1,hello->src))
+        listeNodes_insert_values(&nodedata->N1,hello->src,hello->src_pos.x, hello->src_pos.y, hello->src_pos.z);
 	
 	
     //REPONSE DE PAKET HELLO
@@ -86,18 +84,19 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	call_t c0 = {down[0], c->node};
 	
 	//destination de paquet
-	destination_t destination = {hello->source, {get_node_position(hello->source)->x,get_node_position(hello->source)->y,get_node_position(hello->source)->z}};
+	destination_t destination = {hello->src, {hello->src_pos.x, hello->src_pos.y, hello->src_pos.z}};
 	
 	//creation de paquet et initialisation de son data
-	packet_t *rpacket = packet_alloc(c, nodedata->overhead + sizeof(struct packet_hello));
-	struct packet_hello *rhello = (struct packet_hello *) (rpacket->data + nodedata->overhead);
+	packet_t *rpacket = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
+	packet_PROTOCOLE* rhello = (packet_PROTOCOLE *) (rpacket->data + nodedata->overhead);
 	
 	//initilailser les données
 	rhello->type     =   REP_HELLO;
-	rhello->source   =   c->node;
-	rhello->position.x=get_node_position(c->node)->x;
-	rhello->position.y=get_node_position(c->node)->y;
-	rhello->position.z=get_node_position(c->node)->z;
+	rhello->src   =   c->node;
+	rhello->src_pos.x=get_node_position(c->node)->x;
+	rhello->src_pos.y=get_node_position(c->node)->y;
+	rhello->src_pos.z=get_node_position(c->node)->z;
+	rhello->dst = destination.id;
 	
 	if (SET_HEADER(&c0, rpacket, &destination) == -1) {
 		packet_dealloc(rpacket);
@@ -110,7 +109,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	 hello->source,                                                                                       //id de noued de destination
 	 get_time_now_second()); //*/                                                                             //l'instant d'envoi.
 	
-	printf("BIP - Paquet de type %d envoye de %d a %d.\n", rhello->type, c->node, destination.id);
+	printf("BIP - Paquet de type %d envoye de %d a %d.\n", rhello->type, c->node, rhello->dst);
 	//L'envoi
 	TX(&c0,rpacket);
 	
@@ -129,7 +128,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 void rx_one_hop_reponse(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	
-    struct packet_hello *data = (struct packet_hello *) (packet->data + nodedata->overhead);
+	packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
     DEBUG;
@@ -137,9 +136,8 @@ void rx_one_hop_reponse(call_t *c, packet_t *packet) {
 	 data->source);//*/
 	
     //l'ajoute de voisin
-    if(!listeNodes_recherche(nodedata->N1,data->source))
-        listeNodes_insert_values(&nodedata->N1,data->source,data->position.x,
-                                 data->position.y,data->position.z);
+    if(!listeNodes_recherche(nodedata->N1,data->src))
+        listeNodes_insert_values(&nodedata->N1,data->src,data->src_pos.x, data->src_pos.y,data->src_pos.z);
 	
     //tous c'est bien passé
     return;

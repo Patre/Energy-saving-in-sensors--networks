@@ -8,7 +8,7 @@ librouting_bip_la_SOURCES = src/structure/list_connected.c src/structure/list.c 
 				src/structure/list_paquet.c src/structure/conversion.c \
 				src/structure/time_wsnet.c src/structure/listNodes.c \
                                 src/structure/list_de_listNodes.c \
-                                src/structure/one_hop.c src/structure/two_hop.c \
+                                src/structure/one_hop.c \
                                 src/BIP/AddedFunction.c src/BIP/Initialisation.c \
 				src/BIP/Implementation.c src/BIP/bip.c
 

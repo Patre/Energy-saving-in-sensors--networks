@@ -10,11 +10,11 @@
 
 
 /* Paquet HELLO */
-struct packet_hello {
+/*struct packet_hello {
 	int       type;
 	int       source;
 	element position;
-};
+};*/
 
 void get_one_hop(call_t *c, double eps);
 int init_one_hop(call_t *c, void *args);

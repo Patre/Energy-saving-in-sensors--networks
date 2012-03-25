@@ -16,12 +16,13 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
      */
 	
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead + sizeof(packet_PROTOCOLE));
+    packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
     //initilailser les données
     data->type=BIP;
-    data->source=c->node;
+    data->src=c->node;
+	data->dst = -1;
     data->seq=nodedata->nbr_evenement;
     data->redirected_by=c->node;
 	
@@ -77,18 +78,19 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     packet_PROTOCOLE *dataRecu=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
 	
     //AJOUTE de packet dans la liste de packet
-    list_PACKET_insert_tout(&nodedata->paquets,dataRecu->source,dataRecu->seq,dataRecu->redirected_by);
+    list_PACKET_insert_tout(&nodedata->paquets,dataRecu->src,dataRecu->seq,dataRecu->redirected_by);
 	
     /*
 	 Creation de Packet
 	 */
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_alloc(c, nodedata->overhead + sizeof(packet_PROTOCOLE));
+    packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
     //initialiser les données
     data->type=BIP;
-    data->source=dataRecu->source;
+    data->src=dataRecu->src;
+	data->dst = -1;
     data->seq=dataRecu->seq;
     data->redirected_by=c->node;
 	

@@ -147,12 +147,12 @@ int bootstrap(call_t *c) {
     get_PROTOCOLE_init(c,entitydata->eps);
 	
 	
-    //Commencé l'application
-    /*if(c->node==0)
+    //Commencer l'application
+    if(c->node==0)
     {
         uint64_t at=entitydata->debut+get_random_time_range(0,entitydata->periodEVE);
         scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }//*/
+    }
 	
     return 0;
 }
@@ -167,13 +167,9 @@ void rx(call_t *c, packet_t *packet) {
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	printf("BIP - Paquet de type %d recu par %d depuis %d et pour ", data->type, c->node, data->source);
-	//list_affiche(data->destinations);
-	printf("\n");
+	printf("BIP - Paquet de type %d recu par %d depuis %d et pour %d\n", data->type, c->node, data->src, data->dst);
 	
-    //printf("je suis %d J'ai recu un packet de type %d de %d\n",c->node, data->type, packet->node);
-	
-    /*******************************HELLO 1 vosinage***************************/
+    /*******************************HELLO 1 voisinage***************************/
 	switch(data->type)
 	{	
 		case HELLO:
@@ -220,12 +216,12 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
+	printf("Node : %d\n",c->node);
 	
-    DEBUG; /* Vosinage 1 hop*/
-    //if(c->node==0){printf("VOISINAGE A un HOP\n");//}
-    /*printf("N:%d -> ",c->node);
-	 list_affiche(nodedata->N1);//*/
-    //}
+    DEBUG; /* Voisinage 1 hop*/
+	printf("\t1-voisinage de %d : ", c->node);
+	listeNodes_affiche(nodedata->N1);
+    
 	
     DEBUG;/*voisinage 2 hop*/
     /*if(c->node==0)
@@ -235,13 +231,12 @@ int unsetnode(call_t *c) {
 	
 	
     DEBUG; /*ARBRE DE LBIP*/
-    /*if(c->node==0)
-	 {     printf("ARBRE DE BIP\n");
-	 arbre_affiche(nodedata->tree_BIP);}//*/
+    printf("\tARBRE DE BIP : \n");
+	arbre_affiche(nodedata->tree_BIP);
 	
     DEBUG;  //PAQUETs
-    printf("Node : %d ->",c->node);
-    list_PACKET_affiche(nodedata->paquets);//*/
+    //printf("\tPaquets : %d ->",c->node);
+    //list_PACKET_affiche(nodedata->paquets);//*/
 	
 	
 	
@@ -253,6 +248,7 @@ int unsetnode(call_t *c) {
     arbre_detruire(&nodedata->tree_BIP);           //BIP tree
 	
     free(nodedata);
+	printf("\n");
     return 0;
 }
 
@@ -272,7 +268,7 @@ void tx( call_t *c , packet_t * packet )
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
-	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->source);
+	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->src);
 	list_affiche(data->destinations);
    // printf("J'envoi %d at %.2lf avec %d %d %d type %d\n",c->node,get_time_now_second(),data->source,data->seq,data->redirected_by, data->type);
 
@@ -295,10 +291,11 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
 	
     //remplissage de packet de Routage
-    header->type=APP;
-    header->source=c->node;
-    header->seq=nodedata->nbr_evenement;
-    header->redirected_by=c->node;
+    header->type = APP;
+    header->src = c->node;
+	header->dst = dst->id;
+    header->seq = nodedata->nbr_evenement;
+    header->redirected_by = c->node;
 
 
     //envoi au voisin 1 de l'arbre
