@@ -189,8 +189,8 @@ int callmeback(call_t *c, void *args) {
 	    return -1;
     }
         
-	//printf("APP - broadcast paquet depuis %d\n", header->source);
-   // TX(&c0, packet);
+	printf("APP - broadcast paquet depuis %d\n", header->source);
+    TX(&c0, packet);
     
 
     /* we schedule a new callback after actualtime+period */
@@ -209,7 +209,9 @@ int callmeback(call_t *c, void *args) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
-    printf("J'ai RECU");
+	struct nodedata *nodedata = get_node_private_data(c);
+	 struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
+	printf("APP - Paquet recu par %d depuis %d\n", c->node, header->source);
     /* else dealloc the packet */
     packet_dealloc(packet);
 }

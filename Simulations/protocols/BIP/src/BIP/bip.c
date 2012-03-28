@@ -190,7 +190,6 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			// forward ???
 			
 			call_t c_up = {up->elts[i], c->node, c->entity};
 			packet_t *packet_up;	     

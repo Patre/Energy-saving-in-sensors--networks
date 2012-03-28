@@ -43,7 +43,7 @@
 </entity>
 
 <!-- == ROUTING ========================================= -->
-<entity name="routing-bip" library="routing_bip">
+<entity name="routing-lbip" library="routing_lbip">
 <init alpha="4" c="100000000" eps="0.01" />
 <default />
 </entity>
@@ -80,17 +80,17 @@
 </with>
 
 <with entity="mac">
-<up entity="routing-bip"/>
+<up entity="routing-lbip"/>
 <down entity="radio"/>
 </with>
 
-<with entity="routing-bip">
+<with entity="routing-lbip">
 <up entity="app-sensor"/>
 <down entity="mac"/>
 </with>
 
 <with entity="app-sensor">
-<down entity="routing-bip"/>
+<down entity="routing-lbip"/>
 </with>
 </bundle>
 
