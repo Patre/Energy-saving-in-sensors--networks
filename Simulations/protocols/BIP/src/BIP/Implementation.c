@@ -4,16 +4,13 @@
 /* ************************************************** */
 /*************************************************** */
 //LANCEMENT
-int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
+/*int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     struct nodedata *nodedata=get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
 	
     //augmanter le nbr d'evenement
     nodedata->nbr_evenement++;
 	
-    /*
-	 Creation de Packet
-     */
 	
     //creation de paquet et initialisation de son data
     packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
@@ -57,22 +54,22 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 	
 	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
-    TX(&c0,packet);//*/
+    TX(&c0,packet);//
 	
     //LE CALCULE de PROCHAINE EVENEMENT
     //PROCHAINE EVENEMENT
     uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
-    scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);//*/
+    scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);//
 	
     //tous c'est bien passé
     return 1;
-}
+}*/
 
 
 /***********************************************************************************************/
 /***********************************************************************************************/
 //RECEPTION
-int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
+/*int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
 	
     packet_PROTOCOLE *dataRecu=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
@@ -80,9 +77,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,dataRecu->src,dataRecu->seq,dataRecu->redirected_by);
 	
-    /*
-	 Creation de Packet
-	 */
     //creation de paquet et initialisation de son data
     packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
@@ -125,12 +119,12 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 	
 	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
-    TX(&c0,packet);//*/
+    TX(&c0,packet);//
 	
     //Liberer l'espace memoire;
     //packet_dealloc(packetRecu);
 	
     //tout c'est bien passé
     return 1;
-}
+}*/
 

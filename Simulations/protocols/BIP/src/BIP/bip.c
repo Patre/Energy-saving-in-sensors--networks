@@ -5,9 +5,12 @@
  *  \date   03-2012
  **/
 
-#include "structure/one_hop.h"
-#include "BIP/Implementation.h"
+#include <include/modelutils.h>
 
+#include "structure/time_wsnet.h"
+
+#include "BIP/bip.h"
+#include "BIP/one_hop.h"
 
 /* ************************************************** */
 /* ************************************************** */
@@ -21,9 +24,6 @@ model_t model =  {
     {NULL, 0}
 };
 
-
-/***********************************************************************************************/
-/***********************************************************************************************/
 
 void init_files()
 {
@@ -39,32 +39,25 @@ void init_files()
 	
 }
 
-//INITIALISATION DE NOEUD DE FICHIER XML
+// initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
 	
 	nodedata->overhead = -1;
-    //les voisinages
-    nodedata->N1        = Nullptr(listeNodes);
-    nodedata->NodesV1   = Nullptr(list2N);
-	
-    //Les abre de LBIP
-    nodedata->tree_BIP   = Nullptr(arbre);
-    
-    //les packets
-    nodedata->paquets   = Nullptr(list_PACKET);
-	
-    //ajout de la racine de l'arbre
-    arbre_add_pere(&nodedata->tree_BIP,c->node);
-	
-    //STATS
-    nodedata->nbr_evenement = 0;
+    nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
+	nodedata->twoHopNeighbourhood = Nullptr(listeNodes);
+	nodedata->BIP_tree = Nullptr(arbre);
+    arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
+	//nodedata->paquets = Nullptr(list_PACKET); //les packets
+	nodedata->nbr_evenement = 0; //STATS
 	
 	
     set_node_private_data(c, nodedata);
 	
     DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);//*/
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+	
+	printf("Node %d at ( %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
     return 0;
 }
@@ -115,8 +108,7 @@ int init(call_t *c, void *params) {
         }
     }
 	
-    //INITAILISATION DES FICHIER DE SORTIES
-	//    init_files();
+	// init_files();
 	
     set_entity_private_data(c, entitydata);
     return 0;
@@ -141,18 +133,18 @@ int bootstrap(call_t *c) {
 	
 	
     //RECUPERER LE VOSINAGE a UN SAUT
-    get_one_hop(c,entitydata->eps);
+    init_one_hop(c,entitydata->eps);
 	
     //INITIALISATION DE L'ARBRE
-    get_PROTOCOLE_init(c,entitydata->eps);
+    //get_PROTOCOLE_init(c,entitydata->eps);
 	
 	
     //Commencer l'application
-    if(c->node==0)
+    /*if(c->node==0)
     {
         uint64_t at=entitydata->debut+get_random_time_range(0,entitydata->periodEVE);
         scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }
+    }*/
 	
     return 0;
 }
@@ -167,27 +159,27 @@ void rx(call_t *c, packet_t *packet) {
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	printf("BIP - Paquet de type %d recu par %d depuis %d et pour %d\n", data->type, c->node, data->src, data->dst);
+	printf("BIP - Paquet de type %d recu par %d depuis %d\n", data->type, c->node, data->src);
 	
     /*******************************HELLO 1 voisinage***************************/
 	switch(data->type)
 	{	
 		case HELLO:
 		{
-			rx_one_hop(c,packet);
+			rx_hello(c,packet);
 			break;
 		}
-		case REP_HELLO:
+		case HELLO2:
 		{
-			rx_one_hop_reponse(c,packet);
+			rx_two_hop(c,packet);
 			break;
 		}
-		case BIP:
+		/*case BIP:
 		{
 			if(list_recherche(data->destinations,c->node))
 				PROTOCOLE_reception(c,packet);
 			break;
-		}
+		}*/
 		case APP:
 		{
 			// forward ???
@@ -216,23 +208,21 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
-	printf("Node : %d\n",c->node);
+	printf("Unset node %d\n",c->node);
 	
-    DEBUG; /* Voisinage 1 hop*/
-	printf("\t1-voisinage de %d : ", c->node);
-	listeNodes_affiche(nodedata->N1);
+    DEBUG; /* Voisinage 1-hop */
+	printf("\t1-voisinage : ");
+	listeNodes_affiche(nodedata->oneHopNeighbourhood);
     
 	
-    DEBUG;/*voisinage 2 hop*/
-    /*if(c->node==0)
-	 {
-	 list2_affiche(nodedata->NodesV1);
-	 }//*/
+    DEBUG;/* Voisinage 2-hop */
+    printf("\t2-voisinage : ");
+	listeNodes_affiche(nodedata->twoHopNeighbourhood);
 	
 	
     DEBUG; /*ARBRE DE LBIP*/
-    printf("\tARBRE DE BIP : \n");
-	arbre_affiche(nodedata->tree_BIP);
+    /*printf("\tARBRE DE BIP : \n");
+	arbre_affiche(nodedata->tree_BIP);*/
 	
     DEBUG;  //PAQUETs
     //printf("\tPaquets : %d ->",c->node);
@@ -242,10 +232,10 @@ int unsetnode(call_t *c) {
 	
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
-	list_PACKET_detruire(&nodedata->paquets);
-    listeNodes_detruire(&nodedata->N1);                   //1-HOP
-    list2N_detruire(&nodedata->NodesV1);                  //Nodes
-    arbre_detruire(&nodedata->tree_BIP);           //BIP tree
+	//list_PACKET_detruire(&nodedata->paquets);
+    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
+	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
+    arbre_detruire(&nodedata->BIP_tree);
 	
     free(nodedata);
 	printf("\n");
@@ -300,7 +290,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     //envoi au voisin 1 de l'arbre
     list *destinations=Nullptr(list);
-    arbre_get_fils(&destinations,nodedata->tree_BIP,c->node);
+    arbre_get_fils(&destinations,nodedata->BIP_tree,c->node);
 
     //copier dans distination
     header->destinations=Nullptr(list);
@@ -308,7 +298,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     //envoyer aussi l'arbre pere
     header->pere_arbre=Nullptr(arbre);
-    arbre_copy(&header->pere_arbre,nodedata->tree_BIP);
+    arbre_copy(&header->pere_arbre,nodedata->BIP_tree);
 
 
     //destination de paquet

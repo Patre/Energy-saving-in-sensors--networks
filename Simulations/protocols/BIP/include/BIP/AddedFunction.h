@@ -4,7 +4,7 @@
 #include "structure/list.h"
 #include "structure/arbre.h"
 #include "structure/list_connected.h"
-#include "BIP/Declaration.h"
+#include "BIP/bip.h"
 
 /**
  * \brief Return the tx antenna gain towards the destination direction.

@@ -63,12 +63,18 @@ void listeNodes_affiche(listeNodes *l)
 {
     int x=listeNodes_taille(l);
     printf("{");
+	if(l != NULL)
+	{
+		printf("%d",l->values.node);
+        l=l->suiv;
+	}
+		
     while(l)
     {
-        printf("%d,",l->values.node);
+        printf(",%d",l->values.node);
         l=l->suiv;
     }
-    printf("} (totale : %d)\n",x);
+    printf("} (total : %d)\n",x);
 }
 // --***********************TAILLE**************************
 int listeNodes_taille(listeNodes *l)
@@ -110,13 +116,14 @@ void listeNodes_detruire(listeNodes **l)
 //  ***********************RECHERCHE**************************
 int listeNodes_recherche(listeNodes *l,int val)
 {
-        int bol=0;
-        while(l&&!bol)
+        int trouve=0;
+        while(l && !trouve)
         {
-                if(l->values.node==val)	bol=1;
+                if(l->values.node==val)
+					trouve=1;
                 l=l->suiv;
         }
-        return bol;
+        return trouve;
 }
 
 //  *********************************COPIER*******************************

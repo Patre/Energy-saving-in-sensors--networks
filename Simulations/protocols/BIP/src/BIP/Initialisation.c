@@ -4,25 +4,22 @@
 /* ************************************************** */
 /* ************************************************** */
 //INIT LBIP
-void get_PROTOCOLE_init(call_t *c, double eps)
+/*void get_PROTOCOLE_init(call_t *c, double eps)
 {
     int count=get_node_count()*2;
     uint64_t fin_two_hop=count*time_seconds_to_nanos(eps)+c->node*time_seconds_to_nanos(eps);
     uint64_t at=fin_two_hop;
     scheduler_add_callback(at, c, init_bip_tree, NULL);
-}
+}*/
 
 
 /* ************************************************** */
 /* ************************************************** */
 //initailisation de l'arbre de LBIP
-void init_bip_tree(call_t *c, void *args)
+/*void init_bip_tree(call_t *c, void *args)
 {
     struct nodedata *nodedata = get_node_private_data(c);
 	
-    DEBUG;
-    /*printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
-		   get_time_now_second());//*/
 	
     //RECUPERER L4ENSEMBLE DE GRAPH
     int i=0;
@@ -60,6 +57,6 @@ void init_bip_tree(call_t *c, void *args)
     }
 	
     prim_tree(debut,&nodedata->tree_BIP,connexions,graphElements);
-}
+}*/
 
 
