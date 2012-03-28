@@ -1,8 +1,75 @@
-#include "BIP/AddedFunction.h"
 
-/* ************************************************** */
-/* ************************************************** */
-//calcul energie entre NODE A,NODE B
+#include "BIP/BIP_tree_utils.h"
+
+
+void computeBIPtree2Hop(call_t *c)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	
+	graphe g;
+	computeGrapheFromNeighbours(c, &g);
+}
+
+void computeGrapheFromNeighbours(call_t *c, graphe* g)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	
+	listeNodes* oneHop = nodedata->oneHopNeighbourhood;
+	listeNodes* twoHop = nodedata->twoHopNeighbourhood;
+}
+
+void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered)
+{
+	
+}
+
+
+
+/*void init_bip_tree(call_t *c, void *args)
+{
+    struct nodedata *nodedata = get_node_private_data(c);
+	
+	
+    //RECUPERER L4ENSEMBLE DE GRAPH
+    int i=0;
+    call_t *inter=malloc(sizeof(call_t));
+    inter->entity=c->entity;
+    inter->from=c->from;
+	
+    for(i=0;i<get_node_count();i++)
+    {
+        inter->node=i;
+        struct nodedata *interdata=get_node_private_data(inter);
+        list2N_insert_values(&nodedata->NodesV1,inter->node,get_node_position(inter->node)->x,
+                             get_node_position(inter->node)->y, get_node_position(inter->node)->z,interdata->N1);
+    }
+	
+    //REcuperer le graph G
+    list *graphElements=Nullptr(list);
+    for(i=0;i<get_node_count();i++) list_insert(&graphElements,i);
+    list_delete(&graphElements,c->node);
+	
+    //list de commencement
+    list *debut=Nullptr(list);
+    list_insert(&debut,c->node);
+	
+    //recuperer tout les connexion dans le graph
+    listC *connexions=Nullptr(listC);
+    list2N_to_listC(&connexions,nodedata->NodesV1);
+	
+    listC *poi=connexions;
+    while (poi)
+    {
+        //on ai dans le bip, nous avons le droit de fair Áa
+        list_set_poids(connexions,poi->node1,poi->node2,distance(get_node_position(poi->node1),get_node_position(poi->node2)));
+        poi=poi->suiv;
+    }
+	
+    prim_tree(debut,&nodedata->tree_BIP,connexions,graphElements);
+	
+	free(inter);
+}
+
 
 double   calcul_energie(element A,element B,double alpha,double c)
 {
@@ -20,8 +87,6 @@ double   calcul_energie(element A,element B,double alpha,double c)
     return par1+c;
 }
 
-/* ************************************************** */
-/* ************************************************** */
 void prim_tree(list *nodes,arbre **a,listC *l,list *g)
 {
 	
@@ -35,9 +100,8 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
 	
     //list_con_affiche(tmp);
     //phase 1
-    /*
-	 * Recuperer le minimum  a partir de node racine node
-	 */
+    
+	//Recuperer le minimum  a partir de node racine node
     double min_poids=9999999999999999999999.00;
     int node_min=-1;
     int node_couvrant=-1;
@@ -101,7 +165,7 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
             //printf("Min is (%d,%d) %.2lf\n",node_couvrant, node_min,min_poids);
             //On passe a le noued couvert suivant
             tmp2=tmp2->suiv;
-        }//*/
+        }
 		
 		
 		
@@ -117,5 +181,6 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
     //printf("\n\n");
     //list_affiche(deja_couvert);
     //arbre_affiche(*a);
-}
+}*/
+
 

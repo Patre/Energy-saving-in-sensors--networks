@@ -6,8 +6,8 @@
 #include "structure/listNodes.h"
 #include "structure/time_wsnet.h"
 
-#include "BIP/bip.h"
 #include "BIP/two_hop.h"
+
 
 
 typedef struct packet_hello {

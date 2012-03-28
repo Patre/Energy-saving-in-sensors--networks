@@ -9,8 +9,11 @@
 
 #include "structure/time_wsnet.h"
 
-#include "BIP/bip.h"
+#include "BIP/lbip.h"
 #include "BIP/one_hop.h"
+
+
+
 
 /* ************************************************** */
 /* ************************************************** */
@@ -47,8 +50,9 @@ int setnode(call_t *c, void *params) {
     nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
 	nodedata->twoHopNeighbourhood = Nullptr(listeNodes);
 	nodedata->BIP_tree = Nullptr(arbre);
-    arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
+    //arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
 	//nodedata->paquets = Nullptr(list_PACKET); //les packets
+	nodedata->radius = -1.0;
 	nodedata->nbr_evenement = 0; //STATS
 	
 	
@@ -71,8 +75,8 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
-    entitydata->debut   = time_seconds_to_nanos(3);
-    entitydata->periodEVE = time_seconds_to_nanos(1);
+    //entitydata->debut   = time_seconds_to_nanos(3);
+    //entitydata->periodEVE = time_seconds_to_nanos(1);
 	
 	
     /* reading the "init" markup from the xml config file */
@@ -89,23 +93,23 @@ int init(call_t *c, void *params) {
 			}
         }
 		
-        if (!strcmp(param->key, "debut")) {
-			if (get_param_time(param->value, &(entitydata->debut))) {
-				goto error;
-			}
-        }
-		
         if (!strcmp(param->key, "eps")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
                 goto error;
             }
         }
 		
+        /*if (!strcmp(param->key, "debut")) {
+			if (get_param_time(param->value, &(entitydata->debut))) {
+				goto error;
+			}
+        }
+		
         if (!strcmp(param->key, "period_evnt")) {
 			if (get_param_time(param->value, &(entitydata->periodEVE))) {
 				goto error;
 			}
-        }
+        }*/
     }
 	
 	// init_files();
@@ -131,20 +135,7 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 	
-	
-    //RECUPERER LE VOSINAGE a UN SAUT
     init_one_hop(c,entitydata->eps);
-	
-    //INITIALISATION DE L'ARBRE
-    //get_PROTOCOLE_init(c,entitydata->eps);
-	
-	
-    //Commencer l'application
-    /*if(c->node==0)
-    {
-        uint64_t at=entitydata->debut+get_random_time_range(0,entitydata->periodEVE);
-        scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }*/
 	
     return 0;
 }
@@ -159,42 +150,53 @@ void rx(call_t *c, packet_t *packet) {
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	printf("BIP - Paquet de type %d recu par %d depuis %d\n", data->type, c->node, data->src);
-	
-    /*******************************HELLO 1 voisinage***************************/
 	switch(data->type)
 	{	
 		case HELLO:
 		{
+			printf("BIP - Paquet de type HELLO recu par %d depuis %d\n", c->node, data->src);
 			rx_hello(c,packet);
 			break;
 		}
 		case HELLO2:
 		{
+			printf("BIP - Paquet de type HELLO2 recu par %d depuis %d\n", c->node, data->src);
 			rx_two_hop(c,packet);
 			break;
 		}
-		/*case BIP:
-		{
-			if(list_recherche(data->destinations,c->node))
-				PROTOCOLE_reception(c,packet);
-			break;
-		}*/
 		case APP:
 		{
-			// forward ???
-			
-			call_t c_up = {up->elts[i], c->node, c->entity};
-			packet_t *packet_up;	     
-			if (i > 0) 
+			printf("BIP - Paquet recu par %d depuis %d destine a %d\n", c->node, data->src, data->dst);
+			if(data->dst == BROADCAST_ADDR)
 			{
-				packet_up = packet_clone(packet);         
+				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
+				{
+					if(nodedata->radius == -1.0) // si le BIP tree n'a pas encore ete construit
+					{
+						// le construire a partir des infos du paquet
+						
+					}
+					// relayer le paquet
+					
+				}
+				
+				// faire remonter le paquet a la couche application
+				call_t c_up = {up->elts[i], c->node, c->entity};
+				packet_t *packet_up;	     
+				if (i > 0) 
+				{
+					packet_up = packet_clone(packet);         
+				}
+				else 
+				{
+					packet_up = packet;
+				}
+				RX(&c_up, packet_up);
 			}
-			else 
+			else
 			{
-				packet_up = packet;
+				printf("Message non broadcaste pas traite ... TODO\n");
 			}
-			RX(&c_up, packet_up);
 			break;
 		}
 		default:
@@ -235,7 +237,7 @@ int unsetnode(call_t *c) {
 	//list_PACKET_detruire(&nodedata->paquets);
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
 	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
-    arbre_detruire(&nodedata->BIP_tree);
+    //arbre_detruire(&nodedata->BIP_tree);
 	
     free(nodedata);
 	printf("\n");
@@ -253,19 +255,14 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
-    //DEBUG
     struct nodedata *nodedata = get_node_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
+	//retransmettre
+    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+    TX(&c0,packet);
 	
 	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->src);
-	list_affiche(data->destinations);
-   // printf("J'envoi %d at %.2lf avec %d %d %d type %d\n",c->node,get_time_now_second(),data->source,data->seq,data->redirected_by, data->type);
-
-    //retransmettre
-    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
-
-    TX(&c0,packet);
 }
 
 /* *********************************************** */
@@ -276,36 +273,25 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 	destination_t destination;
 
-    //augmenter le nbr d'evenement
-    nodedata->nbr_evenement++;
-
 	
-    //remplissage de packet de Routage
     header->type = APP;
     header->src = c->node;
 	header->dst = dst->id;
-    header->seq = nodedata->nbr_evenement;
-    header->redirected_by = c->node;
-
-
-    //envoi au voisin 1 de l'arbre
-    list *destinations=Nullptr(list);
-    arbre_get_fils(&destinations,nodedata->BIP_tree,c->node);
-
-    //copier dans distination
-    header->destinations=Nullptr(list);
-    list_copy(&header->destinations,destinations);
-
-    //envoyer aussi l'arbre pere
-    header->pere_arbre=Nullptr(arbre);
-    arbre_copy(&header->pere_arbre,nodedata->BIP_tree);
-
-
-    //destination de paquet
-	destination.id = BROADCAST_ADDR;
-	destination.position.x = -1;
-	destination.position.y = -1;
-	destination.position.z = -1;
+	header->askedToRedirect = Nullptr(listeNodes);
+	header->needsToBeCovered = Nullptr(listeNodes);
+	
+	if(destination.id == BROADCAST_ADDR)
+	{
+		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
+		{
+			computeBIPtree2Hop(c);
+		}
+		setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
+	}
+	else
+	{
+		// TODO
+	}
 	
     return SET_HEADER(&c0, packet, &destination);
 }
