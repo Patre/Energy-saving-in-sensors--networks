@@ -31,7 +31,7 @@
 == APPLICATION =====================================================
 -->
 
-<entity name="app-sensor" library="application_app">
+<entity name="app-sensor" library="application_broadcast">
 <init period="10s" debut="3s"/>
 <default />
 </entity>
