@@ -255,7 +255,7 @@ void prim_tree2(list *nodes,arbre **a,listC *l,list *g)
 }
 
 //initailisation de l'arbre de LBIP
-void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c)
+void prim_tree_lbip(int node,arbre **a, list *N1, list2 *N2, double alpha, double c)
 {
     listC *connect=Nullptr(listC);
     list_to_listC(&connect,N1,node);

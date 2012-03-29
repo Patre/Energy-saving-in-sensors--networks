@@ -6,21 +6,10 @@
 #include <list_de_listNodes.h>
 #include <conversion.h>
 #include <graphe.h>
+#include <time_wsnet.h>
+#include <math.h>
 
-
-#ifndef DEF_NODEDATA
-#define DEF_NODEDATA
-struct nodedata {
-	int overhead;
-	listeNodes* oneHopNeighbourhood;
-	listeNodes* twoHopNeighbourhood;
-	arbre* BIP_tree;
-	double radius;
-	//list2N* NodesV1; // l'ensemble des connections du graphe
-	//list_PACKET *paquets; // packet recus
-	int nbr_evenement; // stats
-};
-#endif
+#include "structures.h"
 
 
 void computeBIPtree2Hop(call_t *c);
@@ -28,23 +17,18 @@ void computeGrapheFromNeighbours(call_t *c, graphe* g);
 
 void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
 
-//void init_bip_tree(call_t *c, void *args);
-
 /**
  * \brief Return the tx antenna gain towards the destination direction.
  * \param c should be {antenna id, node id, -1}.
  * \param position the destination position.
  * \return The antenna gain in dB.
  **/
-//double   calcul_energie(element A,element B,double alpha,double c);
+double   calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
 
-/**
- * \brief Return the tx antenna gain towards the destination direction.
- * \param c should be {antenna id, node id, -1}.
- * \param position the destination position.
- * \return The antenna gain in dB.
- **/
-//void prim_tree(list *nodesDemarrage, arbre **arbreResult, listC *liste_connexion, list *nodes_de_liste_connexion);
+/*void get_LBIP_init(call_t *c, double eps);
+void prim_tree(int node,arbre **a,listC *l,list *g);
+void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c);
+void init_lbip_tree(call_t *c, void *args);*/
 
 #endif // INIT_PROTOCOLE_H
 

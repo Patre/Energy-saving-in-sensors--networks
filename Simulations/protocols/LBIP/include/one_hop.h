@@ -7,7 +7,7 @@
 #include <time_wsnet.h>
 
 #include "two_hop.h"
-
+#include "structures.h"
 
 
 typedef struct packet_hello {

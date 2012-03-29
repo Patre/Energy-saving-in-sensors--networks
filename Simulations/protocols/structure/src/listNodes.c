@@ -198,7 +198,7 @@ void listeNodes_union(listeNodes **l1,listeNodes *l2)
 {
         while(l2)
         {
-                if(!listeNodes_recherche(*l1,l2->values.node))	listeNodes_insert(l1,l2->values.node);
+                if(!listeNodes_recherche(*l1,l2->values.node))	listeNodes_insert_element(l1,l2->values);
                 l2=l2->suiv;
         }
 }

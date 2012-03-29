@@ -9,7 +9,8 @@
 
 #include <time_wsnet.h>
 
-#include "lbip.h"
+#include "BIP_tree_utils.h"
+#include "structures.h"
 #include "one_hop.h"
 
 
@@ -61,7 +62,7 @@ int setnode(call_t *c, void *params) {
     DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
-	printf("Node %d at ( %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
     return 0;
 }
@@ -75,6 +76,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
+    entitydata->range     = 30.0;
     //entitydata->debut   = time_seconds_to_nanos(3);
     //entitydata->periodEVE = time_seconds_to_nanos(1);
 	
@@ -95,6 +97,12 @@ int init(call_t *c, void *params) {
 		
         if (!strcmp(param->key, "eps")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
+                goto error;
+            }
+        }
+		
+        if (!strcmp(param->key, "range")) {
+            if (get_param_double(param->value, &(entitydata->range))) {
                 goto error;
             }
         }
@@ -262,7 +270,7 @@ void tx( call_t *c , packet_t * packet )
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
     TX(&c0,packet);
 	
-	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->src);
+	printf("BIP - Paquet de type %d envoye de %d a %d\n", data->type, data->src, data->dst);
 }
 
 /* *********************************************** */
@@ -271,7 +279,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     struct nodedata *nodedata = get_node_private_data(c);
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
-	destination_t destination;
 
 	
     header->type = APP;
@@ -280,7 +287,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	header->askedToRedirect = Nullptr(listeNodes);
 	header->needsToBeCovered = Nullptr(listeNodes);
 	
-	if(destination.id == BROADCAST_ADDR)
+	if(dst->id == BROADCAST_ADDR)
 	{
 		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
 		{
@@ -293,7 +300,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 		// TODO
 	}
 	
-    return SET_HEADER(&c0, packet, &destination);
+    return SET_HEADER(&c0, packet, &dst);
 }
 
 int get_header_size( call_t * c )

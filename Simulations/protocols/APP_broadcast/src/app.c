@@ -178,7 +178,7 @@ int callmeback(call_t *c, void *args) {
     call_t c0 = {down[0], c->node};
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
-    packet_t *packet = packet_alloc(c, nodedata->overhead[0] + sizeof(struct packet_header));
+    packet_t *packet = packet_create(c, nodedata->overhead[0] + sizeof(struct packet_header), -1);
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
 
     header->source = c->node;
