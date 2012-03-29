@@ -1,0 +1,52 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = ../rapport.tex
+
+\chapter{Analye et reflexion}\label{Analyse_et_reflexion}
+
+%\pagestyle{plain} 	%numéro de page centré en pieds de page
+
+%\setcounter{tocdepth}{4}     % Dans la table des matieres
+
+
+\section{Reflexions sur la duree de vie}
+\subsection{Durée de vie du reseau, problématique}
+\subsection{Differentes définitions}
+Les definitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich2009},\cite{Baert2006},\cite{Elleithy2011}.
+
+\begin{enumerate}
+ 
+\item Energy-Efficiency (EE)
+\item Time To First Fail (TTFF)
+\item Operative Nodes Percentage (ONP)
+\item Monitored Interest Points Percentage (MIPP)
+\item The time there is at least a certain fraction $\beta$ of surviving nodes in the network 
+\item The time until all nodes have been drained of their energy 
+\item K-coverage: the time the area of interest is covered by at least k nodes 
+\item 100 $\textperthousand$
+a. The time each target is covered by at least one node  ;
+b. The time the whole area is covered by at least one node  ;
+
+\item$\alpha$-coverage
+a. The accumulated time during which at least $\alpha$ portion of the region is covered by
+at least one node ;
+b. The time until the coverage drops below a predefined threshold $\alpha$ (until last drop
+below threshold)  ;
+c. The continuous operational time of the system before either the coverage or
+delivery ratio first drops below a predefined threshold ;
+
+\item The number of successful data-gathering trips
+\item The number of total transmitted messages 
+\item The percentage of nodes that have a path to the base station
+\item Expectation of the entire interval during which the probability of guaranteeing connectivity and k-coverage simultaneously is at least $\alpha$
+\item The time until connectivity or coverage are lost
+\item The time until the network no longer provides an acceptable event detection ratio
+\item The time period during which the network continuously satisfies the application requirement
+\item min(t1, t2, t3)
+with t1: time for cardinality of largest connected component of
+communication graph to drop below c1 $\times$ n(t), t2: time for n(t) to drop below c2 $\times$ n, t3:
+time for the covered volume to drop below c3 $\times$ l d .
+\end{enumerate}
+
+\subsection{Comparatif}
+
+\section{Nouvelle approche du broadcast}
