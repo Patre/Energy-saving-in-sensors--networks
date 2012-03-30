@@ -50,12 +50,48 @@ int broadcast_hello(call_t *c, void *args) {
 
 int rx_hello(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
+	struct protocoleData *entitydata = get_entity_private_data(c);
 	
     packet_hello *hello = (packet_hello *) (packet->data + nodedata->overhead);
 	
-    // ajout du voisin
+    // ajout du voisin dans la liste du 1-voisinage
     if(!listeNodes_recherche(nodedata->oneHopNeighbourhood,hello->src))
         listeNodes_insert_values(&nodedata->oneHopNeighbourhood,hello->src,hello->src_pos.x, hello->src_pos.y, hello->src_pos.z);
+	
+	// ajout de l'arete dans le graphe
+	double distance, cout;
+	addVertex(nodedata->g2hop, hello->src);
+	cout = calcul_energie(*get_node_position(c->node), 
+						  hello->src_pos, 
+						  entitydata->alpha, 
+						  entitydata->c, &distance);
+	addEdgeUndirected(nodedata->g2hop, c->node, hello->src, cout);
+	
+	
+	
+	// ajout des liens entre le nouveau voisin et le reste du 1-voisinage
+	listeNodes* tmp = nodedata->oneHopNeighbourhood;
+	position_t pos;
+	while(tmp != 0)
+	{
+		if(tmp->values.node != hello->src)
+		{
+			pos.x = tmp->values.x;
+			pos.y = tmp->values.y;
+			pos.z = tmp->values.z;
+			
+			cout = calcul_energie(pos, 
+								  hello->src_pos, 
+								  entitydata->alpha, 
+								  entitydata->c, 
+								  &distance);
+			
+			if(distance < entitydata->range)
+				addEdgeUndirected(nodedata->g2hop, tmp->values.node, hello->src, cout);
+		}
+		tmp = tmp->suiv;
+	}
+	
 	
 	packet_dealloc(packet);
 	

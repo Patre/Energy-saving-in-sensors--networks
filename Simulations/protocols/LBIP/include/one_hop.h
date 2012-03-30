@@ -6,6 +6,7 @@
 #include <listNodes.h>
 #include <time_wsnet.h>
 
+#include "BIP_tree_utils.h"
 #include "two_hop.h"
 #include "structures.h"
 

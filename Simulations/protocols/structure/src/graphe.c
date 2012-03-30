@@ -27,11 +27,14 @@ void deleteGraphe(graphe* g)
 
 void addVertex(graphe* g, int labelSrc)
 {
-	g->nbSommets++;
-	g->listeVoisins = realloc(g->listeVoisins, g->nbSommets*sizeof(voisin*));
-	g->listeVoisins[g->nbSommets-1] = 0;
-	g->sommets = realloc(g->sommets, g->nbSommets*sizeof(int));
-	g->sommets[g->nbSommets-1] = labelSrc;
+	if(getNumFromLabel(g, labelSrc) == -1)
+	{
+		g->nbSommets++;
+		g->listeVoisins = realloc(g->listeVoisins, g->nbSommets*sizeof(voisin*));
+		g->listeVoisins[g->nbSommets-1] = 0;
+		g->sommets = realloc(g->sommets, g->nbSommets*sizeof(int));
+		g->sommets[g->nbSommets-1] = labelSrc;
+	}
 }
 
 void addEdgeDirected(graphe* g, int labelU, int labelV, double cout)

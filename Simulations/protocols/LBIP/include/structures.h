@@ -7,6 +7,7 @@
 #include <list_de_listNodes.h>
 #include <list_paquet.h>
 #include <arbre.h>
+#include <graphe.h>
 
 
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
@@ -16,6 +17,7 @@ struct nodedata {
 	int overhead;
 	listeNodes* oneHopNeighbourhood;
 	listeNodes* twoHopNeighbourhood;
+	graphe* g2hop;
 	arbre* BIP_tree;
 	double radius;
 	//list2N* NodesV1; // l'ensemble des connections du graphe

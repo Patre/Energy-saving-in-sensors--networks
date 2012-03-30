@@ -7,116 +7,8 @@ void computeBIPtree2Hop(call_t *c)
 	struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
 	
-	graphe g;
-	initGraphe(&g, c->node);
-	computeGrapheFromNeighbours(c, &g);
-	printf("Graphe pour calculer le BIP tree.\n");
-	afficherGraphe(&g);
 	nodedata->radius = entitydata->range;
-	
-	deleteGraphe(&g);
-}
-
-void computeGrapheFromNeighbours(call_t *c, graphe* g)
-{
-	struct nodedata *nodedata = get_node_private_data(c);
-	struct protocoleData *entitydata = get_entity_private_data(c);
-	int i;
-	double cout, distance;
-	position_t pos, pos2;
-	
-	listeNodes* oneHop = nodedata->oneHopNeighbourhood;
-	listeNodes* twoHop = nodedata->twoHopNeighbourhood;
-	
-	
-	/* ajout du 1-voisinage de ce noeud dans le graphe */
-	listeNodes* tmp = oneHop;
-	listeNodes* tmp2 = oneHop;
-	
-	while(tmp != 0)
-	{
-		//printf("Comparaison de %d avec %d\n", c->node, tmp->values.node);
-		addVertex(g, tmp->values.node);
-		pos.x = tmp->values.x;
-		pos.y = tmp->values.y;
-		pos.z = tmp->values.z;
-		cout = calcul_energie(*get_node_position(c->node), 
-							  pos, 
-							  entitydata->alpha, 
-							  entitydata->c, &distance);
-		//printf("distance entre %d et %d : %.1lf\n", c->node, tmp->values.node, distance);
-		addEdgeUndirected(g, c->node, tmp->values.node, cout);
-		
-		tmp = tmp->suiv;
-	}
-	
-	tmp = oneHop;
-	/* ajout des liens entre ce 1-voisinage */
-	while(tmp != 0)
-	{
-		pos.x = tmp->values.x;
-		pos.y = tmp->values.y;
-		pos.z = tmp->values.z;
-		tmp2 = oneHop;
-		while(tmp2 != 0)
-		{
-			//printf("Comparaison de %d avec %d\n", tmp->values.node, tmp2->values.node);
-			if(tmp->values.node != tmp2->values.node)
-			{
-				pos2.x = tmp2->values.x;
-				pos2.y = tmp2->values.y;
-				pos2.z = tmp2->values.z;
-				
-				cout = calcul_energie(pos, 
-									  pos2, 
-									  entitydata->alpha, 
-									  entitydata->c, &distance);
-				
-				//printf("distance entre %d et %d : %.1lf\n", tmp->values.node, tmp2->values.node, distance);
-				if(distance < entitydata->range)
-					addEdgeUndirected(g, tmp->values.node, tmp2->values.node, cout);
-			}
-			tmp2 = tmp2->suiv;
-		}
-		
-		tmp = tmp->suiv;
-	}
-	
-	/* ajout du 2-voisinage de ce noeud dans le graphe */
-	tmp = oneHop;
-	while(tmp != 0)
-	{
-		pos.x = tmp->values.x;
-		pos.y = tmp->values.y;
-		pos.z = tmp->values.z;
-		//printf("(%.1lf,%.1lf,%.1lf)\n", pos.x, pos.y, pos.z);
-		tmp2 = twoHop;
-		while(tmp2 != 0)
-		{
-			if(tmp->values.node != tmp2->values.node)
-			{
-				if(getNumFromLabel(g, tmp2->values.node) == -1)
-					addVertex(g, tmp2->values.node);
-				pos2.x = tmp2->values.x;
-				pos2.y = tmp2->values.y;
-				pos2.z = tmp2->values.z;
-				//printf("(%.1lf,%.1lf,%.1lf)\n", pos2.x, pos2.y, pos2.z);
-				
-				cout = calcul_energie(pos, 
-									  pos2, 
-									  entitydata->alpha, 
-									  entitydata->c, 
-									  &distance);
-				
-				//printf("distance entre %d et %d : %.1lf\n", tmp->values.node, tmp2->values.node, distance);
-				if(distance < entitydata->range)
-					addEdgeUndirected(g, tmp->values.node, tmp2->values.node, cout);
-			}
-			tmp2 = tmp2->suiv;
-		}
-		
-		tmp = tmp->suiv;
-	}
+	prim(nodedata->g2hop, c->node);
 }
 
 void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered)
@@ -142,15 +34,7 @@ double calcul_energie(position_t A, position_t B, double alpha, double c, double
     return par1+c;
 }
 
-/*void get_LBIP_init(call_t *c, double eps)
-{
-    int count=get_node_count()*2;
-    uint64_t fin_two_hop=count*time_seconds_to_nanos(eps)+time_seconds_to_nanos(eps);
-    uint64_t at=fin_two_hop;
-    scheduler_add_callback(at, c, init_lbip_tree, NULL);
-}
-
-void prim_tree(int node,arbre **a,listC *l,list *g)
+/*void prim_tree(int node,arbre **a,listC *l,list *g)
 {
 	
     int nbrNode=list_taille(g);

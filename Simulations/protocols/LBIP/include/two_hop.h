@@ -7,6 +7,7 @@
 #include <time_wsnet.h>
 #include <arbre.h>
 
+#include "BIP_tree_utils.h"
 #include "structures.h"
 
 

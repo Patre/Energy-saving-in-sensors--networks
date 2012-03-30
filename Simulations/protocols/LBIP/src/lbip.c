@@ -43,6 +43,13 @@ void init_files()
 	
 }
 
+int destroy(call_t *c) {
+    return 0;
+}
+int ioctl(call_t *c, int option, void *in, void **out) {
+    return 0;
+}
+
 // initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
@@ -50,6 +57,8 @@ int setnode(call_t *c, void *params) {
 	nodedata->overhead = -1;
     nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
 	nodedata->twoHopNeighbourhood = Nullptr(listeNodes);
+	nodedata->g2hop = malloc(sizeof(graphe));
+	initGraphe(nodedata->g2hop, c->node);
 	nodedata->BIP_tree = Nullptr(arbre);
     //arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
 	//nodedata->paquets = Nullptr(list_PACKET); //les packets
@@ -213,54 +222,6 @@ void rx(call_t *c, packet_t *packet) {
 	}
 }
 
-/* ************************************************** */
-/* ************************************************** */
-//LA FIN DE LA SUMULATION
-int unsetnode(call_t *c) {
-    struct nodedata *nodedata = get_node_private_data(c);
-	printf("Unset node %d\n",c->node);
-	
-    DEBUG; /* Voisinage 1-hop */
-	printf("\t1-voisinage : ");
-	listeNodes_affiche(nodedata->oneHopNeighbourhood);
-    
-	
-    DEBUG;/* Voisinage 2-hop */
-    printf("\t2-voisinage : ");
-	listeNodes_affiche(nodedata->twoHopNeighbourhood);
-	
-	
-    DEBUG; /*ARBRE DE LBIP*/
-    /*printf("\tARBRE DE BIP : \n");
-	arbre_affiche(nodedata->tree_BIP);*/
-	
-    DEBUG;  //PAQUETs
-    //printf("\tPaquets : %d ->",c->node);
-    //list_PACKET_affiche(nodedata->paquets);//*/
-	
-	
-	
-    //liberation d'espace memoire
-    //PAR USER PROTOCOLE
-	//list_PACKET_detruire(&nodedata->paquets);
-    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
-	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
-    //arbre_detruire(&nodedata->BIP_tree);
-	
-    free(nodedata);
-	printf("\n");
-    return 0;
-}
-
-/* ************************************************** */
-/* ************************************************** */
-int destroy(call_t *c) {
-    return 0;
-}
-int ioctl(call_t *c, int option, void *in, void **out) {
-    return 0;
-}
-
 void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
@@ -327,6 +288,46 @@ int get_header_real_size( call_t * c )
     }
 
     return nodedata->overhead + sizeof(packet_PROTOCOLE);
+}
+
+//LA FIN DE LA SUMULATION
+int unsetnode(call_t *c) {
+    struct nodedata *nodedata = get_node_private_data(c);
+	printf("Unset node %d\n",c->node);
+	
+    DEBUG; /* Voisinage 1-hop */
+	printf("\t1-voisinage : ");
+	listeNodes_affiche(nodedata->oneHopNeighbourhood);
+    
+	
+    DEBUG;/* Voisinage 2-hop */
+    printf("\t2-voisinage : ");
+	listeNodes_affiche(nodedata->twoHopNeighbourhood);
+	
+	
+    DEBUG; /*ARBRE DE LBIP*/
+    /*printf("\tARBRE DE BIP : \n");
+	 arbre_affiche(nodedata->tree_BIP);*/
+	
+    DEBUG;  //PAQUETs
+    //printf("\tPaquets : %d ->",c->node);
+    //list_PACKET_affiche(nodedata->paquets);//*/
+	
+	afficherGraphe(nodedata->g2hop);
+	
+	
+    //liberation d'espace memoire
+    //PAR USER PROTOCOLE
+	//list_PACKET_detruire(&nodedata->paquets);
+    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
+	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
+    //arbre_detruire(&nodedata->BIP_tree);
+	deleteGraphe(nodedata->g2hop);
+	free(nodedata->g2hop);
+	
+    free(nodedata);
+	printf("\n");
+    return 0;
 }
 
 routing_methods_t methods = {rx, tx, set_header, get_header_size, get_header_real_size};

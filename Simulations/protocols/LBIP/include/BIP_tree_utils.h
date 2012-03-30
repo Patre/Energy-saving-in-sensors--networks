@@ -13,7 +13,6 @@
 
 
 void computeBIPtree2Hop(call_t *c);
-void computeGrapheFromNeighbours(call_t *c, graphe* g);
 
 void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
 
@@ -25,8 +24,7 @@ void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
  **/
 double   calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
 
-/*void get_LBIP_init(call_t *c, double eps);
-void prim_tree(int node,arbre **a,listC *l,list *g);
+/*void prim_tree(int node,arbre **a,listC *l,list *g);
 void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c);
 void init_lbip_tree(call_t *c, void *args);*/
 

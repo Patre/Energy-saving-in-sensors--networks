@@ -54,6 +54,7 @@ int broadcast_hello2(call_t *c, void *args) {
 
 int rx_two_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
+	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_hello2 *hello = (packet_hello2*) (packet->data + nodedata->overhead);
 	
     //recuperer le support de communication MAC
@@ -64,6 +65,40 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 	listeNodes_union(&(nodedata->twoHopNeighbourhood), hello->oneHopNeighbourhood);
 	listeNodes_intersection(&(nodedata->twoHopNeighbourhood), nodedata->oneHopNeighbourhood);
 	listeNodes_delete(&(nodedata->twoHopNeighbourhood), c->node);
+	
+	/* ajout du 2-voisinage de ce noeud dans le graphe */
+	double cout, distance;
+	position_t pos, pos2;
+	listeNodes* tmp = nodedata->oneHopNeighbourhood;
+	listeNodes* tmp2;
+	while(tmp != 0)
+	{
+		pos.x = tmp->values.x;
+		pos.y = tmp->values.y;
+		pos.z = tmp->values.z;
+		tmp2 = nodedata->twoHopNeighbourhood;
+		while(tmp2 != 0)
+		{
+			if(tmp->values.node != tmp2->values.node)
+			{
+				addVertex(nodedata->g2hop, tmp2->values.node);
+				pos2.x = tmp2->values.x;
+				pos2.y = tmp2->values.y;
+				pos2.z = tmp2->values.z;
+				
+				cout = calcul_energie(pos, 
+									  pos2, 
+									  entitydata->alpha, 
+									  entitydata->c, 
+									  &distance);
+				if(distance < entitydata->range)
+					addEdgeUndirected(nodedata->g2hop, tmp->values.node, tmp2->values.node, cout);
+			}
+			tmp2 = tmp2->suiv;
+		}
+		
+		tmp = tmp->suiv;
+	}
 	
     //liberer le packet
     packet_dealloc(packet);
