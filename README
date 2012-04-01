@@ -16,5 +16,18 @@ RECPTION  rx*duration
 IDLE      idle*duration  (JAMAIS appellé je ne sais pas pk (lol))
 
 
+ET pour La sortie c'est un fichier text qui contient tout les modificication de l'energie au sein de chaque Noeud
+
+
+alors pour il suffit de parser le fichier de sortie pour générer les courbe
+
+Syntaxe de fichier de sortie
+noued_id     type(S:envoi, R:recpetion, I:idle)       time_de_calcule   l'energie_a_cette temps
+
+
+
+
+
+
 
 ********************************************************** 
