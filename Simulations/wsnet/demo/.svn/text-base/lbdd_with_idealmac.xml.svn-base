@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://worldsens.citi.insa-lyon.fr">
+
+
+<!-- == Worldsens ===================================================== -->
+<simulation nodes="1400" duration="100s" x="500" y="500" z="0"/>
+
+
+<!-- == Entities ====================================================== -->
+
+
+<!-- == PROPAGATION, INTERFERENCES and MODULATION ===================== -->
+<entity name="range" library="propagation_freespace" >
+</entity>
+
+<entity name="interf" library="interferences_none">
+</entity>
+
+<entity name="none" library="modulation_none">
+</entity>
+
+<!-- == RADIO and ANTENNA ============================================ -->
+<entity name="omnidirectionnal" library="antenna_omnidirectionnal" >
+</entity>
+
+<entity name="radio" library="radio_half1d" >
+</entity>
+
+<!-- == MAC ===================================================== -->
+<entity name="mac" library="mac_idealmac" >
+  <init range="40"/>
+</entity>
+
+<!-- == APPLICATION ===================================================== -->
+
+<entity name="sensor" library="application_lbdd" >
+<init line-width="60" group-size="60" replication="0"/>
+<default hello-start="0" hello-period="1s" hello-timeout="1000s" hello-nbr="2" />
+</entity>
+
+<entity name="source" library="application_data_d_source" >
+<default data-start="10s" data-period="2s" metadata="1"/>
+</entity>
+
+<entity name="sink" library="application_data_d_sink" >
+<default request-start="10s" request-period="3s" metadata="1"/>
+</entity>
+
+
+<!-- == MOBILITY ===================================================== -->
+<entity name="position" library="mobility_static" >
+  <default x="random" y="random" z="random"/>
+</entity>
+
+<entity name="mobile" library="mobility_billiard" >
+  <init max-speed="30" />
+  <default x="random" y="random" z="0" speed="20"/>
+</entity>
+
+<!-- == Environment ===================================================== -->
+<environment>
+<propagation entity="range" range="0"/>
+<interferences entity="interf"/>
+<modulation entity="none"/>
+</environment>
+
+
+<!-- == Bundle ===================================================== -->
+<bundle name="sensor" worldsens="false" default="true" birth="0">
+  <mobility entity="position"/>
+
+  <antenna entity="omnidirectionnal">
+    <up entity="radio"/>
+  </antenna>
+
+  <with entity="radio">
+    <up entity="mac"/>
+    <down entity="omnidirectionnal"/>
+  </with>
+
+  <with entity="mac">
+    <up entity="sensor"/>
+    <down entity="radio"/>
+  </with>
+
+  <with entity="sensor">
+    <down entity="mac"/>
+  </with>
+
+</bundle>
+
+<bundle name="source" worldsens="false" default="false" birth="0">
+  <mobility entity="mobile"/>
+
+  <antenna entity="omnidirectionnal">
+    <up entity="radio"/>
+  </antenna>
+
+  <with entity="radio">
+    <up entity="mac"/>
+    <down entity="omnidirectionnal"/>
+  </with>
+
+  <with entity="mac">
+    <up entity="source"/>
+    <down entity="radio"/>
+  </with>
+
+  <with entity="source">
+    <down entity="mac"/>
+  </with>
+
+</bundle>
+
+
+<bundle name="sink" worldsens="false" default="false" birth="0">
+  <mobility entity="mobile"/>
+
+  <antenna entity="omnidirectionnal">
+    <up entity="radio"/>
+  </antenna>
+
+  <with entity="radio">
+    <up entity="mac"/>
+    <down entity="omnidirectionnal"/>
+  </with>
+
+  <with entity="mac">
+    <up entity="sink"/>
+    <down entity="radio"/>
+  </with>
+
+  <with entity="sink">
+    <down entity="mac"/>
+  </with>
+
+</bundle>
+
+
+<node id="0" as="source"/>
+<node id="1" as="sink"/>
+
+</worldsens>

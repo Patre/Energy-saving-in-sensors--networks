@@ -184,14 +184,20 @@ int callmeback(call_t *c, void *args) {
     header->source = c->node;
     header->seq    = nodedata->nbr_evenement++;
 
+    printf("size of packet %d \n",packet->real_size);
     if (SET_HEADER(&c0, packet, &destination) == -1) {
             packet_dealloc(packet);
 	    return -1;
     }
-        
-	printf("APP - broadcast paquet depuis %d\n", header->source);
+
+    printf("size of packet %d \n",packet->real_size);
+
+    printf("APP - broadcast paquet depuis %d at %.2lf\n", header->source,get_time_now_second());
     TX(&c0, packet);
-    
+
+    printf("size of packet %d \n",packet->real_size);
+
+
 
     /* we schedule a new callback after actualtime+period */
     if(c->node == 0)
@@ -211,7 +217,7 @@ int callmeback(call_t *c, void *args) {
 void rx(call_t *c, packet_t *packet) {
 	struct nodedata *nodedata = get_node_private_data(c);
 	 struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
-	printf("APP - Paquet recu par %d depuis %d\n", c->node, header->source);
+        //printf("APP - Paquet recu par %d depuis %d\n", c->node, header->source);
     /* else dealloc the packet */
     packet_dealloc(packet);
 }

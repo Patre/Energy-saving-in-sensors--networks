@@ -33,6 +33,8 @@ struct nodedata {
 	
 	//ajouter par rabah
 	int nbr_evenement;
+
+
 };
 
 /* ************************************************** */
@@ -58,7 +60,7 @@ struct _packet_bip
     position_t src_pos;
     int     seq;                //la sequence de paquet
     int     redirected_by;      //le noeud qui a redirigé le paquet
-	nodeid_t dst;
+    nodeid_t dst;
     position_t dst_pos;
 	
     /**************************************************/

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sed -e 's,[@]filename[@],'$1',g' -e  's,[@]outputname[@],'$2',g'  -e  's,[@]protocol[@],'$3',g'  < /usr/local/wsnet-2.0/share/activenodes.in | gnuplot
+
+

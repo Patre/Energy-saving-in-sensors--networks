@@ -1,0 +1,16 @@
+set term png
+set output "@outputname@"
+
+set xrange [*:*]
+set yrange [*:*]
+
+set xlabel "Time (s)"
+set ylabel "Number of living nodes"
+
+set grid 
+
+set xtics 10
+
+set style line 1 lt 1 lw 4
+
+plot '@filename@' using ($1*0.001):2 title "@protocol@" with steps ls 1

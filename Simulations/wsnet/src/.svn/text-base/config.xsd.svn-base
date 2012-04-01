@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://worldsens.citi.insa-lyon.fr"
+            xmlns="http://worldsens.citi.insa-lyon.fr"
+            xmlns:w="http://worldsens.citi.insa-lyon.fr"
+            elementFormDefault="qualified"
+            version="1.0">
+
+  <xsd:element name="worldsens">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element ref="simulation" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="entity" minOccurs="1" maxOccurs="unbounded"/>
+        <xsd:element ref="environment" minOccurs="1" maxOccurs="1"/>
+        <xsd:element ref="bundle" minOccurs="1" maxOccurs="unbounded"/>
+        <xsd:element ref="node" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- entity name is a key -->
+    <xsd:key name="entity_id">
+      <xsd:selector xpath="w:entity"/>
+      <xsd:field    xpath="@name"/>
+    </xsd:key>
+    <xsd:keyref name="environment_propagation_ref" refer="entity_id">
+      <xsd:selector xpath="w:environment/w:propagation"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="environment_interferences_ref" refer="entity_id">
+      <xsd:selector xpath="w:environment/w:interferences"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="environment_noise_ref" refer="entity_id">
+      <xsd:selector xpath="w:environment/w:noise"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="environment_modulation_ref" refer="entity_id">
+      <xsd:selector xpath="w:environment/w:modulation"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="environment_with_ref" refer="entity_id">
+      <xsd:selector xpath="w:environment/w:with"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+
+    <xsd:keyref name="mobility_bundle_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:mobility"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="energy_bundle_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:energy"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="antenna_bundle_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:antenna"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="antenna_up_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:antenna/w:up"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="entity_bundle_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:with"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="entity_up_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:with/w:up"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+    <xsd:keyref name="entity_down_ref" refer="entity_id">
+      <xsd:selector xpath="w:bundle/w:with/w:down"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+
+    <xsd:keyref name="entity_node_ref" refer="entity_id">
+      <xsd:selector xpath="w:node/w:for"/>
+      <xsd:field xpath="@entity"/>
+    </xsd:keyref>
+
+    <!-- bundle name is a key -->
+    <xsd:key name="bundle_id">
+      <xsd:selector xpath="w:bundle"/>
+      <xsd:field    xpath="@name"/>
+    </xsd:key>
+    <xsd:keyref name="bundle_ref" refer="bundle_id">
+      <xsd:selector xpath="w:node"/>
+      <xsd:field xpath="@as"/>
+    </xsd:keyref>
+
+    <!-- node id is unique -->
+    <xsd:unique name="node_id">
+      <xsd:selector xpath="w:node"/>
+      <xsd:field    xpath="@id"/>
+    </xsd:unique>
+  </xsd:element>
+
+
+  <xsd:element name="simulation">
+    <xsd:complexType>
+      <xsd:attribute name="nodes"       type="nodeType" use="required"/>
+      <xsd:attribute name="duration"    type="xsd:string" use="optional" default="0"/>
+      <xsd:attribute name="x"           type="xsd:unsignedLong" use="required"/>
+      <xsd:attribute name="y"           type="xsd:unsignedLong" use="required"/>
+      <xsd:attribute name="z"           type="xsd:unsignedLong" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="entity">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="init" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="default" minOccurs="0" maxOccurs="1"/>
+      </xsd:sequence>
+      <xsd:attribute name="name"  type="xsd:string" use="required"/>
+      <xsd:attribute name="library" type="xsd:string" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="environment">
+    <xsd:complexType>
+      <xsd:sequence>
+       <xsd:element name="propagation" minOccurs="1" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+	    <xsd:attribute name="range" type="xsd:unsignedLong" use="optional" default="0"/>
+          </xsd:complexType>
+        </xsd:element>
+
+       <xsd:element name="interferences" minOccurs="1" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+       <xsd:element name="noise" minOccurs="0" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+       <xsd:element name="monitoring" minOccurs="0" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="modulation" minOccurs="1" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="with" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+
+  <xsd:element name="bundle">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="mobility" minOccurs="1" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="default" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:anyAttribute processContents="skip"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>         
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="energy" minOccurs="0" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="default" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:anyAttribute processContents="skip"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>         
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="antenna" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="up"      minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:attribute name="entity" type="xsd:string" use="required"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="default" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:anyAttribute processContents="skip"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="with" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="up"      minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:attribute name="entity" type="xsd:string" use="required"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="down"    minOccurs="0" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:attribute name="entity" type="xsd:string" use="required"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="default" minOccurs="0" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:anyAttribute processContents="skip"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+
+      <xsd:attribute name="name"  type="xsd:string" use="required"/>
+      <xsd:attribute name="default" type="xsd:boolean" use="optional" default="false"/>
+      <xsd:attribute name="worldsens" type="xsd:boolean" use="optional" default="false"/>
+      <xsd:attribute name="birth" type="xsd:string" use="optional" default="0"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="node">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="for" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:attribute name="entity" type="xsd:string" use="required"/>
+            <xsd:anyAttribute processContents="skip"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="nodeType" use="required"/>
+      <xsd:attribute name="as" type="xsd:string" use="optional"/>
+      <xsd:attribute name="birth" type="xsd:string" use="optional" default="0"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:simpleType name="nodeType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0"/>
+      <xsd:maxInclusive value="10000000"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>
