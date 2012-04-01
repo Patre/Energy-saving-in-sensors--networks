@@ -97,7 +97,7 @@ int setnode(call_t *c, void *params) {
         }
     }
     
-    ENERGY("%d %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+    ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     nodedata->initial = nodedata->energy;
     set_node_private_data(c, nodedata);
@@ -132,7 +132,7 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
     nodedata->energy -= duration * nodedata->tx * txdBm;
 
     if(nodedata->debug)
-        ENERGY("%d %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        ENERGY("%d S %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
 
     if (nodedata->energy <= 0) {
@@ -148,7 +148,7 @@ void consume_rx(call_t *c, uint64_t duration) {
 
 
     if(nodedata->debug)
-        ENERGY("%d %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
@@ -162,7 +162,7 @@ void consume_idle(call_t *c, uint64_t duration) {
     nodedata->energy -= duration * nodedata->idle; 
 
     if(nodedata->debug)
-        ENERGY("%d %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
