@@ -131,8 +131,12 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->tx * txdBm;
 
+
+    ENERGY("%d S %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+
     if(nodedata->debug)
-        ENERGY("%d S %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        printf("ENVOI (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->tx * txdBm,nodedata->energy);
+
 
 
     if (nodedata->energy <= 0) {
@@ -146,9 +150,10 @@ void consume_rx(call_t *c, uint64_t duration) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->rx; 
 
-
+    ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
     if(nodedata->debug)
-        ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        printf("RECP (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->rx,nodedata->energy);
+
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
@@ -161,8 +166,10 @@ void consume_idle(call_t *c, uint64_t duration) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->idle; 
 
+    ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+
     if(nodedata->debug)
-        ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+        printf("IDLE (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->idle,nodedata->energy);
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;

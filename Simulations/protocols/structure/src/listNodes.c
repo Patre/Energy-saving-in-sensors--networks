@@ -102,6 +102,27 @@ int listeNodes_get(listeNodes *l,int index)
                 return l->values.node;
         }
 }
+element listeNodes_getElement(listeNodes *listeNodese,int val)
+{
+    if(!listeNodes_recherche(listeNodese,val))
+    {
+        element inter;
+        inter.node=-1;
+        inter.x=-1;
+        inter.y=-1;
+        inter.z=-1;
+        return inter;
+    }
+    else
+    {
+        while(listeNodese)
+        {
+            if(listeNodese->values.node==val) return listeNodese->values;
+            listeNodese=listeNodese->suiv;
+        }
+    }
+}
+
 //  ***********************DESTRUCTION**************************
 void listeNodes_detruire(listeNodes **l)
 {

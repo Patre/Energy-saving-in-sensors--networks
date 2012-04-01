@@ -56,13 +56,11 @@ struct protocoleData {
 struct _packet_bip
 {
     int     type;  
-    nodeid_t src;
+    int     src;
     position_t src_pos;
     int     seq;                //la sequence de paquet
     int     redirected_by;      //le noeud qui a redirigé le paquet
-    nodeid_t dst;
-    position_t dst_pos;
-	
+
     /**************************************************/
     list    *destinations;            //les noeuds de destination de packet
     arbre   *pere_arbre;              //ARBRE du pere (redirected_by)

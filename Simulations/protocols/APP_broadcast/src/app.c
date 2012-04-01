@@ -8,6 +8,7 @@
 #include <include/modelutils.h>
 
 #include <time_wsnet.h>
+#include <list_paquet.h>
 /* ************************************************** */
 /* ************************************************** */
 
@@ -28,6 +29,11 @@ model_t model =  {
 /* Node private data */
 struct nodedata {
   int *overhead;
+
+  //Liste of packet Recus
+  list_PACKET *paquets;
+
+  //Nombre d'evenement
   int nbr_evenement;
 };
 
@@ -83,7 +89,14 @@ int init(call_t *c, void *params) {
           }
       }
   }
- 
+
+  if(c->node == 0)
+  {
+      get_node_position(c)->x=50;
+      get_node_position(c)->y=50;
+      get_node_position(c)->z=0;
+  }
+
   set_entity_private_data(c, entitydata);
   return 0;
 
@@ -109,6 +122,7 @@ int setnode(call_t *c, void *params) {
 
     /* default values */
     nodedata->nbr_evenement = 0;
+    nodedata->paquets = Nullptr(list_PACKET);
 
 
     /* alloc overhead memory */
@@ -126,7 +140,13 @@ int setnode(call_t *c, void *params) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
+    //DEBUG PAQUETs
+    printf("\tPaquets : %d ->",c->node);
+    list_PACKET_affiche(nodedata->paquets);//*/
 
+
+
+    list_PACKET_detruire(&nodedata->paquets);
     if (nodedata->overhead) {
         free(nodedata->overhead);
     }
@@ -174,28 +194,28 @@ int callmeback(call_t *c, void *args) {
     struct entitydata *entitydata =get_entity_private_data(c);
 
     /* broadcast a new data packet */
-    entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
-
-    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     packet_t *packet = packet_create(c, nodedata->overhead[0] + sizeof(struct packet_header), -1);
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
 
     header->source = c->node;
     header->seq    = nodedata->nbr_evenement++;
 
-    printf("size of packet %d \n",packet->real_size);
+
+
+
+    entityid_t *down = get_entity_links_down(c);
+    call_t c0 = {down[0], c->node};
+
+    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
             packet_dealloc(packet);
 	    return -1;
     }
 
-    printf("size of packet %d \n",packet->real_size);
 
-    printf("APP - broadcast paquet depuis %d at %.2lf\n", header->source,get_time_now_second());
+    printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
     TX(&c0, packet);
 
-    printf("size of packet %d \n",packet->real_size);
 
 
 
@@ -215,10 +235,13 @@ int callmeback(call_t *c, void *args) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
-	struct nodedata *nodedata = get_node_private_data(c);
-	 struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
-        //printf("APP - Paquet recu par %d depuis %d\n", c->node, header->source);
-    /* else dealloc the packet */
+    struct nodedata *nodedata = get_node_private_data(c);
+    struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
+
+
+    //printf("Moi %d J'ai REcu de %d packet %d %d\n",c->node,packet->node,header->source,header->seq);
+    list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
+
     packet_dealloc(packet);
 }
 

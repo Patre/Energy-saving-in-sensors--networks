@@ -57,15 +57,22 @@ bool TopoGenerate::genererFichier()
         int i=0;
         FILE *f;
         f=fopen("topo.txt","w");
+        FILE *fxml;
+        fxml=fopen("xml.txt","w");
+
         for(int w=0;w<Wi;w++)
             for(int h=0;h<He;h++)
             {
                 fprintf(f,"N: %d %f %f\n", i,carreau[w][h].w,carreau[w][h].h);
+                fprintf(fxml,"<node id=\"%d\"  > \n\t<for entity=\"static-pos\" x=\"%f\" y=\"%f\" z=\"0.0\" />\n</node>\n",
+                        i,carreau[w][h].w,carreau[w][h].h);
+
                 i++;
             }
 
 
         fclose(f);
+        fclose(fxml);
         return true;
     }
     else return false;
