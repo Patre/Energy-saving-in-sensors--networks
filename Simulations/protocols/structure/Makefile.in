@@ -87,7 +87,8 @@ am_libstructure_la_OBJECTS = libstructure_la-list_connected.lo \
 	libstructure_la-list_de_list.lo libstructure_la-list_paquet.lo \
 	libstructure_la-conversion.lo libstructure_la-time_wsnet.lo \
 	libstructure_la-listNodes.lo \
-	libstructure_la-list_de_listNodes.lo libstructure_la-graphe.lo
+	libstructure_la-list_de_listNodes.lo libstructure_la-graphe.lo \
+	libstructure_la-heap.lo
 libstructure_la_OBJECTS = $(am_libstructure_la_OBJECTS)
 libstructure_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libstructure_la_CFLAGS) \
@@ -251,10 +252,10 @@ ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = libstructure.la
 instdir = $(prefix)/lib
 libstructure_la_CFLAGS = $(CFLAGS) $(GLIB_FLAGS) -Wall -I./include -I./src
-libstructure_la_SOURCES = src/list_connected.c src/list.c src/arbre.c src/list_de_list.c src/list_paquet.c src/conversion.c src/time_wsnet.c src/listNodes.c src/list_de_listNodes.c src/graphe.c
+libstructure_la_SOURCES = src/list_connected.c src/list.c src/arbre.c src/list_de_list.c src/list_paquet.c src/conversion.c src/time_wsnet.c src/listNodes.c src/list_de_listNodes.c src/graphe.c src/heap.c
 libstructure_la_LDFLAGS = 
 libstructure_la_includedir = $(prefix)/include
-libstructure_la_include_HEADERS = include/arbre.h include/conversion.h include/graphe.h include/include.h include/list_connected.h include/list_de_list.h include/list_de_listNodes.h include/list_paquet.h include/list.h include/listNodes.h include/time_wsnet.h
+libstructure_la_include_HEADERS = include/arbre.h include/conversion.h include/graphe.h include/include.h include/list_connected.h include/list_de_list.h include/list_de_listNodes.h include/list_paquet.h include/list.h include/listNodes.h include/time_wsnet.h include/heap.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -352,6 +353,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-arbre.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-conversion.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-graphe.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-heap.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-list.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-listNodes.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libstructure_la-list_connected.Plo@am__quote@
@@ -450,6 +452,13 @@ libstructure_la-graphe.lo: src/graphe.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/graphe.c' object='libstructure_la-graphe.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libstructure_la_CFLAGS) $(CFLAGS) -c -o libstructure_la-graphe.lo `test -f 'src/graphe.c' || echo '$(srcdir)/'`src/graphe.c
+
+libstructure_la-heap.lo: src/heap.c
+@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libstructure_la_CFLAGS) $(CFLAGS) -MT libstructure_la-heap.lo -MD -MP -MF $(DEPDIR)/libstructure_la-heap.Tpo -c -o libstructure_la-heap.lo `test -f 'src/heap.c' || echo '$(srcdir)/'`src/heap.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/libstructure_la-heap.Tpo $(DEPDIR)/libstructure_la-heap.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/heap.c' object='libstructure_la-heap.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libstructure_la_CFLAGS) $(CFLAGS) -c -o libstructure_la-heap.lo `test -f 'src/heap.c' || echo '$(srcdir)/'`src/heap.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

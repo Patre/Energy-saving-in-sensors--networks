@@ -1,18 +1,21 @@
 #ifndef INIT_LBIP_H
 #define INIT_LBIP_H
 
+#include <float.h>
+#include <math.h>
+
 #include <listNodes.h>
 #include <arbre.h>
 #include <list_de_listNodes.h>
 #include <conversion.h>
 #include <graphe.h>
 #include <time_wsnet.h>
-#include <math.h>
+#include <heap.h>
 
 #include "structures.h"
 
 
-void computeBIPtree2Hop(call_t *c);
+void computeBIPtree(call_t *c);
 
 void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
 

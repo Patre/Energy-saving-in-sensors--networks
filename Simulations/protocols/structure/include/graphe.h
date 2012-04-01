@@ -35,6 +35,10 @@ void addEdgeUndirected(graphe* g, int labelU, int labelV, double cout);
 int getNumFromLabel(graphe* g, int label);
 void afficherListeVoisins(voisin* liste);
 void afficherGraphe(graphe* g);
+graphe* copieGraphe(graphe* g);
+voisin* getNeighboursFromLabel(graphe* g, int label);
+void changeDirectedEdgeCost(graphe* g, int labelU, int labelV, double cost);
+void changeUndirectedEdgeCost(graphe* g, int labelU, int labelV, double cost);
 
 
 #endif // DEF_GRAPHE

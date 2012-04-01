@@ -60,8 +60,6 @@ int setnode(call_t *c, void *params) {
 	nodedata->g2hop = malloc(sizeof(graphe));
 	initGraphe(nodedata->g2hop, c->node);
 	nodedata->BIP_tree = Nullptr(arbre);
-    //arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
-	//nodedata->paquets = Nullptr(list_PACKET); //les packets
 	nodedata->radius = -1.0;
 	nodedata->nbr_evenement = 0; //STATS
 	
@@ -238,6 +236,7 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 
@@ -252,9 +251,10 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	{
 		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
 		{
-			computeBIPtree2Hop(c);
+			nodedata->radius = entitydata->range;
+			computeBIPtree(c);
 		}
-		setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
+		//setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
 	}
 	else
 	{
@@ -306,8 +306,12 @@ int unsetnode(call_t *c) {
 	
 	
     DEBUG; /*ARBRE DE LBIP*/
-    /*printf("\tARBRE DE BIP : \n");
-	 arbre_affiche(nodedata->tree_BIP);*/
+	if(nodedata->BIP_tree != 0)
+	{
+		printf("\tarbre de BIP : \n");
+		arbre_affiche(nodedata->BIP_tree);
+		arbre_detruire(&nodedata->BIP_tree);
+	}
 	
     DEBUG;  //PAQUETs
     //printf("\tPaquets : %d ->",c->node);
@@ -321,7 +325,6 @@ int unsetnode(call_t *c) {
 	//list_PACKET_detruire(&nodedata->paquets);
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
 	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
-    //arbre_detruire(&nodedata->BIP_tree);
 	deleteGraphe(nodedata->g2hop);
 	free(nodedata->g2hop);
 	

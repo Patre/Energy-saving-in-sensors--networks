@@ -2,13 +2,103 @@
 #include "BIP_tree_utils.h"
 
 
-void computeBIPtree2Hop(call_t *c)
+void computeBIPtree(call_t *c)
 {
 	struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
 	
-	nodedata->radius = entitydata->range;
-	prim(nodedata->g2hop, c->node);
+	int i, minNode;
+	graphe* g = copieGraphe(nodedata->g2hop);
+	double coutMax = 0;
+	double* cle = malloc(g->nbSommets*sizeof(double));
+	double* poids = malloc(g->nbSommets*sizeof(double));
+	int* pere = malloc(g->nbSommets*sizeof(int));
+	Heap* F = allocHeap(g->nbSommets, cle);
+	voisin *trans, *trans2;
+	
+	for(i = 0 ; i < g->nbSommets ; i++)
+	{
+		cle[i] = DBL_MAX;
+		poids[i] = DBL_MAX;
+		pere[i] = -1;
+		h_insertNode(F, i);
+	}
+	cle[g->s.num] = 0;
+	
+	arbre_add_pere(&(nodedata->BIP_tree), g->s.label);
+	
+	
+	while(!h_isEmpty(F))
+	{
+		// mettre a jour les poids des sommets
+		for(i = 0 ; i < g->nbSommets ; i++)
+		{
+			coutMax = 0;
+			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
+			{
+				trans = nodedata->g2hop->listeVoisins[i];
+				while(trans != 0)
+				{
+					if(pere[trans->v.num] != -1 || trans->v.num == g->s.num) // le voisin est dans le bip tree
+					{
+						if(trans->cout > coutMax)
+							coutMax = trans->cout;
+					}
+					trans = trans->vSuiv;
+				}
+				poids[i] = coutMax;
+			}
+		}
+		
+		// mettre a jour les couts des aretes
+		for(i = 0 ; i < g->nbSommets ; i++)
+		{
+			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
+			{
+				trans = g->listeVoisins[i];
+				trans2 = nodedata->g2hop->listeVoisins[i];
+				while(trans != 0 && trans2 != 0)
+				{
+					if(pere[trans->v.num] == -1 && trans->v.num != g->s.num) // le voisin n'est pas dans le bip tree
+					{
+						if(trans->cout != trans2->cout - poids[i])
+						{
+							changeUndirectedEdgeCost(g, g->sommets[i], trans->v.label, trans2->cout - poids[i]);
+						}
+					}
+					trans = trans->vSuiv;
+					trans2 = trans2->vSuiv;
+				}
+			}
+		}
+		
+		minNode = h_remNode(F);
+		
+		// pour chacun des voisins de minNode dans le graphe
+		trans = g->listeVoisins[minNode];
+		while(trans != 0)
+		{
+			if((pere[trans->v.num] == -1 && trans->v.num != g->s.num) && trans->cout < cle[trans->v.num])
+			{
+				pere[trans->v.num] = minNode;
+				arbre_add_fils(nodedata->BIP_tree, g->sommets[minNode], trans->v.label);
+				if(cle[trans->v.num] != trans->cout)
+				{
+					h_changeLabel(F, trans->v.num, trans->cout);
+				}
+			}
+			trans = trans->vSuiv;
+		}
+	}
+	
+	
+	
+	deleteGraphe(g);
+	free(g);
+	free(poids);
+	free(pere);
+	free(cle);
+	freeHeap(F);
 }
 
 void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered)

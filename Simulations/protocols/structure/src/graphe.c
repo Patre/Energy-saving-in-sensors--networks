@@ -118,4 +118,64 @@ void afficherGraphe(graphe* g)
 	}
 }
 
+graphe* copieGraphe(graphe* g)
+{
+	graphe* g2 = malloc(sizeof(graphe));
+	int i;
+	voisin *trans1, **trans2;
+	
+	g2->nbSommets = g->nbSommets;
+	g2->listeVoisins = malloc(g2->nbSommets*sizeof(voisin*));
+	g2->sommets = malloc(g2->nbSommets*sizeof(int));
+	g2->s = g->s;
+	
+	for(i = 0 ; i < g->nbSommets ; i++)
+	{
+		g2->sommets[i] = g->sommets[i];
+		trans1 = g->listeVoisins[i];
+		trans2 = &(g2->listeVoisins[i]);
+		
+		while(trans1 != 0)
+		{
+			*trans2 = malloc(sizeof(voisin));
+			(*trans2)->v = trans1->v;
+			(*trans2)->cout = trans1->cout;
+			(*trans2)->vSuiv = 0;
+			trans2 = &((*trans2)->vSuiv);
+			
+			trans1 = trans1->vSuiv;
+		}
+		*trans2 = 0;
+	}
+	return g2;
+}
+
+voisin* getNeighboursFromLabel(graphe* g, int label)
+{
+	return g->listeVoisins[getNumFromLabel(g, label)];
+}
+
+void changeDirectedEdgeCost(graphe* g, int labelU, int labelV, double cost)
+{
+	sommet u;
+	u.num = getNumFromLabel(g, labelU);
+	u.label = labelU;
+	voisin* trans = g->listeVoisins[u.num];
+	while(trans != 0)
+	{
+		if(trans->v.label == labelV)
+		{
+			trans->cout = cost;
+			break;
+		}
+		trans = trans->vSuiv;
+	}	
+}
+
+void changeUndirectedEdgeCost(graphe* g, int labelU, int labelV, double cost)
+{
+	changeDirectedEdgeCost(g, labelU, labelV, cost);
+	changeDirectedEdgeCost(g, labelV, labelU, cost);
+}
+
 

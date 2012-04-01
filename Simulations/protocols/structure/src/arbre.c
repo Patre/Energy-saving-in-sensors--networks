@@ -39,11 +39,13 @@ void arbre_affiche(arbre *l)
 {
     printf("N %d : {",l->node);
     int i=l->size;
-    while(i--)      printf("%d,",l->fils[i]->node);
+    while(i--)
+		printf("%d,",l->fils[i]->node);
     printf("}\n");
 
     i=l->size;
-    while(i--)      arbre_affiche(l->fils[i]);
+    while(i--)
+		arbre_affiche(l->fils[i]);
     //printf("\n");
 }
 
