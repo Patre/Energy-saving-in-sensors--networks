@@ -419,9 +419,8 @@ void rx(call_t *c, packet_t *packet) {
 
 void tx( call_t *c , packet_t * packet )
 {
-    printf("J'ENVOI\n");
-    //call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
-    //TX(&c0, packet);
+    call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+    TX(&c0, packet);
 }
 
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
