@@ -1,5 +1,20 @@
 **********************************************
-LISEZ LES READMEs dans SIMULATIONS/*
+
+pour l'energie J'ai ajouté thériquement
+
+ENVOI  tx*duration*Debit 
+                          (tx c'est un coefficient  d'envoi)    
+                          (duration depend de taille de packet alors
+                          pas besoin de recuperer la taille).
+
+
+RECPTION  rx*duration
+
+
+
+
+IDLE      idle*duration  (JAMAIS appellé je ne sais pas pk (lol))
+
 
 
 ********************************************************** 
