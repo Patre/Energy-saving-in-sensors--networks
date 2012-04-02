@@ -44,7 +44,7 @@
 
 <!-- == ROUTING ========================================= -->
 <entity name="routing-lbip" library="routing_lbip">
-<init alpha="4" c="100000000" eps="0.01" />
+<init alpha="4" c="10" eps="0.01" range="30" />
 <default />
 </entity>
 

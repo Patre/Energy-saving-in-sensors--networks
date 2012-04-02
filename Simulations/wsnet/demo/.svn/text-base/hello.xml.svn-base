@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<worldsens xmlns="http://worldsens.citi.insa-lyon.fr">
+
+
+<!-- == Worldsens ===================================================== -->
+<simulation nodes="500" duration="5s" x="100" y="100" z="0"/>
+
+
+<!-- == Entities ====================================================== -->
+
+
+<!-- == PROPAGATION, INTERFERENCES and MODULATION ===================== -->
+<entity name="range" library="propagation_rayleigh_fading" >
+<init  propagation="shadowing" />
+</entity>
+
+<entity name="interf" library="interferences_orthogonal">
+</entity>
+
+<entity name="bpsk" library="modulation_bpsk">
+</entity>
+
+<!-- == RADIO and ANTENNA ============================================ -->
+
+<entity name="omnidirectionnal" library="antenna_omnidirectionnal" >
+  <default loss="0" angle-xy="random" angle-z="random"/>
+</entity>
+
+<entity name="radio" library="radio_half1d" >
+  <default  modulation="bpsk" dBm="-30"/>
+</entity>
+
+<!-- == MAC ===================================================== -->
+<entity name="mac" library="mac_dcf_802_11" >
+</entity>
+
+
+<!-- == APPLICATION ===================================================== -->
+<entity name="hello" library="application_hello" >
+  <default start="0" period="100ms" size="1000" />
+</entity>
+
+
+<!-- == MOBILITY ===================================================== -->
+<entity name="static" library="mobility_static" >
+  <default x="random" y="random" z="random"/>
+</entity>
+
+
+<!-- == Environment ===================================================== -->
+<environment>
+<propagation entity="range" range="0"/>
+<interferences entity="interf"/>
+<modulation entity="bpsk"/>
+</environment>
+
+
+<!-- == Bundle ===================================================== -->
+<bundle name="sensor" worldsens="false" default="true" birth="0">
+  <mobility entity="static"/>
+
+  <antenna entity="omnidirectionnal">
+    <up entity="radio"/>
+  </antenna>
+
+  <with entity="radio">
+    <up entity="hello"/>
+    <down entity="omnidirectionnal"/>
+  </with>
+
+  <with entity="hello">
+    <down entity="radio"/>
+  </with>
+</bundle>
+
+<!-- == Nodes ===================================================== -->
+
+
+</worldsens>

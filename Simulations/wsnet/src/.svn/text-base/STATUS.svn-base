@@ -1,0 +1,78 @@
++ bundle.c:
++ bundle_config.c:
++ entity.c:
++ entity_config.c:
++ measure
++ measure_config
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+medium:
+- voir si on peut passer le consume_rx dans medium.c, pas gagné...
+- optimisation distance inter-noeuds ?
+
+
+
+- dans dcf: faie un wrapper du tx pour tous les sous-jacents....
+
+
+- cleaner config.c
+
+
+Models:
+-------
+- enlever environment/dummy des que je peux
+- cleaner mac/*
+
+
+Worldsens:
+----------
+- tenir à jour le compte de qui est synched/connected et qui n'a pas...
+
+
+CLEAN:
+-----
+- topology.c : ok
+- rng.c : ok
+- packet.c : ok
+- nodes.c : ok
+- modelutils.c : ok
+- mobility.c : ok
+- main.c : ok
+- medium.c
+- config.c
+

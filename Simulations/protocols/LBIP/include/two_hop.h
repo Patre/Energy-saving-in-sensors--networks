@@ -7,20 +7,9 @@
 #include <time_wsnet.h>
 #include <arbre.h>
 
+#include "BIP_tree_utils.h"
+#include "structures.h"
 
-#ifndef DEF_NODEDATA
-#define DEF_NODEDATA
-struct nodedata {
-	int overhead;
-	listeNodes* oneHopNeighbourhood;
-	listeNodes* twoHopNeighbourhood;
-	arbre* BIP_tree;
-	double radius;
-	//list2N* NodesV1; // l'ensemble des connections du graphe
-	//list_PACKET *paquets; // packet recus
-	int nbr_evenement; // stats
-};
-#endif
 
 
 typedef struct packet_hello2 {

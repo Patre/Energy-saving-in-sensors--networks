@@ -9,7 +9,8 @@
 
 #include <time_wsnet.h>
 
-#include "lbip.h"
+#include "BIP_tree_utils.h"
+#include "structures.h"
 #include "one_hop.h"
 
 
@@ -42,6 +43,13 @@ void init_files()
 	
 }
 
+int destroy(call_t *c) {
+    return 0;
+}
+int ioctl(call_t *c, int option, void *in, void **out) {
+    return 0;
+}
+
 // initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
@@ -49,9 +57,9 @@ int setnode(call_t *c, void *params) {
 	nodedata->overhead = -1;
     nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
 	nodedata->twoHopNeighbourhood = Nullptr(listeNodes);
+	nodedata->g2hop = malloc(sizeof(graphe));
+	initGraphe(nodedata->g2hop, c->node);
 	nodedata->BIP_tree = Nullptr(arbre);
-    //arbre_add_pere(&nodedata->BIP_tree,c->node); //ajout de la racine de l'arbre
-	//nodedata->paquets = Nullptr(list_PACKET); //les packets
 	nodedata->radius = -1.0;
 	nodedata->nbr_evenement = 0; //STATS
 	
@@ -61,7 +69,7 @@ int setnode(call_t *c, void *params) {
     DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
-	printf("Node %d at ( %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
     return 0;
 }
@@ -75,6 +83,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
+    entitydata->range     = 30.0;
     //entitydata->debut   = time_seconds_to_nanos(3);
     //entitydata->periodEVE = time_seconds_to_nanos(1);
 	
@@ -95,6 +104,12 @@ int init(call_t *c, void *params) {
 		
         if (!strcmp(param->key, "eps")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
+                goto error;
+            }
+        }
+		
+        if (!strcmp(param->key, "range")) {
+            if (get_param_double(param->value, &(entitydata->range))) {
                 goto error;
             }
         }
@@ -205,54 +220,6 @@ void rx(call_t *c, packet_t *packet) {
 	}
 }
 
-/* ************************************************** */
-/* ************************************************** */
-//LA FIN DE LA SUMULATION
-int unsetnode(call_t *c) {
-    struct nodedata *nodedata = get_node_private_data(c);
-	printf("Unset node %d\n",c->node);
-	
-    DEBUG; /* Voisinage 1-hop */
-	printf("\t1-voisinage : ");
-	listeNodes_affiche(nodedata->oneHopNeighbourhood);
-    
-	
-    DEBUG;/* Voisinage 2-hop */
-    printf("\t2-voisinage : ");
-	listeNodes_affiche(nodedata->twoHopNeighbourhood);
-	
-	
-    DEBUG; /*ARBRE DE LBIP*/
-    /*printf("\tARBRE DE BIP : \n");
-	arbre_affiche(nodedata->tree_BIP);*/
-	
-    DEBUG;  //PAQUETs
-    //printf("\tPaquets : %d ->",c->node);
-    //list_PACKET_affiche(nodedata->paquets);//*/
-	
-	
-	
-    //liberation d'espace memoire
-    //PAR USER PROTOCOLE
-	//list_PACKET_detruire(&nodedata->paquets);
-    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
-	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
-    //arbre_detruire(&nodedata->BIP_tree);
-	
-    free(nodedata);
-	printf("\n");
-    return 0;
-}
-
-/* ************************************************** */
-/* ************************************************** */
-int destroy(call_t *c) {
-    return 0;
-}
-int ioctl(call_t *c, int option, void *in, void **out) {
-    return 0;
-}
-
 void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
@@ -262,16 +229,16 @@ void tx( call_t *c , packet_t * packet )
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
     TX(&c0,packet);
 	
-	printf("BIP - Paquet de type %d envoye de %d a ", data->type, data->src);
+	printf("BIP - Paquet de type %d envoye de %d a %d\n", data->type, data->src, data->dst);
 }
 
 /* *********************************************** */
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
-	destination_t destination;
 
 	
     header->type = APP;
@@ -280,20 +247,21 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	header->askedToRedirect = Nullptr(listeNodes);
 	header->needsToBeCovered = Nullptr(listeNodes);
 	
-	if(destination.id == BROADCAST_ADDR)
+	if(dst->id == BROADCAST_ADDR)
 	{
 		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
 		{
-			computeBIPtree2Hop(c);
+			nodedata->radius = entitydata->range;
+			computeBIPtree(c);
 		}
-		setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
+		//setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
 	}
 	else
 	{
 		// TODO
 	}
 	
-    return SET_HEADER(&c0, packet, &destination);
+    return SET_HEADER(&c0, packet, &dst);
 }
 
 int get_header_size( call_t * c )
@@ -320,6 +288,49 @@ int get_header_real_size( call_t * c )
     }
 
     return nodedata->overhead + sizeof(packet_PROTOCOLE);
+}
+
+//LA FIN DE LA SUMULATION
+int unsetnode(call_t *c) {
+    struct nodedata *nodedata = get_node_private_data(c);
+	printf("Unset node %d\n",c->node);
+	
+    DEBUG; /* Voisinage 1-hop */
+	printf("\t1-voisinage : ");
+	listeNodes_affiche(nodedata->oneHopNeighbourhood);
+    
+	
+    DEBUG;/* Voisinage 2-hop */
+    printf("\t2-voisinage : ");
+	listeNodes_affiche(nodedata->twoHopNeighbourhood);
+	
+	
+    DEBUG; /*ARBRE DE LBIP*/
+	if(nodedata->BIP_tree != 0)
+	{
+		printf("\tarbre de BIP : \n");
+		arbre_affiche(nodedata->BIP_tree);
+		arbre_detruire(&nodedata->BIP_tree);
+	}
+	
+    DEBUG;  //PAQUETs
+    //printf("\tPaquets : %d ->",c->node);
+    //list_PACKET_affiche(nodedata->paquets);//*/
+	
+	afficherGraphe(nodedata->g2hop);
+	
+	
+    //liberation d'espace memoire
+    //PAR USER PROTOCOLE
+	//list_PACKET_detruire(&nodedata->paquets);
+    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
+	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
+	deleteGraphe(nodedata->g2hop);
+	free(nodedata->g2hop);
+	
+    free(nodedata);
+	printf("\n");
+    return 0;
 }
 
 routing_methods_t methods = {rx, tx, set_header, get_header_size, get_header_real_size};

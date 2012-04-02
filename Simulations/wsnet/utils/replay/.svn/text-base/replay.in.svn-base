@@ -1,0 +1,1 @@
+CLASSPATH=@datadir@/java/ java replay $1 $2

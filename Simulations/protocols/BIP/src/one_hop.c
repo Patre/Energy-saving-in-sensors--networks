@@ -46,7 +46,7 @@ int init_one_hop(call_t *c, void *args) {
 	 get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z,           //la position x, y,z de Noeud
 	 get_time_now_second());//*/                                                                              //l'instant d'envoi.
 	
-	printf("BIP - Paquet de type %d envoye de %d a %d.\n", hello->type, c->node, destination.id);
+//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", hello->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);
     //tous c'est bien passé
@@ -107,7 +107,7 @@ int rx_one_hop(call_t *c, packet_t *packet) {
 	 hello->source,                                                                                       //id de noued de destination
 	 get_time_now_second()); //*/                                                                             //l'instant d'envoi.
 	
-	printf("BIP - Paquet de type %d envoye de %d a .\n", rhello->type, c->node);
+//	printf("BIP - Paquet de type %d envoye de %d a .\n", rhello->type, c->node);
 	//L'envoi
 	TX(&c0,rpacket);
 	

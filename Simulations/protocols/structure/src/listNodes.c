@@ -102,6 +102,27 @@ int listeNodes_get(listeNodes *l,int index)
                 return l->values.node;
         }
 }
+element listeNodes_getElement(listeNodes *listeNodese,int val)
+{
+    if(!listeNodes_recherche(listeNodese,val))
+    {
+        element inter;
+        inter.node=-1;
+        inter.x=-1;
+        inter.y=-1;
+        inter.z=-1;
+        return inter;
+    }
+    else
+    {
+        while(listeNodese)
+        {
+            if(listeNodese->values.node==val) return listeNodese->values;
+            listeNodese=listeNodese->suiv;
+        }
+    }
+}
+
 //  ***********************DESTRUCTION**************************
 void listeNodes_detruire(listeNodes **l)
 {
@@ -198,7 +219,7 @@ void listeNodes_union(listeNodes **l1,listeNodes *l2)
 {
         while(l2)
         {
-                if(!listeNodes_recherche(*l1,l2->values.node))	listeNodes_insert(l1,l2->values.node);
+                if(!listeNodes_recherche(*l1,l2->values.node))	listeNodes_insert_element(l1,l2->values);
                 l2=l2->suiv;
         }
 }

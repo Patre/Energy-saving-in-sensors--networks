@@ -22,7 +22,6 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     //initilailser les données
     data->type=BIP;
     data->src=c->node;
-	data->dst = -1;
     data->seq=nodedata->nbr_evenement;
     data->redirected_by=c->node;
 	
@@ -44,21 +43,21 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
-	
+
     //destination de paquet
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
         packet_dealloc(packet);
         return -1;
     }
-	
+
     DEBUG;
     if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
-	
-	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
+
+//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
-	
+
     //LE CALCULE de PROCHAINE EVENEMENT
     //PROCHAINE EVENEMENT
     uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
@@ -74,62 +73,67 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 //RECEPTION
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
-	
-    packet_PROTOCOLE *dataRecu=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
+    packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
 	
     //AJOUTE de packet dans la liste de packet
-    list_PACKET_insert_tout(&nodedata->paquets,dataRecu->src,dataRecu->seq,dataRecu->redirected_by);
-	
+    list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
+
+
+
+    entityid_t *up = get_entity_links_up(c);
+    call_t c_up = {up[0], c->node};
+    packet_t *packet_up;
+
+    packet_up = packet_clone(packetRecu);
+
+    RX(&c_up, packet_up);//*/
+
+    //printf("%d a RECU de %d \n ",c->node,packetRecu->node);
+
     /*
 	 Creation de Packet
 	 */
     //creation de paquet et initialisation de son data
-    packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+    /*packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
+    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);*/
 	
     //initialiser les données
-    data->type=BIP;
-    data->src=dataRecu->src;
-	data->dst = -1;
-    data->seq=dataRecu->seq;
     data->redirected_by=c->node;
 	
 	
     //envoi au voisin 1 de l'arbre
     list *destinations=Nullptr(list);
-    arbre_get_fils(&destinations,dataRecu->pere_arbre,c->node);
+    arbre_get_fils(&destinations,data->pere_arbre,c->node);
 	
     //copier dans distination
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
-	
-    //envoyer aussi l'arbre pere
-    data->pere_arbre=Nullptr(arbre);
-    arbre_copy(&data->pere_arbre,dataRecu->pere_arbre);
-	
-	
+
     //ENVOI
     //recuperer le support de communication DOWN
-    entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
-	
-    //destination de paquet
-    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
-    if (SET_HEADER(&c0, packet, &destination) == -1) {
-        packet_dealloc(packet);
-        return -1;
-    }
-	
-    DEBUG;
-    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
-	
-	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
-    //L'envoi
-    TX(&c0,packet);//*/
-	
+    list *des=data->destinations;
+    while (des)
+    {
+         //retransmettre
+        entityid_t *down = get_entity_links_down(c);
+        call_t c0 = {down[0], c->node};
+
+        packet_t *packetEnvoi = packet_clone(packetRecu);
+
+        destination_t destination = {des->val, *get_node_position(des->val)};
+        if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
+            packet_dealloc(packetEnvoi);
+            return;
+        }
+
+        SHOW_GRAPH("G: %d %d\n",c->node,des->val);
+
+        TX(&c0,packetEnvoi);
+        des=des->suiv;
+    }//*/
     //Liberer l'espace memoire;
-    //packet_dealloc(packetRecu);
-	
+    packet_dealloc(packetRecu);
+
     //tout c'est bien passé
     return 1;
 }
