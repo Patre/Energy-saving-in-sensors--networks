@@ -1,11 +1,5 @@
 \begin{thebibliography}{10}
 
-\bibitem{Agarwal2005}
-Manish Agarwal, Lixin Gao, Joon~Ho Cho, and Jie Wu.
-\newblock {Energy Efficient Broadcast in Wireless Ad hoc Networks with
-  Hitch-hiking.}
-\newblock {\em MONET}, 10(6):897--910, 2005.
-
 \bibitem{Cartigny2005}
 J.~Cartigny, F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovic.
 \newblock {Localized LMST and RNG based minimum-energy broadcast protocols in
@@ -31,18 +25,11 @@ J.~Champ, A.E. Baert, and V.~Boudet.
   in wireless ad hoc and sensor networks}.
 \newblock {\em Wireless and Mobile Networking}, pages 286--296, 2009.
 
-\bibitem{Chen2003}
-X.~Chen, M.~Faloutsos, and S.V. Krishnamurthy.
-\newblock {Power adaptive broadcasting with local information in ad hoc
-  networks}.
-\newblock In {\em {Network Protocols, 2003. Proceedings. 11th IEEE
-  International Conference on}}, pages 168--178. IEEE, 2003.
-
-\bibitem{Cheng2006}
-Maggie~Xiaoyan Cheng, Jianhua Sun, Manki Min, Yingshu Li, and Weili Wu.
-\newblock {Energy-efficient broadcast and multicast routing in multihop ad hoc
-  wireless networks.}
-\newblock {\em Wireless Communications and Mobile Computing}, 6:213--223, 2006.
+\bibitem{Champ2009lifetime}
+J.~Champ, C.~Saad, and A.E. Baert.
+\newblock {Lifetime in wireless sensor networks}.
+\newblock In {\em {Complex, Intelligent and Software Intensive Systems, 2009.
+  CISIS'09. International Conference on}}, pages 293--298. IEEE, 2009.
 
 \bibitem{Dietrich2009}
 Isabel Dietrich and Falko Dressler.
@@ -67,26 +54,8 @@ F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovi{\'c}.
 \newblock {\em Resource Management in Wireless Networking}, pages 543--582,
   2005.
 
-\bibitem{lutzeler2011}
-F.~Iutzeler, P.~Ciblat, W.~Hachem, and J.~Jakubowicz.
-\newblock {A NEW BROADCAST BASED DISTRIBUTED AVERAGING ALGORITHM OVER WIRELESS
-  SENSOR NETWORKS}.
-
-\bibitem{Wang2010}
-Xianlong Jiao, Wei Lou, Junchao Ma, Jiannong Cao, Xiaodong Wang, and Xingming
-  Zhou.
-\newblock {Duty-Cycle-Aware Minimum Latency Broadcast Scheduling in Multi-hop
-  Wireless Networks.}
-\newblock In {\em {ICDCS}}, pages 754--763. IEEE Computer Society, 2010.
-
-\bibitem{orecchia2004}
-L.~Orecchia, A.~Panconesi, C.~Petrioli, and A.~Vitaletti.
-\newblock {Localized techniques for broadcasting in wireless sensor networks}.
-\newblock In {\em {Proceedings of the 2004 joint workshop on Foundations of
-  mobile computing}}, pages 41--51. ACM, 2004.
-
 \bibitem{Abba2006}
-Francisco~Javier Ovalle-Mart{\'i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
+Francisco~Javier Ovalle-Mart{\'\i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
   Carle, and David Simplot-Ryl.
 \newblock {Area-based beaconless reliable broadcasting in sensor networks.}
 \newblock {\em IJSNet}, 1(1/2):20--33, 2006.
@@ -95,11 +64,6 @@ Francisco~Javier Ovalle-Mart{\'i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
 I.~Stojmenovic and J.~Wu.
 \newblock {Broadcasting and activity scheduling in ad hoc networks}.
 \newblock {\em Mobile Ad Hoc Networking}, pages 205--229, 2004.
-
-\bibitem{Wang2009}
-Feng Wang and Jiangchuan Liu.
-\newblock {Duty-Cycle-Aware Broadcast in Wireless Sensor Networks.}
-\newblock In {\em {INFOCOM}}, pages 468--476. IEEE, 2009.
 
 \bibitem{Wieselthier2000}
 Jeffrey~E. Wieselthier, Gam~D. Nguyen, and Anthony Ephremides.
@@ -113,15 +77,5 @@ J.~Wu and W.~Lou.
   networks}.
 \newblock {\em Wireless Communications and Mobile Computing}, 3(2):155--173,
   2003.
-
-\bibitem{Younis2004}
-O.~Younis and S.~Fahmy.
-\newblock {HEED: a hybrid, energy-efficient, distributed clustering approach
-  for ad hoc sensor networks}.
-\newblock {\em Mobile Computing, IEEE Transactions on}, 3(4):366--379, 2004.
-
-\bibitem{zhaobroadcast}
-R.~Zhao, X.~Shen, and X.~Zhang.
-\newblock {Broadcast protocols for wireless sensor networks}.
 
 \end{thebibliography}
