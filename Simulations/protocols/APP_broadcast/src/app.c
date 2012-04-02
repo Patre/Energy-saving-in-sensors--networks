@@ -90,12 +90,12 @@ int init(call_t *c, void *params) {
       }
   }
 
-  if(c->node == 0)
+  /*if(c->node == 0)
   {
       get_node_position(c)->x=50;
       get_node_position(c)->y=50;
       get_node_position(c)->z=0;
-  }
+  }*/
 
   set_entity_private_data(c, entitydata);
   return 0;
@@ -165,7 +165,7 @@ int bootstrap(call_t *c) {
     entityid_t *down = get_entity_links_down(c);
   
     while (i--) {
-        call_t c0 = {down[i], c->node};
+        call_t c0 = {down[i], c->node, c->entity};
         
         if ((get_entity_type(&c0) != MODELTYPE_ROUTING) 
             && (get_entity_type(&c0) != MODELTYPE_MAC)) {
@@ -204,7 +204,9 @@ int callmeback(call_t *c, void *args) {
 
 
     entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
+    call_t c0 = {down[0], c->node, c->entity};
+	
+    printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
@@ -212,8 +214,6 @@ int callmeback(call_t *c, void *args) {
 	    return -1;
     }
 
-
-    printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
     TX(&c0, packet);
 
 
@@ -239,7 +239,7 @@ void rx(call_t *c, packet_t *packet) {
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
 
 
-    //printf("Moi %d J'ai REcu de %d packet %d %d\n",c->node,packet->node,header->source,header->seq);
+    printf("APP - paquet recu par %d depuis %d at %.2lf. Contenu : %d\n", c->node, header->source, get_time_now_second(), header->seq);
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
 
     packet_dealloc(packet);

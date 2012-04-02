@@ -13,6 +13,7 @@
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
+
 struct nodedata {
 	int overhead;
 	listeNodes* oneHopNeighbourhood;
@@ -20,8 +21,6 @@ struct nodedata {
 	graphe* g2hop;
 	arbre* BIP_tree;
 	double radius;
-	//list2N* NodesV1; // l'ensemble des connections du graphe
-	//list_PACKET *paquets; // packet recus
 	int nbr_evenement; // stats
 };
 
@@ -30,9 +29,6 @@ struct protocoleData {
 	double    alpha; //alpha de modele d'energie
 	double    c; //le C de modele d'energie
 	double    eps; //la duree avant le lancement du premier evenement
-	//uint64_t  debut; //l'instant de debut de l'application (detection de premier evenement
-	//uint64_t  periodEVE; //delta temps entre chaque evenement
-	double range;
 };
 
 

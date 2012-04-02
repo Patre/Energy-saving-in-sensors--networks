@@ -11,6 +11,7 @@
 #include <graphe.h>
 #include <time_wsnet.h>
 #include <heap.h>
+#include <list.h>
 
 #include "structures.h"
 
@@ -27,9 +28,9 @@ void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
  **/
 double   calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
 
-/*void prim_tree(int node,arbre **a,listC *l,list *g);
-void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c);
-void init_lbip_tree(call_t *c, void *args);*/
+double getDistanceFromCout(double cout, double alpha, double c);
+
+double setRangeToFarestNeighbour(call_t *c);
 
 #endif // INIT_PROTOCOLE_H
 

@@ -13,6 +13,8 @@ void init_two_hop(call_t *c, double eps)
 	
     uint64_t time = get_time_now() + time_seconds_to_nanos(eps) + rand;
     scheduler_add_callback(time, c, broadcast_hello2, NULL);
+    uint64_t timeFinish = time+100000000*count;
+    scheduler_add_callback(timeFinish, c, print_two_hop_neighbourhood, NULL);
 }
 
 int broadcast_hello2(call_t *c, void *args) {
@@ -91,8 +93,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 									  entitydata->alpha, 
 									  entitydata->c, 
 									  &distance);
-				if(distance < entitydata->range)
-					addEdgeUndirected(nodedata->g2hop, tmp->values.node, tmp2->values.node, cout);
+				addEdgeUndirected(nodedata->g2hop, tmp->values.node, tmp2->values.node, cout);
 			}
 			tmp2 = tmp2->suiv;
 		}
@@ -104,6 +105,13 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     packet_dealloc(packet);
 	
     return 1;
+}
+
+void print_two_hop_neighbourhood(call_t *c)
+{
+    struct nodedata *nodedata = get_node_private_data(c);
+	printf("\t2-voisinage de %d recupere : ", c->node);
+	listeNodes_affiche(nodedata->twoHopNeighbourhood);
 }
 
 

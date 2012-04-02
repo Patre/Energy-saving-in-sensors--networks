@@ -10,6 +10,8 @@ void init_one_hop(call_t *c, double eps)
 	uint64_t at = get_time_now() + time_seconds_to_nanos(eps) + rand*c->node;
     scheduler_add_callback(at, c, broadcast_hello, NULL);
 	
+	uint64_t timeFinish = get_time_now() + time_seconds_to_nanos(eps) + 100000000*get_node_count()-10;
+	scheduler_add_callback(timeFinish, c, print_one_hop_neighbourhood, NULL);
 	init_two_hop(c, eps);
 }
 
@@ -86,8 +88,7 @@ int rx_hello(call_t *c, packet_t *packet) {
 								  entitydata->c, 
 								  &distance);
 			
-			if(distance < entitydata->range)
-				addEdgeUndirected(nodedata->g2hop, tmp->values.node, hello->src, cout);
+			addEdgeUndirected(nodedata->g2hop, tmp->values.node, hello->src, cout);
 		}
 		tmp = tmp->suiv;
 	}
@@ -97,6 +98,13 @@ int rx_hello(call_t *c, packet_t *packet) {
 	
     return 1;
 	
+}
+
+void print_one_hop_neighbourhood(call_t *c)
+{
+    struct nodedata *nodedata = get_node_private_data(c);
+	printf("\t1-voisinage de %d recupere : ", c->node);
+	listeNodes_affiche(nodedata->oneHopNeighbourhood);
 }
 
 

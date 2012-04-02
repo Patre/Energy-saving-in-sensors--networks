@@ -179,3 +179,30 @@ void changeUndirectedEdgeCost(graphe* g, int labelU, int labelV, double cost)
 }
 
 
+double getEdgeCost(graphe* g, int labelU, int labelV)
+{
+	sommet u, v;
+	u.num = getNumFromLabel(g, labelU);
+	v.num = getNumFromLabel(g, labelV);
+	u.label = labelU;
+	v.label = labelV;
+	if(u.num >= g->nbSommets || v.num >= g->nbSommets)
+	{
+		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
+		return;
+	}
+	
+	voisin** tmp = &(g->listeVoisins[u.num]);
+	while(*tmp != 0)
+	{
+		if((*tmp)->v.num == v.num)
+		{
+			return (*tmp)->cout;
+		}
+		
+		tmp = &((*tmp)->vSuiv);
+	}
+	return DBL_MAX;
+}
+
+

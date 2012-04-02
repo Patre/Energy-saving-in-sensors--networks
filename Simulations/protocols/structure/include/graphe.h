@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <float.h>
 
 typedef struct sommet
 {
@@ -39,6 +40,7 @@ graphe* copieGraphe(graphe* g);
 voisin* getNeighboursFromLabel(graphe* g, int label);
 void changeDirectedEdgeCost(graphe* g, int labelU, int labelV, double cost);
 void changeUndirectedEdgeCost(graphe* g, int labelU, int labelV, double cost);
+double getEdgeCost(graphe* g, int labelU, int labelV);
 
 
 #endif // DEF_GRAPHE
