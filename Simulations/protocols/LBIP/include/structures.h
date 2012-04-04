@@ -37,6 +37,7 @@ typedef struct _packet_bip
     int     type;
     nodeid_t src;
 	nodeid_t dst;
+	nodeid_t pred;
 	listeNodes* askedToRedirect;
 	listeNodes* needsToBeCovered;
 } packet_PROTOCOLE;

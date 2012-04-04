@@ -49,13 +49,15 @@ int ioctl(call_t *c, int option, void *in, void **out) {
     return 0;
 }
 
+void tx( call_t *c , packet_t * packet );
+
 // initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
 	
 	nodedata->overhead = -1;
-    nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
-	nodedata->twoHopNeighbourhood = Nullptr(listeNodes);
+    nodedata->oneHopNeighbourhood = 0;
+	nodedata->twoHopNeighbourhood = 0;
 	nodedata->g2hop = malloc(sizeof(graphe));
 	initGraphe(nodedata->g2hop, c->node);
 	nodedata->BIP_tree = Nullptr(arbre);
@@ -153,7 +155,8 @@ int bootstrap(call_t *c) {
 void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	array_t *up = get_entity_bindings_up(c);
-	int i;
+	array_t *down = get_entity_bindings_down(c);
+	int i, indice;
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
@@ -178,27 +181,33 @@ void rx(call_t *c, packet_t *packet) {
 			{
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
+					indice = listeNodes_get_index(data->askedToRedirect, c->node);
+					printf("%d doit relayer depuis %d\n", c->node, data->pred);
 					if(nodedata->radius == -1.0) // si le BIP tree n'a pas encore ete construit
 					{
 						// le construire a partir des infos du paquet
-						
+						printf("Graphe de 2-voisinage de %d :\n", c->node);
+						afficherGraphe(nodedata->g2hop);
+						purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->pred);
+						printf("Graphe de 2-voisinage de %d apres purge grace au paquet recu :\n", c->node);
+						afficherGraphe(nodedata->g2hop);
+						computeBIPtree(c);
 					}
 					// relayer le paquet
-					
+					destination_t dst = {-1,{-1,-1,-1}};
+					setRangeToFarestNeighbour(c);
+					data->askedToRedirect = 0;
+					data->needsToBeCovered = 0;
+					data->pred = c->node;
+					setRelayNodes(c, &data->askedToRedirect, &data->needsToBeCovered);
+					call_t c_down = {down->elts[0], c->node, c->entity};
+					SET_HEADER(&c_down, packet, &dst);
+					tx(c, packet);
 				}
 				
 				// faire remonter le paquet a la couche application
-				call_t c_up = {up->elts[i], c->node, c->entity};
-				packet_t *packet_up;	     
-				if (i > 0) 
-				{
-					packet_up = packet_clone(packet);         
-				}
-				else 
-				{
-					packet_up = packet;
-				}
-				RX(&c_up, packet_up);
+				call_t c_up = {up->elts[0], c->node, c->entity};
+				RX(&c_up, packet_clone(packet));
 			}
 			else
 			{
@@ -226,7 +235,6 @@ void tx( call_t *c , packet_t * packet )
     TX(&c0,packet);
 }
 
-/* *********************************************** */
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
@@ -242,6 +250,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     header->type = APP;
     header->src = c->node;
 	header->dst = dst->id;
+	header->pred = c->node;
 	header->askedToRedirect = 0;
 	header->needsToBeCovered = 0;
 	
@@ -249,10 +258,12 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	{
 		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
 		{
+			printf("Graphe de 2-voisinage de %d :\n", c->node);
+			afficherGraphe(nodedata->g2hop);
 			computeBIPtree(c);
-			setRangeToFarestNeighbour(c);
 		}
-		setRelayNodes(&header->askedToRedirect, &header->needsToBeCovered);
+		setRangeToFarestNeighbour(c);
+		setRelayNodes(c, &header->askedToRedirect, &header->needsToBeCovered);
 	}
 	else
 	{

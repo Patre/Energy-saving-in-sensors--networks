@@ -135,16 +135,31 @@ void listeNodes_detruire(listeNodes **l)
         }
 }
 //  ***********************RECHERCHE**************************
-int listeNodes_recherche(listeNodes *l,int val)
+int listeNodes_recherche(listeNodes *l, int val)
 {
-        int trouve=0;
+        int trouve=0, indice = -1;
         while(l && !trouve)
         {
                 if(l->values.node==val)
 					trouve=1;
                 l=l->suiv;
+			indice++;
         }
-        return trouve;
+	return trouve;
+}
+
+//  ***********************RECHERCHE**************************
+int listeNodes_get_index(listeNodes *l, int val)
+{
+	int trouve=0, indice = -1;
+	while(l && !trouve)
+	{
+		if(l->values.node==val)
+			trouve=1;
+		l=l->suiv;
+		indice++;
+	}
+	return indice;
 }
 
 //  *********************************COPIER*******************************
@@ -163,8 +178,11 @@ void listeNodes_copy(listeNodes **des,listeNodes *src)
 //  *************************************SUPPRIME***********************
 int  listeNodes_delete(listeNodes **l, int val)
 {
-        if(!listeNodes_recherche(*l,val))	return 0;
+	if(!listeNodes_recherche(*l,val))
+		return 0;
 
+		if(*l == 0)
+			return -1;
         if((*l)->values.node==val)
         {
                 listeNodes *tmp=*l;
@@ -175,7 +193,8 @@ int  listeNodes_delete(listeNodes **l, int val)
         else
         {
                 listeNodes *tmp=*l;
-                while(tmp->suiv->values.node!=val)	tmp=tmp->suiv;
+			while(tmp->suiv != 0 && tmp->suiv->values.node!=val)	tmp=tmp->suiv;
+			
                 listeNodes *tmp2=tmp->suiv;
                 tmp->suiv=tmp->suiv->suiv;
                 free(tmp2);
@@ -194,25 +213,6 @@ void listeNodes_intersection(listeNodes **l1,listeNodes *l2)
                 l2=l2->suiv;
         }
 }
-//  ***********************TRENSFORMER**************************
-void listeNodes_to_listC(listC **l,listeNodes *l2,int node)
-{
-    while(l2)
-    {
-        if(!list_con_recherche(*l,node,l2->values.node)) list_con_insert(l,node,l2->values.node,0);
-        l2=l2->suiv;
-    }
-}
-
-void listC_to_listeNodes(listeNodes **l,listC *c)
-{
-    while(c)
-    {
-        if(!listeNodes_recherche(*l,c->node1)) listeNodes_insert(l,c->node1);
-        if(!listeNodes_recherche(*l,c->node2)) listeNodes_insert(l,c->node2);
-        c=c->suiv;
-    }
-}
 
 //  *****************UNION******************************
 void listeNodes_union(listeNodes **l1,listeNodes *l2)
@@ -226,13 +226,4 @@ void listeNodes_union(listeNodes **l1,listeNodes *l2)
 //*/
 
 
-//  Converstion
 
-void listeNodes_to_list(list **liste, listeNodes *list_nodes)
-{
-    while(list_nodes)
-    {
-        list_insert(liste, list_nodes->values.node);
-        list_nodes=list_nodes->suiv;
-    }
-}

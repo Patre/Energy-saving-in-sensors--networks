@@ -2,7 +2,7 @@
 <!--
 == Worldsens =====================================================
 -->
-<simulation nodes="10" duration="20s" x="100" y="100" z="0"/>
+<simulation nodes="8" duration="40s" x="100" y="100" z="0"/>
 <!--
 == Entities ======================================================
 -->
@@ -44,7 +44,7 @@
 
 <!-- == ROUTING ========================================= -->
 <entity name="routing-lbip" library="routing_lbip">
-<init alpha="4" c="10" eps="0.01" range="30" />
+<init alpha="4" c="100000000" eps="0.01" />
 <default />
 </entity>
 
@@ -60,7 +60,7 @@
 == Environment =====================================================
 -->
 <environment>
-<propagation entity="range" range="30"/>
+<propagation entity="range" range="12"/>
 <interferences entity="interf"/>
 <modulation entity="none"/>
 </environment>
@@ -97,4 +97,35 @@
 <!--
 == Nodes =====================================================
 -->
+	<node id="0" as="sensor">
+		<for entity="static-pos" x="8" y="7" z="0" />
+	</node>
+	
+	<node id="1" as="sensor">
+		<for entity="static-pos" x="16" y="5" z="0" />
+	</node>
+	
+	<node id="2" as="sensor">
+		<for entity="static-pos" x="13" y="0" z="0" />
+	</node>
+	
+	<node id="3" as="sensor">
+		<for entity="static-pos" x="0" y="3" z="0" />
+	</node>
+	
+	<node id="4" as="sensor">
+		<for entity="static-pos" x="3" y="17" z="0" />
+	</node>
+	
+	<node id="5" as="sensor">
+		<for entity="static-pos" x="7" y="14" z="0" />
+	</node>
+	
+	<node id="6" as="sensor">
+		<for entity="static-pos" x="9" y="20" z="0" />
+	</node>
+	
+	<node id="7" as="sensor">
+		<for entity="static-pos" x="15" y="25" z="0" />
+	</node>
 </worldsens>

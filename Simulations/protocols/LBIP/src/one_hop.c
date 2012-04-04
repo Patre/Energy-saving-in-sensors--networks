@@ -70,30 +70,6 @@ int rx_hello(call_t *c, packet_t *packet) {
 	addEdgeUndirected(nodedata->g2hop, c->node, hello->src, cout);
 	
 	
-	
-	// ajout des liens entre le nouveau voisin et le reste du 1-voisinage
-	listeNodes* tmp = nodedata->oneHopNeighbourhood;
-	position_t pos;
-	while(tmp != 0)
-	{
-		if(tmp->values.node != hello->src)
-		{
-			pos.x = tmp->values.x;
-			pos.y = tmp->values.y;
-			pos.z = tmp->values.z;
-			
-			cout = calcul_energie(pos, 
-								  hello->src_pos, 
-								  entitydata->alpha, 
-								  entitydata->c, 
-								  &distance);
-			
-			addEdgeUndirected(nodedata->g2hop, tmp->values.node, hello->src, cout);
-		}
-		tmp = tmp->suiv;
-	}
-	
-	
 	packet_dealloc(packet);
 	
     return 1;

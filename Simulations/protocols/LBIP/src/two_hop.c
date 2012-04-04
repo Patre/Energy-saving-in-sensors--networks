@@ -5,6 +5,8 @@
 
 void init_two_hop(call_t *c, double eps)
 {
+    struct nodedata *nodedata = get_node_private_data(c);
+	
 	long long int rand = abs(get_random_integer());
     int count=get_node_count();
 	rand %= 100000000;
@@ -15,6 +17,7 @@ void init_two_hop(call_t *c, double eps)
     scheduler_add_callback(time, c, broadcast_hello2, NULL);
     uint64_t timeFinish = time+100000000*count;
     scheduler_add_callback(timeFinish, c, print_two_hop_neighbourhood, NULL);
+	//scheduler_add_callback(timeFinish, c, afficherGraphe, nodedata->g2hop);
 }
 
 int broadcast_hello2(call_t *c, void *args) {
@@ -71,39 +74,28 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 	/* ajout du 2-voisinage de ce noeud dans le graphe */
 	double cout, distance;
 	position_t pos, pos2;
-	listeNodes* tmp = nodedata->oneHopNeighbourhood;
-	listeNodes* tmp2;
+	listeNodes* tmp = hello->oneHopNeighbourhood;
+	
 	while(tmp != 0)
 	{
+		addVertex(nodedata->g2hop, tmp->values.node);
 		pos.x = tmp->values.x;
 		pos.y = tmp->values.y;
 		pos.z = tmp->values.z;
-		tmp2 = nodedata->twoHopNeighbourhood;
-		while(tmp2 != 0)
-		{
-			if(tmp->values.node != tmp2->values.node)
-			{
-				addVertex(nodedata->g2hop, tmp2->values.node);
-				pos2.x = tmp2->values.x;
-				pos2.y = tmp2->values.y;
-				pos2.z = tmp2->values.z;
-				
-				cout = calcul_energie(pos, 
-									  pos2, 
-									  entitydata->alpha, 
-									  entitydata->c, 
-									  &distance);
-				addEdgeUndirected(nodedata->g2hop, tmp->values.node, tmp2->values.node, cout);
-			}
-			tmp2 = tmp2->suiv;
-		}
+		
+		cout = calcul_energie(hello->src_pos, 
+							  pos, 
+							  entitydata->alpha, 
+							  entitydata->c, 
+							  &distance);
+		addEdgeUndirected(nodedata->g2hop, hello->src, tmp->values.node, cout);
 		
 		tmp = tmp->suiv;
 	}
+		
 	
     //liberer le packet
     packet_dealloc(packet);
-	
     return 1;
 }
 

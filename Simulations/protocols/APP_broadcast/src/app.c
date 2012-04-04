@@ -206,7 +206,7 @@ int callmeback(call_t *c, void *args) {
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
-    printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
+    printf("APP - broadcast paquet depuis %d at %.2lf\n", header->source, get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
@@ -220,12 +220,12 @@ int callmeback(call_t *c, void *args) {
 
 
     /* we schedule a new callback after actualtime+period */
-    if(c->node == 0)
+   /* if(c->node == 0)
     {
            uint64_t  at= get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
            scheduler_add_callback(at, c, callmeback, NULL);
 
-    }
+    }*/
 
     return 0;
 }

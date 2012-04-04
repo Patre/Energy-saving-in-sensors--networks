@@ -29,4 +29,5 @@ void arbre_copy_fils(arbre *arbreV, arbre *arbreFils,int pere);
 
 int arbre_recherche(arbre *arbreV,int node);
 void arbre_get_fils(list **liste, arbre *arbreV,int pere);
+int arbre_is_leaf(arbre *a, int node);
 #endif // ARBRE_RBH

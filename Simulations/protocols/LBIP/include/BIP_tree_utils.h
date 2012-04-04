@@ -18,8 +18,6 @@
 
 void computeBIPtree(call_t *c);
 
-void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
-
 /**
  * \brief Return the tx antenna gain towards the destination direction.
  * \param c should be {antenna id, node id, -1}.
@@ -30,7 +28,15 @@ double   calcul_energie(position_t A, position_t B,double alpha,double c, double
 
 double getDistanceFromCout(double cout, double alpha, double c);
 
+double getCoutFromDistance(double distance, double alpha, double c);
+
 double setRangeToFarestNeighbour(call_t *c);
+
+int getNearestNeighbour(call_t *c);
+
+void setRelayNodes(call_t *c, listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
+
+void purgeGraphe(call_t* c, int farestNode, int fromNode);
 
 #endif // INIT_PROTOCOLE_H
 

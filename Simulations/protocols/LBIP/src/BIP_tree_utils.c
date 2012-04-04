@@ -5,108 +5,74 @@
 void computeBIPtree(call_t *c)
 {
 	struct nodedata *nodedata = get_node_private_data(c);
-	struct protocoleData *entitydata = get_entity_private_data(c);
 	
-	int i, minNode;
-	graphe* g = copieGraphe(nodedata->g2hop);
-	double coutMax = 0;
+	int i, minNode, devientEmetteur;
+	graphe* g = nodedata->g2hop;
+	double coutIncremental;
 	double* cle = malloc(g->nbSommets*sizeof(double));
 	double* poids = malloc(g->nbSommets*sizeof(double));
 	int* pere = malloc(g->nbSommets*sizeof(int));
-	Heap* F = allocHeap(g->nbSommets, cle);
-	voisin *trans, *trans2;
+	Heap* F = allocHeap(g->nbSommets, cle); // tas gardant les couts des noeuds pas encore dans l'arbre
+	voisin *trans;
+	
 	
 	for(i = 0 ; i < g->nbSommets ; i++)
 	{
 		cle[i] = DBL_MAX;
-		poids[i] = DBL_MAX;
+		poids[i] = 0;
 		pere[i] = -1;
 		h_insertNode(F, i);
 	}
-	cle[g->s.num] = 0;
-	
-	arbre_add_pere(&(nodedata->BIP_tree), g->s.label);
-	
+	h_changeLabel(F, g->s.num, 0);
+	poids[g->s.num] = getEdgeCost(g, c->node, getNearestNeighbour(c));
 	
 	while(!h_isEmpty(F))
 	{
-		// mettre a jour les poids des sommets
-		for(i = 0 ; i < g->nbSommets ; i++)
-		{
-			coutMax = 0;
-			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
-			{
-				trans = nodedata->g2hop->listeVoisins[i];
-				while(trans != 0)
-				{
-					if(pere[trans->v.num] != -1 || trans->v.num == g->s.num) // le voisin est dans le bip tree
-					{
-						if(trans->cout > coutMax)
-							coutMax = trans->cout;
-					}
-					trans = trans->vSuiv;
-				}
-				poids[i] = coutMax;
-			}
-		}
-		
-		// mettre a jour les couts des aretes
-		for(i = 0 ; i < g->nbSommets ; i++)
-		{
-			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
-			{
-				trans = g->listeVoisins[i];
-				trans2 = nodedata->g2hop->listeVoisins[i];
-				while(trans != 0 && trans2 != 0)
-				{
-					if(pere[trans->v.num] == -1 && trans->v.num != g->s.num) // le voisin n'est pas dans le bip tree
-					{
-						if(trans->cout != trans2->cout - poids[i])
-						{
-							changeUndirectedEdgeCost(g, g->sommets[i], trans->v.label, trans2->cout - poids[i]);
-						}
-					}
-					trans = trans->vSuiv;
-					trans2 = trans2->vSuiv;
-				}
-			}
-		}
-		
 		minNode = h_remNode(F);
+		if(pere[minNode] == -1)
+		{
+			arbre_add_pere(&(nodedata->BIP_tree), g->sommets[minNode]);
+		}
+		else
+		{
+			arbre_add_fils(nodedata->BIP_tree, g->sommets[pere[minNode]], g->sommets[minNode]);
+		}
 		
+		devientEmetteur = 0;
 		// pour chacun des voisins de minNode dans le graphe
 		trans = g->listeVoisins[minNode];
 		while(trans != 0)
 		{
-			if((pere[trans->v.num] == -1 && trans->v.num != g->s.num) && trans->cout < cle[trans->v.num])
+			coutIncremental = trans->cout - poids[minNode];
+			if(!(arbre_recherche(nodedata->BIP_tree, trans->vLabel)) && (coutIncremental < cle[getNumFromLabel(g,trans->vLabel)]))
 			{
-				pere[trans->v.num] = minNode;
-				arbre_add_fils(nodedata->BIP_tree, g->sommets[minNode], trans->v.label);
-				if(cle[trans->v.num] != trans->cout)
+				h_changeLabel(F, getNumFromLabel(g,trans->vLabel), coutIncremental);
+				if(poids[minNode] < trans->cout)
 				{
-					h_changeLabel(F, trans->v.num, trans->cout);
+					if(poids[minNode] == 0)
+						devientEmetteur = 1;
+					poids[minNode] = trans->cout;
 				}
+				pere[getNumFromLabel(g,trans->vLabel)] = minNode;
 			}
-			trans = trans->vSuiv;
+			if(devientEmetteur)
+			{
+				devientEmetteur = 0;
+				trans = g->listeVoisins[minNode];
+			}
+			else
+				trans = trans->vSuiv;
 		}
 	}
 	
 	
-	
-	deleteGraphe(g);
-	free(g);
 	free(poids);
 	free(pere);
 	free(cle);
 	freeHeap(F);
 	
-	printf("\tarbre de BIP de %d construit : \n", c->node);
+	printf("arbre de BIP de %d construit : \n", c->node);
 	arbre_affiche(nodedata->BIP_tree);
-}
-
-void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered)
-{
-	
 }
 
 double calcul_energie(position_t A, position_t B, double alpha, double c, double* distance)
@@ -123,6 +89,16 @@ double calcul_energie(position_t A, position_t B, double alpha, double c, double
 	
     //la premier partie de la fonction
     par1=pow(dAB,alpha);
+	
+    return par1+c;
+}
+
+double getCoutFromDistance(double distance, double alpha, double c)
+{
+    double par1;
+	
+    //la premier partie de la fonction
+    par1=pow(distance,alpha);
 	
     return par1+c;
 }
@@ -170,6 +146,115 @@ double setRangeToFarestNeighbour(call_t *c)
 	printf("rayon d'emission de %d fixe a %lf\n", c->node, nodedata->radius);
 	
 	return distMax;
+}
+
+int getNearestNeighbour(call_t *c)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	double coutMin = DBL_MAX;
+	int minNode = -1;
+	graphe* g = nodedata->g2hop;
+	voisin *trans = g->listeVoisins[g->s.num];
+	while(trans != 0)
+	{
+		if(trans->cout < coutMin)
+		{
+			coutMin = trans->cout;
+			minNode = trans->vLabel;
+		}
+		trans = trans->vSuiv;
+	}
+	return minNode;
+}
+
+void setRelayNodes(call_t *c, listeNodes** askedToRedirect, listeNodes** needsToBeCovered)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	
+	list *fils = 0, *fils2 = 0;
+	double cout, coutMax = 0;
+	int nodeToCover = -1;
+	
+	arbre_get_fils(&fils, nodedata->BIP_tree, c->node);
+	while(fils != 0)
+	{
+		if(!arbre_is_leaf(nodedata->BIP_tree, fils->val))
+		{
+			arbre_get_fils(&fils2, nodedata->BIP_tree, fils->val);
+			listeNodes_insert(askedToRedirect, fils->val);
+			coutMax = 0;
+			nodeToCover = -1;
+			while(fils2 != 0)
+			{
+				cout = getEdgeCost(nodedata->g2hop, fils->val, fils2->val);
+				if(cout > coutMax)
+				{
+					coutMax = cout;
+					nodeToCover = fils2->val;
+				}
+				fils2 = fils2->suiv;
+			}
+			listeNodes_insert(needsToBeCovered, nodeToCover);
+		}
+		fils = fils->suiv;
+	}
+	
+	printf("Relayer : \n");
+	listeNodes_affiche(*askedToRedirect);
+	listeNodes_affiche(*needsToBeCovered);
+}
+
+void purgeGraphe(call_t* c, int farestNode, int fromNode)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	int ret;
+	double costMax = getEdgeCost(nodedata->g2hop, c->node, farestNode), cost;
+	
+	// on enleve du graphe tous les voisins directs de fromNode
+	// sauf celui qu'on doit toucher et nous meme
+	// on garde egalement les noeuds voisins de fromNode qui sont plus pres de nous que farestNode
+	voisin** voisinsFromNode = &(nodedata->g2hop->listeVoisins[getNumFromLabel(nodedata->g2hop, fromNode)]);
+	while(*voisinsFromNode != 0)
+	{
+		if(
+		   ((*voisinsFromNode)->vLabel != c->node)
+		   &&
+		   (getEdgeCost(nodedata->g2hop, c->node, (*voisinsFromNode)->vLabel) > costMax)
+		   )
+		{
+			ret = deleteVertex(nodedata->g2hop, (*voisinsFromNode)->vLabel);
+			if(ret == -1)
+				break;
+			voisinsFromNode = &(nodedata->g2hop->listeVoisins[getNumFromLabel(nodedata->g2hop, fromNode)]);
+		}
+		else
+			voisinsFromNode = &((*voisinsFromNode)->vSuiv);
+	}
+
+	
+	// on enleve du graphe celui qui nous a relaye le paquet
+	deleteVertex(nodedata->g2hop, fromNode);
+	
+	// on enleve du graphe les voisins directs plus loins que farestNode
+	voisin** fils = &(nodedata->g2hop->listeVoisins[getNumFromLabel(nodedata->g2hop, c->node)]);
+	
+	while(*fils != 0)
+	{
+		cost = (*fils)->cout;
+		if(cost	> costMax)
+		{
+			afficherGraphe(nodedata->g2hop);
+			ret = deleteVertex(nodedata->g2hop, (*fils)->vLabel);
+			if(ret == -1)
+				break;
+			fils = &(nodedata->g2hop->listeVoisins[getNumFromLabel(nodedata->g2hop, c->node)]);
+		}
+		else
+			fils = &((*fils)->vSuiv);
+	}
+	
+	// on purge le graphe
+	purgeGrapheOfStables(nodedata->g2hop);
 }
 
 

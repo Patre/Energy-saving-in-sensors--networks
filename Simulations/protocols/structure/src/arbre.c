@@ -161,4 +161,24 @@ void arbre_get_fils(list **l, arbre *a,int pere)
     }
 }
 
+int arbre_is_leaf(arbre *a, int node)
+{
+    if(a->node==node)
+    {
+        return (a->size == 0);
+    }
+    else
+    {
+        int i = 0, ret;
+        i=a->size;
+        while(i--)
+		{
+			ret = arbre_is_leaf(a->fils[i], node);
+			if(ret > 0)
+				return ret;
+		}
+    }
+	return 0;
+}
+
 
