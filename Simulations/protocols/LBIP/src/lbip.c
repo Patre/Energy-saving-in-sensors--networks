@@ -60,8 +60,7 @@ int setnode(call_t *c, void *params) {
 	nodedata->twoHopNeighbourhood = 0;
 	nodedata->g2hop = malloc(sizeof(graphe));
 	initGraphe(nodedata->g2hop, c->node);
-	nodedata->BIP_tree = Nullptr(arbre);
-	nodedata->radius = -1.0;
+	nodedata->BIP_tree = 0;
 	nodedata->nbr_evenement = 0; //STATS
 	
 	
@@ -164,42 +163,46 @@ void rx(call_t *c, packet_t *packet) {
 	{	
 		case HELLO:
 		{
-			printf("BIP - Paquet de type HELLO recu par %d depuis %d\n", c->node, data->src);
+			//printf("BIP - Paquet de type HELLO recu par %d depuis %d\n", c->node, data->src);
 			rx_hello(c,packet);
 			break;
 		}
 		case HELLO2:
 		{
-			printf("BIP - Paquet de type HELLO2 recu par %d depuis %d\n", c->node, data->src);
+			//printf("BIP - Paquet de type HELLO2 recu par %d depuis %d\n", c->node, data->src);
 			rx_two_hop(c,packet);
 			break;
 		}
 		case APP:
 		{
-			printf("BIP - Paquet de type APP recu par %d depuis %d destine a %d\n", c->node, data->src, data->dst);
+			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			if(data->dst == BROADCAST_ADDR)
 			{
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
 					indice = listeNodes_get_index(data->askedToRedirect, c->node);
-					printf("%d doit relayer depuis %d\n", c->node, data->pred);
-					if(nodedata->radius == -1.0) // si le BIP tree n'a pas encore ete construit
-					{
-						// le construire a partir des infos du paquet
-						printf("Graphe de 2-voisinage de %d :\n", c->node);
-						afficherGraphe(nodedata->g2hop);
-						purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->pred);
-						printf("Graphe de 2-voisinage de %d apres purge grace au paquet recu :\n", c->node);
-						afficherGraphe(nodedata->g2hop);
-						computeBIPtree(c);
-					}
+					/*printf("%d doit relayer depuis %d\n", c->node, data->pred);
+					
+					printf("Graphe de 2-voisinage de %d :\n", c->node);
+					afficherGraphe(nodedata->g2hop);*/
+					
+					// construire le bip tree pour relayer a partir des infos du paquet
+					graphe* g = purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->pred);
+					
+					/*printf("Graphe de 2-voisinage de %d apres purge grace au paquet recu :\n", c->node);
+					afficherGraphe(g);*/
+					arbre* bipTree = computeBIPtree(c, g);
+					
 					// relayer le paquet
 					destination_t dst = {-1,{-1,-1,-1}};
-					setRangeToFarestNeighbour(c);
+					setRangeToFarestNeighbour(c, g, bipTree);
 					data->askedToRedirect = 0;
 					data->needsToBeCovered = 0;
 					data->pred = c->node;
-					setRelayNodes(c, &data->askedToRedirect, &data->needsToBeCovered);
+					setRelayNodes(c, g, bipTree, &data->askedToRedirect, &data->needsToBeCovered);
+					arbre_detruire(&bipTree);
+					deleteGraphe(g);
+					free(g);
 					call_t c_down = {down->elts[0], c->node, c->entity};
 					SET_HEADER(&c_down, packet, &dst);
 					tx(c, packet);
@@ -228,7 +231,7 @@ void tx( call_t *c , packet_t * packet )
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
-    printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", data->type, data->src, data->dst, get_time_now_second());
+    //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", data->type, data->src, data->dst, get_time_now_second());
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
@@ -256,14 +259,14 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	
 	if(dst->id == BROADCAST_ADDR)
 	{
-		if(nodedata->radius == -1.0) // le BIP tree n'a pas encore ete construit
+		if(nodedata->BIP_tree == 0) // le BIP tree n'a pas encore ete construit
 		{
-			printf("Graphe de 2-voisinage de %d :\n", c->node);
-			afficherGraphe(nodedata->g2hop);
-			computeBIPtree(c);
+			/*printf("Graphe de 2-voisinage de %d :\n", c->node);
+			afficherGraphe(nodedata->g2hop);*/
+			nodedata->BIP_tree = computeBIPtree(c, nodedata->g2hop);
 		}
-		setRangeToFarestNeighbour(c);
-		setRelayNodes(c, &header->askedToRedirect, &header->needsToBeCovered);
+		setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->BIP_tree);
+		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered);
 	}
 	else
 	{

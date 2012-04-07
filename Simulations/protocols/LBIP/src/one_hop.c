@@ -42,7 +42,7 @@ int broadcast_hello(call_t *c, void *args) {
     }
 	
     DEBUG;
-    printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
+    //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
     
     TX(&c0,packet);
 	

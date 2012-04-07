@@ -20,7 +20,6 @@ struct nodedata {
 	listeNodes* twoHopNeighbourhood;
 	graphe* g2hop;
 	arbre* BIP_tree;
-	double radius;
 	int nbr_evenement; // stats
 };
 

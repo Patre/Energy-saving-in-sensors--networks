@@ -49,7 +49,7 @@ int broadcast_hello2(call_t *c, void *args) {
     }
 	
 	DEBUG
-	printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
+	//printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
     
     TX(&c0,packet);
 
@@ -62,9 +62,6 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_hello2 *hello = (packet_hello2*) (packet->data + nodedata->overhead);
 	
-    //recuperer le support de communication MAC
-	entityid_t *down = get_entity_links_down(c);
-	call_t c0 = {down[0], c->node};
 	
 	// copier le 1-voisinage recu dans le 2-voisinage de ce noeud
 	listeNodes_union(&(nodedata->twoHopNeighbourhood), hello->oneHopNeighbourhood);
@@ -73,7 +70,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 	
 	/* ajout du 2-voisinage de ce noeud dans le graphe */
 	double cout, distance;
-	position_t pos, pos2;
+	position_t pos;
 	listeNodes* tmp = hello->oneHopNeighbourhood;
 	
 	while(tmp != 0)
