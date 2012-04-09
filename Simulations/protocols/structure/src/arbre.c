@@ -52,6 +52,7 @@ void arbre_affiche(arbre *l)
 /*******************************DESTRUCTION************************/
 void arbre_detruire(arbre **l)
 {
+    if((*l)==Nullptr(arbre)) return;
     if((*l)->size==0)
     {
         //printf("je detrruit le Noeud %d\n",(*l)->node);

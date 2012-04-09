@@ -78,8 +78,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
-
-
     entityid_t *up = get_entity_links_up(c);
     call_t c_up = {up[0], c->node};
     packet_t *packet_up;
@@ -93,14 +91,10 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     /*
 	 Creation de Packet
 	 */
-    //creation de paquet et initialisation de son data
-    /*packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);*/
-	
     //initialiser les données
     data->redirected_by=c->node;
 	
-	
+
     //envoi au voisin 1 de l'arbre
     list *destinations=Nullptr(list);
     arbre_get_fils(&destinations,data->pere_arbre,c->node);
@@ -109,30 +103,28 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
 
+    printf("LA nouvelle destination de %d est ",c->node);
+    list_affiche(data->destinations);
     //ENVOI
-    //recuperer le support de communication DOWN
-    list *des=data->destinations;
-    while (des)
-    {
-         //retransmettre
-        entityid_t *down = get_entity_links_down(c);
-        call_t c0 = {down[0], c->node};
+    entityid_t *down = get_entity_links_down(c);
+    call_t c0 = {down[0], c->node};
 
-        packet_t *packetEnvoi = packet_clone(packetRecu);
+    packet_t *packetEnvoi = packet_clone(packetRecu);
 
-        destination_t destination = {des->val, *get_node_position(des->val)};
-        if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
-            packet_dealloc(packetEnvoi);
-            return;
-        }
+    //destination de paquet
+    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
+    if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
+        packet_dealloc(packetEnvoi);
+        return;
+    }
 
-        SHOW_GRAPH("G: %d %d\n",c->node,des->val);
+    DEBUG;
+    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
-        TX(&c0,packetEnvoi);
-        des=des->suiv;
-    }//*/
-    //Liberer l'espace memoire;
-    packet_dealloc(packetRecu);
+    // printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
+
+    //L'envoi
+    TX(&c0,packetEnvoi);//*/
 
     //tout c'est bien passé
     return 1;

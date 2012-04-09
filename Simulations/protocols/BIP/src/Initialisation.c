@@ -19,47 +19,32 @@ void get_PROTOCOLE_init(call_t *c, double eps)
 void init_bip_tree(call_t *c, void *args)
 {
     struct nodedata *nodedata = get_node_private_data(c);
-	
-    DEBUG;
-    /*printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
-		   get_time_now_second());//*/
-	
-    //RECUPERER L4ENSEMBLE DE GRAPH
-    int i=0;
-    call_t *inter=malloc(sizeof(call_t));
-    inter->entity=c->entity;
-    inter->from=c->from;
-	
+    struct protocoleData *entitydata = get_entity_private_data(c);
+
+    int i,j;
     for(i=0;i<get_node_count();i++)
-    {
-        inter->node=i;
-        struct nodedata *interdata=get_node_private_data(inter);
-        list2N_insert_values(&nodedata->NodesV1,inter->node,get_node_position(inter->node)->x,
-                             get_node_position(inter->node)->y, get_node_position(inter->node)->z,interdata->N1);
-    }
-	
-    //REcuperer le graph G
-    list *graphElements=Nullptr(list);
-    for(i=0;i<get_node_count();i++) list_insert(&graphElements,i);
-    list_delete(&graphElements,c->node);
-	
-    //list de commencement
-    list *debut=Nullptr(list);
-    list_insert(&debut,c->node);
-	
-    //recuperer tout les connexion dans le graph
-    listC *connexions=Nullptr(listC);
-    list2N_to_listC(&connexions,nodedata->NodesV1);
-	
-    listC *poi=connexions;
-    while (poi)
-    {
-        //on ai dans le bip, nous avons le droit de fair Áa
-        list_set_poids(connexions,poi->node1,poi->node2,distance(get_node_position(poi->node1),get_node_position(poi->node2)));
-        poi=poi->suiv;
-    }
-	
-    prim_tree(debut,&nodedata->tree_BIP,connexions,graphElements);
+        if(i!=c->node)        addVertex(nodedata->g2hop,i);
+
+    double range = get_range_Tr(c);
+
+    //DEBUG
+    //if(c->node==0)  printf("RANGE = > %lf\n",range);
+
+    double dist;
+    for(i=0;i<get_node_count();i++)
+        for(j=0;j<get_node_count();j++)
+        {
+            dist=distance(get_node_position(i),get_node_position(j));
+            if(i!=j && dist<= range)
+            {
+                double cout = calcul_energie(*get_node_position(i),*get_node_position(j),entitydata->alpha,entitydata->c,&dist);
+                addEdgeUndirected(nodedata->g2hop, i, j, cout);
+            }
+        }
+
 }
+
+
+
 
 
