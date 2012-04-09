@@ -51,7 +51,7 @@ int setnode(call_t *c, void *params) {
     //les packets
     nodedata->paquets   = Nullptr(list_PACKET);
 	
-    //Clhoé
+    //Chloé
     nodedata->g2hop = malloc(sizeof(graphe));
     initGraphe(nodedata->g2hop, c->node);
 
@@ -237,13 +237,14 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
     {
+		purgeGrapheOfStables(nodedata->g2hop);
         afficherGraphe(nodedata->g2hop);
         printf("\t\t\tje calcule l'arbre de %d\n",c->node);
         nodedata->tree_BIP = computeBIPtree(c, nodedata->g2hop);
         printf("arbre de BIP de %d construit : \n", c->node);
         arbre_affiche(nodedata->tree_BIP);
 
-        //setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
+        setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
 
     }
 
