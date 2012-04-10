@@ -10,7 +10,7 @@
 == PROPAGATION, INTERFERENCES and MODULATION =====================
 -->
 <entity name="range" library="propagation_range">
-<init range="30"/>
+<init range="12"/>
 </entity>
 <entity name="interf" library="interferences_none"></entity>
 <entity name="none" library="modulation_none"></entity>

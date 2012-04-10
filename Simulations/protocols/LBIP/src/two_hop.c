@@ -52,7 +52,6 @@ int broadcast_hello2(call_t *c, void *args) {
 	//printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
     
     TX(&c0,packet);
-
 	
     return 1;
 }
@@ -61,7 +60,6 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_hello2 *hello = (packet_hello2*) (packet->data + nodedata->overhead);
-	
 	
 	// copier le 1-voisinage recu dans le 2-voisinage de ce noeud
 	listeNodes_union(&(nodedata->twoHopNeighbourhood), hello->oneHopNeighbourhood);
@@ -75,6 +73,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 	
 	while(tmp != 0)
 	{
+		addVertex(nodedata->g2hop, hello->src);
 		addVertex(nodedata->g2hop, tmp->values.node);
 		pos.x = tmp->values.x;
 		pos.y = tmp->values.y;
@@ -85,14 +84,14 @@ int rx_two_hop(call_t *c, packet_t *packet) {
 							  entitydata->alpha, 
 							  entitydata->c, 
 							  &distance);
-		addEdgeUndirected(nodedata->g2hop, hello->src, tmp->values.node, cout);
 		
+		addEdgeUndirected(nodedata->g2hop, hello->src, tmp->values.node, cout);
 		tmp = tmp->suiv;
 	}
-		
 	
     //liberer le packet
     packet_dealloc(packet);
+	
     return 1;
 }
 
