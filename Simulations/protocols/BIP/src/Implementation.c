@@ -37,8 +37,8 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     //envoyer aussi l'arbre pere
     data->pere_arbre=Nullptr(arbre);
     arbre_copy(&data->pere_arbre,nodedata->tree_BIP);
-	
-	
+
+
     //ENVOI
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
@@ -92,8 +92,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 	 Creation de Packet
 	 */
     //initialiser les données
-    data->redirected_by=c->node;
-	
+
 
     //envoi au voisin 1 de l'arbre
     list *destinations=Nullptr(list);
@@ -103,18 +102,22 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
 
-    printf("LA nouvelle destination de %d est ",c->node);
-    list_affiche(data->destinations);
+
+
+    printf("moi %d, j'ai recu de %d et je transmis a ",c->node,data->redirected_by);
+    list_affiche(data->destinations);//*/
+
+    data->redirected_by=c->node;
+
+
     //ENVOI
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
 
-    packet_t *packetEnvoi = packet_clone(packetRecu);
-
     //destination de paquet
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
-    if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
-        packet_dealloc(packetEnvoi);
+    if (SET_HEADER(&c0, packetRecu, &destination) == -1) {
+        packet_dealloc(packetRecu);
         return;
     }
 
@@ -124,7 +127,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     // printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
 
     //L'envoi
-    TX(&c0,packetEnvoi);//*/
+    TX(&c0,packetRecu);//*/
 
     //tout c'est bien passé
     return 1;

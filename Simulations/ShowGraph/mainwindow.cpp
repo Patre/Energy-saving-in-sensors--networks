@@ -94,7 +94,7 @@ void MainWindow::lireFile(QString filename)
 
 void MainWindow::chargerGraph()
 {
-    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
+    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph","/home/bibouh/wsnet-module/user_models/tests");
     lireFile(file);
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
