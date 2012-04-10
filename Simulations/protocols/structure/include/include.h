@@ -23,6 +23,9 @@
 //MPR
 #define MPR     300                 //le paquet MPR
 
+//RBOP
+#define RBOP   400                 //le paquet RBOP
+
 //BIP
 #define BIP    900
 

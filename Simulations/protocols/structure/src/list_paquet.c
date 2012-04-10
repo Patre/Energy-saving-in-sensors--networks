@@ -95,10 +95,10 @@ int list_PACKET_recherche(list_PACKET *l,packet_LIST_element val)
 int list_PACKET_recherche_tout(list_PACKET *l,int source,int seq)
 {
         int bol=0;
-        while(l&&!bol)
+        while(l)
         {
-                if(l->packet.seq == source &&
-                        l->packet.source==seq)	bol=1;
+                if(l->packet.source == source &&
+                        l->packet.seq==seq)	bol=1;
                 l=l->suiv;
         }
         return bol;

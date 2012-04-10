@@ -57,6 +57,7 @@ int list_get(list *l,int index)
 /***********************DESTRUCTION**************************/
 void list_detruire(list **l)
 {
+    if((*l)==Nullptr(list)) return;
         list *tmp=*l;
         while(*l)
         {

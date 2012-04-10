@@ -43,7 +43,7 @@
 </entity>
 
 <!-- == ROUTING ========================================= -->
-<entity name="routing-protocole" library="routing_bip">
+<entity name="routing-protocole" library="routing_lbip">
 <init alpha="1" c="0" eps="0.01" />
 <default />
 </entity>

@@ -132,10 +132,6 @@ int bootstrap(call_t *c) {
     //printf("TWO");
     //INITIALISATION DE L'ARBRE
     get_PROTOCOLE_init(c,entitydata->eps);
-
-
-
-
    return 0;
 }
 
@@ -152,8 +148,11 @@ void rx(call_t *c, packet_t *packet) {
     {
     case BIP:
     {
+
         if(list_recherche(data->destinations,c->node)==1)
+        {
             PROTOCOLE_reception(c,packet);
+        }
         break;
     }
     default:
@@ -167,6 +166,9 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
+
+    if(c->node==0)
+        arbre_affiche(nodedata->tree_BIP);
 
     //PAR USER PROTOCOLE
     deleteGraphe(nodedata->g2hop);
@@ -189,43 +191,9 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
-    struct nodedata *nodedata = malloc(sizeof(struct nodedata));
-
-
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
-
-
     TX(&c0,packet);
-
-    //DEBUG
-    /*packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
-
-
-
-    list *des=data->destinations;
-    while (des)
-    {
-         //retransmettre
-        entityid_t *down = get_entity_links_down(c);
-        call_t c0 = {down[0], c->node};
-
-        packet_t *packetEnvoi = packet_clone(packet);
-
-        destination_t destination = {des->val, *get_node_position(des->val)};
-        if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
-            packet_dealloc(packetEnvoi);
-            return;
-        }
-     //   printf("BIP - Paquet de type %d envoye de %d a %d\n", data->type, c->node, des->val);
-
-        SHOW_GRAPH("G: %d %d\n",c->node,des->val);
-
-        TX(&c0,packetEnvoi);
-        des=des->suiv;
-    }//*/
-    //Librer le paquet de l'application de dessus
-    //  packet_dealloc(packet);
 }
 
 /* *********************************************** */
@@ -245,7 +213,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
         arbre_affiche(nodedata->tree_BIP);
 
         //setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
-
     }
 
     //augmenter le nbr d'evenement
@@ -272,7 +239,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     arbre_copy(&header->pere_arbre,nodedata->tree_BIP);
 
     DEBUG;
-    if(header->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
+    //if(header->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
 
     //destination de paquet

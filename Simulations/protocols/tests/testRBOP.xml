@@ -2,7 +2,7 @@
 <!--
 == Worldsens =====================================================
 -->
-<simulation nodes="100" duration="100s" x="200" y="200"  z="0"/>
+<simulation nodes="100" duration="100s" x="200" y="200" z="0"/>
 <!--
 == Entities ======================================================
 -->
@@ -43,7 +43,7 @@
 </entity>
 
 <!-- == ROUTING ========================================= -->
-<entity name="routing-protocole" library="routing_bip">
+<entity name="routing-protocole" library="routing_rbop">
 <init alpha="1" c="0" eps="0.01" />
 <default />
 </entity>
@@ -97,6 +97,7 @@
 <!--
 == Nodes =====================================================
 -->
+
 
 <node id="0"  >
         <for entity="static-pos" x="98,000000" y="110,000000" z="0.0" />

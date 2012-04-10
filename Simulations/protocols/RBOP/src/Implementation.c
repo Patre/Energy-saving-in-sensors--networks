@@ -30,9 +30,6 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     list_copy(&data->destinations,nodedata->RNG);
 
 
-    DEBUG;
-    list *destinations=data->destinations;
-    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
     //ENVOI
     //recuperer le support de communication DOWN
@@ -72,6 +69,8 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
 
+    SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
+
     entityid_t *up = get_entity_links_up(c);
     call_t c_up = {up[0], c->node};
     packet_t *packet_up;
@@ -88,9 +87,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     list_copy(&data->destinations,nodedata->RNG);
 
 
-    DEBUG;
-    list *destinations=data->destinations;
-    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
     //ENVOI
     //recuperer le support de communication DOWN

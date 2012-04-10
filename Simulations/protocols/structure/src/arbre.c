@@ -49,6 +49,7 @@ void arbre_affiche(arbre *l)
     //printf("\n");
 }
 
+
 /*******************************DESTRUCTION************************/
 void arbre_detruire(arbre **l)
 {
