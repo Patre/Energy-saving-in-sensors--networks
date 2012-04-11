@@ -1,0 +1,4 @@
+./bootstrap 
+./configure --prefix=$HOME/wsnet-module --with-wsnet-dir=/usr/local/wsnet-2.0 
+make  
+make install 
