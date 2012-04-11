@@ -5,46 +5,47 @@ The style file: plain.bst
 Database file #1: ../Bib.bib
 A bad cross reference---entry "Cartigny2004"
 refers to entry "conf/ifip6-8/2004", which doesn't exist
+Warning--I didn't find a database entry for "Liang2002"
 Warning--I didn't find a database entry for "conf/ifip6-8/2004"
-You've used 13 entries,
+You've used 15 entries,
             2118 wiz_defined-function locations,
-            590 strings with 6576 characters,
-and the built_in function-call counts, 5401 in all, are:
-= -- 559
-> -- 237
-< -- 9
-+ -- 91
-- -- 78
-* -- 372
-:= -- 841
-add.period$ -- 42
-call.type$ -- 13
-change.case$ -- 77
+            602 strings with 6828 characters,
+and the built_in function-call counts, 5847 in all, are:
+= -- 600
+> -- 251
+< -- 10
++ -- 97
+- -- 82
+* -- 389
+:= -- 916
+add.period$ -- 47
+call.type$ -- 15
+change.case$ -- 85
 chr.to.int$ -- 0
-cite$ -- 13
-duplicate$ -- 219
-empty$ -- 404
-format.name$ -- 78
-if$ -- 1174
+cite$ -- 15
+duplicate$ -- 240
+empty$ -- 447
+format.name$ -- 82
+if$ -- 1272
 int.to.chr$ -- 0
-int.to.str$ -- 13
-missing$ -- 13
-newline$ -- 68
-num.names$ -- 28
-pop$ -- 74
+int.to.str$ -- 15
+missing$ -- 14
+newline$ -- 77
+num.names$ -- 32
+pop$ -- 88
 preamble$ -- 1
-purify$ -- 64
+purify$ -- 70
 quote$ -- 0
-skip$ -- 184
+skip$ -- 201
 stack$ -- 0
-substring$ -- 382
-swap$ -- 85
-text.length$ -- 9
+substring$ -- 394
+swap$ -- 90
+text.length$ -- 10
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 52
+type$ -- 60
 warning$ -- 0
-while$ -- 56
-width$ -- 15
-write$ -- 150
+while$ -- 61
+width$ -- 17
+write$ -- 169
 (There was 1 error message)

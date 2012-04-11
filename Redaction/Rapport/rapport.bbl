@@ -36,6 +36,12 @@ Isabel Dietrich and Falko Dressler.
 \newblock {On the lifetime of wireless sensor networks.}
 \newblock {\em TOSN}, 5(1), 2009.
 
+\bibitem{Dong2005}
+Q.~Dong.
+\newblock {Maximizing system lifetime in wireless sensor networks}.
+\newblock {\em IPSN '05: Proceedings of the 4th international symposium on
+  Information processing in sensor networks}, page~3, 2005.
+
 \bibitem{Elleithy2011}
 Abdelrahman Elleithy and Gonhsin Liu.
 \newblock {A simulation model for the lifetime of wireless sensor networks}.
@@ -54,8 +60,12 @@ F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovi{\'c}.
 \newblock {\em Resource Management in Wireless Networking}, pages 543--582,
   2005.
 
+\bibitem{Kasten2001}
+O.~Kasten.
+\newblock {Energy consumption}, 2001.
+
 \bibitem{Abba2006}
-Francisco~Javier Ovalle-Mart{\'\i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
+Francisco~Javier Ovalle-Mart{\'i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
   Carle, and David Simplot-Ryl.
 \newblock {Area-based beaconless reliable broadcasting in sensor networks.}
 \newblock {\em IJSNet}, 1(1/2):20--33, 2006.
