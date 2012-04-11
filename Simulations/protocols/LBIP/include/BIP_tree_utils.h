@@ -16,7 +16,8 @@
 #include "structures.h"
 
 
-arbre* computeBIPtree(call_t *c, graphe* g);
+
+arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNodes* needsToBeCovered, int debug);
 
 /**
  * \brief Return the tx antenna gain towards the destination direction.
@@ -32,11 +33,13 @@ double getCoutFromDistance(double distance, double alpha, double c);
 
 double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree);
 
-int getNearestNeighbour(call_t *c);
+int getNearestNeighbour(call_t *c, graphe* g);
 
-void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
+void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered, int node);
 
-graphe* purgeGraphe(call_t* c, int farestNode, int fromNode);
+graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode);
+
+void forward(call_t* c, packet_t *packet);
 
 #endif // INIT_PROTOCOLE_H
 

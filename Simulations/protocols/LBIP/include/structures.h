@@ -13,6 +13,7 @@
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
+void tx( call_t *c , packet_t * packet );
 
 struct nodedata {
 	int overhead;
@@ -21,6 +22,7 @@ struct nodedata {
 	graphe* g2hop;
 	arbre* BIP_tree;
 	int nbr_evenement; // stats
+	int* lastIDs;
 };
 
 
@@ -39,6 +41,7 @@ typedef struct _packet_bip
 	nodeid_t pred;
 	listeNodes* askedToRedirect;
 	listeNodes* needsToBeCovered;
+	int id;
 } packet_PROTOCOLE;
 
 

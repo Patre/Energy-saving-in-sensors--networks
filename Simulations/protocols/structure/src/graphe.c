@@ -131,7 +131,7 @@ void addEdgeDirected(graphe* g, int labelU, int labelV, double cout)
 	v.num = getNumFromLabel(g, labelV);
 	u.label = labelU;
 	v.label = labelV;
-	if(u.num >= g->nbSommets || v.num >= g->nbSommets)
+	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
 		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return;
@@ -174,7 +174,7 @@ void deleteEdgeDirected(graphe* g, int labelU, int labelV)
 	v.num = getNumFromLabel(g, labelV);
 	u.label = labelU;
 	v.label = labelV;
-	if(u.num >= g->nbSommets || v.num >= g->nbSommets)
+	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
 		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return;
@@ -222,7 +222,7 @@ int getLabelFromNum(graphe* g, int num)
 	return g->sommets[num];
 }
 
-void afficherListeVoisins(graphe* g, voisin* liste)
+void afficherListeVoisins(voisin* liste)
 {
 	voisin*	trans = liste;
 	while(trans != 0)
@@ -242,7 +242,19 @@ void afficherGraphe(graphe* g)
 	for(i = 0 ; i < g->nbSommets ; i++)
 	{
 		printf("\tvoisins du sommet %d : ", g->sommets[i]);
-		afficherListeVoisins(g, g->listeVoisins[i]);
+		afficherListeVoisins(g->listeVoisins[i]);
+	}
+}
+
+void copieListe(voisin* from, voisin** dest)
+{
+	if(from != 0)
+	{
+		*dest = malloc(sizeof(voisin));
+		(*dest)->vLabel = from->vLabel;
+		(*dest)->cout = from->cout;
+		(*dest)->vSuiv = 0;
+		copieListe(from->vSuiv, &(*dest)->vSuiv);
 	}
 }
 
@@ -250,7 +262,6 @@ graphe* copieGraphe(graphe* g)
 {
 	graphe* g2 = malloc(sizeof(graphe));
 	int i;
-	voisin *trans1, **trans2;
 	
 	g2->nbSommets = g->nbSommets;
 	g2->listeVoisins = malloc(g2->nbSommets*sizeof(voisin*));
@@ -260,27 +271,19 @@ graphe* copieGraphe(graphe* g)
 	for(i = 0 ; i < g->nbSommets ; i++)
 	{
 		g2->sommets[i] = g->sommets[i];
-		trans1 = g->listeVoisins[i];
-		trans2 = &(g2->listeVoisins[i]);
-		
-		while(trans1 != 0)
-		{
-			*trans2 = malloc(sizeof(voisin));
-			(*trans2)->vLabel = trans1->vLabel;
-			(*trans2)->cout = trans1->cout;
-			(*trans2)->vSuiv = 0;
-			trans2 = &((*trans2)->vSuiv);
-			
-			trans1 = trans1->vSuiv;
-		}
-		*trans2 = 0;
+		g2->listeVoisins[i] = 0;
+		copieListe(g->listeVoisins[i], &(g2->listeVoisins[i]));
 	}
 	return g2;
 }
 
 voisin* getNeighboursFromLabel(graphe* g, int label)
 {
-	return g->listeVoisins[getNumFromLabel(g, label)];
+	int num = getNumFromLabel(g, label);
+	if(num == -1)
+		return 0;
+	else
+		return g->listeVoisins[num];
 }
 
 void changeDirectedEdgeCost(graphe* g, int labelU, int labelV, double cost)
@@ -314,7 +317,7 @@ double getEdgeCost(graphe* g, int labelU, int labelV)
 	v.num = getNumFromLabel(g, labelV);
 	u.label = labelU;
 	v.label = labelV;
-	if(u.num >= g->nbSommets || v.num >= g->nbSommets)
+	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
 		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return DBL_MAX;

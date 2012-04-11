@@ -13,7 +13,7 @@
 #include "structures.h"
 #include "one_hop.h"
 
-
+int last_id = 0;
 
 
 /* ************************************************** */
@@ -49,7 +49,6 @@ int ioctl(call_t *c, int option, void *in, void **out) {
     return 0;
 }
 
-void tx( call_t *c , packet_t * packet );
 
 // initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
@@ -62,6 +61,12 @@ int setnode(call_t *c, void *params) {
 	initGraphe(nodedata->g2hop, c->node);
 	nodedata->BIP_tree = 0;
 	nodedata->nbr_evenement = 0; //STATS
+	nodedata->lastIDs = malloc(get_node_count()*sizeof(int));
+	int i;
+	for(i = 0 ; i < get_node_count() ; i++)
+	{
+		nodedata->lastIDs[i] = -1;
+	}
 	
 	
     set_node_private_data(c, nodedata);
@@ -154,8 +159,6 @@ int bootstrap(call_t *c) {
 void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	array_t *up = get_entity_bindings_up(c);
-	array_t *down = get_entity_bindings_down(c);
-	int i, indice;
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
@@ -176,36 +179,17 @@ void rx(call_t *c, packet_t *packet) {
 		case APP:
 		{
 			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
+				return;
+			else
+				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
-					indice = listeNodes_get_index(data->askedToRedirect, c->node);
-					/*printf("%d doit relayer depuis %d\n", c->node, data->pred);
-					
-					printf("Graphe de 2-voisinage de %d :\n", c->node);
-					afficherGraphe(nodedata->g2hop);*/
-					
-					// construire le bip tree pour relayer a partir des infos du paquet
-					graphe* g = purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->pred);
-					
-					/*printf("Graphe de 2-voisinage de %d apres purge grace au paquet recu :\n", c->node);
-					afficherGraphe(g);*/
-					arbre* bipTree = computeBIPtree(c, g);
-					
-					// relayer le paquet
-					destination_t dst = {-1,{-1,-1,-1}};
-					setRangeToFarestNeighbour(c, g, bipTree);
-					data->askedToRedirect = 0;
-					data->needsToBeCovered = 0;
-					data->pred = c->node;
-					setRelayNodes(c, g, bipTree, &data->askedToRedirect, &data->needsToBeCovered);
-					arbre_detruire(&bipTree);
-					deleteGraphe(g);
-					free(g);
-					call_t c_down = {down->elts[0], c->node, c->entity};
-					SET_HEADER(&c_down, packet, &dst);
-					tx(c, packet);
+					//uint64_t time = rand() % 11000000000000;
+					//scheduler_add_callback(time, c, forward, packet);
+					forward(c, packet);
 				}
 				
 				// faire remonter le paquet a la couche application
@@ -256,6 +240,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	header->pred = c->node;
 	header->askedToRedirect = 0;
 	header->needsToBeCovered = 0;
+	header->id = last_id++;
 	
 	if(dst->id == BROADCAST_ADDR)
 	{
@@ -263,10 +248,10 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 		{
 			/*printf("Graphe de 2-voisinage de %d :\n", c->node);
 			afficherGraphe(nodedata->g2hop);*/
-			nodedata->BIP_tree = computeBIPtree(c, nodedata->g2hop);
+			nodedata->BIP_tree = computeBIPtree(c, nodedata->g2hop, 0, 0, 0);
 		}
 		setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->BIP_tree);
-		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered);
+		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);
 	}
 	else
 	{
@@ -328,6 +313,7 @@ int unsetnode(call_t *c) {
 	DEBUG; /* Graphe DE LBIP */
 	deleteGraphe(nodedata->g2hop);
 	free(nodedata->g2hop);
+	free(nodedata->lastIDs);
 	
     free(nodedata);
     return 0;

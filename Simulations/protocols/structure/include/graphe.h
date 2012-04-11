@@ -39,7 +39,7 @@ void deleteEdgeDirected(graphe* g, int labelU, int labelV);
 void deleteEdgeUndirected(graphe* g, int labelU, int labelV);
 int getNumFromLabel(graphe* g, int label);
 int getLabelFromNum(graphe* g, int num);
-void afficherListeVoisins(graphe* g, voisin* liste);
+void afficherListeVoisins(voisin* liste);
 void afficherGraphe(graphe* g);
 graphe* copieGraphe(graphe* g);
 voisin* getNeighboursFromLabel(graphe* g, int label);

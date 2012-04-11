@@ -7,20 +7,17 @@ void init_two_hop(call_t *c, double eps)
 {
     struct nodedata *nodedata = get_node_private_data(c);
 	
-	long long int rand = abs(get_random_integer());
-    int count=get_node_count();
-	rand %= 100000000;
-	rand *= c->node;
-	rand += 100000000*count;
+	long long int at = get_time_now() + eps*1000000 + 110000*get_node_count();
 	
-    uint64_t time = get_time_now() + time_seconds_to_nanos(eps) + rand;
+    uint64_t time = at + 100 + 110000*c->node;
     scheduler_add_callback(time, c, broadcast_hello2, NULL);
-    uint64_t timeFinish = time+100000000*count;
+    uint64_t timeFinish = at+110000*get_node_count();
     scheduler_add_callback(timeFinish, c, print_two_hop_neighbourhood, NULL);
 	//scheduler_add_callback(timeFinish, c, afficherGraphe, nodedata->g2hop);
 }
 
 int broadcast_hello2(call_t *c, void *args) {
+	printf("broadcast hello 2 from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
     struct nodedata *nodedata = get_node_private_data(c);
 
     //recuperer le support de communication DOWN
@@ -60,6 +57,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_hello2 *hello = (packet_hello2*) (packet->data + nodedata->overhead);
+	printf("%d recoit hello2 depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
 	
 	// copier le 1-voisinage recu dans le 2-voisinage de ce noeud
 	listeNodes_union(&(nodedata->twoHopNeighbourhood), hello->oneHopNeighbourhood);

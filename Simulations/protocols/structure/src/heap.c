@@ -68,10 +68,12 @@ void entasser_min(Heap *p, int index)
 	int indr = (index + 1) * 2;
 	int indl = indr - 1;
 	double labl = -1, labr = -1;
-	if (indl < cur(p))
-		labl = hlab(p,lchild(p,index));
-	if (indr < cur(p))
-		labr = hlab(p,rchild(p,index));
+	if (indl >= 0 && indl < cur(p))
+	{
+		labl = hlab(p,node(p,indl));
+	}
+	if (indr >= 0 && indr < cur(p))
+		labr = hlab(p,node(p,indr));
 	
 	if(indl < cur(p) && labl < label)
 		minInd = indl;
@@ -90,7 +92,9 @@ void entasser_min(Heap *p, int index)
 
 int h_remNode (Heap *p) {
 	if(cur(p) == 0)
+	{
 		return -1;
+	}
 	int min = node(p,0);
 	node(p,0) = node(p,cur(p)-1);
 	cur(p)--;
