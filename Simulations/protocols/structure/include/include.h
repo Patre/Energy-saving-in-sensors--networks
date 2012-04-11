@@ -26,6 +26,10 @@
 //RBOP
 #define RBOP   400                 //le paquet RBOP
 
+//LBOP
+#define LBOP   500                 //le paquet LBOP
+#define LMST   501                 //le paquet LMST
+
 //BIP
 #define BIP    900
 

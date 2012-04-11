@@ -32,7 +32,7 @@
 -->
 
 <entity name="app-sensor" library="application_broadcast">
-<init period="10s" debut="3s"/>
+<init period="10s" debut="3s" debug="1"/>
 <default />
 </entity>
 <!--
@@ -97,6 +97,7 @@
 <!--
 == Nodes =====================================================
 -->
+
 
 
 <node id="0"  >
@@ -333,7 +334,7 @@
         <for entity="static-pos" x="150,000000" y="132,000000" z="0.0" />
 </node>
 <node id="77"  >
-        <for entity="static-pos" x="149,000000" y="146,000000" z="0.0" />
+        <for entity="static-pos" x="160,000000" y="146,000000" z="0.0" />
 </node>
 <node id="78"  >
         <for entity="static-pos" x="152,000000" y="164,000000" z="0.0" />
@@ -401,5 +402,4 @@
 <node id="99"  >
         <for entity="static-pos" x="188,000000" y="180,000000" z="0.0" />
 </node>
-
 </worldsens>

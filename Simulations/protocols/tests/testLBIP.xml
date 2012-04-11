@@ -48,7 +48,9 @@
 <default />
 </entity>
 
-<!-- == ENERGY =====================================================
+<!--
+
+== ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
 <default energy="100000000000000" rx="1"  tx="1" debug="0"/>
