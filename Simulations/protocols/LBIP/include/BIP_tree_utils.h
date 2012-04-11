@@ -11,13 +11,13 @@
 #include <graphe.h>
 #include <time_wsnet.h>
 #include <heap.h>
+#include <list.h>
 
 #include "structures.h"
 
 
-void computeBIPtree(call_t *c);
 
-void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
+arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNodes* needsToBeCovered, int debug);
 
 /**
  * \brief Return the tx antenna gain towards the destination direction.
@@ -27,9 +27,19 @@ void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered);
  **/
 double   calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
 
-/*void prim_tree(int node,arbre **a,listC *l,list *g);
-void prim_tree_lbip(int node,arbre **a, list *N1,list2 *N2,double alpha,double c);
-void init_lbip_tree(call_t *c, void *args);*/
+double getDistanceFromCout(double cout, double alpha, double c);
+
+double getCoutFromDistance(double distance, double alpha, double c);
+
+double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree);
+
+int getNearestNeighbour(call_t *c, graphe* g);
+
+void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered, int node);
+
+graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode);
+
+void forward(call_t* c, packet_t *packet);
 
 #endif // INIT_PROTOCOLE_H
 

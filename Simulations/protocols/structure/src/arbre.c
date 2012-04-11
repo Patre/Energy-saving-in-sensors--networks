@@ -49,9 +49,11 @@ void arbre_affiche(arbre *l)
     //printf("\n");
 }
 
+
 /*******************************DESTRUCTION************************/
 void arbre_detruire(arbre **l)
 {
+    if((*l)==Nullptr(arbre)) return;
     if((*l)->size==0)
     {
         //printf("je detrruit le Noeud %d\n",(*l)->node);
@@ -160,4 +162,25 @@ void arbre_get_fils(list **l, arbre *a,int pere)
         while(i--)      arbre_get_fils(l,a->fils[i],pere);
     }
 }
+
+int arbre_is_leaf(arbre *a, int node)
+{
+    if(a->node==node)
+    {
+        return (a->size == 0);
+    }
+    else
+    {
+        int i = 0, ret;
+        i=a->size;
+        while(i--)
+		{
+			ret = arbre_is_leaf(a->fils[i], node);
+			if(ret > 0)
+				return ret;
+		}
+    }
+	return 0;
+}
+
 

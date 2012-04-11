@@ -74,8 +74,7 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 librouting_bip_la_LIBADD =
-am_librouting_bip_la_OBJECTS = librouting_bip_la-one_hop.lo \
-	librouting_bip_la-AddedFunction.lo \
+am_librouting_bip_la_OBJECTS = librouting_bip_la-AddedFunction.lo \
 	librouting_bip_la-Initialisation.lo \
 	librouting_bip_la-Implementation.lo librouting_bip_la-bip.lo
 librouting_bip_la_OBJECTS = $(am_librouting_bip_la_OBJECTS)
@@ -236,7 +235,9 @@ top_srcdir = @top_srcdir@
 ACLOCAL_AMFLAGS = -I m4
 lib_LTLIBRARIES = librouting_bip.la
 librouting_bip_la_CFLAGS = $(CFLAGS) $(GLIB_FLAGS) -Wall -I./include -I./src -I$(prefix)/include
-librouting_bip_la_SOURCES = src/one_hop.c src/AddedFunction.c src/Initialisation.c src/Implementation.c src/bip.c
+librouting_bip_la_SOURCES = src/AddedFunction.c \
+                            src/Initialisation.c src/Implementation.c src/bip.c
+
 librouting_bip_la_LDFLAGS = -module -L$(prefix)/lib -lstructure
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -338,7 +339,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librouting_bip_la-Implementation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librouting_bip_la-Initialisation.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librouting_bip_la-bip.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/librouting_bip_la-one_hop.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -360,13 +360,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
-
-librouting_bip_la-one_hop.lo: src/one_hop.c
-@am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librouting_bip_la_CFLAGS) $(CFLAGS) -MT librouting_bip_la-one_hop.lo -MD -MP -MF $(DEPDIR)/librouting_bip_la-one_hop.Tpo -c -o librouting_bip_la-one_hop.lo `test -f 'src/one_hop.c' || echo '$(srcdir)/'`src/one_hop.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/librouting_bip_la-one_hop.Tpo $(DEPDIR)/librouting_bip_la-one_hop.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/one_hop.c' object='librouting_bip_la-one_hop.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librouting_bip_la_CFLAGS) $(CFLAGS) -c -o librouting_bip_la-one_hop.lo `test -f 'src/one_hop.c' || echo '$(srcdir)/'`src/one_hop.c
 
 librouting_bip_la-AddedFunction.lo: src/AddedFunction.c
 @am__fastdepCC_TRUE@	$(LIBTOOL)  --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(librouting_bip_la_CFLAGS) $(CFLAGS) -MT librouting_bip_la-AddedFunction.lo -MD -MP -MF $(DEPDIR)/librouting_bip_la-AddedFunction.Tpo -c -o librouting_bip_la-AddedFunction.lo `test -f 'src/AddedFunction.c' || echo '$(srcdir)/'`src/AddedFunction.c

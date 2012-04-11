@@ -5,7 +5,6 @@
  *  \date   03-2012
  **/
 
-#include <one_hop.h>
 #include "Implementation.h"
 
 
@@ -43,10 +42,8 @@ void init_files()
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
 	
-	nodedata->overhead = -1;
+    nodedata->overhead = -1;
     //les voisinages
-    nodedata->N1        = Nullptr(listeNodes);
-    nodedata->NodesV1   = Nullptr(list2N);
 	
     //Les abre de LBIP
     nodedata->tree_BIP   = Nullptr(arbre);
@@ -54,9 +51,13 @@ int setnode(call_t *c, void *params) {
     //les packets
     nodedata->paquets   = Nullptr(list_PACKET);
 	
-    //ajout de la racine de l'arbre
-    arbre_add_pere(&nodedata->tree_BIP,c->node);
-	
+    //Chloé
+    nodedata->g2hop = malloc(sizeof(graphe));
+    initGraphe(nodedata->g2hop, c->node);
+
+
+    //arbre
+    //arbre_add_pere(&nodedata->tree_BIP,c->node);
     //STATS
     nodedata->nbr_evenement = 0;
 
@@ -127,11 +128,8 @@ int bootstrap(call_t *c) {
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
-	
-	
-    //RECUPERER LE VOSINAGE a UN SAUT
-    get_one_hop(c,entitydata->eps);
-	
+
+    //printf("TWO");
     //INITIALISATION DE L'ARBRE
     get_PROTOCOLE_init(c,entitydata->eps);
    return 0;
@@ -145,30 +143,22 @@ void rx(call_t *c, packet_t *packet) {
 
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-        //printf("BIP - Paquet de type %d recu par %d depuis %d\n", data->type, c->node, data->src);
-	
-    /*******************************HELLO 1 voisinage***************************/
-	switch(data->type)
-	{	
-		case HELLO:
-		{
-			rx_one_hop(c,packet);
-			break;
-		}
-		case REP_HELLO:
-		{
-			rx_one_hop_reponse(c,packet);
-			break;
-		}
-		case BIP:
-		{
-                    PROTOCOLE_reception(c,packet);
-                    break;
-		}
-                default:
-			printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
-			break;
-	}
+
+    switch(data->type)
+    {
+    case BIP:
+    {
+
+        if(list_recherche(data->destinations,c->node)==1)
+        {
+            PROTOCOLE_reception(c,packet);
+        }
+        break;
+    }
+    default:
+            printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
+            break;
+    }
 }
 
 /* ************************************************** */
@@ -177,36 +167,12 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    DEBUG; // Voisinage 1 hop
-    /*  printf("\t1-voisinage de %d : ", c->node);
-        listeNodes_affiche(nodedata->N1);//*/
-    
-	
-    DEBUG;//voisinage 2 hop
-    /*if(c->node==0)
-	 {
-	 list2_affiche(nodedata->NodesV1);
-	 }//*/
-	
-	
-    DEBUG; /*ARBRE DE LBIP*/
-    /*if(c->node==0)
-    {
-        printf("\tARBRE DE BIP : \n");
+    if(c->node==0)
         arbre_affiche(nodedata->tree_BIP);
-    }*/
-	
-    DEBUG;  //PAQUETs
-    /*printf("\tPaquets : %d ->",c->node);
-    list_PACKET_affiche(nodedata->paquets);//*/
 
-	
-	
-    //liberation d'espace memoire
     //PAR USER PROTOCOLE
+    deleteGraphe(nodedata->g2hop);
     list_PACKET_detruire(&nodedata->paquets);               //packets
-    listeNodes_detruire(&nodedata->N1);                     //1-HOP
-    list2N_detruire(&nodedata->NodesV1);                    //Nodes
     arbre_detruire(&nodedata->tree_BIP);                    //BIP tree
 	
     free(nodedata);
@@ -225,34 +191,9 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
-    //DEBUG
-    struct nodedata *nodedata = get_node_private_data(c);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
-
-
-    list *des=data->destinations;
-    while (des)
-    {
-         //retransmettre
-        entityid_t *down = get_entity_links_down(c);
-        call_t c0 = {down[0], c->node};
-
-        packet_t *packetEnvoi = packet_clone(packet);
-
-        destination_t destination = {des->val, *get_node_position(des->val)};
-        if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
-            packet_dealloc(packetEnvoi);
-            return;
-        }
-     //   printf("BIP - Paquet de type %d envoye de %d a %d\n", data->type, c->node, des->val);
-
-        SHOW_GRAPH("G: %d %d\n",c->node,des->val);
-
-        TX(&c0,packetEnvoi);
-        des=des->suiv;
-    }
-    //Librer le paquet de l'application de dessus
-     packet_dealloc(packet);
+    entityid_t *down = get_entity_links_down(c);
+    call_t c0 = {down[0], c->node};
+    TX(&c0,packet);
 }
 
 /* *********************************************** */
@@ -261,6 +202,18 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     struct nodedata *nodedata = get_node_private_data(c);
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
+
+    if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
+    {
+                purgeGrapheOfStables(nodedata->g2hop);
+        afficherGraphe(nodedata->g2hop);
+        printf("\t\t\tje calcule l'arbre de %d\n",c->node);
+        nodedata->tree_BIP = computeBIPtree(c, nodedata->g2hop);
+        printf("arbre de BIP de %d construit : \n", c->node);
+        arbre_affiche(nodedata->tree_BIP);
+
+        //setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
+    }
 
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
@@ -284,6 +237,9 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     //envoyer aussi l'arbre pere
     header->pere_arbre=Nullptr(arbre);
     arbre_copy(&header->pere_arbre,nodedata->tree_BIP);
+
+    DEBUG;
+    //if(header->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
 
     //destination de paquet

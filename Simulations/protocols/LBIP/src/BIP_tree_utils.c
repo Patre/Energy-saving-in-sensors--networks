@@ -2,108 +2,127 @@
 #include "BIP_tree_utils.h"
 
 
-void computeBIPtree(call_t *c)
+arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNodes* needsToBeCovered, int debug)
 {
 	struct nodedata *nodedata = get_node_private_data(c);
-	struct protocoleData *entitydata = get_entity_private_data(c);
-	
-	int i, minNode;
-	graphe* g = copieGraphe(nodedata->g2hop);
-	double coutMax = 0;
+	arbre* bipTree = 0;
+	int i, minNode, devientEmetteur, numMinNode, numVoisin;
+	double coutIncremental;
 	double* cle = malloc(g->nbSommets*sizeof(double));
 	double* poids = malloc(g->nbSommets*sizeof(double));
 	int* pere = malloc(g->nbSommets*sizeof(int));
-	Heap* F = allocHeap(g->nbSommets, cle);
-	voisin *trans, *trans2;
+	Heap* F = allocHeap(g->nbSommets, cle); // tas gardant les couts des noeuds pas encore dans l'arbre
+	voisin *trans;
 	
+	if(debug)
+		printf("Fixation des valeurs initiales...\n");
 	for(i = 0 ; i < g->nbSommets ; i++)
 	{
 		cle[i] = DBL_MAX;
-		poids[i] = DBL_MAX;
+		poids[i] = 0;
 		pere[i] = -1;
 		h_insertNode(F, i);
 	}
-	cle[g->s.num] = 0;
-	
-	arbre_add_pere(&(nodedata->BIP_tree), g->s.label);
-	
-	
+	h_changeLabel(F, g->s.num, 0);
+	if(askedToRedirect == 0 || needsToBeCovered == 0)
+	{
+		poids[g->s.num] = getEdgeCost(g, c->node, getNearestNeighbour(c, g));
+	}
+	else
+	{
+		if(debug)
+			printf("Fixation des valeurs de range deduites du paquet...\n");
+		listeNodes *tmp = askedToRedirect, *tmp2 = needsToBeCovered;
+		while(tmp != 0)
+		{
+			if(getEdgeCost(g, tmp->values.node, tmp2->values.node) != DBL_MAX)
+			{
+				printf("poids[%d] = %.1lf\n", tmp->values.node, getEdgeCost(g, tmp->values.node, tmp2->values.node));
+				poids[getNumFromLabel(g,tmp->values.node)] = getEdgeCost(g, tmp->values.node, tmp2->values.node);
+			}
+			tmp = tmp->suiv;
+			tmp2 = tmp2->suiv;
+		}
+	}
+	if(debug)
+		printf("Debut de l'algorithme...\n");
 	while(!h_isEmpty(F))
 	{
-		// mettre a jour les poids des sommets
-		for(i = 0 ; i < g->nbSommets ; i++)
+		if(debug)
+			printf("Recuperation du min du tas...\n");
+		numMinNode = h_remNode(F);
+		minNode = getLabelFromNum(g,numMinNode);
+		if(debug)
 		{
-			coutMax = 0;
-			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
-			{
-				trans = nodedata->g2hop->listeVoisins[i];
-				while(trans != 0)
-				{
-					if(pere[trans->v.num] != -1 || trans->v.num == g->s.num) // le voisin est dans le bip tree
-					{
-						if(trans->cout > coutMax)
-							coutMax = trans->cout;
-					}
-					trans = trans->vSuiv;
-				}
-				poids[i] = coutMax;
-			}
+			printf("minNode label : %d\n", minNode);
+			printf("\tnum : %d\n", numMinNode);
+			printf("Ajout du noeud dans l'arbre...\n");
 		}
-		
-		// mettre a jour les couts des aretes
-		for(i = 0 ; i < g->nbSommets ; i++)
+		if(pere[numMinNode] == -1)
 		{
-			if(pere[i] != -1 || i == g->s.num) // le sommet est dans le bip tree
-			{
-				trans = g->listeVoisins[i];
-				trans2 = nodedata->g2hop->listeVoisins[i];
-				while(trans != 0 && trans2 != 0)
-				{
-					if(pere[trans->v.num] == -1 && trans->v.num != g->s.num) // le voisin n'est pas dans le bip tree
-					{
-						if(trans->cout != trans2->cout - poids[i])
-						{
-							changeUndirectedEdgeCost(g, g->sommets[i], trans->v.label, trans2->cout - poids[i]);
-						}
-					}
-					trans = trans->vSuiv;
-					trans2 = trans2->vSuiv;
-				}
-			}
+			arbre_add_pere(&(bipTree), minNode);
 		}
-		
-		minNode = h_remNode(F);
-		
+		else
+		{
+			arbre_add_fils(bipTree, pere[numMinNode], minNode);
+		}
+		devientEmetteur = 0;
 		// pour chacun des voisins de minNode dans le graphe
-		trans = g->listeVoisins[minNode];
+		if(debug)
+			printf("Recuperation du voisinage...\n");
+		trans = getNeighboursFromLabel(g,minNode);
 		while(trans != 0)
 		{
-			if((pere[trans->v.num] == -1 && trans->v.num != g->s.num) && trans->cout < cle[trans->v.num])
+			numVoisin = getNumFromLabel(g,trans->vLabel);
+			if(debug)
+				printf("\tVoisin label : %d ; num : %d\n", trans->vLabel, numVoisin);
+			coutIncremental = trans->cout - poids[numMinNode];
+			if(!(arbre_recherche(bipTree, trans->vLabel)) && (coutIncremental < cle[getNumFromLabel(g,trans->vLabel)]))
 			{
-				pere[trans->v.num] = minNode;
-				arbre_add_fils(nodedata->BIP_tree, g->sommets[minNode], trans->v.label);
-				if(cle[trans->v.num] != trans->cout)
+				if(debug)
+					printf("\tVoisin pas dans l'arbre et cout a ameliorer.\n");
+				h_changeLabel(F, getNumFromLabel(g,trans->vLabel), coutIncremental);
+				if(poids[numMinNode] < trans->cout)
 				{
-					h_changeLabel(F, trans->v.num, trans->cout);
+					if(debug)
+						printf("\tAmelioration du poids de minNode\n");
+					if(poids[numMinNode] == 0)
+						devientEmetteur = 1;
+					poids[numMinNode] = trans->cout;
 				}
+				if(debug)
+					printf("\tpere[%d] devient %d...\n", trans->vLabel, minNode);
+				pere[numVoisin] = minNode;
 			}
-			trans = trans->vSuiv;
+			if(devientEmetteur)
+			{
+				if(debug)
+					printf("\tOn repart au debut de la liste de voisins...\n");
+				devientEmetteur = 0;
+				trans = getNeighboursFromLabel(g,minNode);
+			}
+			else
+			{
+				trans = trans->vSuiv;
+			}
 		}
 	}
 	
 	
-	
-	deleteGraphe(g);
-	free(g);
 	free(poids);
 	free(pere);
 	free(cle);
 	freeHeap(F);
-}
-
-void setRelayNodes(listeNodes** askedToRedirect, listeNodes** needsToBeCovered)
-{
 	
+	
+	printf("Graphe de voisinage complet : \n");
+	afficherGraphe(nodedata->g2hop);
+	printf("Graphe de voisinage apres purge : \n");
+	afficherGraphe(g);
+	printf("arbre de BIP de %d construit : \n", c->node);
+	arbre_affiche(bipTree);
+	
+	return bipTree;
 }
 
 double calcul_energie(position_t A, position_t B, double alpha, double c, double* distance)
@@ -124,239 +143,225 @@ double calcul_energie(position_t A, position_t B, double alpha, double c, double
     return par1+c;
 }
 
-/*void prim_tree(int node,arbre **a,listC *l,list *g)
+double getCoutFromDistance(double distance, double alpha, double c)
 {
+    double par1;
 	
-    int nbrNode=list_taille(g);
-    list *deja_couvert=Nullptr(list);
-    list_insert(&deja_couvert,node);
+    //la premier partie de la fonction
+    par1=pow(distance,alpha);
 	
-	
-    listC *tmp=l;
-    list *tmp2=deja_couvert;
-	
-    //list_con_affiche(tmp);
-    //phase 1
-    
-	// Recuperer le minimum  a partir de node racine node
-    double min_poids=9999999999999999999999.00;
-    int node_min=-1;
-    int node_couvrant=-1;
-	
-	
-    int i=0;
-    //COUVRIR TOUS LES NOEUDS
-    for(i=0;i<nbrNode;i++)
-    {
-        tmp2=deja_couvert;
-		
-        //RENIALISER LES PARAMETRE
-        min_poids=999999999999999999999999999999999.00;
-        node_min=-1;
-        node_couvrant=-1;
-		
-        //parcourir des noeud deja couvert
-        while(tmp2)
-        {
-            //recuperer le noeud couvert en cours
-            node=tmp2->val;
-			
-            //printf("NR: %d comparer avec",node);
-            tmp=l;
-			
-			
-            //Parcourir les list de connection
-            while(tmp)
-            {
-				
-                ///Si une connection trouver avec comme literal un noued deja couvert et que le poids est minimal
-                if((tmp->node1 == node || tmp->node2 == node)   && (tmp->poids<min_poids))
-                {
-                    //afficher l'extance de noued dans la list des connexion
-                    //printf("(%d,%d),  ",tmp->node1,tmp->node2,tmp->poids);
-					
-					
-                    //si le noeud literl 1 est le noeud source et que l'autre n'est pas deja couvert
-                    if(tmp->node1==node && !list_recherche(deja_couvert,tmp->node2))
-                    {
-                        //Sauvgarder le node avec le minimum poids
-                        node_couvrant=node;
-						
-                        node_min=tmp->node2;
-                        min_poids=tmp->poids;
-                    }
-                    //sinon le contraire
-                    else if(!list_recherche(deja_couvert,tmp->node1))
-                    {
-                        //Sauvgarder le node avec le minimum poids
-                        node_couvrant=node;
-						
-                        node_min=tmp->node1;
-                        min_poids=tmp->poids;
-                    }
-                }
-                //ON passse a la connection suivante
-                tmp=tmp->suiv;
-            }
-            //printf("Min is (%d,%d) %.2lf\n",node_couvrant, node_min,min_poids);
-            //On passe a le noued couvert suivant
-            tmp2=tmp2->suiv;
-        }
-		
-		
-		
-        //On ajoute l'element dans les couvert
-        //printf("NR:%d NM:%d P:%.2lf\n",node_couvrant,node_min,min_poids);
-        list_insert(&deja_couvert,node_min);
-		
-        //on ajoute dans l'arbre
-        arbre_add_fils(*a,node_couvrant,node_min);
-    }
-	
-    DEBUG;
-    //printf("\n\n");
-    //list_affiche(deja_couvert);
-    //arbre_affiche(*a);
+    return par1+c;
 }
 
-void prim_tree2(list *nodes,arbre **a,listC *l,list *g)
+double getDistanceFromCout(double cout, double alpha, double c)
 {
-	
-    int nbrNode=list_taille(g);
-    list *deja_couvert=Nullptr(list);
-    list_copy(&deja_couvert,nodes);
-	
-	
-    listC *tmp=l;
-    list *tmp2=deja_couvert;
-	
-    //list_con_affiche(tmp);
-    //phase 1
-    
-	//Recuperer le minimum  a partir de node racine node
-    double min_poids=9999999999999999999999.00;
-    int node_min=-1;
-    int node_couvrant=-1;
-	
-    int node;
-	
-    int i=0;
-    //COUVRIR TOUS LES NOEUDS
-    for(i=0;i<nbrNode;i++)
-    {
-        tmp2=deja_couvert;
-		
-        //RENIALISER LES PARAMETRE
-        min_poids=999999999999999999999999999999999.00;
-        node_min=-1;
-        node_couvrant=-1;
-		
-        //parcourir des noeud deja couvert
-        while(tmp2)
-        {
-            //recuperer le noeud couvert en cours
-            node=tmp2->val;
-			
-            //printf("NR: %d comparer avec",node);
-            tmp=l;
-			
-			
-            //Parcourir les list de connection
-            while(tmp)
-            {
-				
-                ///Si une connection trouver avec comme literal un noued deja couvert et que le poids est minimal
-                if((tmp->node1 == node || tmp->node2 == node)   && (tmp->poids<min_poids))
-                {
-                    //afficher l'extance de noued dans la list des connexion
-                    //printf("(%d,%d),  ",tmp->node1,tmp->node2,tmp->poids);
-					
-					
-                    //si le noeud literl 1 est le noeud source et que l'autre n'est pas deja couvert
-                    if(tmp->node1==node && !list_recherche(deja_couvert,tmp->node2))
-                    {
-                        //Sauvgarder le node avec le minimum poids
-                        node_couvrant=node;
-						
-                        node_min=tmp->node2;
-                        min_poids=tmp->poids;
-                    }
-                    //sinon le contraire
-                    else if(!list_recherche(deja_couvert,tmp->node1))
-                    {
-                        //Sauvgarder le node avec le minimum poids
-                        node_couvrant=node;
-						
-                        node_min=tmp->node1;
-                        min_poids=tmp->poids;
-                    }
-                }
-                //ON passse a la connection suivante
-                tmp=tmp->suiv;
-            }
-            //printf("Min is (%d,%d) %.2lf\n",node_couvrant, node_min,min_poids);
-            //On passe a le noued couvert suivant
-            tmp2=tmp2->suiv;
-        }
-		
-		
-		
-        //On ajoute l'element dans les couvert
-        //printf("NR:%d NM:%d P:%.2lf\n",node_couvrant,node_min,min_poids);
-        list_insert(&deja_couvert,node_min);
-		
-        //on ajoute dans l'arbre
-        arbre_add_fils(*a,node_couvrant,node_min);
-    }
-	
-    DEBUG;
-    //printf("\n\n");
-    //list_affiche(deja_couvert);
-    //arbre_affiche(*a);
+	double res = cout - c;
+	res = pow(res, 1.0/alpha);
+	return res;
 }
 
-//initailisation de l'arbre de LBIP
-void prim_tree_lbip(int node,arbre **a, list *N1, list2 *N2, double alpha, double c)
+double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 {
-    listC *connect=Nullptr(listC);
-    list_to_listC(&connect,N1,node);
-    list2_to_listC(&connect,N2);
+	struct protocoleData *entitydata = get_entity_private_data(c);
 	
-    listC *tmp=connect;
-    while(tmp)
-    {
-        double x=calcul_energie(tmp->node1,tmp->node2,alpha,c);
-        list_set_poids(tmp,tmp->node1,tmp->node2,x);
-        tmp=tmp->suiv;
-    }
+	// calcul de la distance entre ce noeud et son voisin 1-hop (dans l'arbre de BIP) le plus eloigne
+	list *fils = 0;
+	double distMax = 0, dist;
+	arbre_get_fils(&fils, bipTree, c->node);
+	while(fils != 0)
+	{
+		dist = getEdgeCost(g, c->node, fils->val);
+		dist = getDistanceFromCout(dist, entitydata->alpha, entitydata->c);
+		if(dist > distMax)
+		{
+			distMax = dist;
+		}
+		fils = fils->suiv;
+	}
 	
 	
-    list *g=Nullptr(list);
-    list2_to_list(&g,N2);
 	
-    DEBUG;
-    printf("\n*************************************************************\n"
-	 "TOUS ces VOISINAGE DE 1 HOPE et 2 HOP de NODE %d\n",node);
-	 list_affiche(g);
-	 printf("\nTOUS les connection LOCAL (node1,node2, POIDs)\n");
-	 list_con_affiche(connect);
+	// set le range du module propagation a la valeur desiree
+	call_t c0 = {0, c->node, c->entity};
+	struct propagation_data
+	{
+		double range;
+	};
+	struct propagation_data* propdata = get_entity_private_data(&c0);
+	propdata->range = ceil(distMax);
+	printf("rayon d'emission de %d fixe a %lf\n", c->node, propdata->range);
 	
-    prim_tree(node,a,connect,g);
-	
+	return distMax;
 }
 
-//initailisation de l'arbre de LBIP
-void init_lbip_tree(call_t *c, void *args)
+int getNearestNeighbour(call_t *c, graphe* g)
 {
-    struct nodedata *nodedata = get_node_private_data(c);
-    struct entitydataLBIP *entitydata=get_entity_private_data(c);
+	struct nodedata *nodedata = get_node_private_data(c);
+	double coutMin = DBL_MAX;
+	int minNode = -1;
+	voisin *trans = getNeighboursFromLabel(g, g->s.label);
+	while(trans != 0)
+	{
+		if(trans->cout < coutMin)
+		{
+			coutMin = trans->cout;
+			minNode = trans->vLabel;
+		}
+		trans = trans->vSuiv;
+	}
+	return minNode;
+}
+
+void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered, int node)
+{
 	
-    prim_tree_lbip(c->node,&nodedata->tree_LBIP,nodedata->N1,nodedata->N2, entitydata->alpha, entitydata->c);
+	list *fils = 0, *fils2 = 0;
+	double cout, coutMax = 0;
+	int nodeToCover = -1;
 	
-    DEBUG;
-    printf("INITIALISATION DE L'ARBRE LBIP pour le noeud %d at %lf\n",c->node,
-	 get_time_now_second());
-    //arbre_detruire(&nodedata->tree_LBIP);
-}*/
+	arbre_get_fils(&fils, bipTree, node);
+	while(fils != 0)
+	{
+		if(!arbre_is_leaf(bipTree, fils->val))
+		{
+			arbre_get_fils(&fils2, bipTree, fils->val);
+			listeNodes_insert(askedToRedirect, fils->val);
+			coutMax = 0;
+			nodeToCover = -1;
+			while(fils2 != 0)
+			{
+				cout = getEdgeCost(g, fils->val, fils2->val);
+				if(cout > coutMax)
+				{
+					coutMax = cout;
+					nodeToCover = fils2->val;
+				}
+				fils2 = fils2->suiv;
+			}
+			listeNodes_insert(needsToBeCovered, nodeToCover);
+			setRelayNodes(c, g, bipTree, askedToRedirect, needsToBeCovered, fils->val);
+		}
+		fils = fils->suiv;
+	}
+	
+	printf("Relayer : \n");
+	listeNodes_affiche(*askedToRedirect);
+	listeNodes_affiche(*needsToBeCovered);
+}
+
+graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	int ret;
+	graphe* g = copieGraphe(nodedata->g2hop);
+	double costMax = getEdgeCost(g, c->node, farestNode), cost;
+	
+	// on enleve du graphe tous les voisins directs de fromNode
+	// sauf celui qu'on doit toucher et nous meme
+	// on garde egalement les noeuds voisins de fromNode qui sont plus pres de nous que farestNode
+	
+	voisin* voisinsFromNode = getNeighboursFromLabel(g, fromNode);
+	while(voisinsFromNode != 0)
+	{
+		if(
+		   (voisinsFromNode->vLabel != c->node)
+		   &&
+		   (getEdgeCost(g, c->node, voisinsFromNode->vLabel) > costMax)
+		   )
+		{
+			//printf("1 - purge vertex %d\n", voisinsFromNode->vLabel);
+			ret = deleteVertex(g, voisinsFromNode->vLabel);
+			if(ret == -1)
+				break;
+			
+			voisinsFromNode = getNeighboursFromLabel(g, fromNode);
+		}
+		else
+		{
+			voisinsFromNode = voisinsFromNode->vSuiv;
+		}
+	}
+	
+	// on enleve du graphe celui qui nous a envoye le paquet
+	deleteVertex(g, fromNode);
+	
+	
+	voisin* voisinsPredNode = getNeighboursFromLabel(g, predNode);
+	while(voisinsPredNode != 0)
+	{
+		if(
+		   (voisinsPredNode->vLabel != c->node)
+		   &&
+		   (getEdgeCost(g, c->node, voisinsPredNode->vLabel) > costMax)
+		   )
+		{
+			//printf("1 - purge vertex %d\n", voisinsFromNode->vLabel);
+			ret = deleteVertex(g, voisinsPredNode->vLabel);
+			if(ret == -1)
+				break;
+			
+			voisinsPredNode = getNeighboursFromLabel(g, predNode);
+		}
+		else
+		{
+			voisinsPredNode = voisinsPredNode->vSuiv;
+		}
+	}
+	
+	// on enleve du graphe celui qui nous a relaye le paquet
+	deleteVertex(g, predNode);
+	//printf("2 - purge vertex %d\n", fromNode);
+	
+	// on enleve du graphe les voisins directs plus loins que farestNode
+	voisin* fils = getNeighboursFromLabel(g, c->node);
+	
+	while(fils != 0)
+	{
+		cost = fils->cout;
+		if(cost	> costMax)
+		{
+			//printf("3 - purge vertex %d\n", fils->vLabel);
+			ret = deleteVertex(g, fils->vLabel);
+			if(ret == -1)
+				break;
+			fils = getNeighboursFromLabel(g, c->node);
+		}
+		else
+			fils = fils->vSuiv;
+	}
+	
+	// on purge le graphe
+	purgeGrapheOfStables(g);
+	
+	return g;
+}
+
+void forward(call_t* c, packet_t *packet)
+{
+	struct nodedata *nodedata = get_node_private_data(c);
+	array_t *down = get_entity_bindings_down(c);
+	packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+	
+	printf("%d doit relayer depuis %d\n", c->node, data->pred);
+	/*printf("Graphe de %d :\n", c->node);
+	 afficherGraphe(nodedata->g2hop);*/
+	
+	// construire le bip tree pour relayer a partir des infos du paquet
+	//graphe* g = purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->src, data->pred);
+	arbre* bipTree = computeBIPtree(c, nodedata->g2hop, data->askedToRedirect, data->needsToBeCovered, 0);
+	
+	// relayer le paquet
+	destination_t dst = {-1,{-1,-1,-1}};
+	setRangeToFarestNeighbour(c, nodedata->g2hop, bipTree);
+	// TODO : free
+	data->askedToRedirect = 0;
+	data->needsToBeCovered = 0;
+	data->pred = c->node;
+	setRelayNodes(c, nodedata->g2hop, bipTree, &data->askedToRedirect, &data->needsToBeCovered, c->node);
+	call_t c_down = {down->elts[0], c->node, c->entity};
+	SET_HEADER(&c_down, packet, &dst);
+	tx(c, packet);
+	arbre_detruire(&bipTree);
+}
 
 

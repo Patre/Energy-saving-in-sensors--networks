@@ -22,6 +22,11 @@ void list2_to_listC(listC **liste_connected,list2 *list_de_list);
 void list2N_to_list(list **liste,list2N *list_de_list);
 void list2N_to_listC(listC **liste_connected,list2N *list_de_list);
 
+
+void listeNodes_to_listC(listC **liste_connected,listeNodes *listeNodese,int node);
+void listC_to_listeNodes(listeNodes **listeNodese,listC *liste_connected);
+void listeNodes_to_list(list **liste, listeNodes *list_nodes);
+
 #endif
 
 

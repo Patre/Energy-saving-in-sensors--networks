@@ -118,3 +118,34 @@ void list2N_to_listC(listC **l,list2N *l2)
     }
 }
 
+
+//  ***********************TRENSFORMER**************************
+void listeNodes_to_listC(listC **l,listeNodes *l2,int node)
+{
+    while(l2)
+    {
+        if(!list_con_recherche(*l,node,l2->values.node)) list_con_insert(l,node,l2->values.node,0);
+        l2=l2->suiv;
+    }
+}
+
+void listC_to_listeNodes(listeNodes **l,listC *c)
+{
+    while(c)
+    {
+        if(!listeNodes_recherche(*l,c->node1)) listeNodes_insert(l,c->node1);
+        if(!listeNodes_recherche(*l,c->node2)) listeNodes_insert(l,c->node2);
+        c=c->suiv;
+    }
+}
+
+void listeNodes_to_list(list **liste, listeNodes *list_nodes)
+{
+    while(list_nodes)
+    {
+        list_insert(liste, list_nodes->values.node);
+        list_nodes=list_nodes->suiv;
+    }
+}
+
+

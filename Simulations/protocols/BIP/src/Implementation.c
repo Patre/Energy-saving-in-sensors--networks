@@ -37,8 +37,8 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     //envoyer aussi l'arbre pere
     data->pere_arbre=Nullptr(arbre);
     arbre_copy(&data->pere_arbre,nodedata->tree_BIP);
-	
-	
+
+
     //ENVOI
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
@@ -52,7 +52,7 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     }
 
     DEBUG;
-    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
+    //if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
 //	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
@@ -79,6 +79,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
 
+    SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
     entityid_t *up = get_entity_links_up(c);
     call_t c_up = {up[0], c->node};
@@ -88,20 +89,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     RX(&c_up, packet_up);//*/
 
-    //printf("%d a RECU de %d \n ",c->node,packetRecu->node);
-
-    /*
-	 Creation de Packet
-	 */
-    //creation de paquet et initialisation de son data
-    /*packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);*/
-	
     //initialiser les données
-    data->redirected_by=c->node;
-	
-	
-    //envoi au voisin 1 de l'arbre
     list *destinations=Nullptr(list);
     arbre_get_fils(&destinations,data->pere_arbre,c->node);
 	
@@ -109,32 +97,27 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
 
-    //ENVOI
-    //recuperer le support de communication DOWN
-    list *des=data->destinations;
-    while (des)
+    data->redirected_by=c->node;
+
+    if(list_taille(data->destinations)!=0)
     {
-         //retransmettre
+        //ENVOI
         entityid_t *down = get_entity_links_down(c);
         call_t c0 = {down[0], c->node};
 
-        packet_t *packetEnvoi = packet_clone(packetRecu);
+        //destination de paquet
 
-        destination_t destination = {des->val, *get_node_position(des->val)};
-        if (SET_HEADER(&c0, packetEnvoi, &destination) == -1) {
-            packet_dealloc(packetEnvoi);
+        destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
+        if (SET_HEADER(&c0, packetRecu, &destination) == -1) {
+            packet_dealloc(packetRecu);
             return;
         }
 
-        SHOW_GRAPH("G: %d %d\n",c->node,des->val);
 
-        TX(&c0,packetEnvoi);
-        des=des->suiv;
-    }//*/
-    //Liberer l'espace memoire;
-    packet_dealloc(packetRecu);
+        //L'envoi
+        TX(&c0,packetRecu);//*/
+    }
 
     //tout c'est bien passé
     return 1;
 }
-

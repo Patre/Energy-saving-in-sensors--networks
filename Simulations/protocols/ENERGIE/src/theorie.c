@@ -135,7 +135,7 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
     ENERGY("%d S %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if(nodedata->debug)
-        printf("ENVOI (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->tx * txdBm,nodedata->energy);
+        printf("ENVOI (%d): duration %llu,consome %lf  ,reste %lf\n",c->node,duration * nodedata->tx * txdBm,nodedata->energy);
 
 
 
@@ -152,7 +152,7 @@ void consume_rx(call_t *c, uint64_t duration) {
 
     ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
     if(nodedata->debug)
-        printf("RECP (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->rx,nodedata->energy);
+        printf("RECP (%d): duration %llu ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->rx,nodedata->energy);
 
 
     if (nodedata->energy <= 0) {
@@ -169,7 +169,7 @@ void consume_idle(call_t *c, uint64_t duration) {
     ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if(nodedata->debug)
-        printf("IDLE (%d): duration %lld ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->idle,nodedata->energy);
+        printf("IDLE (%d): duration %llu ,consome %lf  ,reste %lf\n",c->node,duration * nodedata->idle,nodedata->energy);
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;

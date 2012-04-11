@@ -13,16 +13,16 @@
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
+void tx( call_t *c , packet_t * packet );
+
 struct nodedata {
 	int overhead;
 	listeNodes* oneHopNeighbourhood;
 	listeNodes* twoHopNeighbourhood;
 	graphe* g2hop;
 	arbre* BIP_tree;
-	double radius;
-	//list2N* NodesV1; // l'ensemble des connections du graphe
-	//list_PACKET *paquets; // packet recus
 	int nbr_evenement; // stats
+	int* lastIDs;
 };
 
 
@@ -30,9 +30,6 @@ struct protocoleData {
 	double    alpha; //alpha de modele d'energie
 	double    c; //le C de modele d'energie
 	double    eps; //la duree avant le lancement du premier evenement
-	//uint64_t  debut; //l'instant de debut de l'application (detection de premier evenement
-	//uint64_t  periodEVE; //delta temps entre chaque evenement
-	double range;
 };
 
 
@@ -41,8 +38,10 @@ typedef struct _packet_bip
     int     type;
     nodeid_t src;
 	nodeid_t dst;
+	nodeid_t pred;
 	listeNodes* askedToRedirect;
 	listeNodes* needsToBeCovered;
+	int id;
 } packet_PROTOCOLE;
 
 

@@ -5,15 +5,18 @@
 
 void init_one_hop(call_t *c, double eps)
 {
-	long int rand = abs(get_random_integer());
-	rand %= 100000000;
-	uint64_t at = get_time_now() + time_seconds_to_nanos(eps) + rand*c->node;
+	//long int rand = abs(get_random_integer());
+	//rand %= 100000000;
+	uint64_t at = get_time() + eps*1000000 + 110000*c->node;
     scheduler_add_callback(at, c, broadcast_hello, NULL);
 	
+	uint64_t timeFinish = get_time_now() + eps*1000000 + 110000*get_node_count();
+	scheduler_add_callback(timeFinish, c, print_one_hop_neighbourhood, NULL);
 	init_two_hop(c, eps);
 }
 
 int broadcast_hello(call_t *c, void *args) {
+	printf("broadcast hello from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
     struct nodedata *nodedata = get_node_private_data(c);
 	
     //recuperer le support de communication DOWN
@@ -40,7 +43,7 @@ int broadcast_hello(call_t *c, void *args) {
     }
 	
     DEBUG;
-    printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
+    //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", hello->type, c->node, destination.id, get_time_now_second());
     
     TX(&c0,packet);
 	
@@ -53,7 +56,7 @@ int rx_hello(call_t *c, packet_t *packet) {
 	struct protocoleData *entitydata = get_entity_private_data(c);
 	
     packet_hello *hello = (packet_hello *) (packet->data + nodedata->overhead);
-	
+	printf("%d recoit hello depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
     // ajout du voisin dans la liste du 1-voisinage
     if(!listeNodes_recherche(nodedata->oneHopNeighbourhood,hello->src))
         listeNodes_insert_values(&nodedata->oneHopNeighbourhood,hello->src,hello->src_pos.x, hello->src_pos.y, hello->src_pos.z);
@@ -68,35 +71,17 @@ int rx_hello(call_t *c, packet_t *packet) {
 	addEdgeUndirected(nodedata->g2hop, c->node, hello->src, cout);
 	
 	
-	
-	// ajout des liens entre le nouveau voisin et le reste du 1-voisinage
-	listeNodes* tmp = nodedata->oneHopNeighbourhood;
-	position_t pos;
-	while(tmp != 0)
-	{
-		if(tmp->values.node != hello->src)
-		{
-			pos.x = tmp->values.x;
-			pos.y = tmp->values.y;
-			pos.z = tmp->values.z;
-			
-			cout = calcul_energie(pos, 
-								  hello->src_pos, 
-								  entitydata->alpha, 
-								  entitydata->c, 
-								  &distance);
-			
-			if(distance < entitydata->range)
-				addEdgeUndirected(nodedata->g2hop, tmp->values.node, hello->src, cout);
-		}
-		tmp = tmp->suiv;
-	}
-	
-	
 	packet_dealloc(packet);
 	
     return 1;
 	
+}
+
+void print_one_hop_neighbourhood(call_t *c)
+{
+    struct nodedata *nodedata = get_node_private_data(c);
+	printf("\t1-voisinage de %d recupere : ", c->node);
+	listeNodes_affiche(nodedata->oneHopNeighbourhood);
 }
 
 

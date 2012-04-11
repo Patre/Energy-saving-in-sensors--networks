@@ -6,6 +6,7 @@
 #include <list_de_listNodes.h>
 #include <list_paquet.h>
 #include <arbre.h>
+#include <graphe.h>
 
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 /* ************************************************** */
@@ -23,9 +24,9 @@ struct nodedata {
 	list_PACKET *paquets;
 	
 	//les voisin
-	//1-hop
-	listeNodes  *N1;
-	
+        //1-hop
+        graphe* g2hop;
+
 	//PROTOCOLE
 	arbre *tree_BIP;     //l'arbre de bip original
 	//l'ensemeble des connection de graph
@@ -69,5 +70,13 @@ struct _packet_bip
 };
 typedef struct _packet_bip packet_PROTOCOLE;
 
+/* ************************************************** */
+/* ************************************************** */
+//PROPAGATION
+
+struct propagation_data
+{
+        double range;
+};
 
 #endif //PROTOCOLE DECLARATION

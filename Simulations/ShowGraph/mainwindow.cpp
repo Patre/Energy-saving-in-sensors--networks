@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //INITALISATION
     graph_view=new GraphView();
 
-    zoom = 5;
+    zoom = 3;
     //AFFICHAGE
     setCentralWidget(graph_view);
 }
@@ -94,7 +94,7 @@ void MainWindow::lireFile(QString filename)
 
 void MainWindow::chargerGraph()
 {
-    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
+    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph","/home/bibouh/wsnet-module/user_models/tests");
     lireFile(file);
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
@@ -118,6 +118,8 @@ void MainWindow::clearGraph()
     ui->charger->setEnabled(true);
     ui->afficherNodes->setEnabled(false);
     ui->graphFinale->setEnabled(false);
+    list_graph.clear();
+    nodes.clear();
     graph_view->clearGraph();
     graph_view->repaint();
 }
