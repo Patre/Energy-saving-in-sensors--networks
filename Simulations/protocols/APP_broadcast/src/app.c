@@ -43,6 +43,7 @@ struct nodedata {
 
 /* Entity private data */
 struct entitydata {
+    int debug ;
     uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
     uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
@@ -71,6 +72,7 @@ int init(call_t *c, void *params) {
   param_t *param;
 
   /* init entity variables */
+  entitydata->debug = 0;
   entitydata->debut   = time_seconds_to_nanos(3);
   entitydata->periodEVE = time_seconds_to_nanos(1);
 
@@ -85,6 +87,11 @@ int init(call_t *c, void *params) {
 
       if (!strcmp(param->key, "period")) {
           if (get_param_time(param->value, &(entitydata->periodEVE))) {
+              goto error;
+          }
+      }
+      if (!strcmp(param->key, "debug")) {
+          if (get_param_integer(param->value, &(entitydata->debug))) {
               goto error;
           }
       }
@@ -139,10 +146,14 @@ int setnode(call_t *c, void *params) {
 
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct entitydata *entitydata =get_entity_private_data(c);
 
     //DEBUG PAQUETs
-    printf("\tPaquets : %d ->",c->node);
-    list_PACKET_affiche(nodedata->paquets);//*/
+    if(entitydata->debug)
+    {
+        printf("\tPaquets (APP): %d ->",c->node);
+        list_PACKET_affiche(nodedata->paquets);//*/
+    }
 
 
 
@@ -177,7 +188,7 @@ int bootstrap(call_t *c) {
     
     /* if the node type is source, we schedule a new callback */
     if(c->node==0)
-        scheduler_add_callback(entitydata->debut, c, callmeback, NULL);
+        scheduler_add_callback(entitydata->debut, c, callmeback, NULL);//*/
 
     return 0;
 }
@@ -200,13 +211,10 @@ int callmeback(call_t *c, void *args) {
     header->source = c->node;
     header->seq    = nodedata->nbr_evenement++;
 
-
-
-
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
-    printf("APP - broadcast paquet depuis %d at %.2lf\n", header->source, get_time_now_second());
+    if(entitydata->debug)printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
@@ -216,17 +224,13 @@ int callmeback(call_t *c, void *args) {
 
     TX(&c0, packet);
 
-
-
-
-    /* we schedule a new callback after actualtime+period */
-   /* if(c->node == 0)
+    // we schedule a new callback after actualtime+period
+    if(c->node == 0)
     {
            uint64_t  at= get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
            scheduler_add_callback(at, c, callmeback, NULL);
 
-    }*/
-
+    }
     return 0;
 }
 
@@ -239,7 +243,7 @@ void rx(call_t *c, packet_t *packet) {
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
 
 
-    printf("APP - paquet recu par %d depuis %d at %.2lf. Contenu : %d\n", c->node, header->source, get_time_now_second(), header->seq);
+    //printf("APP - paquet recu par %d depuis %d at %.2lf. Contenu : %d\n", c->node, header->source, get_time_now_second(), header->seq);
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
 
     packet_dealloc(packet);
