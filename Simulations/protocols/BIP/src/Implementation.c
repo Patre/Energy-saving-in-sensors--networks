@@ -78,6 +78,10 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
+    if(data->seq==1)
+    {
+        setRangeToFarestNeighbour(c,nodedata->g2hop,data->pere_arbre);
+    }
 
     SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 

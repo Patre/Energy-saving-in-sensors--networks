@@ -30,6 +30,7 @@ struct _mac_header {
     int src;
     int dst;
     int type;
+
 };
 
 
@@ -46,6 +47,7 @@ struct entitydata {
 /* ************************************************** */
 struct nodedata {
     void *buffer;
+    double range;
 #ifdef ONE_PACKET_AT_A_TIME
     int scheduler;
 #endif
@@ -116,6 +118,18 @@ int destroy(call_t *c) {
 /* ************************************************** */
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = (struct nodedata *) malloc(sizeof(struct nodedata));
+    param_t *param;
+
+    nodedata->range = 30;
+
+    das_init_traverse(params);
+    while ((param = (param_t *) das_traverse(params)) != NULL) {
+        if (!strcmp(param->key, "range")) {
+            if (get_param_double(param->value, &(nodedata->range))) {
+                goto error;
+            }
+        }
+    }
 
     nodedata->buffer    = das_create();
 
@@ -125,6 +139,10 @@ int setnode(call_t *c, void *params) {
 
     set_node_private_data(c, nodedata);
     return 0;
+
+error:
+   free(nodedata);
+   return -1;
 }
 
 int unsetnode(call_t *c) {
@@ -175,7 +193,7 @@ int tx_delay(call_t *c, void *args) {
 	
 	if (i != c->node) {
 	  
-                if (distance(get_node_position(i), local) <= entitydata->range) {
+                if (distance(get_node_position(i), local) <= nodedata->range) {
 		  call_t c0 = {-1, i, -1};
 		  array_t *macs = get_mac_entities(&c0);
 		  c0.entity = macs->elts[0];
@@ -192,7 +210,7 @@ int tx_delay(call_t *c, void *args) {
     /* Unicast packet */
     else if (header->type == UNICAST_TYPE){
       
-      if (distance(get_node_position(header->dst), local) <= entitydata->range) {
+      if (distance(get_node_position(header->dst), local) <= nodedata->range) {
 	call_t c0 = {-1, header->dst, -1};
 	array_t *macs = get_mac_entities(&c0);
 	c0.entity = macs->elts[0];

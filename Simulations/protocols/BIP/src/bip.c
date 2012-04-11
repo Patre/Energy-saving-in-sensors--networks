@@ -148,7 +148,7 @@ void rx(call_t *c, packet_t *packet) {
     {
     case BIP:
     {
-
+        //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
         if(list_recherche(data->destinations,c->node)==1)
         {
             PROTOCOLE_reception(c,packet);
@@ -167,8 +167,8 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    if(c->node==0)
-        arbre_affiche(nodedata->tree_BIP);
+    /*if(c->node==0)
+        arbre_affiche(nodedata->tree_BIP);*/
 
     //PAR USER PROTOCOLE
     deleteGraphe(nodedata->g2hop);
@@ -193,6 +193,7 @@ void tx( call_t *c , packet_t * packet )
 {
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
+    //printf("range de 0 est %lf\n",get_range_Tr(c));
     TX(&c0,packet);
 }
 
@@ -205,14 +206,15 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
     {
-                purgeGrapheOfStables(nodedata->g2hop);
-        afficherGraphe(nodedata->g2hop);
-        printf("\t\t\tje calcule l'arbre de %d\n",c->node);
+        purgeGrapheOfStables(nodedata->g2hop);
         nodedata->tree_BIP = computeBIPtree(c, nodedata->g2hop);
-        printf("arbre de BIP de %d construit : \n", c->node);
-        arbre_affiche(nodedata->tree_BIP);
 
-        //setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
+        //afficherGraphe(nodedata->g2hop);
+        //printf("\t\t\tje calcule l'arbre de %d\n",c->node);
+        //printf("arbre de BIP de %d construit : \n", c->node);
+        //arbre_affiche(nodedata->tree_BIP);
+
+        setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
     }
 
     //augmenter le nbr d'evenement
