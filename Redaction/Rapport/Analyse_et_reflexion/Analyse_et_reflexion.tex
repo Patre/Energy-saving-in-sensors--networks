@@ -193,7 +193,7 @@ Determiner si G a assez d'énergie pour broadcaster $k$ messages a partir de $s$
 \end{myth}
 
 De façon formel, il est donc souvent impossible de calculer le nombre de broadcasts total reussis étant donné un reseau et un protocol (sauf quand le protocol est tres simple $cf$ 3.2.1). Nous analyserons 
-donc \textit{les performences moyennes} des algorithmes.
+donc \textit{les performences moyennes} des algorithmes quand cela est possible. Sinon, les simulations nous permettrons de mesurer les performences en fonction de différentes topologies.
 
 \subsubsection{Differentes définitions}
 Les definitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich2009},\cite{Champ2009lifetime},\cite{Elleithy2011}. 
@@ -203,7 +203,7 @@ Nous notons $\lambda$-broadcast un broadcast touchant $\lambda$ pourcent des noe
 \end{mydef}
 
 \begin{mylt}
-Nombre moyen de broadcast reussis avant qu'un capteur n'ai plus de batterie
+Nombre moyen de broadcast reussis avant qu'un capteur n'ai plus de batterie (TTFF).
 \end{mylt}
 \begin{mylt}
 Nombre moyen de broadcast reussis avant que le reseau ne perde sa connectivité.
@@ -234,14 +234,13 @@ $N(u) $& \mc{1}{c|}{Degre de u}\\\hline
 $d_G(i,j)$ & \mc{1}{c|}{Distance dans G entre $i$ et $j$}\\\hline
 $d_e(i,j)$ & \mc{1}{c|}{Distance euclidienne entre $i$ et $j$}\\\hline
 $N_k(u)$ & \mc{1}{c|}{Nombre de k-voisins de u }\\\hline
-$N_G$ & \mc{1}{c|}{Densité de G}\\\hline
+$N_G$ & \mc{1}{c|}{Degre de G}\\\hline
 $d_G$ & \mc{1}{c|}{Distance de G}\\\hline
 $d_e(G)$ & \mc{1}{c|}{Distance euclidienne de G}\\\hline
 $diametre_G$ & \mc{1}{c|}{Diametre de G}\\\hline
+$D_G$ & \mc{1}{c|}{Densité de G}\\\hline
 $C(k)$ & \mc{1}{c|}{Cout de $k$ broadcasts}\\\hline
-$diametre_G$ & \mc{1}{c|}{diametre de G}\\\hline
-$diametre_G$ & \mc{1}{c|}{diametre de G}\\\hline
-$diametre_G$ & \mc{1}{c|}{diametre de G}\\\hline
+
 \end{tabular}
 \end{center}
 }%
@@ -250,7 +249,7 @@ $diametre_G$ & \mc{1}{c|}{diametre de G}\\\hline
 
 \section{Analyse d'algorithme existants}\label{class}
 
-Les reseaux de captuers sans fils constituent un domaine de recherche réscent et actif. Une grande quantité d'articles ont été publiés cette derniere décénie.
+Les reseaux de captuers sans fils constituent un domaine de recherche réscent et actif. Une grande quantité d'articles ont été publiés cette derniere décénie.Nous n'aborderons que quelques uns.
 
 
 
@@ -283,7 +282,13 @@ sensor networks'\cite{Abba2006}.
 
 L'idée maitresse de ABBA est assez simple. Nous supposons que les noeuds n'ont aucunes connaissance de leur voisinage. Cepandant ceux ci connaissent leurs position géographique (GPS par exemple).
 A la premiere réception d'un message, le noeud initialise un timer. Avant expiration du timer, le noeud peut recevoir d'autre copie du meme message. Chaque capteur a un rayon d'emission fixe $R$
-et couvre une zone circulaire. Si un noeud $u$ recoit le meme message de differente source et que ces sources couvrent sa zone, alors $u$ ne retransmet pas le message.
+et couvre une zone circulaire.
+\begin{figure}[H]
+\centering
+\includegraphics{Etat_de_l'art/source/abba.png}
+\caption{ }
+\end{figure} 
+ Si un noeud $u$ recoit le meme message de differente source et que ces sources couvrent sa zone, alors $u$ ne retransmet pas le message.
 Cela signifie que chaqun de ses voisins potentiel a déjà reçu le message. Si un noeud est couvert avant que son timer n'expire, il ne fait rien. Sinon il retransmet.
 Comme chaque couverture est un cercle de rayon $R$, le critere de couverture peut etre simplifié: au lieu de s'interesser au disque entier, un noeud verifie uniquement si le perimetre $\pi$ de sa zone est couvert par 
 ses voisins lui ayant envoyé le message. 
@@ -313,8 +318,6 @@ Un noeud source $s$, un message $M$
 
 \end{algorithmic}
 \end{algorithm}
-
-
 
 
 \subsection{Algorthimes globaux}
@@ -363,6 +366,12 @@ directes de $i$(ou $i$ lui meme si c'est une feuille). La paire $\{i,j\}$ minimi
 Contairement a Prim qui garantie l'optimalité de l'abre couvrant en termes de cout total,
 Bip ne construit pas forcement un arbre de poids minimum.Cepandant, contrairemnt à Prim, Bip exploite l'avantage notoire du mulicast dût aux transmitions radio. Un fois cet abre construit, le broadcast se fait naturellement via celui-ci.
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{Etat_de_l'art/source/Dessin2.pdf}
+\caption{ Arbre Prim(gauche); Arbre Bip(droite)}
+\end{figure} 
+
 \begin{algorithm}[h]
 \caption{BIP}
 \label{algo_BIP}
@@ -376,6 +385,8 @@ Bip ne construit pas forcement un arbre de poids minimum.Cepandant, contrairemnt
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
+
+
 
 
 \subsection{Algorithmes avec balisage}
@@ -429,6 +440,12 @@ Chaque site lorsqu'il recoit un message à retransmettre calcul son BIP-tree sur
 \end{algorithmic}
 \end{algorithm}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.65]{Etat_de_l'art/source/LBIP.png}
+\caption{ }
+\end{figure} 
+
 
 \paragraph{Algorithme DLBIP}
 `Dynamic Localized Broadcast Incremental Power Protocol for Wireless Ad Hoc Networks': article\cite{Champ2009DLBIP}.
@@ -462,20 +479,65 @@ ou $E_{ij}$ est le cout reel de transmition et $E_i$ l'energie restante de $i$.
 \cite{Cartigny2003RNG}
 
 
+\subsubsection{Algorithmes hexagonaux}
 
 
-
-\subsubsection{Algorithme RBOP}
-\cite{Cartigny2005}
+\paragraph{Rayon Optimal}
 
 
+\begin{myth}
+Sans chevauchement et sans vide, un plan ne peut etre découpé de facon uniforme que par des polygones reguliers de type triangle, carrés ou hexagones.
+\end{myth}
+\begin{proof}
+ Soit $m$ le nombre de sommet d'un $m$-polygone et $n$ le nombre de $m$-polygones nécessaire pour couvrir $2\pi$ degrés
+Nous avons: $$\frac{(m-2)n\pi}{m}=2\pi \Leftrightarrow (m-2)(n-2)=4$$
+Comme $n$ et $m$ sont des entiers, les seuls solutions sont: $$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \} \Leftrightarrow m \in \{ 3,4,6 \}$$
+\end{proof}
+Nous admetrons:
+\begin{myth}
+ Le quadrillage en hexagone est celui offrant le moins de chevauchement du point de vu WSN.
+\end{myth}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{Etat_de_l'art/source/hexagone1.png}
+\caption{ Chevauchement d'un maillage hexagonale}
+\end{figure} 
 
-\subsubsection{Algorithme LBOP}
-\cite{Cartigny2005}
-\subsubsection{Algorithme DLBOP}
-\cite{Cartigny2004}
-\subsubsection{Algorithme TR-LBOP}
+Soit $P$ un plan sur lequel $n$ capteurs sont placés. Chaque capteur peut émettre des message avec un rayon compris entre 0 et $\gamma$ .Dans ce protocol, tout les noeuds auront un meme rayon d'émission fixe $R$.
+Etant donnée une source $s$ et un message $M$ à broadcaster, nous devons placer les noeuds relais de facon a minimiser leur nombre $m$. Biensur leur nombre dépend directement du rayon $R$.
+ 
+
+Dans un reseau hexagonale, nous avons les resultats suivants:
+Soit $S$ l'aire du plan rectangulaire $P$. Connaissant $R$, nous pouvons calculer facilement le nombre de sommet pour couvrir le plan.
+Soit $h$ le nombre d'hexagones couvrant $P$: 
+Knowing r is the exact distance between two emitting
+nodes, we can easily compute the necessary quantity of them
+to cover the entire area. To do this, we just have to find how
+many hexagons, denoted by h, fit on our area of surface S:
+$$h \simeq \frac{Surface ( P)}{Surface(hexagone)}=\frac{2S}{3R^2 \sqrt{3}}$$
+
+Comme il faut deux noeuds par hexagone,$$n=2h=\frac{4S}{3R^2 \sqrt{3}}= \frac{k}{R^2}$$ où $k=\frac{4S}{3 \sqrt{3}}$
+
+Ainsi, le cout d'un broadcast vaut: $$C(1)(R)= n\cdot E(R)=\frac{k}{R^2}\cdot E(R)=\frac{k}{R^2}\cdot (R^\alpha+c)$$
+Nous cherchons le rayon optimal minimisant $C(1)(R)$. Comme $\alpha\geq 2$, $c\geq 0$ et $R>0$, nous avons 4 cas possibles:
+\begin{itemize}
+ \item $\alpha=2$, $c=0$: nous avons $C(1)(R)=k$. $R_{opt}$ ne depend pas de $r$.
+ \item $\alpha=2$, $c\neq0$: nous avons $C(1)(R)=k(1+cR^{-2})$. Au plus le rayon doit etre le plus gran possible: $R_{opt}=\gamma$
+ \item $\alpha>2$, $c=0$: nous avons $C(1)(R)=kR^{\alpha-2}$. $R_{opt}=0$
+ \item $\alpha>2$, $c\neq 0$: nous avons $C(1)(R)=k(R^{\alpha-2} + c R^{-2} ) $.\\
+ En derivant, nous obtenons: $C'(1)(R)= k( (\alpha 2) R^{\alpha-3}- 2cR^{-3} ) $.\\
+D'ou: $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
+\end{itemize}
+
+Biensur, en pratique, il est impossible sur un topologie quelquonces d'extraire un tel maillage hexagonale. Cependant, l'idée des algorithmes de broadcast est de choisir les noeuds relais de façon à ce que leur ensemnble se rapproche 
+au maximum d'un tel maillage.
+
+\paragraph{TR-LBOP}
 'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks':\cite{Ingelrest2004}.\\
+
+
+
+
 
 
 
@@ -485,16 +547,11 @@ Les éléments de classification cités ci dessous sont inspirés des articles \
 \begin{enumerate}
  \item  \textbf{Extensibilité}: Pour qu'un protocol soit extensible, il doit etre avant tout distribué et local: le comportement de chaque noeud bien qu'il
 nécessite qu'une connaissance locale du reseau, permet d'atteindre l'objectif global. Il est facile d'admettre que l'extensibilité d'un WSN est inversement proportionelle à la localité du protocol. 
- \item  \textbf{Connectivité}: La connectivité d'un algorithme mesure se capacité à atteindre tout les sites.
  \item  \textbf{Deterministe vs probabiliste}: Un protocol de broadcast peut utiliser des fonctions probabilistes pour prendre certaines descisions de maniere aléatoire.
  \item  \textbf{Rayon d'émission}:  rayon fixe ou variable
  \item  \textbf{Avec ou sans balisage}:  
- \item  \textbf{hello msg} 
- \item  \textbf{broadcast msg} 
+ \item  \textbf{hello msg}  
  \item  \textbf{Principe} 
-
-
- 
 \end{enumerate}
 
 
@@ -503,8 +560,8 @@ nécessite qu'une connaissance locale du reseau, permet d'atteindre l'objectif g
 
 \begin{figure}[H]
 \centering
-\includegraphics[scale=1,angle=90]{Etat_de_l'art/source/classification}
-\caption{Description, Figure 1 : Graphe de synthèse}
+\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
+\caption{ Graphe de synthèse}
 \end{figure} 
 
 
@@ -514,7 +571,28 @@ nécessite qu'une connaissance locale du reseau, permet d'atteindre l'objectif g
 
 \section{Nos idées}
 
+\subsection{Application du rayon optimal à DLBIP}
+\begin{algorithm}[h]
+\caption{DLBIP avec rayon optimal}
+\label{algo_DLBIP}
+\begin{algorithmic}
+\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE  DLBIP Broadcast
+\STATE REQUIE  Connaissance du 2-voisinage
+\STATE $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$
+\STATE $s$ calcul son BIP($N_2(s),s,P'_{ij}$) et diffuse <M,$s$> à ses fils
+\IF{ $u$ recoit <M,$v$> :}
+	\IF{Le paquet contient des instruction pour $u$}
+		\STATE $u$ construit BIP($N_2(u),u,P'_{ij}$) est retransmet le message à ses fils avec pour rayon:
+			  \STATE - $R_{opt}$ si $\max\limits_{v\in N_u(1)\bigcap BIP(N_2(u),u,P'_{ij}}(d_e(u,v)< R_{opt}$
+			  \STATE - $\max\limits_{v\in N_u(1)\bigcap BIP(N_2(u),u,P'_{ij}}(d_e(u,v)$ sinon.
+			  
+	\ENDIF
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
 
+\subsection{}
 
 
 

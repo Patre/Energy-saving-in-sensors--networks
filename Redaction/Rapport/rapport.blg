@@ -3,49 +3,48 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: rapport.aux
 The style file: plain.bst
 Database file #1: ../Bib.bib
-A bad cross reference---entry "Cartigny2004"
-refers to entry "conf/ifip6-8/2004", which doesn't exist
-Warning--I didn't find a database entry for "Liang2002"
-Warning--I didn't find a database entry for "conf/ifip6-8/2004"
+A bad cross reference---entry "Yang2006"
+refers to entry "conf/globecom/2006", which doesn't exist
+Warning--I didn't find a database entry for "conf/globecom/2006"
 You've used 15 entries,
             2118 wiz_defined-function locations,
-            602 strings with 6828 characters,
-and the built_in function-call counts, 5847 in all, are:
-= -- 600
-> -- 251
-< -- 10
-+ -- 97
-- -- 82
-* -- 389
-:= -- 916
-add.period$ -- 47
+            597 strings with 6654 characters,
+and the built_in function-call counts, 5669 in all, are:
+= -- 587
+> -- 227
+< -- 9
++ -- 89
+- -- 74
+* -- 355
+:= -- 883
+add.period$ -- 48
 call.type$ -- 15
-change.case$ -- 85
+change.case$ -- 82
 chr.to.int$ -- 0
 cite$ -- 15
-duplicate$ -- 240
-empty$ -- 447
-format.name$ -- 82
-if$ -- 1272
+duplicate$ -- 242
+empty$ -- 449
+format.name$ -- 74
+if$ -- 1247
 int.to.chr$ -- 0
 int.to.str$ -- 15
 missing$ -- 14
 newline$ -- 77
-num.names$ -- 32
-pop$ -- 88
+num.names$ -- 30
+pop$ -- 92
 preamble$ -- 1
-purify$ -- 70
+purify$ -- 67
 quote$ -- 0
-skip$ -- 201
+skip$ -- 198
 stack$ -- 0
-substring$ -- 394
-swap$ -- 90
-text.length$ -- 10
+substring$ -- 378
+swap$ -- 89
+text.length$ -- 9
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 60
 warning$ -- 0
-while$ -- 61
+while$ -- 58
 width$ -- 17
-write$ -- 169
+write$ -- 168
 (There was 1 error message)
