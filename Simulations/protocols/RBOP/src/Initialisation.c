@@ -66,6 +66,39 @@ void init_rbop(call_t *c, void *args)
 
     list_affiche(N1);
     printf(" RNG %d  ",c->node);
-
     list_affiche(nodedata->RNG);
+
+    listeNodes *tmp=nodedata->oneHopNeighbourhood;
+    position_t pos1 = *get_node_position(c->node);
+    double distMax = 0;
+    while(tmp)
+    {
+        if(list_recherche(nodedata->RNG,tmp->values.node))
+        {
+            position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
+            double dist=distance(&pos1,&pos2);
+            if(distMax<dist)    distMax=dist;
+        }
+        tmp=tmp->suiv;
+    }
+    set_range_Tr(c,distMax);
+    printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
 }
+//RANGE
+double get_range_Tr(call_t *c)
+{
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    return macdata->range;
+}
+
+void set_range_Tr(call_t *c,double range)
+{
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    macdata->range = ceil(range);
+}
+
+

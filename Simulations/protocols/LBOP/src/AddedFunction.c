@@ -103,11 +103,20 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
 //RANGE
 double get_range_Tr(call_t *c)
 {
-    call_t *f=c;
-    f->entity=0;
-    struct propagation_data *pro=get_entity_private_data(f);
-    return pro->range;
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    return macdata->range;
 }
+
+void set_range_Tr(call_t *c,double range)
+{
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    macdata->range = ceil(range);
+}
+
 
 
 

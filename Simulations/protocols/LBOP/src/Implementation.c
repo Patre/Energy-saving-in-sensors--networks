@@ -44,7 +44,7 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     }
 
 
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
+    //printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
 
@@ -67,6 +67,28 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
+
+    //Fixer le rayon
+    if(nodedata->range<0)
+    {
+        listeNodes *tmp=nodedata->oneHopNeighbourhood;
+        position_t pos1 = *get_node_position(c->node);
+        double distMax = 0;
+        while(tmp)
+        {
+            if(list_recherche(nodedata->LMST_voisin,tmp->values.node))
+            {
+                position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
+                double dist=distance(&pos1,&pos2);
+                if(distMax<dist)    distMax=dist;
+            }
+            tmp=tmp->suiv;
+        }
+        set_range_Tr(c,distMax);
+        nodedata->range=get_range_Tr(c);
+        printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
+    }
+
 
 
     SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
@@ -99,12 +121,8 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         packet_dealloc(packetRecu);
         return -1;
     }
-
-
-
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
-    TX(&c0,packetRecu);//*/
+    tx(&c0,packetRecu);//*/
 
 
     //tout c'est bien passé

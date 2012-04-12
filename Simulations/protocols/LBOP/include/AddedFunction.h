@@ -16,7 +16,9 @@ double   calcul_energie(position_t A, position_t B,double alpha,double c, double
   * RANGE
   *
   **/
+
 double get_range_Tr(call_t *c);
+void set_range_Tr(call_t *c,double range);
 
 
 

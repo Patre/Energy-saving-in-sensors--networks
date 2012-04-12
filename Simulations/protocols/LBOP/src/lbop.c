@@ -54,6 +54,7 @@ int setnode(call_t *c, void *params) {
 
     nodedata->LMST_voisin = Nullptr(list);
     nodedata->LMST_intial =Nullptr(list);
+    nodedata->range = -1;
 //STATS
     nodedata->nbr_evenement = 0;
 
@@ -254,6 +255,26 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
 
+    //Fixé le rayon
+    if(nodedata->range<0)
+    {
+        listeNodes *tmp=nodedata->oneHopNeighbourhood;
+        position_t pos1 = *get_node_position(c->node);
+        double distMax = 0;
+        while(tmp)
+        {
+            if(list_recherche(nodedata->LMST_voisin,tmp->values.node))
+            {
+                position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
+                double dist=distance(&pos1,&pos2);
+                if(distMax<dist)    distMax=dist;
+            }
+            tmp=tmp->suiv;
+        }
+        set_range_Tr(c,distMax);
+        nodedata->range=get_range_Tr(c);
+        printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
+    }
 
     //remplissage de data
     data->type=LBOP;

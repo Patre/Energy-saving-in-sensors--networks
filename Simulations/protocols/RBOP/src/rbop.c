@@ -156,6 +156,7 @@ void rx(call_t *c, packet_t *packet) {
         }
         case RBOP:
         {
+            //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
             if(list_recherche(data->destinations,c->node))
                     {
                         if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
@@ -238,7 +239,6 @@ void tx( call_t *c , packet_t * packet )
     struct nodedata *nodedata = get_node_private_data(c);
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 
-    printf("%d %d\n",data->src,data->seq);
 
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
@@ -254,8 +254,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
 
-
-    printf("je set mon data\n");
     //remplissage de data
     data->type=RBOP;
     data->src=c->node;
@@ -265,11 +263,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,nodedata->RNG);
-    //list_affiche(data->destinations);
-
-    DEBUG;
-    list *destinations=data->destinations;
-    if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
 
 
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};

@@ -74,4 +74,20 @@ struct propagation_data
         double range;
 };
 
+//MAC
+
+struct mac_data {
+    int debug;
+    double range;        // Communication range (m)
+    double bandwidth;    // Data bandwidth (KB/s)
+};
+
+struct macnodedata {
+    void *buffer;
+    double range;
+#ifdef ONE_PACKET_AT_A_TIME
+    int scheduler;
+#endif
+};
+
 #endif //PROTOCOLE DECLARATION
