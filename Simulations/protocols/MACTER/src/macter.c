@@ -38,6 +38,8 @@ struct _mac_header {
 /* ************************************************** */
 struct entitydata {
     int debug;
+    double c;
+    double alpha;
     double range;        // Communication range (m)
     double bandwidth;    // Data bandwidth (KB/s)
 };
@@ -72,7 +74,10 @@ int init(call_t *c, void *params) {
     param_t *param;
 
     /* default values */
+
     entitydata->debug     = 0;
+    entitydata->alpha     = 4;
+    entitydata->c         = 100000000;
     entitydata->range     = 10;
     entitydata->bandwidth = 15; 
 
@@ -84,6 +89,17 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
+        if (!strcmp(param->key, "c")) {
+            if (get_param_double(param->value, &(entitydata->c))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "alpha")) {
+            if (get_param_double(param->value, &(entitydata->alpha))) {
+                goto error;
+            }
+        }
+
         if (!strcmp(param->key, "debug")) {
             if (get_param_integer(param->value, &(entitydata->debug))) {
                 goto error;
@@ -266,7 +282,8 @@ void tx(call_t *c, packet_t *packet) {
         printf("la duration est %d\n",duration);
     }
 
-    battery_consume_tx(c,duration,entitydata->bandwidth);
+    double energy=pow(nodedata->range,entitydata->alpha)+entitydata->c;
+    battery_consume(c,energy);
 
 #ifdef ONE_PACKET_AT_A_TIME
    if (nodedata->scheduler == 0) {
@@ -290,8 +307,6 @@ void rx(call_t *c, packet_t *packet) {
     int i = up->size;
 
     int duration = packet->size / entitydata->bandwidth * ONE_MS;
-
-    battery_consume_rx(c,duration);
 
     if (header->type == UNICAST_TYPE && header->dst != c->node) {
         /* Packet not for us */
