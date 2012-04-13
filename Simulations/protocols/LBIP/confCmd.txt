@@ -1,1 +1,0 @@
-./configure --prefix=/Users/Clo/Documents/Fac/M1/S2/TER/wsnet-module  --with-wsnet-dir=/usr/local/wsnet-2.0

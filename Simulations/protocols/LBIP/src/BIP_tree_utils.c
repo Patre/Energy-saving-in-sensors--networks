@@ -37,7 +37,7 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 		{
 			if(getEdgeCost(g, tmp->values.node, tmp2->values.node) != DBL_MAX)
 			{
-				printf("poids[%d] = %.1lf\n", tmp->values.node, getEdgeCost(g, tmp->values.node, tmp2->values.node));
+                                //printf("poids[%d] = %.1lf\n", tmp->values.node, getEdgeCost(g, tmp->values.node, tmp2->values.node));
 				poids[getNumFromLabel(g,tmp->values.node)] = getEdgeCost(g, tmp->values.node, tmp2->values.node);
 			}
 			tmp = tmp->suiv;
@@ -115,10 +115,14 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 	freeHeap(F);
 	
 	
+<<<<<<< HEAD
+        /*printf("Graphe de voisinage complet : \n");
+=======
 	printf("Graphe de voisinage : \n");
+>>>>>>> 99a99fb6ebcd72a7cabeb5d39a9220f7741623d6
 	afficherGraphe(nodedata->g2hop);
 	printf("arbre de BIP de %d construit : \n", c->node);
-	arbre_affiche(bipTree);
+        arbre_affiche(bipTree);*/
 	
 	return bipTree;
 }
@@ -197,6 +201,21 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	
 	/*
 	// set le range du module propagation a la valeur desiree
+<<<<<<< HEAD
+         struct macnodedata {
+            void *buffer;
+            double range;
+        #ifdef ONE_PACKET_AT_A_TIME
+            int scheduler;
+        #endif
+        };
+         array_t *mac=get_mac_entities(c);
+         call_t c0 = {mac->elts[0], c->node, c->entity};
+        struct macnodedata* macdata = get_node_private_data(&c0);
+        macdata->range = ceil(distMax);
+        printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
+	
+=======
 	call_t c0 = {0, c->node, c->entity};
 	struct propagation_data
 	{
@@ -206,6 +225,7 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	propdata->range = ceil(distMax);
 	printf("rayon d'emission de %d fixe a %lf\n", c->node, propdata->range);
 	*/
+>>>>>>> 99a99fb6ebcd72a7cabeb5d39a9220f7741623d6
 	return distMax;
 }
 
@@ -259,9 +279,9 @@ void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRed
 		fils = fils->suiv;
 	}
 	
-	printf("Relayer : \n");
-	listeNodes_affiche(*askedToRedirect);
-	listeNodes_affiche(*needsToBeCovered);
+        //printf("Relayer : \n");
+        //listeNodes_affiche(*askedToRedirect);
+        //listeNodes_affiche(*needsToBeCovered);
 }
 
 graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode)
@@ -357,7 +377,7 @@ void forward(call_t* c, packet_t *packet)
 	array_t *down = get_entity_bindings_down(c);
 	packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	printf("%d doit relayer depuis %d\n", c->node, data->pred);
+        //printf("%d doit relayer depuis %d\n", c->node, data->pred);
 	/*printf("Graphe de %d :\n", c->node);
 	 afficherGraphe(nodedata->g2hop);*/
 	

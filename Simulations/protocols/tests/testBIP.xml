@@ -12,8 +12,10 @@
 <entity name="range" library="propagation_range">
 <init range="30"/>
 </entity>
+
 <entity name="interf" library="interferences_none"></entity>
 <entity name="none" library="modulation_none"></entity>
+
 <!--
 == RADIO and ANTENNA ============================================
 -->
@@ -24,15 +26,11 @@
 <default sensibility="-92" T_b="727" dBm="10" channel="0" modulation="none"/>
 </entity>
 <!--
-== MAC =====================================================
--->
-<entity name="mac" library="mac_dcf_802_11"></entity>
-<!--
 == APPLICATION =====================================================
 -->
 
 <entity name="app-sensor" library="application_broadcast">
-<init period="10s" debut="3s"/>
+<init period="10s" debut="3s" debug="1"/>
 <default />
 </entity>
 <!--
@@ -47,18 +45,25 @@
 <init alpha="1" c="0" eps="0.01" />
 <default />
 </entity>
+<!--
+== MAC =====================================================
+-->
+<entity name="mac" library="mac_macter">
+<init  debit="10" debug="0" c="0" alpha="1"/>
+<default range ="30"/>
+</entity>
 
 <!--
-
 == ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
-<default energy="100000000" rx="1"  tx="1" debug="0"/>
+<default energy="200" rx="1"  tx="1" debug="1"/>
 </entity>
 
 <!--
 == Environment =====================================================
 -->
+
 <environment>
 <propagation entity="range" range="30"/>
 <interferences entity="interf"/>
@@ -100,7 +105,6 @@
 
 <node id="0"  >
         <for entity="static-pos" x="98,000000" y="110,000000" z="0.0" />
-        <for entity="theorie" energy="100000000" rx="1"  tx="1" debug="0"/>
 </node>
 <node id="1"  >
         <for entity="static-pos" x="11,000000" y="32,000000" z="0.0" />

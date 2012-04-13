@@ -26,7 +26,10 @@
 <!--
 == MAC =====================================================
 -->
-<entity name="mac" library="mac_dcf_802_11"></entity>
+<entity name="mac" library="mac_macter">
+<init  debit="10" debug="0"/>
+<default range ="30"/>
+</entity>
 <!--
 == APPLICATION =====================================================
 -->
@@ -53,7 +56,7 @@
 == ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
-<default energy="100000000" rx="1"  tx="1" debug="0"/>
+<default energy="10000000" rx="1"  tx="1" debug="0"/>
 </entity>
 
 <!--
@@ -101,7 +104,7 @@
 
 <node id="0"  >
         <for entity="static-pos" x="98,000000" y="110,000000" z="0.0" />
-        <for entity="theorie" energy="100000000" rx="1"  tx="1" debug="0"/>
+
 </node>
 <node id="1"  >
         <for entity="static-pos" x="11,000000" y="32,000000" z="0.0" />
@@ -300,10 +303,10 @@
         <for entity="static-pos" x="131,000000" y="118,000000" z="0.0" />
 </node>
 <node id="66"  >
-        <for entity="static-pos" x="130,000000" y="137,000000" z="0.0" />
+        <for entity="static-pos" x="130,000000" y="120,000000" z="0.0" />
 </node>
 <node id="67"  >
-        <for entity="static-pos" x="136,000000" y="145,000000" z="0.0" />
+        <for entity="static-pos" x="120,000000" y="145,000000" z="0.0" />
 </node>
 <node id="68"  >
         <for entity="static-pos" x="134,000000" y="165,000000" z="0.0" />

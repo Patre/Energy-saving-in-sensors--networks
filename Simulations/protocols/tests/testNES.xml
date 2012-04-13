@@ -24,21 +24,11 @@
 <default sensibility="-92" T_b="727" dBm="10" channel="0" modulation="none"/>
 </entity>
 <!--
-<<<<<<< HEAD
-=======
 == MAC =====================================================
 -->
-<!--<entity name="mac" library="mac_dcf_802_11"></entity>-->
-	
-	
-<entity name="mac" library="mac_macter">
-	 <init range ="30" debit="10" debug="0"/>
-	 <default />
+<entity name="mac" library="mac_dcf_802_11">
 </entity>
-
-	
 <!--
->>>>>>> 99a99fb6ebcd72a7cabeb5d39a9220f7741623d6
 == APPLICATION =====================================================
 -->
 
@@ -54,23 +44,17 @@
 </entity>
 
 <!-- == ROUTING ========================================= -->
-<entity name="routing-protocole" library="routing_lbip">
+<entity name="routing-protocole" library="routing_nes">
 <init alpha="1" c="0" eps="0.01" />
 <default />
 </entity>
-<!--
-== MAC =====================================================
--->
-<entity name="mac" library="mac_macter">
-<init  debit="10" debug="0" c="0" alpha="1"/>
-<default range ="30"/>
-</entity>
 
 <!--
+
 == ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
-<default energy="200" rx="1"  tx="1" debug="1"/>
+<default energy="1000000" rx="1"  tx="1" debug="0"/>
 </entity>
 
 <!--

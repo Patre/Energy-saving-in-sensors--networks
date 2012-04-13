@@ -74,7 +74,7 @@ int setnode(call_t *c, void *params) {
     DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
-	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
+//	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
     return 0;
 }
@@ -178,7 +178,7 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+//			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
 				return;
 			else
@@ -187,6 +187,8 @@ void rx(call_t *c, packet_t *packet) {
 			{
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
+                                    SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
+
 					//uint64_t time = rand() % 11000000000000;
 					//scheduler_add_callback(time, c, forward, packet);
 					forward(c, packet);
@@ -198,7 +200,7 @@ void rx(call_t *c, packet_t *packet) {
 			}
 			else
 			{
-				printf("Message non broadcaste pas traite ... TODO\n");
+//				printf("Message non broadcaste pas traite ... TODO\n");
 			}
 			//packet_dealloc(packet);
 			break;
