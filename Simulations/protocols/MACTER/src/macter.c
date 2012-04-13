@@ -287,6 +287,7 @@ void tx(call_t *c, packet_t *packet) {
     {
         printf("energie consommee par le noeud %d : %.1lf...\n", c->node, energy);
     }
+	
     battery_consume(c,energy);
 	if(entitydata->debug)
     {

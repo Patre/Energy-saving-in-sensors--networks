@@ -162,6 +162,7 @@ int unsetnode(call_t *c) {
         free(nodedata->overhead);
     }
     free(nodedata);
+	
     return 0;
 }
 
@@ -243,7 +244,7 @@ void rx(call_t *c, packet_t *packet) {
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
 
 
-    //printf("APP - paquet recu par %d depuis %d at %.2lf. Contenu : %d\n", c->node, header->source, get_time_now_second(), header->seq);
+    printf("APP - paquet recu par %d depuis %d at %.2lf. Contenu : %d\n", c->node, header->source, get_time_now_second(), header->seq);
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
 
     packet_dealloc(packet);

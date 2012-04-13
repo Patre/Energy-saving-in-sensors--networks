@@ -105,6 +105,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     if(list_taille(data->destinations)!=0)
     {
+		printf("taille : %d ; envoi depuis %d\n", list_taille(data->destinations), c->node);
         //ENVOI
         entityid_t *down = get_entity_links_down(c);
         call_t c0 = {down[0], c->node};

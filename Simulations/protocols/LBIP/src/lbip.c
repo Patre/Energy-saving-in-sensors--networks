@@ -157,6 +157,8 @@ int bootstrap(call_t *c) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
+	if(!is_node_alive(c->node))
+		return;
     struct nodedata *nodedata = get_node_private_data(c);
 	array_t *up = get_entity_bindings_up(c);
 	
@@ -185,6 +187,11 @@ void rx(call_t *c, packet_t *packet) {
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
+				
+				// faire remonter le paquet a la couche application
+				call_t c_up = {up->elts[0], c->node, c->entity};
+				RX(&c_up, packet_clone(packet));
+				
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
                                     SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
@@ -193,20 +200,16 @@ void rx(call_t *c, packet_t *packet) {
 					//scheduler_add_callback(time, c, forward, packet);
 					forward(c, packet);
 				}
-				
-				// faire remonter le paquet a la couche application
-				call_t c_up = {up->elts[0], c->node, c->entity};
-				RX(&c_up, packet_clone(packet));
 			}
 			else
 			{
-//				printf("Message non broadcaste pas traite ... TODO\n");
+				printf("Message non broadcaste pas traite ... TODO\n");
 			}
 			//packet_dealloc(packet);
 			break;
 		}
 		default:
-			printf("J'ai recu un packet de type %d NON reconnu\n", data->type);
+			printf("%d a recu un packet de type %d NON reconnu\n", c->node, data->type);
 			break;
 	}
 }

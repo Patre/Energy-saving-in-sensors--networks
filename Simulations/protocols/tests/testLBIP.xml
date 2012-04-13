@@ -2,7 +2,7 @@
 <!--
 == Worldsens =====================================================
 -->
-<simulation nodes="100" duration="500s" x="200" y="200"  z="0"/>
+<simulation nodes="100" duration="1000s" x="200" y="200"  z="0"/>
 <!--
 == Entities ======================================================
 -->
@@ -49,7 +49,7 @@
 == MAC =====================================================
 -->
 <entity name="mac" library="mac_macter">
-<init  debit="10" debug="0" c="0" alpha="1"/>
+<init  debit="10" debug="0" alpha="4" c="100000"/>
 <default range ="30"/>
 </entity>
 
@@ -57,7 +57,7 @@
 == ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
-<default energy="10000" rx="1"  tx="1" debug="1"/>
+<default energy="50000000" rx="1"  tx="1" debug="1"/>
 </entity>
 
 <!--
