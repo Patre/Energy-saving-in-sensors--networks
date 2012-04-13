@@ -133,7 +133,7 @@ void addEdgeDirected(graphe* g, int labelU, int labelV, double cout)
 	v.label = labelV;
 	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
-		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
+		//fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return;
 	}
 	
@@ -176,7 +176,7 @@ void deleteEdgeDirected(graphe* g, int labelU, int labelV)
 	v.label = labelV;
 	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
-		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
+		//fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return;
 	}
 	
@@ -319,7 +319,7 @@ double getEdgeCost(graphe* g, int labelU, int labelV)
 	v.label = labelV;
 	if(u.num >= g->nbSommets || u.num < 0 || v.num < 0 ||v.num >= g->nbSommets)
 	{
-		fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
+		//fprintf(stderr, "Numeros de sommets invalides %d %d.\n", u.label, v.label);
 		return DBL_MAX;
 	}
 	

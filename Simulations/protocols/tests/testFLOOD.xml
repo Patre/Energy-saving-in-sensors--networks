@@ -2,7 +2,7 @@
 <!--
 == Worldsens =====================================================
 -->
-<simulation nodes="100" duration="100s" x="200" y="200"  z="0"/>
+<simulation nodes="100" duration="500s" x="200" y="200"  z="0"/>
 <!--
 == Entities ======================================================
 -->
@@ -39,7 +39,7 @@
 
 <!-- == ROUTING ========================================= -->
 <entity name="routing-protocole" library="routing_flood">
-<init alpha="1" c="0" eps="0.01" />
+<init alpha="4" c="100000" eps="0.01" />
 <default />
 </entity>
 <!--
@@ -54,7 +54,7 @@
 == ENERGY =====================================================
 -->
 <entity name="theorie" library="energy_theorie">
-<default energy="200" rx="1"  tx="1" debug="1"/>
+<default energy="1000" rx="1"  tx="1" debug="1"/>
 </entity>
 <!--
 == Environment =====================================================

@@ -152,6 +152,7 @@ void rx(call_t *c, packet_t *packet) {
         case FLOOD:
         {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+			//printf("%d recoit depuis %d\n", c->node, data->src);
             SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
             if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
