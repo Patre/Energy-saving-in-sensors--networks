@@ -279,11 +279,19 @@ void tx(call_t *c, packet_t *packet) {
     int duration = packet->size / entitydata->bandwidth * ONE_MS;
     if(entitydata->debug)
     {
-        printf("la duration est %d\n",duration);
+        printf("la duration est %d\n", duration);
     }
 
     double energy=pow(nodedata->range,entitydata->alpha)+entitydata->c;
+	if(entitydata->debug)
+    {
+        printf("energie consommee par le noeud %d : %.1lf...\n", c->node, energy);
+    }
     battery_consume(c,energy);
+	if(entitydata->debug)
+    {
+        printf("energie restante : %.1lf.\n", battery_remaining(c));
+    }
 
 #ifdef ONE_PACKET_AT_A_TIME
    if (nodedata->scheduler == 0) {

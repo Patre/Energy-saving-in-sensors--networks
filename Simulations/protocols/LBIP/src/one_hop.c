@@ -16,7 +16,7 @@ void init_one_hop(call_t *c, double eps)
 }
 
 int broadcast_hello(call_t *c, void *args) {
-	printf("broadcast hello from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
+	//printf("broadcast hello from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
     struct nodedata *nodedata = get_node_private_data(c);
 	
     //recuperer le support de communication DOWN
@@ -56,7 +56,7 @@ int rx_hello(call_t *c, packet_t *packet) {
 	struct protocoleData *entitydata = get_entity_private_data(c);
 	
     packet_hello *hello = (packet_hello *) (packet->data + nodedata->overhead);
-	printf("%d recoit hello depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
+	//printf("%d recoit hello depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
     // ajout du voisin dans la liste du 1-voisinage
     if(!listeNodes_recherche(nodedata->oneHopNeighbourhood,hello->src))
         listeNodes_insert_values(&nodedata->oneHopNeighbourhood,hello->src,hello->src_pos.x, hello->src_pos.y, hello->src_pos.z);

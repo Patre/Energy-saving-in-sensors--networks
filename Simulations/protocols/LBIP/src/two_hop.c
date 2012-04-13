@@ -17,7 +17,7 @@ void init_two_hop(call_t *c, double eps)
 }
 
 int broadcast_hello2(call_t *c, void *args) {
-	printf("broadcast hello 2 from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
+	//printf("broadcast hello 2 from %d at %.2lfs\n", c->node, ((double)get_time()/1000000.0));
     struct nodedata *nodedata = get_node_private_data(c);
 
     //recuperer le support de communication DOWN
@@ -57,7 +57,7 @@ int rx_two_hop(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
     packet_hello2 *hello = (packet_hello2*) (packet->data + nodedata->overhead);
-	printf("%d recoit hello2 depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
+	//printf("%d recoit hello2 depuis %d at %.2lfs\n", c->node, hello->src, ((double)get_time()/1000000.0));
 	
 	// copier le 1-voisinage recu dans le 2-voisinage de ce noeud
 	listeNodes_union(&(nodedata->twoHopNeighbourhood), hello->oneHopNeighbourhood);

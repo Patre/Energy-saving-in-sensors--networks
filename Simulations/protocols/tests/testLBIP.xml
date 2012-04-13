@@ -26,7 +26,15 @@
 <!--
 == MAC =====================================================
 -->
-<entity name="mac" library="mac_dcf_802_11"></entity>
+<!--<entity name="mac" library="mac_dcf_802_11"></entity>-->
+	
+	
+<entity name="mac" library="mac_macter">
+	 <init range ="30" debit="10" debug="0"/>
+	 <default />
+</entity>
+
+	
 <!--
 == APPLICATION =====================================================
 -->
@@ -100,7 +108,6 @@
 
 <node id="0"  >
         <for entity="static-pos" x="98,000000" y="110,000000" z="0.0" />
-        <for entity="theorie" energy="100000000" rx="1"  tx="1" debug="0"/>
 </node>
 <node id="1"  >
         <for entity="static-pos" x="11,000000" y="32,000000" z="0.0" />
