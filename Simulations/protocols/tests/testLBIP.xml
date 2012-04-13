@@ -24,21 +24,8 @@
 <default sensibility="-92" T_b="727" dBm="10" channel="0" modulation="none"/>
 </entity>
 <!--
-<<<<<<< HEAD
-=======
-== MAC =====================================================
--->
-<!--<entity name="mac" library="mac_dcf_802_11"></entity>-->
-	
-	
-<entity name="mac" library="mac_macter">
-	 <init range ="30" debit="10" debug="0"/>
-	 <default />
-</entity>
 
-	
-<!--
->>>>>>> 99a99fb6ebcd72a7cabeb5d39a9220f7741623d6
+
 == APPLICATION =====================================================
 -->
 
