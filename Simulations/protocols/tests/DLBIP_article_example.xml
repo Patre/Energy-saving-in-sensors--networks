@@ -2,7 +2,7 @@
 	<!--
 	 == Worldsens =====================================================
 	 -->
-	<simulation nodes="8" duration="40s" x="100" y="100" z="0"/>
+	<simulation nodes="8" duration="100s" x="100" y="100" z="0"/>
 	<!--
 	 == Entities ======================================================
 	 -->
@@ -35,7 +35,7 @@
 	 -->
 	
 	<entity name="app-sensor" library="application_broadcast">
-		<init period="10s" debut="3s"/>
+		<init period="10s" debut="3s" debug="1"/>
 		<default />
 	</entity>
 	<!--
@@ -46,7 +46,7 @@
 	</entity>
 	
 	<!-- == ROUTING ========================================= -->
-	<entity name="routing-lbip" library="routing_lbip">
+	<entity name="routing-dlbip" library="routing_dlbip">
 		<init alpha="4" c="100000" eps="0.01" />
 		<default />
 	</entity>
@@ -55,8 +55,8 @@
 	 
 	 == Energy =====================================================
 	 -->
-	<entity name="linear" library="energy_linear">
-		<default energy="100000000000" rx="1"  tx="1"/>
+	<entity name="linear" library="energy_theorie">
+		<default energy="1000000" rx="1"  tx="1" debug="1"/>
 	</entity>
 	
 	<!--
@@ -83,17 +83,17 @@
 		</with>
 		
 		<with entity="mac">
-			<up entity="routing-lbip"/>
+			<up entity="routing-dlbip"/>
 			<down entity="radio"/>
 		</with>
 		
-		<with entity="routing-lbip">
+		<with entity="routing-dlbip">
 			<up entity="app-sensor"/>
 			<down entity="mac"/>
 		</with>
 		
 		<with entity="app-sensor">
-			<down entity="routing-lbip"/>
+			<down entity="routing-dlbip"/>
 		</with>
 	</bundle>
 	

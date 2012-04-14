@@ -3,6 +3,8 @@
 
 #include "include.h"
 
+#include <include/modelutils.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,9 +25,10 @@ void listeNodes_insert_element(listeNodes **liste,element node);
 
 void listeNodes_affiche(listeNodes *listeNodese);
 int listeNodes_taille(listeNodes *listeNodes);
-int listeNodes_get(listeNodes *listeNodese,int index);
+int listeNodes_get(listeNodes *listeNodes,int index);
 void listeNodes_detruire(listeNodes **listeNodese);
 int listeNodes_recherche(listeNodes *listeNodese,int val);
+position_t listeNodes_getPos(listeNodes *listeNodes,int val);
 int listeNodes_get_index(listeNodes *l, int val);
 void listeNodes_copy(listeNodes **destination,listeNodes *source);
 int  listeNodes_delete(listeNodes **listeNodes, int val);

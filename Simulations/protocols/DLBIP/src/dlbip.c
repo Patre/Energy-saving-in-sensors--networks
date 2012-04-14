@@ -53,23 +53,20 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 // initialisation des noeuds a partir du fichier xml
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
+    struct protocoleData *entitydata = malloc(sizeof(struct protocoleData));
 	
 	nodedata->overhead = -1;
     nodedata->oneHopNeighbourhood = 0;
 	nodedata->twoHopNeighbourhood = 0;
 	nodedata->g2hop = malloc(sizeof(graphe));
 	initGraphe(nodedata->g2hop, c->node);
-	nodedata->BIP_tree = 0;
 	nodedata->nbr_evenement = 0; //STATS
 	nodedata->lastIDs = malloc(get_node_count()*sizeof(int));
-	int i;
-	for(i = 0 ; i < get_node_count() ; i++)
-	{
-		nodedata->lastIDs[i] = -1;
-	}
+	nodedata->energiesRem = malloc(get_node_count()*sizeof(double));
 	
 	
     set_node_private_data(c, nodedata);
+	
 	
     DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
@@ -148,6 +145,13 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 	
+	int i;
+	for(i = 0 ; i < get_node_count() ; i++)
+	{
+		nodedata->lastIDs[i] = -1;
+		nodedata->energiesRem[i] = battery_remaining(c) - 2*getCoutFromDistance(getRange(c), entitydata->alpha, entitydata->c);
+	}
+	
     init_one_hop(c,entitydata->eps);
 	
     return 0;
@@ -160,6 +164,8 @@ void rx(call_t *c, packet_t *packet) {
 	if(!is_node_alive(c->node))
 		return;
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
+	
 	array_t *up = get_entity_bindings_up(c);
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
@@ -181,12 +187,33 @@ void rx(call_t *c, packet_t *packet) {
 		case APP:
 		{
 			//printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			nodedata->energiesRem[data->pred] = data->energyRem;
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
 				break;
 			else
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
+				double cout;
+				listeNodes* trans = data->askedToRedirect;
+				listeNodes* trans2 = data->needsToBeCovered;
+				while(trans != 0)
+				{
+					position_t p1, p2;
+					p1.x = trans->values.x;
+					p1.y = trans->values.y;
+					p1.z = trans->values.z;
+					p2.x = trans2->values.x;
+					p2.y = trans2->values.y;
+					p2.z = trans2->values.z;
+					cout = getCoutFromDistance(distance(&p1, &p2), entitydata->alpha, entitydata->c);
+					//printf("cout estime de (%d,%d)\n", );
+					nodedata->energiesRem[trans->values.node] -= cout;
+					
+					trans = trans->suiv;
+					trans2 = trans2->suiv;
+				}
+				
 				
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
@@ -195,9 +222,6 @@ void rx(call_t *c, packet_t *packet) {
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
                                     SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
-
-					//uint64_t time = rand() % 11000000000000;
-					//scheduler_add_callback(time, c, forward, packet);
 					forward(c, packet);
 				}
 			}
@@ -205,6 +229,7 @@ void rx(call_t *c, packet_t *packet) {
 			{
 				printf("Message non broadcaste pas traite ... TODO\n");
 			}
+			
 			//packet_dealloc(packet);
 			break;
 		}
@@ -212,6 +237,13 @@ void rx(call_t *c, packet_t *packet) {
 			printf("%d a recu un packet de type %d NON reconnu\n", c->node, data->type);
 			break;
 	}
+	
+	/*printf("estimation de l'energie restante depuis %d :\n", c->node);
+	int i;
+	for(i = 0 ; i < get_node_count() ; i++)
+	{
+		printf("\t%d : %.1lf\n", i, nodedata->energiesRem[i]);
+	}*/
 }
 
 void tx( call_t *c , packet_t * packet )
@@ -230,10 +262,11 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+	double cout;
 	
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node, c->entity};
+    call_t cdown = {down[0], c->node, c->entity};
 	
 	
 	// initialisation des donnees de routage du paquet
@@ -249,21 +282,39 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 	
 	if(dst->id == BROADCAST_ADDR)
 	{
-		if(nodedata->BIP_tree == 0) // le BIP tree n'a pas encore ete construit
+		/*printf("Graphe de 2-voisinage de %d :\n", c->node);
+		 afficherGraphe(nodedata->g2hop);*/
+		graphe* g = copieGraphe(nodedata->g2hop);
+		int i;
+		voisin* trans;
+		for(i = 0 ; i < g->nbSommets ; i++)
 		{
-			/*printf("Graphe de 2-voisinage de %d :\n", c->node);
-			afficherGraphe(nodedata->g2hop);*/
-			nodedata->BIP_tree = computeBIPtree(c, nodedata->g2hop, 0, 0, 0);
+			trans = g->listeVoisins[i];
+			while(trans != 0)
+			{
+				trans->cout /= nodedata->energiesRem[g->sommets[i]];
+				trans = trans->vSuiv;
+			}
 		}
-		setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->BIP_tree);
-		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);
+		arbre* BIP_tree = computeBIPtree(c, g, 0, 0, 0);
+		deleteGraphe(g);
+		free(g);
+		
+		cout = setRangeToFarestNeighbour(c, nodedata->g2hop, BIP_tree);
+		setRelayNodes(c, nodedata->g2hop, BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);
+		
+		call_t c0 = {-1,c->node,-1};
+		header->energyRem = battery_remaining(&c0) - cout;
+		nodedata->energiesRem[c->node] = header->energyRem;
+		
+		arbre_detruire(&BIP_tree);
 	}
 	else
 	{
 		// TODO
 	}
 	
-    if (SET_HEADER(&c0, packet, dst) == -1) {
+    if (SET_HEADER(&cdown, packet, dst) == -1) {
 		packet_dealloc(packet);
 		return -1;
     }
@@ -308,12 +359,6 @@ int unsetnode(call_t *c) {
     DEBUG;/* Voisinage 2-hop */
 	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
 	
-	
-    DEBUG; /* ARBRE DE LBIP */
-	if(nodedata->BIP_tree != 0)
-	{
-		arbre_detruire(&nodedata->BIP_tree);
-	}
 	
 	DEBUG; /* Graphe DE LBIP */
 	deleteGraphe(nodedata->g2hop);

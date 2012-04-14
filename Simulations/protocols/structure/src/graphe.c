@@ -43,7 +43,7 @@ int deleteVertex(graphe* g, int labelSrc)
 	int num = getNumFromLabel(g, labelSrc);
 	if(num == -1)
 	{
-		printf("ce sommet n'est pas dans le graphe\n");
+		//printf("ce sommet n'est pas dans le graphe\n");
 		return -1;
 	}
 	voisin** tmp;

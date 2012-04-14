@@ -37,7 +37,7 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 		{
 			if(getEdgeCost(g, tmp->values.node, tmp2->values.node) != DBL_MAX)
 			{
-                                //printf("poids[%d] = %.1lf\n", tmp->values.node, getEdgeCost(g, tmp->values.node, tmp2->values.node));
+				//printf("poids[%d] = %.1lf\n", tmp->values.node, getEdgeCost(g, tmp->values.node, tmp2->values.node));
 				poids[getNumFromLabel(g,tmp->values.node)] = getEdgeCost(g, tmp->values.node, tmp2->values.node);
 			}
 			tmp = tmp->suiv;
@@ -114,11 +114,11 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 	free(cle);
 	freeHeap(F);
 	
-	/*printf("Graphe de voisinage complet : \n");
+	printf("Graphe de voisinage complet : \n");
 	 printf("Graphe de voisinage : \n");
 	 afficherGraphe(nodedata->g2hop);
 	 printf("arbre de BIP de %d construit : \n", c->node);
-	 arbre_affiche(bipTree);*/
+	 arbre_affiche(bipTree);
 	
 	return bipTree;
 }
@@ -165,11 +165,15 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	
 	// calcul de la distance entre ce noeud et son voisin 1-hop (dans l'arbre de BIP) le plus eloigne
 	list *fils = 0;
-	double distMax = 0, dist;
+	double distMax = 0, dist, coutMax = 0;
 	arbre_get_fils(&fils, bipTree, c->node);
 	while(fils != 0)
 	{
 		dist = getEdgeCost(g, c->node, fils->val);
+		if(dist > coutMax)
+		{
+			coutMax = dist;
+		}
 		dist = getDistanceFromCout(dist, entitydata->alpha, entitydata->c);
 		if(dist > distMax)
 		{
@@ -194,9 +198,26 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	call_t c0 = {mac->elts[0], c->node, c->entity};
 	struct macnodedata* macdata = get_node_private_data(&c0);
 	macdata->range = distMax;
-	//printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
+	printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
 	
-	return distMax;
+	return coutMax;
+}
+
+double getRange(call_t *c)
+{
+	struct macnodedata {
+		void *buffer;
+		double range;
+#ifdef ONE_PACKET_AT_A_TIME
+		int scheduler;
+#endif
+	};
+	
+	// set le range du module propagation a la valeur desiree
+	array_t *mac=get_mac_entities(c);
+	call_t c0 = {mac->elts[0], c->node, c->entity};
+	struct macnodedata* macdata = get_node_private_data(&c0);
+	return macdata->range;
 }
 
 int getNearestNeighbour(call_t *c, graphe* g)
@@ -219,10 +240,12 @@ int getNearestNeighbour(call_t *c, graphe* g)
 
 void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered, int node)
 {
+	struct nodedata *nodedata = get_node_private_data(c);
 	
 	list *fils = 0, *fils2 = 0;
 	double cout, coutMax = 0;
 	int nodeToCover = -1;
+	position_t pos;
 	
 	arbre_get_fils(&fils, bipTree, node);
 	while(fils != 0)
@@ -230,7 +253,10 @@ void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRed
 		if(!arbre_is_leaf(bipTree, fils->val))
 		{
 			arbre_get_fils(&fils2, bipTree, fils->val);
-			listeNodes_insert(askedToRedirect, fils->val);
+			pos = listeNodes_getPos(nodedata->oneHopNeighbourhood, fils->val);
+			if(pos.x == -1 && pos.y == -1 && pos.z == -1)
+				pos = listeNodes_getPos(nodedata->twoHopNeighbourhood, fils->val);
+			listeNodes_insert_values(askedToRedirect, fils->val, pos.x, pos.y, pos.z);
 			coutMax = 0;
 			nodeToCover = -1;
 			while(fils2 != 0)
@@ -243,7 +269,11 @@ void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRed
 				}
 				fils2 = fils2->suiv;
 			}
-			listeNodes_insert(needsToBeCovered, nodeToCover);
+			nodedata->energiesRem[fils->val] -= coutMax;
+			pos = listeNodes_getPos(nodedata->oneHopNeighbourhood, nodeToCover);
+			if(pos.x == -1 && pos.y == -1 && pos.z == -1)
+				pos = listeNodes_getPos(nodedata->twoHopNeighbourhood, nodeToCover);
+			listeNodes_insert_values(needsToBeCovered, nodeToCover, pos.x, pos.y, pos.z);
 			setRelayNodes(c, g, bipTree, askedToRedirect, needsToBeCovered, fils->val);
 		}
 		fils = fils->suiv;
@@ -352,16 +382,31 @@ void forward(call_t* c, packet_t *packet)
 	// construire le bip tree pour relayer a partir des infos du paquet
 	int indice = listeNodes_get_index(data->askedToRedirect, c->node);
 	graphe* g = purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->src, data->pred);
+	// ajouter au nouveau graphe les valeurs d'energie
+	int i;
+	voisin* trans;
+	for(i = 0 ; i < g->nbSommets ; i++)
+	{
+		trans = g->listeVoisins[i];
+		while(trans != 0)
+		{
+			trans->cout /= nodedata->energiesRem[g->sommets[i]];
+			trans = trans->vSuiv;
+		}
+	}
+	
+	
 	arbre* bipTree = computeBIPtree(c, g, data->askedToRedirect, data->needsToBeCovered, 0);
 	
 	// relayer le paquet
 	destination_t dst = {-1,{-1,-1,-1}};
-	double cout = setRangeToFarestNeighbour(c, g, bipTree);
+	double cout = setRangeToFarestNeighbour(c, nodedata->g2hop, bipTree);
 	
 	
-	//listeNodes_detruire(&data->askedToRedirect);
+	
+	//free(data->askedToRedirect);
 	data->askedToRedirect = 0;
-	//listeNodes_detruire(&data->needsToBeCovered);
+	//free(data->needsToBeCovered);
 	data->needsToBeCovered = 0;
 	data->pred = c->node;
 	

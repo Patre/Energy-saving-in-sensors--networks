@@ -148,6 +148,23 @@ int listeNodes_recherche(listeNodes *l, int val)
 	return trouve;
 }
 
+position_t listeNodes_getPos(listeNodes *l,int val)
+{
+	position_t pos = {-1,-1,-1};
+	while(l)
+	{
+		if(l->values.node==val)
+		{
+			pos.x = l->values.x;
+			pos.y = l->values.y;
+			pos.z = l->values.z;
+			return pos;
+		}
+		l=l->suiv;
+	}
+	return pos;
+}
+
 //  ***********************RECHERCHE**************************
 int listeNodes_get_index(listeNodes *l, int val)
 {
