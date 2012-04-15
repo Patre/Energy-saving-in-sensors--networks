@@ -57,11 +57,16 @@ W.~Liang.
 \newblock In {\em {Proceedings of the 3rd ACM international symposium on Mobile
   ad hoc networking \& computing}}, pages 112--122. ACM, 2002.
 
-\bibitem{Abba2006}
-Francisco~Javier Ovalle-Mart{\'i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
+\bibitem{Ovalle2006}
+Francisco~Javier Ovalle-Mart{\'\i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
   Carle, and David Simplot-Ryl.
 \newblock {Area-based beaconless reliable broadcasting in sensor networks.}
 \newblock {\em IJSNet}, 1(1/2):20--33, 2006.
+
+\bibitem{Prim1957}
+R.C. Prim.
+\newblock Shortest connection networks and some generalizations.
+\newblock {\em Bell system technical journal}, 36(6):1389--1401, 1957.
 
 \bibitem{stojmenovic2004}
 I.~Stojmenovic and J.~Wu.
@@ -80,11 +85,5 @@ J.~Wu and W.~Lou.
   networks}.
 \newblock {\em Wireless Communications and Mobile Computing}, 3(2):155--173,
   2003.
-
-\bibitem{Yang2006}
-Hua Yang, Fengji Ye, and Biplab Sikdar.
-\newblock {Distributed Mobility Transparent Broadcast in Mobile Ad Hoc
-  Networks.}
-\newblock In {\em {GLOBECOM}}. IEEE, 2006.
 
 \end{thebibliography}
