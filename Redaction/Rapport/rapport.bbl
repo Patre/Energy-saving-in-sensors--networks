@@ -17,6 +17,11 @@ J.~Champ, C.~Saad, and A.E. Baert.
 \newblock In {\em {Complex, Intelligent and Software Intensive Systems, 2009.
   CISIS'09. International Conference on}}, pages 293--298. IEEE, 2009.
 
+\bibitem{Chang2000}
+Jae-Hwan Chang and Leandros Tassiulas.
+\newblock {Energy conserving routing in wireless ad-hoc networks}.
+\newblock {\em INFOCOM}, pages 22--31, 2000.
+
 \bibitem{Dietrich2009}
 Isabel Dietrich and Falko Dressler.
 \newblock {On the lifetime of wireless sensor networks.}
@@ -67,6 +72,12 @@ Francisco~Javier Ovalle-Mart{\'\i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
 R.C. Prim.
 \newblock Shortest connection networks and some generalizations.
 \newblock {\em Bell system technical journal}, 36(6):1389--1401, 1957.
+
+\bibitem{Shah2002}
+R.~C. Shah and J.~M. Rabaey.
+\newblock {Energy aware routing for low energy ad hoc sensor networks}.
+\newblock {\em Energy aware routing for low energy ad hoc sensor networks},
+  1:350--355, 2002.
 
 \bibitem{stojmenovic2004}
 I.~Stojmenovic and J.~Wu.

@@ -184,61 +184,6 @@ Nombre moyen de transmissions réussies jusqu'à ce qu'il ne reste que $X\%$ de 
 \end{mylt}
 
 
-\subsection{Rayon optimal d'émission}
-% TODO : relecture Rayon optimal d'émission et ajout à l'intro de la section
-\begin{myth}
-Sans chevauchement et sans vide, un plan ne peut être découpé de façon uniforme que par des polygones réguliers de type triangle, carrés ou hexagones.
-\end{myth}
-\begin{proof}
-Soit $m$ le nombre de sommets d'un $m$-polygone et $n$ le nombre de $m$-polygones nécessaires pour couvrir $2\pi$ degrés. Nous avons: 
-$$\frac{(m-2)n\pi}{m}=2\pi$$
-$$\Leftrightarrow$$
-$$(m-2)(n-2)=4$$
-Comme $n$ et $m$ sont des entiers, les seules solutions sont : 
-$$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \}$$
-$$\Leftrightarrow$$
-$$m \in \{ 3,4,6 \}$$
-\end{proof}
-
-\begin{myth}
-Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vu WSN. Nous admettrons ce théorème.
-\end{myth}
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.7]{Etat_de_l'art/source/hexagone1.png}
-%\caption{ Chevauchement d'un maillage hexagonale}
-%\end{figure} 
-
-Soit $P$ un plan sur lequel $n$ capteurs sont placés. Chaque capteur peut émettre des messages avec un rayon compris entre 0 et $\gamma$. Dans ce protocole, tout les nœuds auront un même rayon d'émission fixe $R$.
-Etant donnée une source $s$ et un message $M$ à broadcaster, nous devons placer les noeuds relais de façon a minimiser leur nombre $m$. Bien sûr, leur nombre dépend directement du rayon $R$.
- 
-
-Dans un réseau hexagonal, nous avons les résultats suivants :
-Soit $S$ l'aire du plan rectangulaire $P$. Connaissant $R$, nous pouvons calculer facilement le nombre de sommet pour couvrir le plan.
-Soit $h$ le nombre d'hexagones couvrant $P$: 
-Knowing r is the exact distance between two emitting
-nodes, we can easily compute the necessary quantity of them
-to cover the entire area. To do this, we just have to find how
-many hexagons, denoted by h, fit on our area of surface S:
-$$h \simeq \frac{Surface ( P)}{Surface(hexagone)}=\frac{2S}{3R^2 \sqrt{3}}$$
-
-Comme il faut deux noeuds par hexagone,$$n=2h=\frac{4S}{3R^2 \sqrt{3}}= \frac{k}{R^2}$$ où $k=\frac{4S}{3 \sqrt{3}}$
-
-Ainsi, le cout d'un broadcast vaut: $$C(1)(R)= n\cdot E(R)=\frac{k}{R^2}\cdot E(R)=\frac{k}{R^2}\cdot (R^\alpha+c)$$
-Nous cherchons le rayon optimal minimisant $C(1)(R)$. Comme $\alpha\geq 2$, $c\geq 0$ et $R>0$, nous avons 4 cas possibles:
-\begin{itemize}
- \item $\alpha=2$, $c=0$: nous avons $C(1)(R)=k$. $R_{opt}$ ne depend pas de $r$.
- \item $\alpha=2$, $c\neq0$: nous avons $C(1)(R)=k(1+cR^{-2})$. Au plus le rayon doit etre le plus gran possible: $R_{opt}=\gamma$
- \item $\alpha>2$, $c=0$: nous avons $C(1)(R)=kR^{\alpha-2}$. $R_{opt}=0$
- \item $\alpha>2$, $c\neq 0$: nous avons $C(1)(R)=k(R^{\alpha-2} + c R^{-2} ) $.\\
- En derivant, nous obtenons: $C'(1)(R)= k( (\alpha 2) R^{\alpha-3}- 2cR^{-3} ) $.\\
-D'ou: $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
-\end{itemize}
-
-Biensur, en pratique, il est impossible sur un topologie quelquonces d'extraire un tel maillage hexagonale. Cependant, l'idée des algorithmes de broadcast est de choisir les noeuds relais de façon à ce que leur ensemnble se rapproche 
-au maximum d'un tel maillage.
-
-
 
 \begin{table}[H]
 {%
@@ -273,36 +218,96 @@ $C(k)$ & \mc{1}{c|}{Coût de $k$ broadcasts}\\\hline
 
 
 
-\section{Algorithmes existants}\label{class}
+\section{Eléments de classification des algorithmes existants}\label{class}
 
-Les réseaux de capteurs sans fils constituent un domaine de recherche récent et actif. Une grande quantité d'articles ont été publiés cette dernière décénnie. Nous n'en aborderons que quelques uns.
-
-
-\subsection{Eléments de classification}
 Les éléments de classification cités ci-dessous sont inspirés des articles \cite{stojmenovic2004}, \cite{ingelrest2005}, \cite{wu2003}.
 
 
 
-\subsubsection{Transmissions en broadcast vs transmissions en single-cast}
+\subsection{Transmissions en broadcast vs transmissions en single-cast}
 Dans un réseau $G(V,E,\gamma)$, deux capteurs peuvent communiquer directement uniquement s'ils sont 1-voisins dans G. A cause l'atténuation du signal wifi, le rayon de transmission est relativement limité, c'est pourquoi les communications doivent se faire par multi-sauts. Tout ceci est géré par un algorithme de routage. Les algorithmes de routage peuvent gérer le broadcast (un nœud vers tous les autres) et/ou le single-cast (un nœud vers un autre). Chacune des approches a des avantages dans un contexte précis.
 
+\subsubsection{Broadcast}
 % TODO : citer des articles
 La procédure de broadcast est un mécanisme fondamental pour la propagation des données ainsi que pour la découverte de routes. En effet le broadcast est utilisé pour acquérir une connaissance du voisinage des capteurs. L'avantage de ce mode de transmission est qu'avec une seule émission, tout le voisinage est averti. Le routage des broadcasts nécessite de s'assurer que le message ne soit pas indéfiniment retransmis mais que tous les nœuds du graphe soient touchés. Parfois même si le destinataire est à distance 1 dans le graphe unité, il est nécessaire que le message soit relayé par un nœud tiers pour des raisons énergétiques.
 
+\subsubsection{Single-cast}
 % TODO : single-cast / multi-cast
 
-\subsubsection{Algorithme à rayon d'émission fixe vs variable}
+
+\subsection{Algorithme à rayon d'émission fixe vs variable}
+L'idée des algorithmes de broadcast est de choisir les noeuds relais de façon à ce que leur ensemble se rapproche au maximum d'un maillage optimal. Certains algorithmes choisissent de fixer un rayon égal pour tous les nœuds ; d'autres utilisent un rayon variable pour chaque nœud. 
+
+Notons que les algorithmes qui émettent en single-cast ont, par définition, un rayon d'émission variable.
+
+\subsubsection{Déterminer le rayon optimal d'émission pour un broadcast}
+% TODO : relecture Rayon optimal d'émission et ajout à l'intro de la section
+\begin{myth}
+Sans chevauchement et sans vide, un plan ne peut être découpé de façon uniforme que par des polygones réguliers de type triangle, carrés ou hexagones.
+\end{myth}
+\begin{proof}
+Soit $m$ le nombre de sommets d'un $m$-polygone et $n$ le nombre de $m$-polygones nécessaires pour couvrir $2\pi$ degrés. Nous avons: 
+$$\frac{(m-2)n\pi}{m}=2\pi$$
+$$\Leftrightarrow$$
+$$(m-2)(n-2)=4$$
+Comme $n$ et $m$ sont des entiers, les seules solutions sont : 
+$$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \}$$
+$$\Leftrightarrow$$
+$$m \in \{ 3,4,6 \}$$
+\end{proof}
+
+\begin{myth}
+Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue WSN. Nous admettrons ce théorème.
+\end{myth}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[scale=0.7]{Etat_de_l'art/source/hexagone1.png}
+%\caption{ Chevauchement d'un maillage hexagonale}
+%\end{figure} 
+
+Soit $P$ un plan sur lequel $n$ capteurs sont placés. Chaque capteur peut émettre des messages avec un rayon compris entre 0 et $\gamma$. Nous allons déterminer pour tous les nœuds un même rayon d'émission fixe $R$.
+Etant donnée une source $s$ et un message $M$ à broadcaster, nous devons placer les noeuds relais de façon à minimiser leur nombre $m$. Bien sûr, leur nombre dépend directement du rayon $R$.
+ 
+
+Dans un réseau hexagonal, nous avons les résultats suivants :
+Soit $S$ l'aire du plan rectangulaire $P$. Connaissant $R$, nous pouvons calculer facilement le nombre de sommets nécessaires pour couvrir le plan.
+Soit $h$ le nombre d'hexagones couvrant $P$, on a : 
+$$h \simeq \frac{Surface ( P)}{Surface(hexagone)}=\frac{2S}{3R^2 \sqrt{3}}$$
+
+Comme il faut deux nœuds par hexagone,
+$$n=2h=\frac{4S}{3R^2 \sqrt{3}}= \frac{k}{R^2}$$ où $$k=\frac{4S}{3 \sqrt{3}}$$
+
+Ainsi, le coût d'un broadcast vaut: $$C(1)(R)= n\cdot E(R)=\frac{k}{R^2}\cdot E(R)=\frac{k}{R^2}\cdot (R^\alpha+c)$$
+Nous cherchons le rayon optimal minimisant $C(1)(R)$. Comme $\alpha\geq 2$, $c\geq 0$ et $R>0$, nous avons 4 cas possibles:
+\begin{itemize}
+ \item $\alpha=2$, $c=0$: nous avons $C(1)(R)=k$. $R_{opt}$ ne dépend pas de $r$.
+ \item $\alpha=2$, $c\neq0$: nous avons $C(1)(R)=k(1+cR^{-2})$. Le rayon doit être le plus grand possible donc : $R_{opt}=\gamma$.
+ \item $\alpha>2$, $c=0$: nous avons $C(1)(R)=kR^{\alpha-2}$. $R_{opt}=0$
+ \item $\alpha>2$, $c\neq 0$: nous avons $C(1)(R)=k(R^{\alpha-2} + c R^{-2} ) $.\\
+ En dérivant, nous obtenons: $C'(1)(R)= k( (\alpha 2) R^{\alpha-3}- 2cR^{-3} ) $.\\
+D'où: $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
+\end{itemize}
+
+Bien sûr, en pratique, il est impossible sur une topologie quelconque d'extraire un tel maillage hexagonal.
+
+
+\subsubsection{Rayon d'émission fixe pour tous les nœuds}
 % TODO
 
 
-\subsubsection{Algorithme global vs local}
+\subsubsection{Rayon d'émission variable}
+% TODO
+
+
+
+\subsection{Algorithme global vs local}
 Le fait qu'un algorithme soit global ou local dépend du type d'informations qu'il utilise. Si un capteur connait dès son arrivée des informations sur ses voisins, l'algorithme est global. À l'inverse, un algorithme distribué fournit aux capteurs uniquement les informations que leurs perceptions peuvent leur procurer.
 
 Cependant, la distinction entre global et local n'est pas toujours évidente. Des algorithmes centralisés peuvent être implémentés d'une manière distribuée en décidant par exemple d'un noeud possédant la connaissance globale du réseau. À l'inverse, un algorithme distribué peut simuler une connaissance globale : au travers d'un échange séquentiel et très localisé d'informations  (1 ou 2-voisinage par exemple), chaque noeud peut combiner sa connaissance avec celle de ses voisins et ainsi obtenir une vision globale du réseau. Cependant, une telle phase de propagation coûte très cher en terme de nombre de messages échangés et de temps.
 
 Si le réseau est dynamique (mobilité des capteurs), maintenir une connaissance locale du réseau devient plus complexe tandis que tenir à jour la topologie globale de celui-ci devient impossible par le moyen cité précédemment. Ainsi, la quantité et la nature des informations nécessaires au déroulement de l'algorithme sont une bonne mesure de la capacité d'adaptation du protocole à un environnement dynamique.   
 
-Les algorithmes peuvent entrer dans une des catégories suivantes :
+\subsubsection{Catégories}
 \begin{description}
  \item[Global :]protocole de routage, centralisé ou distribué nécessitant une connaissance globale du réseau.
  \item[Quasi-global :]protocole distribué de broadcast nécessitant une connaissance quasi-globale du réseau.
@@ -314,7 +319,7 @@ Remarquons que pour qu'un protocole soit extensible, il doit être avant tout di
 
 
 
-\subsubsection{Algorithme à balisage vs algorithme sans balisage (beaconless)}
+\subsection{Algorithme à balisage vs algorithme sans balisage (beaconless)}
 Les algorithmes 'beaconless' ne nécessitent pas de phase d'initialisation ni de mise à jour. Les nouveaux capteurs sont immédiatement opérationnels mais n'ont aucune connaissance de leur environnement et notamment de leur voisinage dans G. 
 
 Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au réseau, commence par une procédure d'initialisation et stocke en mémoire un certain nombre d'informations (voisins, groupe, topologie locale...). Au cœur de l'algorithme, chaque noeud met périodiquement à jour ces informations. Il est possible, par exemple, que chaque site envoie régulièrement à ses voisins un message de type
@@ -322,21 +327,63 @@ Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au ré
 
 
 
-\subsubsection{Algorithme déterministe vs probabiliste}
+\subsection{Algorithme déterministe vs probabiliste}
 Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire.
 % TODO : déterministe, développement de probabiliste
 
 
 
-\subsection{Quelques algorithmes de routage}
+\section{Quelques algorithmes de routage}
 % TODO : harmoniser les durées de vie ou poser les notations dans l'intro de la subsection
 % TODO : citation de tous les articles (ou références)
+% TODO : compléter les mots-clés
 
-%\subsection{Algorithmes sans balisage}\label{algosSansBalisage}
+
+\subsubsection{Flow augmentation \cite{Chang2000}}
+\emph{Mots clés :} single-cast, 
+
+\emph{Description :}
+
+\emph{Exemple :} 
+
+\emph{Consommation} : 
+
+\emph{Durée de vie} :  
+
+
+
+\subsubsection{Flow redirection \cite{Chang2000}}
+\emph{Mots clés :} single-cast, 
+
+\emph{Description :}
+
+\emph{Exemple :} 
+
+\emph{Consommation} : 
+
+\emph{Durée de vie} :  
+
+
+
+\subsubsection{Energy Aware Routing \cite{Shah2002}}
+\emph{Mots clés :} single-cast, 
+
+\emph{Description :}
+
+\emph{Exemple :} 
+
+\emph{Consommation} : 
+
+\emph{Durée de vie} : 
+
 
 
 \subsubsection{Blind Flooding}
-Le "blind flooding" ou "broadcast aveugle" est un algorithme glouton de broadcast sans balisage. Lors de la réception d'un message par un noeud, si c'est la première fois qu'il le reçoit, il le broadcast à ses voisins (avec le rayon maximum), sinon il ne fait rien.
+\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
+
+\emph{Description :} le "blind flooding" ou "broadcast aveugle" est un algorithme glouton de broadcast sans balisage. Lors de la réception d'un message par un noeud, si c'est la première fois qu'il le reçoit, il le broadcast à ses voisins (avec le rayon maximum), sinon il ne fait rien.
+
+\emph{Exemple :} 
 
 \emph{Consommation} :  le coût global d'un broadcast est exactement le coût moyen puisque chaque noeud $i$ envoie un unique message <$M$,$\gamma$> par broadcast.
 Le coût global d'un broadcast est $C(1) = n \cdot E( \gamma )= n\cdot \gamma^\alpha +  n\cdot c $.
@@ -347,7 +394,12 @@ Le coût global de $k$ broadcasts est $C(k) = k\cdot n \cdot E( \gamma )= k\cdot
 
 
 \subsubsection{Probabilistic Flooding}
-Afin d'éviter le redondance et les collisions, une idée est que chaque noeud retransmette le message suivant une probabilité $P$ lorsqu'il le reçoit pour la première fois. Si $P=1$ cela équivaut au blind flooding.
+\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, probabiliste.
+
+\emph{Description :} Afin d'éviter le redondance et les collisions, une idée est que chaque noeud retransmette le message suivant une probabilité $P$ lorsqu'il le reçoit pour la première fois. Si $P=1$ cela équivaut au blind flooding.
+
+
+\emph{Exemple :} 
 
 \emph{Consommation :} Chaque noeud ayant un probabilité $P$ de retransmettre le message <$M$,$\gamma$>, en moyenne $P\cdot n$ nœuds envoient ce message lors d'un broadcast.
 Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût global de $k$ broadcasts est $C(k) = P\cdot k\cdot n \cdot E( \gamma ) $ .
@@ -355,9 +407,10 @@ Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût
 \emph{Durée de vie :} $$TTFF(Probabilistic Flooding)=\lfloor \frac{\beta}{P \cdot (n\cdot \gamma^\alpha +  n\cdot c)} \rceil$$
 
 
-% TODO : reprendre la relecture depuis ici
 \subsubsection{Area-based Beaconless Broadcasting Algorithms \cite{Ovalle2006}}
-Nous supposons que les noeuds n'ont aucune connaissance de leur voisinage. Cependant ceux-ci connaissent leur position géographique (GPS par exemple). Chaque capteur a un rayon d'émission fixe $R$ et couvre une zone circulaire.
+\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
+
+\emph{Description :} Nous supposons que les noeuds n'ont aucune connaissance de leur voisinage. Cependant ceux-ci connaissent leur position géographique (GPS par exemple). Chaque capteur a un rayon d'émission fixe $R$ et couvre une zone circulaire.
 %\begin{figure}[H]
 %\centering
 %\includegraphics{Etat_de_l'art/source/abba.png}
@@ -396,37 +449,47 @@ Un noeud source $s$, un message $M$
 \end{algorithm}
 
 
-%\subsection{Algorithmes globaux}
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+% TODO : consommation / durée de vie
+
 
 
 \subsubsection{Broadcast Incremental Power protocol \cite{Wieselthier2000}}
 
-  Rappelons les désavantages des transmissions longue portée: interférences, cout énergétique (le modèle de consommation énergétique des noeuds est non linéaire par rapport au rayon à cause de l'atténuation du signal radio).
-C'est pourquoi il est nécessaire de trouver le bon compromis entre le rayon de transmission et le nombre de messages circulant : un large rayon de transmission coute cher mais atteint beaucoup de nœuds ; un court rayon cout très peu cher mais augmente le nombre de messages. 
+\emph{Mots clés :} broadcast, global, avec balisage, rayon d'émission variable, déterministe.
 
-'Boadcast Incremental Protocol' est glouton et centralisé. Il se base sur l'algorithme de Prim \cite{Prim1957} : un algorithme permettant de construire un arbre couvrant de poids minimum à partir d'un sommet d'un graphe. Le principe de l'algorithme de Prim est de construire l'arbre couvrant minimal arête par arête. Pour ajouter une arête à un arbre partiellement construit, il considère l'ensemble des arêtes dont une extrémité est connectée à l'arbre déjà construit, et l'autre extrémité ne l'est pas. Il choisit dans cet ensemble une arête de poids minimal qu'il ajoute à l'arbre. L'algorithme commence avec un arbre couvrant contenant un nœud et pas d'arêtes, et ajoute successivement $n-1$ arêtes.
+\emph{Description :} Rappelons les désavantages des transmissions longue portée: interférences, cout énergétique (le modèle de consommation énergétique des noeuds est non linéaire par rapport au rayon à cause de l'atténuation du signal radio).
+C'est pourquoi il est nécessaire de trouver le bon compromis entre le rayon de transmission et le nombre de messages circulant. En effet, un large rayon de transmission coûte cher mais atteint beaucoup de nœuds ; un court rayon coûte très peu cher mais augmente le nombre de messages. 
 
-La formation d'un arbre couvrant de poids minimum dans BIP suit le même principe dans le sens où les arêtes sont une par une ajoutées à l'arbre. En fait, BIP utilise l'algorithme de Prim avec une différence fondamentale : au lieu d'utiliser des coûts fixes $P_{ij}$ sur les arêtes (demeurant inchangés au cours de la procédure), BIP actualise dynamiquement ces couts $P'_{ij}$ à chaque étape ($i.e$ à chaque ajout d'une arête) ; ce qui traduit le fait que le coût d'ajout d'une arête dépends des noeuds déjà dans l'arbre de la façon suivante : 
-$$ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P_{ij}-P(i)$$
-où $P_{ij}$ est le coût réel de transmission et $P(i)$ le coût de broadcast de $i$ dans l'arbre.
+BIP est glouton et centralisé. Il se base sur l'algorithme de Prim \cite{Prim1957} : un algorithme permettant de construire un arbre couvrant de poids minimum à partir d'un sommet d'un graphe. Le principe de l'algorithme de Prim est de construire l'arbre couvrant minimal arête par arête. Pour ajouter une arête à un arbre partiellement construit, il considère l'ensemble des arêtes dont une extrémité est connectée à l'arbre déjà construit, et l'autre extrémité ne l'est pas. Il choisit dans cet ensemble une arête de poids minimal qu'il ajoute à l'arbre. L'algorithme commence avec un arbre contenant un nœud et pas d'arêtes, et ajoute successivement $n-1$ arêtes.
+
+La formation d'un arbre couvrant de poids minimum dans BIP suit le même principe dans le sens où les arêtes sont une par une ajoutées à l'arbre. En fait, BIP utilise l'algorithme de Prim avec une différence fondamentale : au lieu d'utiliser des coûts fixes $P_{ij}$ sur les arêtes (demeurant inchangés au cours de la procédure), BIP actualise dynamiquement ces couts $P'_{ij}$ à chaque étape ($i.e$ à chaque ajout d'une arête).
+
+Posons $P(i)$ le poids du nœud $i$ qui correspond au coût de broadcast de $i$ dans l'arbre (i.e. : son rayon d'émission actuel). À chaque étape de BIP, les poids des nœuds changent : en effet, à chaque étape on ajoute une arête et on change potentiellement les arêtes déjà choisies. Chaque nœud dans l'arbre de BIP (dont celui nouvellement ajouté) change de poids s'il devient père d'un nouveau nœud qui l'oblige à augmenter son rayon d'émission. On a donc :
 $$\begin{cases}
-	P(i)=0\ si\ i\ est\ une\ feuille\\
-	P(i)=\max\limits_{j\in N_1(i)\bigcap BIP}(E_{ij})\ sinon\\
+	P(i)=0  & \text{si $i$ est une feuille ou que $i$ n'est pas encore dans l'arbre}\\
+	P(i)=\max\limits_{\forall j\in N_1(i)\bigcap BIP}(P_{ij}) & \text{sinon}\\
 \end{cases}$$
- $P'_{ij}$ représente donc le coût d'ajout de $j$ par un noeud $i$ appartenant au sous ensemble des feuilles
-directes de $i$(ou $i$ lui meme si c'est une feuille). La paire $\{i,j\}$ minimisant $P'_{ij}$ est selectionnée et $i$ transmet à $j$. Ainsi, une nouveau arete est ajoutée a chaque etape de l'algorithme.\\
+
+Le coût d'ajout d'une arête dépend des nœuds déjà dans l'arbre de la façon suivante : 
+$$ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P_{ij}-P(i)$$
+où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est selectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
 
 
-
+% TODO : revoir l'algo
 \begin{algorithm}[h]
 \caption{Procédure de construction du BIP-Tree}
 \label{algo_BIP_tree}
 \begin{algorithmic}
-\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un cout de transmition $P_{ij}$
-\STATE SORTIE  Arbre BIP de racine s
+\STATE ENTREES :  $G=(V,E)$ un graphe connexe, $s$ une source, des coûts $P_{ij}$ sur les arêtes 
+\STATE SORTIE : Arbre BIP de racine s
 \STATE B : ENSEMBLE des arêtes de l'arbre
 \STATE  $B \leftarrow arbre_{vide}$
-\STATE Marquer $s$
+\STATE $P_s = \min \limits_{\forall j \in N_1(s)}{P_{sj}}$
 \STATE Creer les nouveaux poids: $\forall j \notin BIP, P'_{sj}=P_{sj}-P(s)=P_{sj}$
 \WHILE {il existe un sommet non marqué adjacent à un sommet marqué }
    \STATE Mettre à jour les poids:  $ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P'_{ij}-P(i)$
@@ -438,8 +501,8 @@ directes de $i$(ou $i$ lui meme si c'est une feuille). La paire $\{i,j\}$ minimi
 \end{algorithmic}
 \end{algorithm}
 
-Contairement a Prim qui garantie l'optimalité de l'abre couvrant en termes de cout total,
-Bip ne construit pas forcement un arbre de poids minimum.Cepandant, contrairemnt à Prim, Bip exploite l'avantage notoire du mulicast dût aux transmitions radio. Un fois cet abre construit, le broadcast se fait naturellement via celui-ci.
+Contrairement à Prim, qui garantie l'optimalité de l'arbre couvrant en termes de coût total,
+BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairement à Prim, BIP exploite l'avantage notoire du broadcast dû aux transmissions radio. Un fois cet arbre construit, le broadcast se fait naturellement via celui-ci.
 
 %\begin{figure}[H]
 %\centering
@@ -447,65 +510,98 @@ Bip ne construit pas forcement un arbre de poids minimum.Cepandant, contrairemnt
 %\caption{ Arbre Prim(gauche); Arbre Bip(droite)}
 %\end{figure} 
 
+% TODO : ajouter à l'algorithme la façon dont le nœud $i$ déduit sa position dans l'arbre
 \begin{algorithm}[h]
 \caption{BIP}
 \label{algo_BIP}
 \begin{algorithmic}
-\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
-\STATE SORTIE  BIP Broadcast
-\STATE $s$ envoie $M$ à ses fils dans son Bip-tree
-\STATE Lors de reception de $M$ par $i$:
-  \IF {$i$ est un noeud} 
-    \STATE Retransmettre $M$ à ses fils sinon ne rien faire
+\STATE ENTREES :  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE $s$ envoie $M$ à ses fils dans son BIP-tree
+\STATE Lors de réception de $M$ par un nœud $i$:
+\IF {$i$ n'est pas une feuille de l'arbre} 
+	\STATE Retransmettre $M$ à ses fils
+\ELSE
+	\STATE ne rien faire
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
 
+\emph{Exemple :} 
 
-%\subsection{Algorithmes avec balisage}
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+
+
 
 \subsubsection{Découverte des 1- et 2-voisinages}
 
-La connaissance du 2-voisinage est un très bon compromis conservant la localité du protocoles tout en minimisant le nombre de messages.
+\emph{Mots clés :} broadcast, local, phase de balisage, rayon d'émission fixe, déterministe.
+
+\emph{Description :} la connaissance du 2-voisinage est un très bon compromis conservant la localité du protocole tout en minimisant le nombre de messages.
 
 
 \begin{algorithm}[h]
-\caption{Decouverte k-voisinnage}
-\label{algo_k_voisinnage}
+\caption{Découverte 2-voisinage}
+\label{algo_k_voisinage}
 \begin{algorithmic}
 
 \FOR{chaque noeud $i$}
-	\STATE Broadcaster un message de type <HELLO,$i$> avec un rayon de transmittion $\gamma$
+	\STATE Broadcaster un message de type <HELLO, $i$> avec un rayon de transmission $\gamma$
 \ENDFOR
 
-\STATE A la réception de <HELLO,$j$> , ajouter $j$ a son 1-voisinage.
+\STATE A la réception de <HELLO, $j$> , ajouter $j$ à son 1-voisinage.
 \STATE Attendre $\Delta$
 \FOR{chaque noeud $i$}
-	\STATE Broadcaster <HELLO,$N_1(i)$,$i$>, message contenant $N_1(i)$ le 1-voisinage de $i$
-	\STATE A la réception de <HELLO,$N_1(j)$,$j$> , ajouter $N_1(j)$ a son 2-voisinage.
+	\STATE Broadcaster <HELLO, $i$, $N_1(i)$> contenant $N_1(i)$ le 1-voisinage de $i$
+	\STATE A la réception de <HELLO, $j$, $N_1(j)$> , ajouter $N_1(j)$ à son 2-voisinage.
 	
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
-Complexité en messages: $O(2n)$.
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+
+%Complexité en messages: $O(2n)$.
 
 
 \subsubsection{Localized Broadcast Incremental Power protocol \cite{Ingelrest2004}}
-LBIP est l'application local de BIP: au lieu de construire l'arbre de diffusion BIP de facon centralisé,il le construit de facon locale.
-Chaque site lorsqu'il recoit un message à retransmettre calcul son BIP-tree sur son 2-voisinage et diffuse le message par l'intermediaire de celui ci.
+\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
+
+\emph{Description :} LBIP est l'application locale de BIP: au lieu de construire l'arbre de diffusion BIP de façon centralisée, il le construit de façon locale.
+Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree sur son 2-voisinage à partir des informations du paquet et diffuse le message à ses voisins dans l'arbre.
+
 
 \begin{algorithm}[H]
 \caption{LBIP}
 \label{algo_LBIP}
 \begin{algorithmic}
-\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
-\STATE SORTIE  LBIP Broadcast
-\STATE REQUIE  Connaissance du 2-voisinage
-\STATE $s$ calcul son arbre BIP($N_2(s),s,E_{ij}$) et diffuse <M,$s$> à ses fils
-\IF{ $u$ recoit <M,$v$> :}
-	\IF{Le paquet contient des instruction pour $u$}
-		\STATE $u$ construit BIP($N_2(u),u,M$) est retransmet le message à ses fils
+\STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance du 2-voisinage
+\STATE $s$ calcul son arbre de BIP avec comme entrée son graphe de 2-voisinage
+\STATE $s$ ajoute dans le paquet les identifiants des nœuds qui devront retransmettre le message
+\STATE $s$ ajoute également les identifiants des nœuds qui devront être atteints par ceux qui retransmettent
+\STATE $s$ broadcast <M,$s$> avec un rayon suffisant pour atteindre tous ses fils dans l'arbre
+\IF{ $u$ reçoit <M,$v$> }
+	\IF{le paquet contient des instructions pour $u$}
+		\STATE soit $v$ le nœud que $u$ doit atteindre d'après les instructions du paquet
+		\STATE $u$ construit son BIP-tree à partir des informations du paquet :
+			 \INDSTATE l'arbre est construit à partir du 2-voisinage de $u$ auquel on enlève :
+			 	 \INDSTATE[2]le nœud $s$ source du broadcast
+				 \INDSTATE[2]les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
+				 \INDSTATE[2]le nœud $v$ qui a redirigé le paquet vers $u$
+				 \INDSTATE[2]les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
+				\INDSTATE[2]les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
+			\INDSTATE[1] pour chaque paire de nœuds ($r_i$ qui doit retransmettre, $t_i$ qui doit être atteint)
+				\INDSTATE[2] dans la construction de l'arbre de BIP on initialise $P_{r_i} = P_{r_i t_i}$
+			\INDSTATE[1] $u$ remplace dans le paquet les instructions pour les nœuds voisins
+			\INDSTATE[1] $u$ broadcast <M,$s$> avec un rayon suffisant pour atteindre tous ses fils dans l'arbre
 	\ENDIF
 \ENDIF
 \end{algorithmic}
@@ -517,42 +613,45 @@ Chaque site lorsqu'il recoit un message à retransmettre calcul son BIP-tree sur
 %\caption{ }
 %\end{figure} 
 
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+
+
 
 \subsubsection{Dynamic Localized Broadcast Incremental Power protocol \cite{Champ2009DLBIP}}
-DLBIP est une amélioration de LBIP. Le principe est de repartir l'energie consommée lors d'un broadcast en empreintant des chemins (arbre couvrants) différents en fonction de l'energie restantes des noeuds qui vont servir de relais.
-A chaque broadcast, l'abre de diffusion est recalculé sur le meme graphe mais avec de nouveaux poids dépendants de l'energie de communication entre les noeuds ainsi que de l'energie propre à chaque noeud. Ce protocols permet que
-le niveau d'energie propre à chaque noeud baisse globalement de façon identique et ainsi retarder un maximum la panne d'un capteur par manque d'energie.
-DLBIP actualise dynamiquement ces couts $P'_{ij}$ à chaques broadcast:
-$$ \forall i,j \in V, P'_{ij}=\frac{E_{ij}}{E_i}$$
-ou $E_{ij}$ est le cout reel de transmition et $E_i$ l'energie restante de $i$.
+\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
+\emph{Description :} DLBIP est une amélioration de LBIP. Le principe est de répartir l'énergie consommée lors d'un broadcast en empreintant des chemins (arbre couvrants) différents en fonction de l'énergie restantes des noeuds qui vont servir de relais. A chaque broadcast, l'arbre de diffusion est recalculé sur le même graphe mais avec de nouveaux poids dépendants de l'énergie de communication entre les noeuds ainsi que de l'énergie restante de chaque noeud.
 
-\begin{algorithm}[h]
-\caption{DLBIP}
-\label{algo_DLBIP}
-\begin{algorithmic}
-\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
-\STATE SORTIE  DLBIP Broadcast
-\STATE REQUIE  Connaissance du 2-voisinage
-\STATE $s$ calcul son BIP($N_2(s),s,P'_{ij}$) et diffuse <M,$s$> à ses fils
-\IF{ $u$ recoit <M,$v$> :}
-	\IF{Le paquet contient des instruction pour $u$}
-		\STATE $u$ construit BIP($N_2(u),u,P'_{ij}$) est retransmet le message à ses fils
-	\ENDIF
-\ENDIF
-\end{algorithmic}
-\end{algorithm}
+Ce protocole permet que le niveau d'énergie propre à chaque noeud baisse globalement de façon identique et ainsi retarder un maximum la panne d'un capteur par manque d'énergie.
+DLBIP actualise dynamiquement ces coûts $P'_{ij}$ à chaque broadcast:
+$$ \forall i,j \in V, P'_{ij}=\frac{P_{ij}}{E_i}$$
+ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du nœud $i$.
+
+% TODO : actualisation des niveaux d'énergie des nœuds voisins
+
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
 
 
 
-\subsubsection{Algorithme RRS \cite{Cartigny2003RNG}}
+\subsubsection{RRS \cite{Cartigny2003RNG}}
 
 
-%\subsubsection{Algorithmes hexagonaux}
+\subsubsection{LBOP}
 
 
-\subsubsection{TR-LBOP}
-'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks':\cite{Ingelrest2004}.\\
+\subsubsection{RBOP}
+
+
+\subsubsection{TR-LBOP \cite{Ingelrest2004}}
+'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks':.\\
 
 
 
@@ -563,12 +662,26 @@ ou $E_{ij}$ est le cout reel de transmition et $E_i$ l'energie restante de $i$.
 
 \subsection{Synthèse}
 
+\subsubsection{Schéma récapitulatif}
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
 \caption{ Graphe de synthèse}
 \end{figure} 
 
+\subsubsection{Tableau récapitulatif}
 % TODO : ajouter tableau récapitulatif avec chaque algo sur les lignes et chaque type d'algo sur les colonnes + complexité si possible
+\resizebox{\textwidth}{!}{
+\begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c |}
+\hline
+ & \multicolumn{2}{c|}{mode d'émission} & \multicolumn{2}{c|}{portée} & \multicolumn{2}{c|}{rayon d'émission} & \multicolumn{2}{c|}{balisage} & \multicolumn{2}{c|}{décision} \\
+\hline
+algorithme & broadcast & single-cast & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
+FA \cite{Chang2000} & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & avec & sans & \tickYes & \tickNo \\
+FR \cite{Chang2000} & \tickNo & \tickYes & globale & locale & \tickYes & \tickNo & avec & sans & \tickYes & \tickNo \\
+EAR \cite{Shah2002}  & broadcast & single-cast & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
+\hline
+\end{tabular}
+}
 
 
