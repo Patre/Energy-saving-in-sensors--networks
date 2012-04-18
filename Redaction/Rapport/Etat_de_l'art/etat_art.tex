@@ -134,9 +134,9 @@ Dans beaucoup d'applications, la densité du réseau étant élevée, le coût p
 \begin{mydef}
  L'énergie potentielle de G est la somme des énergies des capteurs :$$E_G=\sum_{i=1}^n{E_i}$$
  La consommation de  G est :$$C_G=n\beta - E_G$$
- Le coût moyen de transmition de  G est :$$c_G=E(d_e(G))$$
+ Le coût moyen de transmission de  G est :$$c_G=E(d_e(G))$$
  Le cout moyen d'un broadcast est $C(1)$.\\
- Le cout moyen de $k$ broadcast est $C(k)$
+ Le cout moyen de $k$ broadcasts est $C(k)$
 \end{mydef}
 % TODO : singlecast
 
@@ -167,20 +167,19 @@ Soient un WSN $G$, une source $s$ et un entier positif $k$.
 Déterminer si G a assez d'énergie pour broadcaster $k$ messages a partir de $s$ est NP-Complet.
 \end{myth}
 
-De façon formelle, il est donc souvent impossible de calculer le nombre total de broadcasts réussis étant donné un réseau et un protocole (sauf quand le protocole est très simple $cf$ \ref{algosSansBalisage}). Nous analyserons 
-donc \textit{les performances moyennes} des algorithmes quand cela est possible. Sinon, les simulations nous permettrons de mesurer les performances en fonction de différentes topologies.
+De façon formelle, il est donc souvent impossible de calculer le nombre total de broadcasts réussis étant donné un réseau et un protocole (sauf quand le protocole est très simple). Nous analyserons donc \textit{les performances moyennes} des algorithmes quand cela est possible. Sinon, les simulations nous permettront de mesurer les performances en fonction de différentes topologies.
 
 \subsubsection{Définitions}
 Les définitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich2009},\cite{Champ2009lifetime},\cite{Elleithy2011}. 
 
-\begin{mylt}
+\begin{mylt}\label{TTFF}
 Nombre moyen de transmissions réussies avant qu'un capteur n'ai plus de batterie (TTFF).
 \end{mylt}
-\begin{mylt}
-Nombre moyen de transmissions réussies avant que le réseau ne perde sa connectivité.
+\begin{mylt}\label{LC}
+Nombre moyen de transmissions réussies avant que le réseau ne perde sa connectivité (LC).
 \end{mylt}
-\begin{mylt}
-Nombre moyen de transmissions réussies jusqu'à ce qu'il ne reste que $X\%$ de noeuds vivants.
+\begin{mylt}\label{PCN}
+Nombre moyen de transmissions réussies jusqu'à ce qu'il ne reste que $X\%$ de noeuds vivants (PCN).
 \end{mylt}
 
 
@@ -229,14 +228,17 @@ Dans un réseau $G(V,E,\gamma)$, deux capteurs peuvent communiquer directement u
 
 \subsubsection{Broadcast}
 % TODO : citer des articles
-La procédure de broadcast est un mécanisme fondamental pour la propagation des données ainsi que pour la découverte de routes. En effet le broadcast est utilisé pour acquérir une connaissance du voisinage des capteurs. L'avantage de ce mode de transmission est qu'avec une seule émission, tout le voisinage est averti. Le routage des broadcasts nécessite de s'assurer que le message ne soit pas indéfiniment retransmis mais que tous les nœuds du graphe soient touchés. Parfois même si le destinataire est à distance 1 dans le graphe unité, il est nécessaire que le message soit relayé par un nœud tiers pour des raisons énergétiques.
+La procédure de broadcast consiste à transmettre une information à tous les autres nœuds du graphe. C'est un mécanisme fondamental pour la propagation des données ainsi que pour la découverte de routes. En effet le broadcast est utilisé pour acquérir une connaissance du voisinage des capteurs. Ce mode de communication est naturel pour des périphériques en wifi avec antenne omnidirectionnelle car les ondes sont réparties uniformément dans un cercle de rayon donné. Tout le voisinage est donc touché et le coût en énergie est celui d'une seule transmission.
+
+Le routage des broadcasts nécessite de s'assurer que le message ne soit pas indéfiniment retransmis mais que tous les nœuds du graphe soient touchés. Parfois même si le destinataire est à distance 1 dans le graphe unité, il est nécessaire que le message soit relayé par un nœud tiers pour des raisons énergétiques.
 
 \subsubsection{Single-cast}
+La transmission par single-cast est le moyen classique de transmettre les messages : un expéditeur fait parvenir un message à un destinataire. Ce moyen de communication est valable lorsqu'on ne cherche qu'à atteindre un seul nœud car il coûte moins cher que le broadcast.
 % TODO : single-cast / multi-cast
 
 
 \subsection{Algorithme à rayon d'émission fixe vs variable}
-L'idée des algorithmes de broadcast est de choisir les noeuds relais de façon à ce que leur ensemble se rapproche au maximum d'un maillage optimal. Certains algorithmes choisissent de fixer un rayon égal pour tous les nœuds ; d'autres utilisent un rayon variable pour chaque nœud. 
+Dans les réseaux de capteurs, les transmissions s'effectuent sans fils. Un bon moyen de réduire la quantité d'énergie utilisée est donc de réduire la portée d'une transmission. L'idée des algorithmes de broadcast est de choisir les noeuds relais de façon à ce que leur ensemble se rapproche au maximum d'un maillage optimal. Certains algorithmes choisissent de fixer un rayon égal pour tous les nœuds ; d'autres utilisent un rayon variable pour chaque nœud. 
 
 Notons que les algorithmes qui émettent en single-cast ont, par définition, un rayon d'émission variable.
 
@@ -288,15 +290,15 @@ Nous cherchons le rayon optimal minimisant $C(1)(R)$. Comme $\alpha\geq 2$, $c\g
 D'où: $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
 \end{itemize}
 
-Bien sûr, en pratique, il est impossible sur une topologie quelconque d'extraire un tel maillage hexagonal.
+Bien sûr, en pratique, il est impossible, sur une topologie quelconque, d'extraire un tel maillage hexagonal.
 
 
 \subsubsection{Rayon d'émission fixe pour tous les nœuds}
-% TODO
+Certains algorithmes de broadcast les plus primitifs ($cf$ \ref{blind_flooding}, \ref{proba_flooding}) utilisent un rayon d'émission fixe. Les performances énergétiques associées ne sont pas très bonnes car réduire le rayon d'émission et réduire le nombre de transmissions sont les deux seuls moyens d'économiser de l'énergie lors du routage d'un broadcast.
 
 
 \subsubsection{Rayon d'émission variable}
-% TODO
+La plupart des algorithmes de routage de broadcast utilisent un rayon d'émission variable pour les raisons citées ci-dessus. Tous les algorithmes de routage de single-cast utilisent un rayon d'émission variable car ils ajustent leur transmission pour toucher uniquement le nœud destinataire.
 
 
 
@@ -329,7 +331,8 @@ Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au ré
 
 \subsection{Algorithme déterministe vs probabiliste}
 Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire.
-% TODO : déterministe, développement de probabiliste
+À l'inverse, un algorithme déterministe prendra toujours la même décision lorsqu'il se trouve dans une situation précise.
+% TODO : développement
 
 
 
@@ -340,45 +343,163 @@ Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre
 
 
 \subsubsection{Flow augmentation \cite{Chang2000}}
-\emph{Mots clés :} single-cast, 
+\emph{Mots clés :} single-cast, local, sans balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :}
+L'algorithme $FA(x_1, x_2, x_3)$ est un algorithme d'augmentation de flot. L'idée consiste à utiliser un algorithme de plus court chemin existant (comme l'algorithme distribué de Bellman-Ford) et de lui passer trois paramètres ($x_1$, $x_2$ et $x_3$) qui détermineront sa fonction de poids sur les arcs. Ces paramètres coefficienteront les trois facteurs suivants : le coût de transmission du nœud $i$ au nœud $j$ ($e_{ij}$) ; l'énergie résiduelle du nœud $i$ ($\underline{E}_i$), et l'énergie initiale du nœud $i$ ($E_i$). Voici la formule qui donne le poids de l'arc $(i,j)$ en fonction des paramètres :
+\begin{displaymath}
+c_{ij} = e_{ij}^{x_1} \underline{E}_i^{-x_2} E_i^{x_3}
+\end{displaymath}
 
-\emph{Exemple :} 
+\begin{algorithm}[H]
+\caption{$FA(x_1,x_2,x_3)$}
+\label{algo_FA}
+\begin{algorithmic}
+\REQUIRE a network $ G(N,A) $
+
+\WHILE {each node $i$ has some energy}
+	\FOR {each commodity $c \in C$}
+		\FOR{each origin node $o \in O^{(c)}$}
+			\STATE compute the shortest cost path from $o$ to $D^{(c)}$
+			\STATE augment the flow on this path by an amount of $\lambda Q_i^{(c)}$
+		\ENDFOR
+	\ENDFOR
+\ENDWHILE
+
+\RETURN the total flow q in the network
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Exemple :} % TODO : exemple + conso
 
 \emph{Consommation} : 
 
-\emph{Durée de vie} :  
+\emph{Durée de vie} :  $$TTFF(q) = \min\limits_{i \in N}\frac{E_i}{\sum \limits_{j \in S_i} {e_{ij}} \sum \limits_{c \in C} {q_{ij}^{(c)}}}$$
+avec :
+\begin{itemize}
+\item $q$ le flot
+\item $N$ l'ensemble des nœuds du graphe (les capteurs)
+\item $E_i$ la quantité d'énergie initiale du nœud $i$
+\item $S_i$ l'ensemble des voisins du nœud $i$
+\item $e_{ij}$ l'énergie requise pour transmettre une unité d'information du nœud i au nœud j
+\item $C$ l'ensemble des composantes du réseau
+\item $q_{ij}^{(c)}$ le taux d'information de la composante c transmise du nœud $i$ au nœud $j$
+\end{itemize}
 
 
 
 \subsubsection{Flow redirection \cite{Chang2000}}
-\emph{Mots clés :} single-cast, 
+\emph{Mots clés :} single-cast, global, sans balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :}
+Cet algorithme est basé sur le fait que le flot trouvé est optimal ssi pour tous les chemins de l'origine à la destination portants un flot positif, la durée de vie minimum est la même. Le principe consiste donc à rediriger une partie du flot de chaque nœud à travers un autre chemin vers la destination tel que la durée de vie de chaque chemin portant du flot augmente (ou au moins reste stable). Le flot initial a pour valeur la quantité totale d'informations générées par le réseau.
 
-\emph{Exemple :} 
+Pour chaque nœud dans le réseau, on compare les chemins sortants de ce nœud vers la destination. On construit un ordre total sur ces chemins en les classant en fonction de leur nœud qui possède la plus courte durée de vie (puis par nombre de nœuds).
+
+Si le nœud dont la durée de vie est la plus courte sur le chemin est le nœud source ($i$), alors on a deux choix. On regarde les voisins sortants de ($i$). Soit on redirige un des flots qui passe par le voisin ($j$) dont le coût de transmission $e_{ij}$ est le plus grand vers un des chemins qui passe par le voisin ($j$) dont le coût de transmission $e_{ij}$ est le moindre. Soit on redirige un flot quelconque vers le chemin le plus petit dans l'ordre total parmi ceux qui passe par le voisin ($j$) dont le coût de transmission $e_{ij}$ est le moindre.
+
+Si, en revanche, le nœud dont la durée de vie est la plus courte sur le chemin n'est pas le nœud source, on a également deux possibilités. Dans les deux cas on redirige le flot le plus petit dans l'ordre total. Soit on redirige vers le chemin le plus grand dans l'ordre total. Soit on redirige vers le chemin qui passe par le voisin ($j$) dont le coût de transmission $e_{ij}$ est le moindre parmi les chemins supérieurs dans l'ordre total au chemin redirigé.
+
+Une fois que l'algorithme a défini pour un nœud donné les deux chemins, il détermine la quantité de flot à rediriger.
+
+\begin{algorithm}[H]
+\caption{$FR()$}
+\label{algo_FR}
+\begin{algorithmic}
+\REQUIRE a network G(N, A)
+
+add to $G$ an imaginary super destination node $\tilde{d}^{(c)}$
+\FOR{all $d \in D^{(c)}$}
+	\STATE $\tilde{d}^{(c)} \in S_d$
+	\STATE $e_{d \tilde{d}^{(c)}} = 0$
+\ENDFOR
+
+let $q$ be the initial flow
+\FOR{all $o \in O^{(c)}$}
+	\STATE $q_{o \tilde{d}^{(c)}} = Q_o^{(c)}$
+\ENDFOR
+
+\FOR{each $c \in C$}
+	\FOR{each $i \in N - D^{(c)}$}
+		\STATE (Determine the Two Paths)
+		\STATE (Calculate $\epsilon_i^{(c)}$)
+		\STATE (Redirect the flow)
+	\ENDFOR
+\ENDFOR
+
+\RETURN 
+\end{algorithmic}
+\end{algorithm}
+
+
+\emph{Exemple :} %TODO : exemple, consommation
 
 \emph{Consommation} : 
 
-\emph{Durée de vie} :  
+\emph{Durée de vie} :  $$TTFF(q) = \min\limits_{i \in N}\frac{E_i}{\sum \limits_{j \in S_i} {e_{ij}} \sum \limits_{c \in C} {q_{ij}^{(c)}}}$$
 
 
 
 \subsubsection{Energy Aware Routing \cite{Shah2002}}
-\emph{Mots clés :} single-cast, 
+\emph{Mots clés :} single-cast, local, avec balisage, rayon d'émission variable, probabiliste.
 
 \emph{Description :}
+Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds qu’en cas de besoin) et les requêtes sont initiées depuis la destination. Il se décline en trois phases : la phase d'initialisation qui permet de trouver tous les chemins de la source à la destination ; la phase de communication de données ; et la maintenance des routes. Les deux premières phases sont détaillées dans les algorithmes ci-dessous.
 
-\emph{Exemple :} 
+\begin{algorithm}[H]
+\caption{Setup phase of EAR}
+\label{algo_EAR_sp}
+\begin{algorithmic}
+
+\STATE $Cost(N_D) = 0$
+
+\COMMENT{Flood the network from $N_D$ to $N_S$ :}
+\FOR{each intermediate node $N_i$}
+	\FOR{each neighbor $N_j$ of $N_i$}
+		\IF{$d(N_i,N_S) \geq d(N_j, N_S)$ and $d(N_i,N_D) \leq d(N_j, N_D)$}
+			\STATE Forward the request from $N_i$ to $N_j$
+		\ENDIF
+	\ENDFOR
+\ENDFOR
+\STATE
+\FOR{each intermediate node $N_i$}
+	\FOR{each neighbor $N_j$ of $N_i$}
+		\STATE On receiving a request :
+		\STATE $C_{N_j,N_i} = Cost(N_i)+Metric(N_j,N_i)$
+		\STATE $FT_j = \{i | C_{N_j,N_i} \leq \alpha (\underset{k}{min}\ C_{N_j,N_k})\}$
+		\STATE
+		\STATE $P_{N_j,N_i} = \dfrac{\dfrac{1}{C_{N_j,N_i}}}{\sum \limits_{k \in FT_j} \dfrac{1}{C_{N_j,N_k}}}$
+		\STATE
+		\STATE $Cost(N_j) = \sum \limits_{i \in FT_j} {P_{N_j,N_i} C_{N_j,N_i}}$
+	\ENDFOR
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
+\caption{Data communication phase of EAR}
+\label{algo_EAR_dcp}
+\begin{algorithmic}
+
+\STATE $N_S$ chooses randomly a number
+\STATE This number points a neighbor in the forwarding table $FT_S$ out
+\STATE Send the packet from $N_S$ to this neighbor $N_j$
+\STATE Do the same thing for all intermediate nodes until the packet reaches the destination
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\emph{Exemple :} % TODO
 
 \emph{Consommation} : 
 
-\emph{Durée de vie} : 
+\emph{Durée de vie} : $$ LC $$
 
 
 
-\subsubsection{Blind Flooding}
+\subsubsection{Blind Flooding\label{blind_flooding}}
 \emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
 
 \emph{Description :} le "blind flooding" ou "broadcast aveugle" est un algorithme glouton de broadcast sans balisage. Lors de la réception d'un message par un noeud, si c'est la première fois qu'il le reçoit, il le broadcast à ses voisins (avec le rayon maximum), sinon il ne fait rien.
@@ -393,7 +514,7 @@ Le coût global de $k$ broadcasts est $C(k) = k\cdot n \cdot E( \gamma )= k\cdot
 
 
 
-\subsubsection{Probabilistic Flooding}
+\subsubsection{Probabilistic Flooding\label{proba_flooding}}
 \emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, probabiliste.
 
 \emph{Description :} Afin d'éviter le redondance et les collisions, une idée est que chaque noeud retransmette le message suivant une probabilité $P$ lorsqu'il le reçoit pour la première fois. Si $P=1$ cela équivaut au blind flooding.
@@ -422,7 +543,7 @@ L'idée maitresse de ABBA est assez simple. A la première réception d'un messa
 Comme chaque couverture est un cercle de rayon $R$, le critère de couverture peut être simplifié : au lieu de s'intéresser au disque entier, un noeud vérifie uniquement si le périmètre $\pi$ de sa zone est couvert par ses voisins lui ayant envoyé le message.
 
 
-\begin{algorithm}[h]
+\begin{algorithm}[H]
 \caption{ABBA}
 \label{ABBA}
 \begin{algorithmic}
@@ -458,7 +579,7 @@ Un noeud source $s$, un message $M$
 
 
 
-\subsubsection{Broadcast Incremental Power protocol \cite{Wieselthier2000}}
+\subsubsection{Broadcast Incremental-power Protocol \cite{Wieselthier2000}}
 
 \emph{Mots clés :} broadcast, global, avec balisage, rayon d'émission variable, déterministe.
 
@@ -570,7 +691,7 @@ BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairem
 %Complexité en messages: $O(2n)$.
 
 
-\subsubsection{Localized Broadcast Incremental Power protocol \cite{Ingelrest2004}}
+\subsubsection{Localized Broadcast Incremental-power Protocol \cite{Ingelrest2004}}
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} LBIP est l'application locale de BIP: au lieu de construire l'arbre de diffusion BIP de façon centralisée, il le construit de façon locale.
@@ -621,7 +742,7 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 
 
 
-\subsubsection{Dynamic Localized Broadcast Incremental Power protocol \cite{Champ2009DLBIP}}
+\subsubsection{Dynamic Localized Broadcast Incremental-power Protocol \cite{Champ2009DLBIP}}
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} DLBIP est une amélioration de LBIP. Le principe est de répartir l'énergie consommée lors d'un broadcast en empreintant des chemins (arbre couvrants) différents en fonction de l'énergie restantes des noeuds qui vont servir de relais. A chaque broadcast, l'arbre de diffusion est recalculé sur le même graphe mais avec de nouveaux poids dépendants de l'énergie de communication entre les noeuds ainsi que de l'énergie restante de chaque noeud.
@@ -644,10 +765,10 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 \subsubsection{RRS \cite{Cartigny2003RNG}}
 
 
-\subsubsection{LBOP}
+\subsubsection{Localized Broadcast Oriented Protocol \cite{Cartigny2005}}
 
 
-\subsubsection{RBOP}
+\subsubsection{RBOP \cite{Cartigny2005}}
 
 
 \subsubsection{TR-LBOP \cite{Ingelrest2004}}
