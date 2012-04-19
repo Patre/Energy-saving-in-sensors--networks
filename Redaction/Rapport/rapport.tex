@@ -14,16 +14,20 @@
 \usepackage{setspace}
 \usepackage{listings}
 \usepackage{lscape}
-%\usepackage{mathabx}
 \usepackage{amsmath}
 \usepackage{mathrsfs}
 \usepackage{amsthm}
 \usepackage{textcomp}
 \usepackage{enumerate}
 \usepackage{amsfonts}
-\newcommand{\tickYes}{\checkmark}
 \usepackage{pifont}
-\newcommand{\tickNo}{\hspace{1pt}\ding{55}}
+\usepackage{array}
+\usepackage[table]{xcolor}
+
+\definecolor{vert}{RGB}{0,150,0}
+
+\newcommand{\tickYes}{\textcolor{vert}{\checkmark}}
+\newcommand{\tickNo}{\textcolor{red}{\ding{55}}}
 
 
 \hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
@@ -41,6 +45,7 @@
 \newcommand{\INDSTATE}[1][1]
 {\STATE\hspace{#1\algorithmicindent}}
 
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}<{}}
 \renewcommand\arraystretch{1.6}
 
 

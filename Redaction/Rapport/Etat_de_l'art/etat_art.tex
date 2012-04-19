@@ -787,33 +787,48 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
-\caption{ Graphe de synthèse}
+\caption{Graphe de synthèse}
 \end{figure} 
 
 \subsubsection{Tableau récapitulatif}
 % TODO : ajouter tableau récapitulatif avec chaque algo sur les lignes et chaque type d'algo sur les colonnes + complexité si possible
-\hspace{-0.6cm} \resizebox{\textwidth}{!}{
-\begin{tabular}{| c | c | c | c | c | c | c | c | c | c | c |}
+\noindent\makebox[\textwidth]{
+\resizebox{0.95\paperwidth}{!}{
+\rowcolors{3}{gray!25}{white}
+\begin{tabular}{| c | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} |}
 \hline
  & \multicolumn{2}{c|}{mode d'émission} & \multicolumn{2}{c|}{portée} & \multicolumn{2}{c|}{rayon d'émission} & \multicolumn{2}{c|}{balisage} & \multicolumn{2}{c|}{décision} \\
 \hline
 algorithme & broadcast & single-cast & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
+\hline \hline
+FA \cite{Chang2000} & \tickNo & \tickYes & \tickNo & \tickYes & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo \\
 \hline
-FA \cite{Chang2000} & \tickNo & \tickYes & \tickNo & \tickYes & \tickNo & \tickYes & avec & sans & \tickYes & \tickNo \\
-FR \cite{Chang2000} & \tickNo & \tickYes & globale & locale & \tickNo & \tickYes & avec & sans & \tickYes & \tickNo \\
+FR \cite{Chang2000} & \tickNo & \tickYes & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo \\
+\hline
 EAR \cite{Shah2002}  & \tickNo & \tickYes & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickNo & \tickYes \\
+\hline
 blind flooding & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo \\
+\hline
 probabilistic flooding & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes \\
-ABBA & \tickYes & \tickNo & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
-BIP & \tickYes & \tickNo & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
-LBIP & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
-DLBIP & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
-RRS & \tickYes & \tickNo & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
-LBOP & \tickYes & \tickNo & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
-RBOP & \tickYes & \tickNo & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
-TR-LBOP & \tickYes & \tickNo & globale & locale & fixe & variable & avec & sans & déterministe & probabiliste \\
+\hline
+ABBA \cite{Ovalle2006} & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo \\
+\hline
+BIP \cite{Wieselthier2000} & \tickYes & \tickNo & \tickYes & \tickNo & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+\hline
+LBIP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+\hline
+DLBIP \cite{Champ2009DLBIP} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+\hline
+RRS \cite{Cartigny2003RNG} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+\hline
+LBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+\hline
+RBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+\hline
+TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
 \hline
 \end{tabular}
+}
 }
 
 
