@@ -16,6 +16,7 @@ GraphView::GraphView(QWidget *parent)
     transformed = false;
     pixmap.load(":/images/qt-logo.png");
 
+
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 }
@@ -49,6 +50,11 @@ void GraphView::setPen(const QPen &pen)
     this->pen = pen;
     update();
 }
+void GraphView::setZoom(double z)
+{
+    this->zoom = z;
+}
+
 void GraphView::setBrush(const QBrush &brush)
 {
     this->brush = brush;
@@ -76,7 +82,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
     {
         for(int i=0;i<list_graph.size();i++)
         {
-            painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
+            painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
         }
     }
 

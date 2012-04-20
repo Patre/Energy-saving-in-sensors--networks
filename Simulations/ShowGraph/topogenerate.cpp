@@ -5,6 +5,7 @@ TopoGenerate::TopoGenerate()
     this->boolCarreau=false;
     this->boolSize=false;
     this->boolIndex=false;
+    this->boolfinish=false;
 }
 
 void TopoGenerate::setSizeTopo(int width, int heigth)
@@ -43,6 +44,7 @@ bool TopoGenerate::genererNeoudes()
                 carreau[w][h].w= w*this->widthCarreau+qrand()%this->widthCarreau;
                 carreau[w][h].h= h*this->heigthCarreau+qrand()%this->heigthCarreau;
             }
+        this->boolfinish=true;
         return true;
     }
     else return false;
@@ -51,7 +53,7 @@ bool TopoGenerate::genererNeoudes()
 bool TopoGenerate::genererFichier()
 {
 
-    if(this->boolCarreau && this->boolIndex && this->boolSize)
+    if(this->boolfinish)
     {
 
         int i=0;
@@ -77,3 +79,4 @@ bool TopoGenerate::genererFichier()
     }
     else return false;
 }
+

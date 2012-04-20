@@ -22,19 +22,3 @@ HEADERS  += mainwindow.h \
     topogenerate.h
 
 FORMS    += mainwindow.ui
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

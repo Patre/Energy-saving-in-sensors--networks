@@ -38,13 +38,13 @@ struct nodedata {
 /* ************************************************** */
 /* VARIABLE de L'APPLICATION LBIP */
 struct protocoleData {
+        int       debug;
 	double    alpha;           //alpha de modele d'energie
 	double    c;                 //le C de modele d'energie
 	double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)
 	uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
 	uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
-
 /* ************************************************** */
 /* ************************************************** */
 
@@ -56,15 +56,12 @@ struct _packet_flood
     int     src;
     int     seq;                //la sequence de paquet
     int     redirected_by;      //le noeud qui a redirigé le paquet
-    listeNodes    *destinations;
-
 };
 typedef struct _packet_flood packet_PROTOCOLE;
 
 /* ************************************************** */
 /* ************************************************** */
 //PROPAGATION
-
 struct propagation_data
 {
         double range;
@@ -72,7 +69,6 @@ struct propagation_data
 
 
 //MAC
-
 struct mac_data {
     int debug;
     double range;        // Communication range (m)

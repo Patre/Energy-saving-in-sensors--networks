@@ -51,10 +51,6 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
         return -1;
     }
 
-    DEBUG;
-    //if(data->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
-
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
 
@@ -73,7 +69,10 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 //RECEPTION
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
+
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
+
 	
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
@@ -105,7 +104,11 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     if(list_taille(data->destinations)!=0)
     {
-		printf("taille : %d ; envoi depuis %d\n", list_taille(data->destinations), c->node);
+        if(entitydata->debug)
+        {
+            printf("BIP SUIVRE - ON %d TO",c->node);
+            list_affiche(data->destinations);
+        }
         //ENVOI
         entityid_t *down = get_entity_links_down(c);
         call_t c0 = {down[0], c->node};

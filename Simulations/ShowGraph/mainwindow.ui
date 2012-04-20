@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>739</width>
+    <height>432</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>20</height>
+     <width>739</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>
@@ -121,13 +121,26 @@
       <string>Clear</string>
      </property>
     </widget>
+    <widget class="QDoubleSpinBox" name="zoomEdit">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>220</y>
+       <width>101</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="value">
+      <double>0.500000000000000</double>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QDockWidget" name="dockWidget_3">
    <property name="minimumSize">
     <size>
      <width>100</width>
-     <height>36</height>
+     <height>41</height>
     </size>
    </property>
    <attribute name="dockWidgetArea">
@@ -202,13 +215,52 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>170</y>
+       <y>210</y>
        <width>101</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
       <string>Generer Fichier</string>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="nbrNodes">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>240</y>
+       <width>64</width>
+       <height>23</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="rangeEdit">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>170</y>
+       <width>101</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>10</number>
+     </property>
+     <property name="maximum">
+      <number>999</number>
+     </property>
+     <property name="value">
+      <number>30</number>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="densite">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>280</y>
+       <width>64</width>
+       <height>23</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -288,8 +340,8 @@
    <slot>genererTopologie()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>327</x>
-     <y>229</y>
+     <x>739</x>
+     <y>295</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
