@@ -26,7 +26,10 @@
 <!--
 == MAC =====================================================
 -->
-<entity name="mac" library="mac_dcf_802_11"></entity>
+	<entity name="mac" library="mac_macter">
+		<init  debit="10" debug="0" alpha="4" c="100000"/>
+		<default range ="12"/>
+	</entity>
 <!--
 == APPLICATION =====================================================
 -->
