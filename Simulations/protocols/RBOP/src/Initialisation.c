@@ -4,7 +4,6 @@ void get_PROTOCOLE_init(call_t *c, double eps)
 {
     int count=get_node_count();
     uint64_t at=count*time_seconds_to_nanos(eps)+time_seconds_to_nanos(1);
-    printf("%lf\n",time_nanos_to_seconds(at));
     scheduler_add_callback(at, c, init_rbop, NULL);
 }
 
@@ -62,27 +61,18 @@ void init_rbop(call_t *c, void *args)
 
     get_RNG_tree(c->node,&nodedata->RNG,N1);
 
-    printf(" Node %d  ",c->node);
-
-    list_affiche(N1);
-    printf(" RNG %d  ",c->node);
-    list_affiche(nodedata->RNG);
-
-    listeNodes *tmp=nodedata->oneHopNeighbourhood;
-    position_t pos1 = *get_node_position(c->node);
-    double distMax = 0;
-    while(tmp)
+    struct protocoleData *entitydata =get_entity_private_data(c);
+    if(entitydata->debug)
     {
-        if(list_recherche(nodedata->RNG,tmp->values.node))
-        {
-            position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
-            double dist=distance(&pos1,&pos2);
-            if(distMax<dist)    distMax=dist;
-        }
-        tmp=tmp->suiv;
+        DBG("RBOP - %d INITIALISATION \n",c->node);
+        DBG(" Node %d  ",c->node);
+        list_affiche(N1);
+
+        DBG(" RNG %d  ",c->node);
+        list_affiche(nodedata->RNG);
     }
-    set_range_Tr(c,distMax);
-    printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
+
+
 }
 //RANGE
 double get_range_Tr(call_t *c)
@@ -98,7 +88,7 @@ void set_range_Tr(call_t *c,double range)
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
     struct macnodedata* macdata = get_node_private_data(&c0);
-    macdata->range = ceil(range);
+    macdata->range = range;
 }
 
 
