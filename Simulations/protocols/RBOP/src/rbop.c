@@ -44,6 +44,7 @@ int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = malloc(sizeof(struct nodedata));
 	
     nodedata->overhead = -1;
+    nodedata->range = -1;
     //les packets
     nodedata->paquets   = Nullptr(list_PACKET);
 
@@ -71,6 +72,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
+    entitydata->debug   = 0;
     entitydata->debut   = time_seconds_to_nanos(10);
     entitydata->periodEVE = time_seconds_to_nanos(10);
 	
@@ -89,6 +91,11 @@ int init(call_t *c, void *params) {
 			}
         }
         if (!strcmp(param->key, "eps")) {
+            if (get_param_double(param->value, &(entitydata->eps))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "debug")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
                 goto error;
             }
@@ -126,11 +133,6 @@ int bootstrap(call_t *c) {
     //INITIALISATION DE L'ARBRE
     get_PROTOCOLE_init(c,entitydata->eps);
 
-    /*if(c->node==0)
-    {
-        uint64_t at=entitydata->debut;
-        scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }//*/
 
 
    return 0;
@@ -144,8 +146,7 @@ void rx(call_t *c, packet_t *packet) {
 
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-        //printf("BIP - Paquet de type %d recu par %d depuis %d\n", data->type, c->node, data->src);
-	
+
     /*******************************HELLO 1 voisinage***************************/
 	switch(data->type)
 	{	
@@ -177,49 +178,13 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    DEBUG; // Voisinage 1 hop
-      /*printf("\t1-voisinage de %d : ", c->node);
-      listeNodes_affiche(nodedata->oneHopNeighbourhood);
-      //printf("\t\t\t");list_affiche(nodedata->RNG);//*/
-    
 
-      /*printf("\tPaquets : %d ->",c->node);
-      list_PACKET_affiche(nodedata->paquets);//*/
-
-	
-    DEBUG;//voisinage 2 hop
-    /*if(c->node==0)
-	 {
-	 list2_affiche(nodedata->NodesV1);
-	 }//*/
-	
-	
-    DEBUG; /*ARBRE DE LBIP*/
-    /*if(c->node==0)
-    {
-        printf("\tARBRE DE BIP : \n");
-        arbre_affiche(nodedata->tree_BIP);
-    }*/
-	
-    DEBUG;  //GRAPH
-    /*if(c->node==0)
-    {
-        printf("\t1-voisinage de %d : ", c->node);
-        listeNodes_affiche(nodedata->oneHopNeighbourhood);
-        printf("\t2-voisinage de %d : ", c->node);
-        listeNodes_affiche(nodedata->twoHopNeighbourhood);
-        afficherGraphe(nodedata->g2hop);
-    }*/
-	
-	
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
-    /*deleteGraphe(nodedata->g2hop);
     list_PACKET_detruire(&nodedata->paquets);               //packets
-    listeNodes_detruire(&nodedata->N1);                     //1-HOP
-    list2N_detruire(&nodedata->NodesV1);                    //Nodes
-    arbre_detruire(&nodedata->tree_BIP);                    //BIP tree/*/
-	
+    listeNodes_detruire(&nodedata->oneHopNeighbourhood);                     //1-HOP
+    list_detruire(&nodedata->RNG);                    //Nodes
+
     free(nodedata);
 
     return 0;
@@ -237,8 +202,10 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
-    packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 
+    struct protocoleData *entitydata =get_entity_private_data(c);
+    if(entitydata->debug)
+        DBG("RBOP - %d BROADCAST \n",c->node);
 
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
@@ -250,9 +217,38 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata =get_entity_private_data(c);
+
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
+
+    if(entitydata->debug)
+        DBG("RBOP - %d SET HEADER  \n",c->node);
+
+    //Fixé le rayon
+    if(nodedata->range<0)
+    {
+
+        listeNodes *tmp=nodedata->oneHopNeighbourhood;
+        position_t pos1 = *get_node_position(c->node);
+        double distMax = 0;
+        while(tmp)
+        {
+            if(list_recherche(nodedata->RNG,tmp->values.node))
+            {
+                position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
+                double dist=distance(&pos1,&pos2);
+                if(distMax<dist)    distMax=dist;
+            }
+            tmp=tmp->suiv;
+        }
+        set_range_Tr(c,distMax);
+        nodedata->range=get_range_Tr(c);
+        if(entitydata->debug)
+            DBG("RBOP  - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
+
+    }
 
     //remplissage de data
     data->type=RBOP;
@@ -299,7 +295,4 @@ int get_header_real_size( call_t * c )
 }
 ///
 routing_methods_t methods = {rx, tx, set_header, get_header_size, get_header_real_size};
-
-
-
 //application_methods_t methods = {rx};

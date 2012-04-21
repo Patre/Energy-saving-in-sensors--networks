@@ -8,6 +8,7 @@
 #include <arbre.h>
 #include <graphe.h>
 
+#define DBG(x...)  printf(x);
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphRBOP","a+"); fprintf(topo,x); fclose(topo);}
 /* ************************************************** */
 /* ************************************************** */
@@ -18,6 +19,8 @@
 
 struct nodedata {
 	int overhead;
+
+        double range;
 	
 	//packet REcus
 	list_PACKET *paquets;
@@ -38,6 +41,7 @@ struct nodedata {
 /* ************************************************** */
 /* VARIABLE de L'APPLICATION LBIP */
 struct protocoleData {
+        int debug;
 	double    alpha;           //alpha de modele d'energie
 	double    c;                 //le C de modele d'energie
 	double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)

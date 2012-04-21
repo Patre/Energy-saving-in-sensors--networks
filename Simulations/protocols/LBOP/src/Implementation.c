@@ -63,6 +63,7 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
+    struct protocoleData *entitydata=get_entity_private_data(c);
 
 
     //AJOUTE de packet dans la liste de packet
@@ -86,7 +87,9 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         }
         set_range_Tr(c,distMax);
         nodedata->range=get_range_Tr(c);
-        printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
+        if(entitydata->debug)
+            printf("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
+
     }
 
 

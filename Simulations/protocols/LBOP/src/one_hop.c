@@ -9,7 +9,6 @@
 void get_one_hop(call_t *c, double eps)
 {
     uint64_t at=c->node*time_seconds_to_nanos(eps);
-    printf("One Hope %d %lf\n",c->node,time_nanos_to_seconds(at));
     scheduler_add_callback(at, c, broadcast_hello, NULL);
 }
 
@@ -18,6 +17,10 @@ void get_one_hop(call_t *c, double eps)
 // ENVOI DE PACKET HELLO
 int broadcast_hello(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata=get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("LBOP - ONE HOP ON %d AT %lf\n",c->node,get_time_now_second());
+
 
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);

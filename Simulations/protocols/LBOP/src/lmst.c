@@ -7,7 +7,6 @@ void get_lmst(call_t *c, double eps)
 {
     uint64_t fin_intial= (get_node_count()+2)*time_seconds_to_nanos(eps);
     uint64_t at=fin_intial+c->node*time_seconds_to_nanos(eps);
-    printf("LMST %d %lf\n",c->node,time_nanos_to_seconds(at));
     scheduler_add_callback(at, c, broadcast_lmst, NULL);
 }
 
@@ -16,6 +15,9 @@ void get_lmst(call_t *c, double eps)
 // ENVOI DE PACKET HELLO
 int broadcast_lmst(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata=get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("LBOP - LMST ON %d AT %lf\n",c->node,get_time_now_second());
 
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);

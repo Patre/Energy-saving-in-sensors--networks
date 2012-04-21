@@ -106,7 +106,7 @@ Bundle 'sensor' (0)
 
 Simulation stats:
   simulated time: 2000000000000
-  simulation time: 124007000
-  speedup: 16128.121800
+  simulation time: 160010000
+  speedup: 12499.218799
   events in queue: 1
-  events executed: 6234
+  events executed: 5586

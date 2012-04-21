@@ -37,7 +37,7 @@ void init_files()
 	
     //GRAPH
     FILE *topo;
-    topo=fopen("graphBIP","w");
+    topo=fopen("graphLBIP","w");
     fclose(topo);
 	
 }

@@ -75,6 +75,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
+    entitydata->debug   =0;
     entitydata->debut   = time_seconds_to_nanos(10);
     entitydata->periodEVE = time_seconds_to_nanos(10);
 	
@@ -94,6 +95,11 @@ int init(call_t *c, void *params) {
         }
         if (!strcmp(param->key, "eps")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "debug")) {
+            if (get_param_integer(param->value, &(entitydata->debug))) {
                 goto error;
             }
         }
@@ -119,15 +125,16 @@ error:
 int bootstrap(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
-	
+
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
-    //RECUPERER LE VOSINAGE a UN SAUT
+
+
+
     get_one_hop(c,entitydata->eps);
 
 
-    //INITIALISATION DE L'ARBRE
     get_PROTOCOLE_init(c,entitydata->eps);
 
 
@@ -191,33 +198,6 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    DEBUG; // Voisinage 1 hop
-      /*printf("\t1-voisinage de %d : ", c->node);
-      listeNodes_affiche(nodedata->oneHopNeighbourhood);
-      //printf("\t\t\t");list_affiche(nodedata->LMST_voisin);//*/
-    
-
-      /*printf("\tPaquets : %d ->",c->node);
-      list_PACKET_affiche(nodedata->paquets);//*/
-
-	
-    DEBUG;//LMSt
-    /*printf("***********\nlist initial %d ",c->node);
-    list_affiche(nodedata->LMST_intial);
-    printf("list voisin %d ",c->node);
-    list_affiche(nodedata->LMST_voisin);//*/
-
-
-	
-    DEBUG; /*ARBRE DE LBIP*/
-    /*if(c->node==0)
-    {
-        printf("\tARBRE DE BIP : \n");
-        arbre_affiche(nodedata->tree_BIP);
-    }*/
-	
-    DEBUG;  //GRAPH
-
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
     list_PACKET_detruire(&nodedata->paquets);               //packets
@@ -240,6 +220,10 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
+    struct protocoleData *entitydata = get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("LBOP BROADCAST - ON %d  \n",c->node);
+
     struct nodedata *nodedata = get_node_private_data(c);
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
@@ -251,13 +235,18 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
 
+    if(entitydata->debug)
+        printf("LBOP - %d SET HEADER  \n",c->node);
+
     //Fixé le rayon
     if(nodedata->range<0)
     {
+
         listeNodes *tmp=nodedata->oneHopNeighbourhood;
         position_t pos1 = *get_node_position(c->node);
         double distMax = 0;
@@ -273,7 +262,9 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
         }
         set_range_Tr(c,distMax);
         nodedata->range=get_range_Tr(c);
-        printf("Le range est fixé a %.2lf\n",get_range_Tr(c));
+        if(entitydata->debug)
+            printf("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
+
     }
 
     //remplissage de data

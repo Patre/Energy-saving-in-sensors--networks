@@ -58,8 +58,8 @@ Entity 'app-sensor' (6)
     description  : Broadcast Application
 
 Entity 'routing-protocole' (7)
-    using model  : routing_lbip
-    using plugin : /usr/local/wsnet-2.0/lib//librouting_lbip.so
+    using model  : routing_rbop
+    using plugin : /usr/local/wsnet-2.0/lib//librouting_rbop.so
     author       : LAOUADI Rabah
     version      : 0.1
     description  : Broadcast Incremental Protocol
@@ -106,7 +106,7 @@ Bundle 'sensor' (0)
 
 Simulation stats:
   simulated time: 2000000000000
-  simulation time: 104006000
-  speedup: 19229.659827
+  simulation time: 16001000
+  speedup: 124992.187988
   events in queue: 1
-  events executed: 5204
+  events executed: 1854
