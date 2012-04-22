@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QFileDialog>
+
+
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -32,6 +37,16 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::calculerDegree()
+{
+    double range=ui->rangeEdit->value()*zoom;
+    int degree=0;
+    for(int i=0;i<nodes.size();i++)
+        for(int j=0;j<nodes.size();j++)
+            if(i!=j && distanceEuclidienne(nodes.at(i),nodes.at(j))<range)
+                degree++;
+    degreeMoy = (double) degree / (double) nodes.size();
+}
 
 void MainWindow::lireFile(QString filename)
 {
@@ -94,8 +109,11 @@ void MainWindow::lireFile(QString filename)
 
 void MainWindow::chargerGraph()
 {
+    //zoom=ui->zoomEdit->value();
     QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph","/home/bibouh/wsnet-module/user_models/tests");
     lireFile(file);
+    calculerDegree();
+    QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
     ui->graphFinale->setEnabled(true);
@@ -122,4 +140,27 @@ void MainWindow::clearGraph()
     nodes.clear();
     graph_view->clearGraph();
     graph_view->repaint();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//ADDED Function
+double distanceEuclidienne(double x1,double y1, double x2, double y2)
+{
+    return qSqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+}
+
+double distanceEuclidienne(Element x1,Element x2)
+{
+    return distanceEuclidienne(x1.nodePosition.x(),x1.nodePosition.y(),x2.nodePosition.x(),x2.nodePosition.y());
 }

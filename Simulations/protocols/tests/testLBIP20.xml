@@ -26,7 +26,10 @@
 <!--
 == MAC =====================================================
 -->
-<entity name="mac" library="mac_dcf_802_11"></entity>
+	<entity name="mac" library="mac_macter">
+		<init  debit="10" debug="0" alpha="4" c="100000"/>
+		<default range ="30"/>
+	</entity>
 <!--
 == APPLICATION =====================================================
 -->
@@ -44,7 +47,7 @@
 
 <!-- == ROUTING ========================================= -->
 <entity name="routing-protocole" library="routing_lbip">
-<init alpha="1" c="0" eps="0.01" />
+<init alpha="4" c="100000" eps="0.01" />
 <default />
 </entity>
 

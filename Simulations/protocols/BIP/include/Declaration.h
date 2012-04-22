@@ -42,6 +42,7 @@ struct nodedata {
 /* ************************************************** */
 /* VARIABLE de L'APPLICATION LBIP */
 struct protocoleData {
+        int       debug;
 	double    alpha;           //alpha de modele d'energie
 	double    c;                 //le C de modele d'energie
 	double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)

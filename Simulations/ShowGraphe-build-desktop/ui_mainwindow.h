@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Wed Apr 11 18:53:41 2012
+** Created: Fri Apr 20 10:17:50 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -15,7 +15,9 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDockWidget>
+#include <QtGui/QDoubleSpinBox>
 #include <QtGui/QHeaderView>
+#include <QtGui/QLCDNumber>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
@@ -40,6 +42,7 @@ public:
     QPushButton *etapeSuivante;
     QPushButton *graphFinale;
     QPushButton *clearButton;
+    QDoubleSpinBox *zoomEdit;
     QDockWidget *dockWidget_3;
     QWidget *dockWidgetContents_3;
     QSpinBox *widthTopo;
@@ -47,18 +50,21 @@ public:
     QSpinBox *widthCar;
     QSpinBox *heigthCar;
     QPushButton *pushButton;
+    QLCDNumber *nbrNodes;
+    QSpinBox *rangeEdit;
+    QLCDNumber *densite;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(400, 300);
+        MainWindow->resize(739, 432);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 400, 20));
+        menuBar->setGeometry(QRect(0, 0, 739, 25));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -90,11 +96,15 @@ public:
         clearButton->setObjectName(QString::fromUtf8("clearButton"));
         clearButton->setEnabled(false);
         clearButton->setGeometry(QRect(0, 170, 101, 31));
+        zoomEdit = new QDoubleSpinBox(dockWidgetContents);
+        zoomEdit->setObjectName(QString::fromUtf8("zoomEdit"));
+        zoomEdit->setGeometry(QRect(0, 220, 101, 22));
+        zoomEdit->setValue(0.5);
         dockWidget->setWidget(dockWidgetContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
         dockWidget_3 = new QDockWidget(MainWindow);
         dockWidget_3->setObjectName(QString::fromUtf8("dockWidget_3"));
-        dockWidget_3->setMinimumSize(QSize(100, 36));
+        dockWidget_3->setMinimumSize(QSize(100, 41));
         dockWidgetContents_3 = new QWidget();
         dockWidgetContents_3->setObjectName(QString::fromUtf8("dockWidgetContents_3"));
         widthTopo = new QSpinBox(dockWidgetContents_3);
@@ -119,7 +129,19 @@ public:
         heigthCar->setMaximum(999);
         pushButton = new QPushButton(dockWidgetContents_3);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(0, 170, 101, 23));
+        pushButton->setGeometry(QRect(0, 210, 101, 23));
+        nbrNodes = new QLCDNumber(dockWidgetContents_3);
+        nbrNodes->setObjectName(QString::fromUtf8("nbrNodes"));
+        nbrNodes->setGeometry(QRect(30, 240, 64, 23));
+        rangeEdit = new QSpinBox(dockWidgetContents_3);
+        rangeEdit->setObjectName(QString::fromUtf8("rangeEdit"));
+        rangeEdit->setGeometry(QRect(0, 170, 101, 22));
+        rangeEdit->setMinimum(10);
+        rangeEdit->setMaximum(999);
+        rangeEdit->setValue(30);
+        densite = new QLCDNumber(dockWidgetContents_3);
+        densite->setObjectName(QString::fromUtf8("densite"));
+        densite->setGeometry(QRect(30, 280, 64, 23));
         dockWidget_3->setWidget(dockWidgetContents_3);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(2), dockWidget_3);
 

@@ -44,7 +44,6 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     }
 
 
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packet);//*/
 
@@ -63,7 +62,31 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
+    struct protocoleData *entitydata=get_entity_private_data(c);
 
+
+    if(nodedata->range<0)
+    {
+
+        listeNodes *tmp=nodedata->oneHopNeighbourhood;
+        position_t pos1 = *get_node_position(c->node);
+        double distMax = 0;
+        while(tmp)
+        {
+            if(list_recherche(nodedata->RNG,tmp->values.node))
+            {
+                position_t pos2={tmp->values.x,tmp->values.y,tmp->values.z};
+                double dist=distance(&pos1,&pos2);
+                if(distMax<dist)    distMax=dist;
+            }
+            tmp=tmp->suiv;
+        }
+        set_range_Tr(c,distMax);
+        nodedata->range=get_range_Tr(c);
+        if(entitydata->debug)
+            DBG("RBOP  - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
+
+    }
 
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);

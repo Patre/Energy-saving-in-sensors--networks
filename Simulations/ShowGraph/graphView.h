@@ -30,6 +30,7 @@ public slots:
     void setBrush(const QBrush &brush);
     void setAntialiased(bool antialiased);
     void setTransformed(bool transformed);
+    void setZoom(double zoom);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -43,7 +44,7 @@ private:
     bool haveGraph;
     QList<GraphElement> list_graph;
 
-    int zoom;
+    double zoom;
     Shape shape;
     QPen pen;
     QBrush brush;

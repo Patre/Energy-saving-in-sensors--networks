@@ -1,8 +1,8 @@
 /**
- *  \file   BIP_Protocole.c
+ *  \file   bip.c
  *  \brief  Broadcast Incremental Protocol
- *  \author LAOUADI Rabah
- *  \date   03-2012
+ *  \author LAOUADI Rabah and Chloé Desduits
+ *  \date   2012
  **/
 
 #include "Implementation.h"
@@ -13,7 +13,7 @@
 /* Defining module informations*/
 model_t model =  {
     "Broadcast Incremental Protocol",
-    "LAOUADI Rabah",
+    "LAOUADI Rabah and Chloé Desduits",
     "0.1",
 //    MODELTYPE_APPLICATION,
     MODELTYPE_ROUTING,
@@ -55,9 +55,6 @@ int setnode(call_t *c, void *params) {
     nodedata->g2hop = malloc(sizeof(graphe));
     initGraphe(nodedata->g2hop, c->node);
 
-
-    //arbre
-    //arbre_add_pere(&nodedata->tree_BIP,c->node);
     //STATS
     nodedata->nbr_evenement = 0;
 
@@ -75,6 +72,7 @@ int init(call_t *c, void *params) {
     param_t *param;
 	
     /* init entity variables */
+    entitydata->debug   = 0;
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
@@ -85,6 +83,12 @@ int init(call_t *c, void *params) {
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
+        if (!strcmp(param->key, "debug")) {
+                        if (get_param_integer(param->value, &(entitydata->debug))) {
+                                goto error;
+                        }
+        }
+
         if (!strcmp(param->key, "alpha")) {
 			if (get_param_double(param->value, &(entitydata->alpha))) {
 				goto error;
@@ -129,8 +133,6 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 
-    //printf("TWO");
-    //INITIALISATION DE L'ARBRE
     get_PROTOCOLE_init(c,entitydata->eps);
    return 0;
 }
@@ -139,6 +141,8 @@ int bootstrap(call_t *c) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
+    if(!is_node_alive(c->node))
+            return;
     struct nodedata *nodedata = get_node_private_data(c);
 
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
@@ -191,9 +195,13 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
+
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
-    //printf("range de 0 est %lf\n",get_range_Tr(c));
+    struct protocoleData *entitydata = get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("BIP BROADCAST - FROM %d WITH RANGE %.2lf\n",c->node,get_range_Tr(c));
+
     TX(&c0,packet);
 }
 
@@ -204,12 +212,17 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 
+
+    struct protocoleData *entitydata = get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("BIP - SET HEADER ON %d \n",c->node);
+
     if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
     {
-        //purgeGrapheOfStables(nodedata->g2hop);
+        purgeGrapheOfStables(nodedata->g2hop);
         nodedata->tree_BIP = computeBIPtree(c, nodedata->g2hop);
 		
-		/*printf("Graphe de %d : \n");
+        /*printf("Graphe de %d : \n");
         afficherGraphe(nodedata->g2hop);
         printf("\t\t\tje calcule l'arbre de %d\n",c->node);
         printf("arbre de BIP de %d construit : \n", c->node);
@@ -240,10 +253,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     //envoyer aussi l'arbre pere
     header->pere_arbre=Nullptr(arbre);
     arbre_copy(&header->pere_arbre,nodedata->tree_BIP);
-
-    DEBUG;
-    //if(header->seq==1)while(destinations){SHOW_GRAPH("G: %d %d\n",c->node,destinations->val);destinations=destinations->suiv;}
-
 
     //destination de paquet
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};

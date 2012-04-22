@@ -37,7 +37,7 @@ void init_files()
 	
     //GRAPH
     FILE *topo;
-    topo=fopen("graphBIP","w");
+    topo=fopen("graphLBIP","w");
     fclose(topo);
 	
 }
@@ -180,7 +180,7 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			//printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
 				break;
 			else
@@ -201,10 +201,10 @@ void rx(call_t *c, packet_t *packet) {
 					forward(c, packet);
 				}
 			}
-			else
+                        /*else
 			{
 				printf("Message non broadcaste pas traite ... TODO\n");
-			}
+                        }*/
 			//packet_dealloc(packet);
 			break;
 		}
@@ -299,16 +299,14 @@ int get_header_real_size( call_t * c )
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
-	printf("Unset node %d\n",c->node);
+        //printf("Unset node %d\n",c->node);
 	
-    DEBUG; /* Voisinage 1-hop */
+
+
+
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
-    
-	
-    DEBUG;/* Voisinage 2-hop */
-	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
-	
-	
+    listeNodes_detruire(&nodedata->twoHopNeighbourhood);
+
     DEBUG; /* ARBRE DE LBIP */
 	if(nodedata->BIP_tree != 0)
 	{

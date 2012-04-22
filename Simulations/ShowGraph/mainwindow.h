@@ -6,6 +6,11 @@
 #include "graphView.h"
 #include "graphelement.h"
 #include "topogenerate.h"
+#include "arbreteststage.h"
+
+//ADDED Function Prototypes
+double distanceEuclidienne(double x1,double y1, double x2, double y2);
+double distanceEuclidienne(Element x1,Element x2);
 
 namespace Ui {
     class MainWindow;
@@ -27,13 +32,15 @@ public slots:
     void afficherGraph();
     void clearGraph();
     void genererTopologie();
+    void calculerDegree();
 
 private:
     Ui::MainWindow  *ui;
     GraphView       *graph_view;
     QList<GraphElement> list_graph;
     QList<Element>  nodes;
-    int zoom;
+    double degreeMoy;
+    double zoom;
 };
 
 #endif // MAINWINDOW_H

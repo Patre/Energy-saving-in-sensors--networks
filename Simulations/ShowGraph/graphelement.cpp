@@ -44,10 +44,12 @@ void GraphElement::debug(GraphElement ele)
     QString des=QVariant(ele.getIdNodeFin()).toString();
     QMessageBox::information(0,"DEBUG d'un GRAPHELEMENT","SOURCE : "+src+" \n DESTINATION:"+des);
 }
+
 int GraphElement::getIdNodeDebut()
 {
     return nodeDeb.node;
 }
+
 int GraphElement::getIdNodeFin()
 {
     return nodeFin.node;

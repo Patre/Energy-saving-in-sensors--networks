@@ -5,7 +5,6 @@
  *  \date   03-2012
  **/
 
-#include "one_hop.h"
 #include "Implementation.h"
 
 
@@ -47,12 +46,7 @@ int setnode(call_t *c, void *params) {
     //les packets
     nodedata->paquets   = Nullptr(list_PACKET);
 
-
-    //les voisinages
-    nodedata->oneHopNeighbourhood = Nullptr(listeNodes);
-
     nodedata->nbr_evenement = 0;
-
 
     set_node_private_data(c, nodedata);
 	
@@ -69,6 +63,7 @@ int init(call_t *c, void *params) {
 	
     /* init entity variables */
     entitydata->alpha   = 2;
+    entitydata->debug   = 0;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
     entitydata->debut   = time_seconds_to_nanos(10);
@@ -83,6 +78,12 @@ int init(call_t *c, void *params) {
 				goto error;
 			}
         }
+        if (!strcmp(param->key, "debug")) {
+                        if (get_param_integer(param->value, &(entitydata->debug))) {
+                                goto error;
+                        }
+        }
+
         if (!strcmp(param->key, "c")) {
 			if (get_param_double(param->value, &(entitydata->c))) {
 				goto error;
@@ -121,7 +122,6 @@ int bootstrap(call_t *c) {
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 
 
-    get_one_hop(c,entitydata->eps);
 
     /*if(c->node==0)
     {
@@ -140,19 +140,11 @@ void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
 
     struct packet_general *packetType= (struct packet_general *)(packet->data + nodedata->overhead);
-    /*******************************HELLO 1 voisinage***************************/
         switch(packetType->type)
 	{	
-        case HELLO:
-            {
-                rx_hello(c,packet);
-                break;
-            }
-
         case FLOOD:
         {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
-			//printf("%d recoit depuis %d\n", c->node, data->src);
             SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
             if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
@@ -171,22 +163,9 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
-    DEBUG; // Voisinage 1 hop
-      /*printf("\t1-voisinage de %d : ", c->node);
-      listeNodes_affiche(nodedata->oneHopNeighbourhood);
-      //printf("\t\t\t");list_affiche(nodedata->LMST_voisin);//*/
-    
-
-      /*printf("\tPaquets : %d ->",c->node);
-      list_PACKET_affiche(nodedata->paquets);//*/
-
-	
-
-    DEBUG;  //GRAPH
 
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
-    listeNodes_detruire(&nodedata->oneHopNeighbourhood);
     list_PACKET_detruire(&nodedata->paquets);               //packets
     free(nodedata);
 
@@ -204,6 +183,10 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
+    struct protocoleData *entitydata=get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("FLOOD BROADCAST - FROM %d WITH RANGE %.2lf\n",c->node,get_range_Tr(c));
+
     struct nodedata *nodedata = get_node_private_data(c);
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
@@ -226,9 +209,10 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     data->seq=nodedata->nbr_evenement;
     data->redirected_by=c->node;
 
-    //destiantions
-    data->destinations = Nullptr(listeNodes);
-    listeNodes_copy(&data->destinations,nodedata->oneHopNeighbourhood);
+    struct protocoleData *entitydata=get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("FLOOD  - ON %d SET HEADER\n",c->node,get_range_Tr(c));
+
 
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);

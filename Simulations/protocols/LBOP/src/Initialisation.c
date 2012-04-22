@@ -4,7 +4,6 @@ void get_PROTOCOLE_init(call_t *c, double eps)
 {
     int count=get_node_count();
     uint64_t at=count*time_seconds_to_nanos(eps)+time_seconds_to_nanos(eps);
-    printf("INITIAL %d %lf\n",c->node,time_nanos_to_seconds(at));
     scheduler_add_callback(at, c, init_lbop, NULL);
 }
 
@@ -16,6 +15,9 @@ void init_lbop(call_t *c)
 {
 
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
+    if(entitydata->debug)
+        printf("LBOP - %d INITIALISATION AT %lf\n",c->node,get_time_now_second());
 
     list *N1=Nullptr(list);
     listeNodes_to_list(&N1,nodedata->oneHopNeighbourhood);
@@ -67,10 +69,11 @@ void init_lbop(call_t *c)
     arbre_add_pere(&MST,c->node);
     prim_tree(debut,&MST,connexions,graphElements);//*/
 
-    arbre_get_fils(&nodedata->LMST_intial,MST,c->node);
-
-    DEBUG;
-    printf("LMST %d ",c->node);
-    list_affiche(nodedata->LMST_intial);
+    if(entitydata->debug)
+    {
+        arbre_get_fils(&nodedata->LMST_intial,MST,c->node);
+        printf("LMST %d ",c->node);
+        list_affiche(nodedata->LMST_intial);
+    }
 
 }

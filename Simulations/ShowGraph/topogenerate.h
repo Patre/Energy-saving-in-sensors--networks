@@ -18,6 +18,7 @@ public:
     bool genererNeoudes();
     bool genererFichier();
 
+
 private:
     bool boolSize;
     int width;
@@ -31,6 +32,8 @@ private:
     bool boolIndex;
     int Wi;
     int He;
+
+    bool boolfinish;
     element carreau[100][100];
 };
 

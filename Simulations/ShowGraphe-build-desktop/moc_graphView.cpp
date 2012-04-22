@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'graphView.h'
 **
-** Created: Wed Apr 11 18:53:48 2012
+** Created: Fri Apr 20 10:23:27 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_GraphView[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,6 +39,7 @@ static const uint qt_meta_data_GraphView[] = {
      140,  134,   10,   10, 0x0a,
      169,  157,   10,   10, 0x0a,
      202,  190,   10,   10, 0x0a,
+     228,  223,   10,   10, 0x0a,
 
        0        // eod
 };
@@ -49,7 +50,8 @@ static const char qt_meta_stringdata_GraphView[] = {
     "clearGraph()\0shape\0setShape(Shape)\0"
     "pen\0setPen(QPen)\0brush\0setBrush(QBrush)\0"
     "antialiased\0setAntialiased(bool)\0"
-    "transformed\0setTransformed(bool)\0"
+    "transformed\0setTransformed(bool)\0zoom\0"
+    "setZoom(double)\0"
 };
 
 const QMetaObject GraphView::staticMetaObject = {
@@ -89,9 +91,10 @@ int GraphView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 5: setBrush((*reinterpret_cast< const QBrush(*)>(_a[1]))); break;
         case 6: setAntialiased((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 7: setTransformed((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 8: setZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

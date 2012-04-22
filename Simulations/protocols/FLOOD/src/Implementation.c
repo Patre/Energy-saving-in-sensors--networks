@@ -59,9 +59,12 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
 
 
+
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
+    //
+    data->redirected_by = c->node;
 
     entityid_t *up = get_entity_links_up(c);
     call_t c_up = {up[0], c->node};
@@ -69,12 +72,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     packet_up = packet_clone(packetRecu);
     RX(&c_up, packet_up);//*/
-
-
-    //changer les destination
-    data->redirected_by=c->node;
-    data->destinations=Nullptr(listeNodes);
-    listeNodes_copy(&data->destinations,nodedata->oneHopNeighbourhood);//*/
 
     //ENVOI
     //recuperer le support de communication DOWN
