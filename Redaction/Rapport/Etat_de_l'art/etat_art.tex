@@ -122,6 +122,12 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù RNG& MST
 \begin{mydef}
  Nous notons $MST(G)$ un des arbres couvrants de poids minimum de G. Nous pouvons calculer rapidement un tel arbre de façon globale (MST) ou distribuée (LMST).
+ 
+
+
+
+
+
 \end{mydef}
 
 \begin{mydef}
@@ -362,6 +368,8 @@ Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre
 
 
 \section{Quelques algorithmes de routage}
+Model de reseau: $M1$ avec pour modele energetique 'Packet based model'.
+
 % TODO : harmoniser les durées de vie ou poser les notations dans l'intro de la subsection
 % TODO : citation de tous les articles (ou références)
 % TODO : compléter les mots-clés
@@ -523,6 +531,7 @@ Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds q
 \emph{Durée de vie} : $$ LC $$
 
 \section{Quelques algorithmes de broadcast}
+Model de reseau: $M1$ avec pour modele energetique 'Packet based model'.
 
 \subsubsection{Blind Flooding\label{blind_flooding}}
 \emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
@@ -698,10 +707,8 @@ BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairem
 \end{algorithmic}
 \end{algorithm}
 
-
-
-\emph{Consommation :} 
-
+\emph{Consommation :} Pour une 2-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un consommation de $2n\cdot \gamma^\alpha +  n\cdot c$.
+Pour une 1-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un consommation de $n\cdot \gamma^\alpha +  n\cdot c$.
 
 
 
@@ -748,11 +755,6 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 %\caption{ }
 %\end{figure} 
 
-\emph{Exemple :} 
-
-\emph{Consommation :} 
-
-\emph{Durée de vie :} 
 
 
 
@@ -778,14 +780,91 @@ DLBIP présente la meme durée de vie que LBIP.
 
 
 \subsubsection{Localized Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
-\emph{Mots clés :} 
+\emph{Mots clés :} broadcast, local,LMST, RNG, 1-voisinage, rayon d'émission variable, déterministe.
 
-\emph{Description :} 
+\emph{Description :} LBOP et RBOP sont des protocole de diffusion s'appuyant respectivement sur l'abre couvrant de cout minimum local(LMST) et le graphe de voisinage(RNG).\\
+Le graphe RNG peut etre obtenue raidement de façon locale et necessite la connaissance du 1-voisinage. Etant donné que chaque site connait sa position et celle de son 1-voisinage, il peut construire son graphe RNG
+sur celui-ci. La reunion des tout ses sous graphe est exactement RNG(G).Une fois ce graphe construit, le message est diffusé via celui-ci, chaque noeud  transmettant à 'ses voisins les plus proche' n'ayant pas encore reçu le message.\\
 
-\emph{Exemple :} 
 
-\emph{Consommation :} 
 
+LMST est la version distribués pour calculer un arbtre couvrant de cout minimum. Cepandant LMST n'est pas forcement de cout minimum. Pour calculer le graphe LMST, chaque site $u$ construit $LMST(N_1(u))$:\\
+ $(u,v)\in LMST(N_1(u)) \Leftrightarrow v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$\\
+Avec $N_{MST(N_1(u))}(v)$ les voisins de $v$ dans l'abre couvrant calculeé sur son 1-voisinage(avec PRIM par exemple).\\
+Une fois l'arbre construit, le message est diffusé via celui-ci, chaque noeud pere transmettant à ses fils.
+
+
+
+
+\begin{algorithm}[h]
+\caption{RNG}
+\label{RNG}
+\begin{algorithmic}
+\FOR{chaque noeud $u$}
+	\STATE Appel de Découverte de 1-voisinage
+\ENDFOR
+\FOR{chaque noeud $u$ }
+	\STATE  $RNG(u) \leftarrow graphe_{vide}$
+	\FOR{chaque noeud $v \in N_1(u)$ }
+	  \IF{$ \nexists w\in N_1(u)\cap N_1(v): d_e(u,w)<d_e(u,v) \wedge d_e(v,w)<d_e(u,v)  \}$}
+	    \STATE Ajouter $v$ à $RNG(u)$
+	  \ENDIF
+        \ENDFOR
+\ENDFOR
+\RETURN $\bigcap_{u \in G} RNG(u)$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[h]
+\caption{LMST}
+\label{LMST}
+\begin{algorithmic}
+\FOR{chaque noeud $u$}
+	\STATE Appel de Découverte de 1-voisinage
+	\STATE $u$ calcul $MST(N_1(u))$ et l'envoie à ses voisins
+\ENDFOR
+\FOR{chaque noeud $u$ }
+	\FOR{chaque noeud $v \in N_1(u)$ }
+	  \IF{$ v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$}
+	    \STATE Ajouter $v$ à $LMST(u)$
+	  \ENDIF
+        \ENDFOR
+\ENDFOR
+\RETURN $\bigcap_{u \in G}( LMST(u))$
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
+\caption{RBOP}
+\label{algo_RBOP}
+\begin{algorithmic}
+\STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance du 1-voisinage
+\STATE $s$ calcul $RNG(U)$ et envoie $M$ avec pour rayon $\max\limits_{v\in N_{RNG(s)}}(d_e(s,v))$
+
+\IF{ $u$ reçoit <M,$v$> }
+	\IF {$M$ est un nouveau message}
+		\STATE -si $v\in RNG(u)$: $RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$ $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
+		\STATE -sinon: attendre $\Delta$, si $RNG(u)$ est non vide  $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
+			 	
+	\ENDIF
+	\IF{$M$ a deja eté reçu par $u$}
+		\STATE -si $u$ a déja retransmit ce message: $M$ est ignoré
+		\STATE -$RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$:
+		\INDSTATE   -si $RNG(u)$ est vide: $M$ est ignoré
+		\INDSTATE   -si $RNG(u)$ est non vide: $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
+			 	
+	\ENDIF
+
+\ENDIF
+\end{algorithmic}
+\end{algorithm}
+
+En remplacant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons LBOP.\\
+
+\emph{Consommation :}En pratique, étant donnée que 
 \emph{Durée de vie :} 
 
 
@@ -794,14 +873,11 @@ DLBIP présente la meme durée de vie que LBIP.
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} TRLBOP est une amélioration de LBOP. Le principe de choisir les noeuds relais pour qu'ils se rapproche le plus possible d'un maillage
- hexagonale de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$.
-
-
-\emph{Exemple :} 
-
-\emph{Consommation :} 
-
-\emph{Durée de vie :} 
+ hexagonale de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$.Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d_e(u,w))$, le rayon choisie est la distance entre $u$ et un voisins non
+encore couvert par le broadcast qui est la plus proche de $R_{opt}$ . \\
+Soient  $L(u)= N_{LMST}(u)$ et $L'(u)=N_1(u)\backslash L(u)$.\\
+Soient  $D_L=\max(d_e(u,v)\mid v \in L(u))$ et \\ $D_{L'}=(d_e(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))$ avec $\delta_{uv}=\mid d_e(u,v)-R_{opt}\mid$.\\
+Ainsi un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
 
 
 
@@ -811,12 +887,12 @@ DLBIP présente la meme durée de vie que LBIP.
 
 \subsection{Synthèse}
 
-\subsubsection{Schéma récapitulatif}
-\begin{figure}[H]
-\centering
-\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
-\caption{Graphe de synthèse}
-\end{figure} 
+%\subsubsection{Schéma récapitulatif}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
+%\caption{Graphe de synthèse}
+%\end{figure} 
 
 \subsubsection{Tableau récapitulatif}
 % TODO : ajouter tableau récapitulatif avec chaque algo sur les lignes et chaque type d'algo sur les colonnes + complexité si possible
@@ -847,13 +923,11 @@ LBIP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & 
 \hline
 DLBIP \cite{Champ2009DLBIP} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 \hline
-RRS \cite{Cartigny2003RNG} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+LBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 \hline
-LBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+RBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 \hline
-RBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
-\hline
-TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 %>>>>>>> 1893df8ee14e584385a58441d27c3c8189d12db0
 \hline
 \end{tabular}
