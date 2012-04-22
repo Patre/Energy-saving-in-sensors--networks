@@ -794,18 +794,18 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 
 
-\subsubsection{Localized Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
-\emph{Mots clés :} broadcast, local,LMST, RNG, 1-voisinage, rayon d'émission variable, déterministe.
+\subsubsection{Localized Broadcast Oriented Protocol et  RNG Broadcast Oriented Protocol \cite{Cartigny2005}}
+\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} LBOP et RBOP sont des protocoles de diffusion s'appuyant respectivement sur l'arbre couvrant de coût minimum local (LMST) et le graphe de voisinage (RNG).\\
-Le graphe RNG peut être obtenu rapidement de façon locale et nécessite la connaissance du 1-voisinage. Etant donné que chaque site connait sa position et celle de son 1-voisinage, il peut construire son graphe RNG sur celui-ci. La réunion de tout ses sous graphe est exactement RNG(G).Une fois ce graphe construit, le message est diffusé via celui-ci, chaque noeud  transmettant à 'ses voisins les plus proche' n'ayant pas encore reçu le message.\\
+Le graphe RNG peut être obtenu rapidement de façon locale et nécessite la connaissance du 1-voisinage. Etant donné que chaque site connait sa position et celle de son 1-voisinage, il peut construire son graphe RNG sur celui-ci. La réunion de tous ses sous-graphes est exactement RNG(G). Une fois ce graphe construit, le message est diffusé via celui-ci, chaque noeud  transmettant à 'ses voisins les plus proches' n'ayant pas encore reçu le message.\\
 
 
 
-LMST est la version distribués pour calculer un arbtre couvrant de cout minimum. Cepandant LMST n'est pas forcement de cout minimum. Pour calculer le graphe LMST, chaque site $u$ construit $LMST(N_1(u))$:\\
- $(u,v)\in LMST(N_1(u)) \Leftrightarrow v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$\\
-Avec $N_{MST(N_1(u))}(v)$ les voisins de $v$ dans l'abre couvrant calculeé sur son 1-voisinage(avec PRIM par exemple).\\
-Une fois l'arbre construit, le message est diffusé via celui-ci, chaque noeud pere transmettant à ses fils.
+LMST est la version distribuée pour calculer un arbre couvrant de coût minimum. Cependant LMST n'est pas forcément de coût minimum. Pour calculer le graphe LMST, chaque site $u$ construit $LMST(N_1(u))$ : \\
+ $(u,v) \in LMST(N_1(u)) \Leftrightarrow v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$\\
+Avec $N_{MST(N_1(u))}(v)$ les voisins de $v$ dans l'arbre couvrant calculé sur son 1-voisinage (avec PRIM par exemple).\\
+Une fois l'arbre construit, le message est diffusé via celui-ci, chaque nœud père transmettant à ses fils.
 
 
 
@@ -876,22 +876,24 @@ Une fois l'arbre construit, le message est diffusé via celui-ci, chaque noeud p
 \end{algorithmic}
 \end{algorithm}
 
-En remplacant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons LBOP.\\
+En remplaçant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons LBOP.\\
 
-\emph{Consommation :}En pratique, étant donnée que 
+\emph{Consommation :}
+
 \emph{Durée de vie :} 
 
 
-\subsubsection{TR-LBOP \cite{Ingelrest2004}}
-'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks'.\\
+\subsubsection{Target Radius LMST Broadcast Oriented Protocol \cite{Ingelrest2004}}
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
-\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe de choisir les noeuds relais pour qu'ils se rapproche le plus possible d'un maillage
- hexagonale de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$.Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d_e(u,w))$, le rayon choisie est la distance entre $u$ et un voisins non
-encore couvert par le broadcast qui est la plus proche de $R_{opt}$ . \\
-Soient  $L(u)= N_{LMST}(u)$ et $L'(u)=N_1(u)\backslash L(u)$.\\
-Soient  $D_L=\max(d_e(u,v)\mid v \in L(u))$ et \\ $D_{L'}=(d_e(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))$ avec $\delta_{uv}=\mid d_e(u,v)-R_{opt}\mid$.\\
-Ainsi un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
+\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d_e(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
+
+Soient : 
+$$L(u)= N_{LMST}(u)$$
+$$L'(u)=N_1(u)\backslash L(u)$$
+$$D_L=\max(d_e(u,v)\mid v \in L(u))$$
+$$D_{L'}=(d_e(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))\ avec\ \delta_{uv}=\mid d_e(u,v)-R_{opt}\mid$$
+Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
 
 
 
