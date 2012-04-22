@@ -91,11 +91,21 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 \end{mydef}
  
 
-\begin{figure}[H]
-\centering
-\includegraphics[angle=90 , scale=0.3]{Etat_de_l'art/source/GrapheUnit.pdf}
-\caption{Graphe unité}
-\end{figure} 
+\begin{figure}[tb]
+    \centering
+    \begin{tabular}{cccc}
+      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheUnit.pdf} &
+      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
+      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
+      \\
+      (a) & (b) & (c) \\
+    \end{tabular}
+    \caption{Graphe unité(a), graphe RNG(b) et graphe MST(c) \label{fig:ex}}
+\end{figure}
+
+\
+
+
 
 
 
@@ -263,7 +273,7 @@ Sans chevauchement et sans vide, un plan ne peut être découpé de façon unifo
 \end{myth}
 \begin{proof}
 Soit $m$ le nombre de sommets d'un $m$-polygone et $n$ le nombre de $m$-polygones nécessaires pour couvrir $2\pi$ degrés. La somme des angles internes étant égale au produit d'un 
-angle interne par le nombre de côtés n, elle sera égale à $\pi m-2 \pi$  radian. Un angle interne vaut donc $\frac{(m-2)\pi }{m}$ . Nous avons: 
+angle interne par le nombre de côtés $m$, elle sera égale à $\pi m-2 \pi$  radian. Un angle interne vaut donc $\frac{(m-2)\pi }{m}$ . Nous avons: 
 $$\frac{(m-2)n\pi}{m}=2\pi$$
 $$\Leftrightarrow$$
 $$(m-2)(n-2)=4$$
@@ -512,7 +522,7 @@ Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds q
 
 \emph{Durée de vie} : $$ LC $$
 
-
+\section{Quelques algorithmes de broadcast}
 
 \subsubsection{Blind Flooding\label{blind_flooding}}
 \emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
@@ -585,15 +595,6 @@ Un noeud source $s$, un message $M$
 \end{algorithm}
 
 
-\emph{Exemple :} 
-
-\emph{Consommation :} 
-
-\emph{Durée de vie :} 
-% TODO : consommation / durée de vie
-
-
-
 \subsubsection{Broadcast Incremental-power Protocol \cite{Wieselthier2000}}
 
 \emph{Mots clés :} broadcast, global, avec balisage, rayon d'émission variable, déterministe.
@@ -663,7 +664,7 @@ BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairem
 \end{algorithmic}
 \end{algorithm}
 
-\emph{Exemple :} 
+
 
 \emph{Consommation :} 
 
@@ -697,13 +698,11 @@ BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairem
 \end{algorithmic}
 \end{algorithm}
 
-\emph{Exemple :} 
+
 
 \emph{Consommation :} 
 
-\emph{Durée de vie :} 
 
-%Complexité en messages: $O(2n)$.
 
 
 \subsubsection{Localized Broadcast Incremental-power Protocol \cite{Ingelrest2004}}
@@ -769,28 +768,16 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 % TODO : actualisation des niveaux d'énergie des nœuds voisins
 
-\emph{Exemple :} 
-
-\emph{Consommation :} 
-
-\emph{Durée de vie :} 
 
 
-
-\subsubsection{RRS \cite{Cartigny2003RNG}}
-\emph{Mots clés :} broadcast, local, avec balisage, graphe de voisinage, RNG, rayon d'émission variable, déterministe.
-
-\emph{Description :} 
+\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomenes de chemins de fourmis en lorsque les source des broadcast sont toujours les memes.Si les sources des broadcast sont aléatoires, 
+DLBIP présente la meme durée de vie que LBIP.
 
 
 
-\emph{Exemple :} 
 
-\emph{Consommation :} 
 
-\emph{Durée de vie :} 
-
-\subsubsection{Localized Broadcast Oriented Protocol \cite{Cartigny2005}}
+\subsubsection{Localized Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
 \emph{Mots clés :} 
 
 \emph{Description :} 
@@ -801,16 +788,6 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 \emph{Durée de vie :} 
 
-\subsubsection{RBOP \cite{Cartigny2005}}
-\emph{Mots clés :} 
-
-\emph{Description :}
-
-\emph{Exemple :} 
-
-\emph{Consommation :} 
-
-\emph{Durée de vie :} 
 
 \subsubsection{TR-LBOP \cite{Ingelrest2004}}
 'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks'.\\
