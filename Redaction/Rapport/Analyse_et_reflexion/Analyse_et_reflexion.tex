@@ -7,43 +7,43 @@
 \section{Critique de l'existant}
 
 
-\section{Modèle choisi}
 
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.9]{Etat_de_l'art/source/layer.pdf}
-\caption{\label{Layer} Les couches dans les WSNs}
-\end{figure}
-
-Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (WSN), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
-
-Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_1$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit précédemment.
-% TODO : on a choisi le broadcast, …
  
 
 
 \section{Nos idées}
 
-\subsection{Application du rayon optimal à DLBIP}
-\begin{algorithm}[h]
-\caption{DLBIP avec rayon optimal}
-\label{algo_DLBIP}
+\subsection{Application du rayon optimal à DLBIP: TR-DLBIP}
+
+DLBIP offre de bonne performences puisqu'il se base sur BIP qui est à ce jour l'algorithme le plus efficace en matiere de broadcast.
+Nous l'avons modifié légerement en lui appliquant l'idée du rayon optimale.
+
+\begin{algorithm}[H]
+\caption{TR-DLBIP}
+\label{algo_TRDLBIP}
 \begin{algorithmic}
-\STATE ENTREES  $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
-\STATE SORTIE  DLBIP Broadcast
-\STATE REQUIE  Connaissance du 2-voisinage
+\STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance du 2-voisinage
 \STATE $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$
-\STATE $s$ calcul son BIP($N_2(s),s,P'_{ij}$) et diffuse <M,$s$> à ses fils
-\IF{ $u$ recoit <M,$v$> :}
-	\IF{Le paquet contient des instruction pour $u$}
-		\STATE $u$ construit BIP($N_2(u),u,P'_{ij}$) est retransmet le message à ses fils avec pour rayon:
-			  \STATE - $R_{opt}$ si $\max\limits_{v\in N_u(1)\bigcap BIP(N_2(u),u,P'_{ij}}(d_e(u,v)< R_{opt}$
-			  \STATE - $\max\limits_{v\in N_u(1)\bigcap BIP(N_2(u),u,P'_{ij}}(d_e(u,v)$ sinon.
-			  
+\STATE Mise à jour des couts des méssages: $ \forall i,j \in V, P'_{ij}=\frac{P_{ij}}{E_i}$
+\STATE $s$ calcul $LBIP(s)=BIP-Tree(s,N_2(s))$
+\STATE $s$ ajoute dans le paquet les identifiants des nœuds qui devront retransmettre le message
+\STATE $s$ ajoute également les identifiants des nœuds qui devront être atteints par ceux qui retransmettent
+\STATE $s$ broadcast <M,$s$> avec un rayon suffisant pour atteindre tous ses fils dans l'arbre
+\IF{ $u$ reçoit <M,$v$> de $w$ }
+	\IF{le paquet contient des instructions pour $u$}
+		\STATE soit $v$ le nœud que $u$ doit atteindre d'après les instructions du paquet
+		\STATE $u$ construit $LBIP(u)=BIP-Tree(s,N_2(u)\backslash \{$w,les sommets atteint par w,les sommets plus loin que $d_e(u,v)\})$ :
+			\INDSTATE $u$ remplace dans le paquet les instructions pour les nœuds voisins
+			\INDSTATE $u$ broadcast <M,$s$> avec pour rayon : 
+			      \INDSTATE[2] - $R_{opt}$ si $\max\limits_{v\in N_u(1)\bigcap LBIP(u)}< R_{opt})$
+			      \INDSTATE[2] - $\max\limits_{v\in N_u(1)\bigcap LBIP(u)}(d_e(u,v))$ sinon.
 	\ENDIF
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
+
 
 \subsection{}
 
