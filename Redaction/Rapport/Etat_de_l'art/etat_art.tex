@@ -4,6 +4,8 @@
 \chapter{État de l'art}\label{etat_art}
 
 \section{Modélisation des réseaux de capteurs sans fil}
+
+
 Dans les différents articles du domaine, les réseaux sans fils sont modélisés sous forme de graphe. Cependant, d'autres paramètres (comme les capteurs) sont modélisés de façon différentes par chaque auteur. Nous allons présenter quelques modélisations possibles pour chaque aspect du problème d'économie d'énergie dans les réseaux de capteurs sans fils.
 
 Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux de capteurs. Nous formaliserons ensuite la modélisation d'un réseau par les graphes. Puis nous aborderons les différents modèles énergétiques. Enfin, nous nous pencherons sur les définitions de durée de vie d'un réseau. Une table récapitulative des notations est disponible à la fin de cette partie.
@@ -45,6 +47,16 @@ D'autres modèles plus complexes mais plus réalistes prennent en compte:
 \end{itemize}
 
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.9]{Etat_de_l'art/source/layer.pdf}
+\caption{\label{Layer} Les couches dans les WSNs}
+\end{figure}
+
+Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (WSN), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
+
+Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_1$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit ci dessous.
+
 \subsection{Modèle d'un réseau de capteurs : un graphe}
 
  \paragraph*{} Un WSN peut être représenté par un graphe $G= (V,E,\gamma)$ où :
@@ -73,6 +85,11 @@ Nous noterons $d_G(u,v)$ la \textit{distance} entre $ u $ et $ v $ : $d_G(u,v)= 
 \end{mydef}
 
 
+\begin{figure}[h]
+\centering
+\includegraphics[angle=90, scale= 0.35]{Etat_de_l'art/source/GrapheUnit.pdf} 
+\caption{\label{Layer} Graphe Unité}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Voisinage
 \begin{mydef}
@@ -91,19 +108,9 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 \end{mydef}
  
 
-\begin{figure}[tb]
-    \centering
-    \begin{tabular}{cccc}
-      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheUnit.pdf} &
-      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
-      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
-      \\
-      (a) & (b) & (c) \\
-    \end{tabular}
-    \caption{Graphe unité(a), graphe RNG(b) et graphe MST(c) \label{fig:ex}}
-\end{figure}
 
-\
+
+
 
 
 
@@ -124,7 +131,17 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
  Nous notons $MST(G)$ un des arbres couvrants de poids minimum de G. Nous pouvons calculer rapidement un tel arbre de façon globale (MST) ou distribuée (LMST).
  
 
-
+\begin{figure}[tb]
+    \centering
+    \begin{tabular}{cccc}
+      
+      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
+      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
+   \\
+      (a) & (b) \\
+    \end{tabular}
+    \caption{Graphe RNG(a) et graphe MST(b) \label{fig:ex}}
+\end{figure}
 
 
 
@@ -735,11 +752,11 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 		\STATE soit $v$ le nœud que $u$ doit atteindre d'après les instructions du paquet
 		\STATE $u$ construit son BIP-tree à partir des informations du paquet :
 			 \INDSTATE l'arbre est construit à partir du 2-voisinage de $u$ auquel on enlève :
-			 	 \INDSTATE[2]le nœud $s$ source du broadcast
-				 \INDSTATE[2]les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
-				 \INDSTATE[2]le nœud $v$ qui a redirigé le paquet vers $u$
-				 \INDSTATE[2]les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
-				\INDSTATE[2]les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
+			 	 \INDSTATE[2]-le nœud $s$ source du broadcast
+				 \INDSTATE[2]-les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
+				 \INDSTATE[2]-le nœud $v$ qui a redirigé le paquet vers $u$
+				 \INDSTATE[2]-les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
+				 \INDSTATE[2]-les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
 			\INDSTATE[1] pour chaque paire de nœuds ($r_i$ qui doit retransmettre, $t_i$ qui doit être atteint)
 				\INDSTATE[2] dans la construction de l'arbre de BIP on initialise $P_{r_i} = P_{r_i t_i}$
 			\INDSTATE[1] $u$ remplace dans le paquet les instructions pour les nœuds voisins
@@ -772,9 +789,7 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 
 
-\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomenes de chemins de fourmis en lorsque les source des broadcast sont toujours les memes.Si les sources des broadcast sont aléatoires, 
-DLBIP présente la meme durée de vie que LBIP.
-
+\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomenes de chemins de fourmis en lorsque les source des broadcast sont toujours les memes.
 
 
 
