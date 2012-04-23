@@ -15,8 +15,7 @@ Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux d
 
 Différents modèles sont possibles :
 
-% TODO : citer les articles qui utilisent telle ou telle modélisation
-La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$}:
+La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} \cite{Cartigny2003LMEB} :
 
 \begin{itemize}
  \item \textit{Uniformité.} Tout les capteurs sont identiques (batterie, portée, capacité de calcul…).
@@ -38,11 +37,11 @@ D'autres modèles plus complexes mais plus réalistes prennent en compte:
    
  \item L'ajout de capteurs: le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.
  \item Les capteurs peuvent tomber en panne en raison de divers facteurs. Une loi de probabilité modélise ce phénomène.   
- \item La mobilité des capteurs. La position de chaque capteur varie au cours du temps.
- \item Les capteurs ne sont pas forcément identiques (batterie, portée, capacité de calcul, connaissance du réseau...).
+ \item La mobilité des capteurs. La position de chaque capteur varie au cours du temps \cite{Giordano2003}.
+ \item Les capteurs ne sont pas forcément identiques (batterie, portée, capacité de calcul, connaissance du réseau...) \cite{Akyildiz2002}.
  \item Espace en 3 dimensions.
- \item Interférences radio.
- \item Modèle de consommation énergetique complexe.
+ \item Interférences radio \cite{Agarwal2005}.
+ \item Modèle de consommation énergétique complexe \cite{Deng2005}.
  \item ...
 \end{itemize}
 
@@ -160,7 +159,7 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 \subsection{Modèle énergétique}
 \subsubsection{Energie d'un capteur}
 Dans \cite{Dong2005}, Dong présente les deux modèles de consommation énergétique communément utilisés.
-\paragraph{The Packet based model.}
+\paragraph{The Packet based model.\label{packet_based_model}}
 Nous utiliserons pour notre analyse le modèle de consommation d'énergie idéal suivant:
 nous considèrerons que chaque capteur $i$ a une énergie initiale $E_{init}=\beta$.
 L'envoi de message est le seul facteur de perte d'énergie. L'énergie consommée lors de la réception de message, l'acquisition et traitement des informations sera considérée comme négligeable.
@@ -182,10 +181,9 @@ Dans beaucoup d'applications, la densité du réseau étant élevée, le coût p
  L'énergie potentielle de G est la somme des énergies des capteurs :$$E_G=\sum_{i=1}^n{E_i}$$
  La consommation de  G est :$$C_G=n\beta - E_G$$
  Le coût moyen de transmission de  G est :$$c_G=E(d_e(G))$$
- Le cout moyen d'un broadcast est $C(1)$.\\
- Le cout moyen de $k$ broadcasts est $C(k)$
+ Le cout moyen d'une transmission est $C(1)$.\\
+ Le cout moyen de $k$ transmissions est $C(k)$
 \end{mydef}
-% TODO : singlecast
 
 
 \subsection{Durée de vie du réseau}
@@ -196,7 +194,6 @@ Dans un réseau de capteurs sans fil, la contrainte majeure est l'efficacité de
 est leur petite taille et leur micro-batterie. Dans la majeure partie des cas, remplacer les batteries est impossible. Cependant la durée de vie d'un WSN est difficile à définir et à mesurer.
 Il n'y a pas de définition absolue. Elle indique combien de temps le réseau sera 'efficace' par rapport à l'application donnée (nombre de transmissions effectuées, connexité du réseau, pourcentage de noeuds vivants...).
 
-% TODO : citer les articles correspondants aux deux approches ci-dessous
 Dans la littérature, deux approches apparaissent clairement en matière de maximisation de la durée de vie des WSNs. Une approche indirecte consiste à minimiser la consommation d'énergie de façon locale tandis que l'autre a pour but 
 de maximiser la directement la durée de vie du réseau de façon plus globale. Bien que l'approche indirecte puisse améliorer la durée de vie du réseau, elle ne suffit pas à elle seule à appréhender le problème de la durée de vie.
 Parmi ces approches figurent  par exemple le fait de maximiser le nombre de transmissions effectuées avant qu'un capteur ne meurt.
@@ -274,14 +271,12 @@ Les éléments de classification cités ci-dessous sont inspirés des articles \
 Dans un réseau $G(V,E,\gamma)$, deux capteurs peuvent communiquer directement uniquement s'ils sont 1-voisins dans G. A cause l'atténuation du signal wifi, le rayon de transmission est relativement limité, c'est pourquoi les communications doivent se faire par multi-sauts. Tout ceci est géré par un algorithme de routage. Les algorithmes de routage peuvent gérer le broadcast (un nœud vers tous les autres) et/ou le single-cast (un nœud vers un autre). Chacune des approches a des avantages dans un contexte précis.
 
 \subsubsection{Broadcast}
-% TODO : citer des articles
 La procédure de broadcast consiste à transmettre une information à tous les autres nœuds du graphe. C'est un mécanisme fondamental pour la propagation des données ainsi que pour la découverte de routes. En effet le broadcast est utilisé pour acquérir une connaissance du voisinage des capteurs. Ce mode de communication est naturel pour des périphériques en wifi avec antenne omnidirectionnelle car les ondes sont réparties uniformément dans un cercle de rayon donné. Tout le voisinage est donc touché et le coût en énergie est celui d'une seule transmission.
 
 Le routage des broadcasts nécessite de s'assurer que le message ne soit pas indéfiniment retransmis mais que tous les nœuds du graphe soient touchés. Parfois même si le destinataire est à distance 1 dans le graphe unité, il est nécessaire que le message soit relayé par un nœud tiers pour des raisons énergétiques.
 
 \subsubsection{Single-cast}
-La transmission par single-cast est le moyen classique de transmettre les messages : un expéditeur fait parvenir un message à un destinataire. Ce moyen de communication est valable lorsqu'on ne cherche qu'à atteindre un seul nœud car il coûte moins cher que le broadcast.
-% TODO : single-cast / multi-cast
+La transmission par single-cast est le moyen classique de transmettre les messages : un expéditeur fait parvenir un message à un destinataire. Ce moyen de communication est valable lorsqu'on ne cherche qu'à atteindre un seul nœud. En effet, le routage d'un single-cast coûte moins cher que le broadcast (en moyenne, moins de transmissions sont nécessaires).
 
 
 \subsection{Algorithme à rayon d'émission fixe vs variable}
@@ -290,7 +285,6 @@ Dans les réseaux de capteurs, les transmissions s'effectuent sans fils. Un bon 
 Notons que les algorithmes qui émettent en single-cast ont, par définition, un rayon d'émission variable.
 
 \subsubsection{Déterminer le rayon optimal d'émission pour un broadcast}
-% TODO : relecture Rayon optimal d'émission et ajout à l'intro de la section
 \begin{myth}
 Sans chevauchement et sans vide, un plan ne peut être découpé de façon uniforme que par des polygones réguliers de type triangle, carrés ou hexagones.
 \end{myth}
@@ -378,18 +372,14 @@ Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au ré
 
 
 \subsection{Algorithme déterministe vs probabiliste}
-Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire.
-À l'inverse, un algorithme déterministe prendra toujours la même décision lorsqu'il se trouve dans une situation précise.
-% TODO : développement
+Un algorithme déterministe est un algorithme qui, confronté à un choix, prendra toujours la même décision : celle prévue par le concepteur. Chaque nœud prendra donc, dans des conditions similaires, la même décision.
+
+À l'inverse, un protocole de routage peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire. Il en existe deux types : l'un qui prend toujours la décision optimale mais au bout d'un temps qui peut être long ; l'autre qui décide rapidement mais dont la décision peut être mauvaise.
 
 
 
 \section{Quelques algorithmes de routage}
-Model de reseau: $M1$ avec pour modele energetique 'Packet based model'.
-
-% TODO : harmoniser les durées de vie ou poser les notations dans l'intro de la subsection
-% TODO : citation de tous les articles (ou références)
-% TODO : compléter les mots-clés
+Tous les algorithmes présentés ci-dessous utilisent la modélisation $M1$ (\ref{modelePratique}) des réseaux avec pour modèle énergétique le 'Packet based model' (\ref{packet_based_model}).
 
 
 \subsubsection{Flow augmentation \cite{Chang2000}}
@@ -640,10 +630,9 @@ $$\begin{cases}
 
 Le coût d'ajout d'une arête dépend des nœuds déjà dans l'arbre de la façon suivante : 
 $$ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P_{ij}-P(i)$$
-où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est selectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
+où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est sélectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
 
 
-% TODO : revoir l'algo
 \begin{algorithm}[h]
 \caption{Procédure de construction du BIP-Tree}
 \label{algo_BIP_tree}
@@ -789,7 +778,7 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 
 
-\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomenes de chemins de fourmis en lorsque les source des broadcast sont toujours les memes.
+\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomènes de chemins de fourmis en lorsque les source des broadcast sont toujours les mêmes.
 
 
 
@@ -911,7 +900,6 @@ Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})
 %\end{figure} 
 
 \subsubsection{Tableau récapitulatif}
-% TODO : ajouter tableau récapitulatif avec chaque algo sur les lignes et chaque type d'algo sur les colonnes + complexité si possible
 \noindent\makebox[\textwidth]{
 \resizebox{0.95\paperwidth}{!}{
 \rowcolors{3}{gray!25}{white}
@@ -944,7 +932,6 @@ LBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \
 RBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 \hline
 TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
-%>>>>>>> 1893df8ee14e584385a58441d27c3c8189d12db0
 \hline
 \end{tabular}
 }
