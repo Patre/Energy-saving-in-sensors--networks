@@ -247,9 +247,30 @@ void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+	struct protocoleData *entitydata = get_entity_private_data(c);
+	
 	
 	
     //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", data->type, data->src, data->dst, get_time_now_second());
+	
+	
+	if(battery_remaining(c) < getCoutFromDistance(get_range_Tr(c), entitydata->alpha, entitydata->c))
+	{
+		int i=0;
+		call_t inter = {-1,-1,-1};
+		inter.entity=c->entity;
+		inter.from=c->from;
+		
+		for(i=0;i<get_node_count();i++)
+		{
+			if(is_node_alive(i) && i != c->node)
+			{
+				inter.node=i;
+				struct nodedata *internodedata = get_node_private_data(&inter);
+				deleteVertex(internodedata->g2hop,c->node);
+			}
+		}
+	}
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};

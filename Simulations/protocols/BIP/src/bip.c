@@ -172,22 +172,9 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
-
+	printf("UNSET NODE %d\n", c->node);
     /*if(c->node==0)
         arbre_affiche(nodedata->tree_BIP);*/
-
-    int i=0;
-    call_t *inter=malloc(sizeof(call_t));
-    inter->entity=c->entity;
-    inter->from=c->from;
-
-    for(i=0;i<get_node_count();i++)
-        if(is_node_alive(i))
-        {
-            inter->node=i;
-            struct nodedata *internodedata = get_node_private_data(inter);
-            deleteVertex(internodedata->g2hop,c->node);
-        }
 
 
     //PAR USER PROTOCOLE
@@ -218,7 +205,25 @@ void tx( call_t *c , packet_t * packet )
     //if(entitydata->debug)
         printf("BIP BROADCAST - FROM %d WITH RANGE %.2lf AT %lf\n",c->node,get_range_Tr(c),get_time_now_second());
 
-    TX(&c0,packet);
+	if(battery_remaining(c) < getCoutFromDistance(get_range_Tr(c), entitydata->alpha, entitydata->c))
+	{
+		int i=0;
+		call_t inter = {-1,-1,-1};
+		inter.entity=c->entity;
+		inter.from=c->from;
+		
+		for(i=0;i<get_node_count();i++)
+		{
+			if(is_node_alive(i) && i != c->node)
+			{
+				inter.node=i;
+				struct nodedata *internodedata = get_node_private_data(&inter);
+				deleteVertex(internodedata->g2hop,c->node);
+			}
+		}
+	}
+	
+	TX(&c0,packet);
 }
 
 /* *********************************************** */
@@ -301,9 +306,7 @@ int get_header_real_size( call_t * c )
 
     return nodedata->overhead + sizeof(packet_PROTOCOLE);
 }
-///
+
 routing_methods_t methods = {rx, tx, set_header, get_header_size, get_header_real_size};
 
 
-
-//application_methods_t methods = {rx};
