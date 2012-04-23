@@ -778,10 +778,151 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 
 
-\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomènes de chemins de fourmis en lorsque les source des broadcast sont toujours les mêmes.
+\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomènes de chemins de fourmis lorsque les sources des broadcast sont toujours les mêmes.
 
 
 
+% TODO : merge LBOP RBOP
+
+\subsubsection{LMST Broadcast Oriented Protocol(LBOP)\cite{Cartigny2005}}
+\emph{Mots clés :} 
+
+\emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
+\paragraph{Algorithme LMST}
+Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud connaît la position de ses voisins à 1 saut et chaque nœud calcule son propre MST (Minimum Spanning Tree) sur son voisinage. Puis, si un nœud u est dans le LMST calculé par un nœud v et que le nœud v est dans le LMST du nœud u alors le lien (u, v) est retenu dans le LMST global. La construction du LMST global est ainsi basée sur la construction locale d’un MST par chaque nœud.
+
+\begin{algorithm}[H]
+\caption{MST}
+\label{alg MST}
+\begin{algorithmic}
+\STATE ENTREES : $G=(V,E)$ un graphe connexe
+\STATE SORTIE : $G(V_{mst}, E_{mst})$ arbre de poids minimum connexe
+\STATE REQUIERE : x un nœud arbitraire de V
+\STATE $V_{mst}$=x , $E_{mst}$ = {}
+
+\REPEAT 
+		\STATE Choisir (u, v)  $E$, tel que u $\in$ $V_{mst}$, v $\notin$ V
+		\STATE Vmst = $V_{mst}$ + {v}
+		\STATE Emst = $E_{mst}$ + (u, v)
+
+\UNTIL{<$V_{mst}$ = V>}
+\STATE return G($V_{mst}$, $E_{mst}$)
+
+\end{algorithmic}
+\end{algorithm}
+
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+
+\begin{algorithm}[H]
+\caption{LMST}
+\label{alg LMST}
+\begin{algorithmic}
+\STATE ENTREES : $G=(V,E)$ un graphe connexe
+\STATE SORTIE : graphe réduit connexe
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE $E_{lmst}$ = $\oslash$
+	\FOR {chaque u,v $\in$ V }
+		\STATE Calculer le MST(u) et MST (v)
+				\IF{v $\in$ MST(u) et u $\in$ MST(v)}
+				\STATE $E_{lmst}$ = $E_{lmst}$ + (u,v)				
+				\ENDIF
+	\ENDFOR
+\STATE return G(V, $E_{lmst}$)	
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[H]
+\caption{LBOP}
+\label{alg LBOP}
+\begin{algorithmic}
+\STATE ENTREES : G=(V,$E_{lmst}$) un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{lmst}$) le graphe LMST de G
+
+\STATE s broadcaste <M,s>
+\FOR {chaque u $\in$ V}
+\STATE u ajuste son rayon de transmission au plus loin voisin LMST
+	\IF {u $\in$ V reçoit <M,s> pour la premiere fois}
+	\STATE 	rebrodcaster <M,s>
+	\ELSE 
+	\STATE ignorer le message
+	\ENDIF
+\ENDFOR
+\STATE return
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{ RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
+
+\emph{Description :}
+Le protocole RBOP, comme celui de LBOP, se base sur le contrôle de topologie.
+la différence c’est que RBOP prend comme graphe de départ le graphe dit Graphe RNG, ce
+dernier est obtenu en appliquant l’algorithme RNG.
+
+\paragraph{Algorithme RNG}
+Le RNG est basé sur la connaissance de la position de nœuds. En effet, chaque capteur
+connaît sa position et la diffuse à son voisinage direct. Grâce à la position de son voisinage à 1 saut,
+un nœud va désélectionner les liens les plus longs de la façon suivante :
+Soit deux nœuds voisins u et v. S’il existe un nœud w tel que d(u, v) > d(u,w) et d(v, u) > d(v,w) avec
+d(u,v) la distance euclidienne entre les sommets u et v alors l’arête (u, v) est désélectionnée.
+
+\begin{algorithm}[H]
+\caption{RNG}
+\label{alg RNG}
+\begin{algorithmic}
+\STATE ENTREES : G=(V,$E_{lmst}$) un graphe connexe
+\STATE SORTIE : graphe réduit connexe
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{rng}$) =G(V, E)
+\FOR {chaque u $\in$ V}
+\STATE diffuser sa position au voisinage direct
+	\FOR {chaque v $\in$ V}
+		\FOR {chaque w $in$ V}
+			\IF {d(u,v)>d(u,w) et d(v,u)>d(v,w)}
+			\STATE 	$E_{rng}$= $E_{rng}$ – (u, v)
+			\ENDIF
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\STATE return G (V,$E_{rng}$)
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{RBOP}
+\label{alg RBOP}
+\begin{algorithmic}
+\STATE ENTREES : G=(V,$E_{rng}$) un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{rng}$) le graphe RNG de G
+
+\STATE s broadcaste <M,s>
+\FOR {chaque u $\in$ V}
+\STATE u ajuste son rayon de transmission au plus loin voisin RNG
+	\IF {u $\in$ V reçoit <M,s> pour la premiere fois}
+	\STATE 	rebrodcaster <M,s>
+	\ELSE 
+	\STATE ignorer le message
+	\ENDIF
+\ENDFOR	
+\STATE return
+
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsubsection{LBOP + RBOP}
 
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
