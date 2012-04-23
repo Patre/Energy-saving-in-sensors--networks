@@ -1,11 +1,11 @@
 \select@language {french}
-\contentsline {chapter}{\numberline {1}Introduction}{4}{chapter.1}
-\contentsline {section}{\numberline {1.1}Capteurs}{4}{section.1.1}
-\contentsline {section}{\numberline {1.2}Caract\IeC {\'e}ristiques techniques des capteurs actuels}{6}{section.1.2}
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Capteurs}{5}{section.1.1}
+\contentsline {section}{\numberline {1.2}Caract\IeC {\'e}ristiques techniques des capteurs actuels}{7}{section.1.2}
 \contentsline {section}{\numberline {1.3}R\IeC {\'e}seau de capteurs sans fil (Wireless sensors network)}{7}{section.1.3}
-\contentsline {subsection}{\numberline {1.3.1}Architecture}{7}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.1}Architecture}{8}{subsection.1.3.1}
 \contentsline {subsection}{\numberline {1.3.2}Caract\IeC {\'e}ristiques}{8}{subsection.1.3.2}
-\contentsline {subsection}{\numberline {1.3.3}Probl\IeC {\'e}matique et D\IeC {\'e}fis}{8}{subsection.1.3.3}
+\contentsline {subsection}{\numberline {1.3.3}Probl\IeC {\'e}matique et D\IeC {\'e}fis}{9}{subsection.1.3.3}
 \contentsline {chapter}{\numberline {2}\IeC {\'E}tat de l'art}{10}{chapter.2}
 \contentsline {section}{\numberline {2.1}Mod\IeC {\'e}lisation des r\IeC {\'e}seaux de capteurs sans fil}{10}{section.2.1}
 \contentsline {subsection}{\numberline {2.1.1}Crit\IeC {\`e}res pratiques}{10}{subsection.2.1.1}
@@ -14,10 +14,10 @@
 \contentsline {subsubsection}{Energie d'un capteur}{13}{section*.3}
 \contentsline {paragraph}{The Packet based model.}{13}{section*.4}
 \contentsline {paragraph}{The Time based model.}{13}{section*.5}
-\contentsline {paragraph}{Energie globale.}{13}{section*.6}
+\contentsline {paragraph}{Energie globale.}{14}{section*.6}
 \contentsline {subsection}{\numberline {2.1.4}Dur\IeC {\'e}e de vie du r\IeC {\'e}seau}{14}{subsection.2.1.4}
 \contentsline {subsubsection}{Probl\IeC {\'e}matique}{14}{section*.7}
-\contentsline {subsubsection}{D\IeC {\'e}finitions}{14}{section*.8}
+\contentsline {subsubsection}{D\IeC {\'e}finitions}{15}{section*.8}
 \contentsline {section}{\numberline {2.2}El\IeC {\'e}ments de classification des algorithmes existants}{15}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}Transmissions en broadcast vs transmissions en single-cast}{15}{subsection.2.2.1}
 \contentsline {subsubsection}{Broadcast}{16}{section*.9}
@@ -52,8 +52,9 @@
 \contentsline {subsubsection}{Tableau r\IeC {\'e}capitulatif}{29}{section*.31}
 \contentsline {chapter}{\numberline {3}Analyse et reflexion}{30}{chapter.3}
 \contentsline {section}{\numberline {3.1}Critique de l'existant}{30}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Consommation de l'\IeC {\'e}nergie}{30}{subsection.3.1.1}
 \contentsline {section}{\numberline {3.2}Nos id\IeC {\'e}es}{30}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Application du rayon optimal \IeC {\`a} DLBIP: TR-DLBIP}{30}{subsection.3.2.1}
-\contentsline {subsection}{\numberline {3.2.2}}{30}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}Simulations et r\'esultats}{31}{chapter.4}
-\contentsline {chapter}{\numberline {5}Conclusion}{32}{chapter.5}
+\contentsline {subsection}{\numberline {3.2.2}}{31}{subsection.3.2.2}
+\contentsline {chapter}{\numberline {4}Simulations et r\'esultats}{32}{chapter.4}
+\contentsline {chapter}{\numberline {5}Conclusion}{33}{chapter.5}
