@@ -1,4 +1,3 @@
-
 #include "Implementation.h"
 
 /* ************************************************** */
@@ -28,7 +27,6 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
 
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,nodedata->LMST_voisin);
-
 
 
     //ENVOI
@@ -65,7 +63,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
     struct protocoleData *entitydata=get_entity_private_data(c);
 
-
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
@@ -88,13 +85,10 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         set_range_Tr(c,distMax);
         nodedata->range=get_range_Tr(c);
         if(entitydata->debug)
-            printf("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
-
+            DBG("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
     }
 
 
-
-    SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
     entityid_t *up = get_entity_links_up(c);
     call_t c_up = {up[0], c->node};
@@ -104,15 +98,22 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     RX(&c_up, packet_up);//*/
 
-
     //changer les destination
     data->redirected_by=c->node;
 
+    //enlever les destination atteint par la source
+    list *newdes=Nullptr(list);
+    list_copy(&newdes,nodedata->LMST_voisin);
+
+
+    list_delete(&newdes,data->redirected_by);
+
+
     data->destinations=Nullptr(list);
-    list_copy(&data->destinations,nodedata->LMST_voisin);
+    list_copy(&data->destinations,newdes);
 
-
-
+if(list_taille(newdes)!=0)
+    {
     //ENVOI
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
@@ -125,9 +126,8 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         return -1;
     }
     //L'envoi
-    tx(&c0,packetRecu);//*/
-
-
+    TX(&c0,packetRecu);//*/
+    }
     //tout c'est bien passé
     return 1;
 }

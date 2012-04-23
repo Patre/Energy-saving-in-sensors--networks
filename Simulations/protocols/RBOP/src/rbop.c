@@ -96,7 +96,7 @@ int init(call_t *c, void *params) {
             }
         }
         if (!strcmp(param->key, "debug")) {
-            if (get_param_double(param->value, &(entitydata->eps))) {
+            if (get_param_integer(param->value, &(entitydata->debug))) {
                 goto error;
             }
         }

@@ -114,10 +114,11 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 	free(cle);
 	freeHeap(F);
 	
-	 printf("Graphe de voisinage de %d : \n", c->node);
+	/*printf("Graphe de voisinage complet : \n");
+	 printf("Graphe de voisinage : \n");
 	 afficherGraphe(nodedata->g2hop);
 	 printf("arbre de BIP de %d construit : \n", c->node);
-	arbre_affiche(bipTree);
+	 arbre_affiche(bipTree);*/
 	
 	return bipTree;
 }

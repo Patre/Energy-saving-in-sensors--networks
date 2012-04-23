@@ -1,4 +1,4 @@
-#ifndef BIP_DEC_RBH
+ #ifndef BIP_DEC_RBH
 #define BIP_DEC_RBH
 
 #include <include/modelutils.h>
@@ -8,6 +8,7 @@
 #include <arbre.h>
 #include <graphe.h>
 
+#define DBG(x...)  printf(x);
 #define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphLBOP","a+"); fprintf(topo,x); fclose(topo);}
 /* ************************************************** */
 /* ************************************************** */

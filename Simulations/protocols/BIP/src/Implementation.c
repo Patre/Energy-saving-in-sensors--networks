@@ -73,14 +73,11 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
 
-	
+
     //AJOUTE de packet dans la liste de packet
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
-    if(data->seq==1)
-    {
-        setRangeToFarestNeighbour(c,nodedata->g2hop,data->pere_arbre);
-    }
+    setRangeToFarestNeighbour(c,nodedata->g2hop,data->pere_arbre);
 
     SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
@@ -95,7 +92,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     //initialiser les données
     list *destinations=Nullptr(list);
     arbre_get_fils(&destinations,data->pere_arbre,c->node);
-	
+
     //copier dans distination
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,destinations);
@@ -104,11 +101,11 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
     if(list_taille(data->destinations)!=0)
     {
-        if(entitydata->debug)
+        /*if(entitydata->debug)
         {
             printf("BIP SUIVRE - ON %d TO",c->node);
             list_affiche(data->destinations);
-        }
+        }*/
         //ENVOI
         entityid_t *down = get_entity_links_down(c);
         call_t c0 = {down[0], c->node};

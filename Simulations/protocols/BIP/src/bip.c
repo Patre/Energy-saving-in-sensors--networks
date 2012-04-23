@@ -78,8 +78,8 @@ int init(call_t *c, void *params) {
     entitydata->eps     = 0.01;
     entitydata->debut   = time_seconds_to_nanos(3);
     entitydata->periodEVE = time_seconds_to_nanos(1);
-	
-	
+
+
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
@@ -128,12 +128,13 @@ error:
 int bootstrap(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
-	
+
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 
     get_PROTOCOLE_init(c,entitydata->eps);
+
    return 0;
 }
 
@@ -150,9 +151,10 @@ void rx(call_t *c, packet_t *packet) {
 
     switch(data->type)
     {
+
     case BIP:
     {
-        //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
+       // SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
         if(list_recherche(data->destinations,c->node)==1)
         {
             PROTOCOLE_reception(c,packet);
@@ -173,6 +175,20 @@ int unsetnode(call_t *c) {
 
     /*if(c->node==0)
         arbre_affiche(nodedata->tree_BIP);*/
+
+    int i=0;
+    call_t *inter=malloc(sizeof(call_t));
+    inter->entity=c->entity;
+    inter->from=c->from;
+
+    for(i=0;i<get_node_count();i++)
+        if(is_node_alive(i))
+        {
+            inter->node=i;
+            struct nodedata *internodedata = get_node_private_data(inter);
+            deleteVertex(internodedata->g2hop,c->node);
+        }
+
 
     //PAR USER PROTOCOLE
     deleteGraphe(nodedata->g2hop);
@@ -199,8 +215,8 @@ void tx( call_t *c , packet_t * packet )
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
     struct protocoleData *entitydata = get_entity_private_data(c);
-    if(entitydata->debug)
-        printf("BIP BROADCAST - FROM %d WITH RANGE %.2lf\n",c->node,get_range_Tr(c));
+    //if(entitydata->debug)
+        printf("BIP BROADCAST - FROM %d WITH RANGE %.2lf AT %lf\n",c->node,get_range_Tr(c),get_time_now_second());
 
     TX(&c0,packet);
 }
@@ -217,16 +233,16 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     if(entitydata->debug)
         printf("BIP - SET HEADER ON %d \n",c->node);
 
-    if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
+    //if(nodedata->tree_BIP == Nullptr(arbre)) // le BIP tree n'a pas encore ete construit
     {
-        purgeGrapheOfStables(nodedata->g2hop);
+        //purgeGrapheOfStables(nodedata->g2hop);
         nodedata->tree_BIP = computeBIPtree(c, nodedata->g2hop);
-		
+
         /*printf("Graphe de %d : \n");
         afficherGraphe(nodedata->g2hop);
         printf("\t\t\tje calcule l'arbre de %d\n",c->node);
         printf("arbre de BIP de %d construit : \n", c->node);
-        arbre_affiche(nodedata->tree_BIP);*/
+        arbre_affiche(nodedata->tree_BIP);//*/
 
         setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->tree_BIP);
     }

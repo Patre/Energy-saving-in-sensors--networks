@@ -103,6 +103,6 @@ void set_range_Tr(call_t *c,double range)
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
     struct mac_data* macdata = get_entity_private_data(&c0);
-    macdata->range = ceil(range);
+    macdata->range = range;
 }
 

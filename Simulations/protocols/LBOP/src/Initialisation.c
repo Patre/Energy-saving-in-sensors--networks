@@ -17,7 +17,7 @@ void init_lbop(call_t *c)
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
     if(entitydata->debug)
-        printf("LBOP - %d INITIALISATION AT %lf\n",c->node,get_time_now_second());
+        DBG("LBOP - %d INITIALISATION AT %lf\n",c->node,get_time_now_second());
 
     list *N1=Nullptr(list);
     listeNodes_to_list(&N1,nodedata->oneHopNeighbourhood);
@@ -68,11 +68,11 @@ void init_lbop(call_t *c)
     arbre *MST=Nullptr(arbre);
     arbre_add_pere(&MST,c->node);
     prim_tree(debut,&MST,connexions,graphElements);//*/
+    arbre_get_fils(&nodedata->LMST_intial,MST,c->node);
 
     if(entitydata->debug)
     {
-        arbre_get_fils(&nodedata->LMST_intial,MST,c->node);
-        printf("LMST %d ",c->node);
+        DBG("LMST %d ",c->node);
         list_affiche(nodedata->LMST_intial);
     }
 

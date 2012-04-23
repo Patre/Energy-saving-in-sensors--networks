@@ -27,8 +27,7 @@ void init_bip_tree(call_t *c, void *args)
 
     double range = get_range_Tr(c);
 
-    //DEBUG
-    //if(c->node==0)  printf("RANGE = > %lf\n",range);
+    if(c->node==0)  printf("RANGE = > %lf\n",range);
 
     double dist;
     for(i=0;i<get_node_count();i++)
@@ -41,6 +40,7 @@ void init_bip_tree(call_t *c, void *args)
                 addEdgeUndirected(nodedata->g2hop, i, j, cout);
             }
         }
+
 }
 
 

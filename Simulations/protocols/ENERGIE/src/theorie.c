@@ -2,12 +2,13 @@
  *  \file   theorie.c
  *  \brief  Theorique consumation of energie
  *  \author LAOUADI Rabah
- *  \date   Avril
+ *  \date   2012
  **/
 #include <include/modelutils.h>
 #include <time_wsnet.h>
 
 #define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
+#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
 
 
 void init_files()
@@ -16,6 +17,11 @@ void init_files()
     FILE *replay;
     replay=fopen("energy","w");
     fclose(replay);
+
+    //POURCENTAGE des NEUD VIVANT
+    FILE *por;
+    por=fopen("lifetime","w");
+    fclose(por);
 }
 /* ************************************************** */
 /* ************************************************** */
@@ -27,12 +33,55 @@ model_t model =  {
     {NULL, 0}
 };
 
+/* Entity private data */
+struct entitydata {
+    int debug;
+    int ttff;
+    double pourcentage;
+    double prMax;
+};
 
 /* ************************************************** */
 /* ************************************************** */
 int init(call_t *c, void *params) {
+
+
+    struct entitydata *entitydata = malloc(sizeof(struct entitydata));
+    param_t *param;
+
+    /* init entity variables */
+    entitydata->ttff = 0;
+    entitydata->debug = 0;
+    entitydata->pourcentage =100.00;
+    entitydata->prMax = 0;
+
+    /* reading the "init" markup from the xml config file */
+    das_init_traverse(params);
+    while ((param = (param_t *) das_traverse(params)) != NULL) {
+        if (!strcmp(param->key, "debug")) {
+            if (get_param_integer(param->value, &(entitydata->debug))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "TTFF")) {
+            if (get_param_integer(param->value, &(entitydata->ttff))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "pourcentageMin")) {
+            if (get_param_double(param->value, &(entitydata->prMax))) {
+                goto error;
+            }
+        }
+    }
+
     init_files();
+    set_entity_private_data(c, entitydata);
     return 0;
+
+error:
+    free(entitydata);
+    return -1;
 }
 
 int destroy(call_t *c) {
@@ -48,7 +97,7 @@ struct nodedata {
     double tx;
     double rx;
     double idle;
-    int debug;
+
 };
 
 
@@ -65,18 +114,12 @@ int setnode(call_t *c, void *params) {
     nodedata->tx      = 2;
     nodedata->rx      = 2;
     nodedata->idle    = 1;
-    nodedata->debug   = 0;
 
    /* get parameters */
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
         if (!strcmp(param->key, "energy")) {
             if (get_param_double(param->value, &(nodedata->energy))) {
-                goto error;
-            }
-        }
-        if (!strcmp(param->key, "debug")) {
-            if (get_param_integer(param->value, &(nodedata->debug))) {
                 goto error;
             }
         }
@@ -98,7 +141,6 @@ int setnode(call_t *c, void *params) {
     }
     
     ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
-
     nodedata->initial = nodedata->energy;
     set_node_private_data(c, nodedata);
     return 0;
@@ -131,14 +173,6 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->tx;
 
-
-    ENERGY("%d S %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
-
-    if(nodedata->debug)
-        printf("ENVOI (%d): duration %.0lf,consome %lf  ,reste %lf\n",c->node,(double)duration, duration * nodedata->tx * txdBm,nodedata->energy);
-
-
-
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
@@ -152,11 +186,6 @@ void consume_rx(call_t *c, uint64_t duration) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->rx/10;
 
-    ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
-    if(nodedata->debug)
-        printf("RECP (%d): duration %.0lf ,consome %lf  ,reste %lf\n",c->node,(double)duration,duration * nodedata->rx,nodedata->energy);
-
-
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
@@ -169,12 +198,6 @@ void consume_rx(call_t *c, uint64_t duration) {
 void consume_idle(call_t *c, uint64_t duration) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->idle; 
-
-    ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
-
-    if(nodedata->debug)
-        printf("IDLE (%d): duration %.0lf ,consome %lf  ,reste %lf\n",c->node,(double)duration,duration * nodedata->idle,nodedata->energy);
-
     if (nodedata->energy <= 0) {
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
         //end_simulation();
@@ -185,21 +208,53 @@ void consume_idle(call_t *c, uint64_t duration) {
 }
 
 void consume(call_t *c, double energy) {
+    if(!is_node_alive(c->node))
+        return;
+
+
     struct nodedata *nodedata = get_node_private_data(c);
+    struct entitydata *entitydata =get_entity_private_data(c);
+
     nodedata->energy -= energy; 
     ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
-    if(nodedata->debug)
+    if(entitydata->debug)
         printf("CONSUME (%d): consome %lf  ,reste %lf\n",c->node,energy,nodedata->energy);
 
     if (nodedata->energy <= 0) {
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
-        //end_simulation();
         nodedata->energy = 0;
+        if(entitydata->ttff)
+        {
+            printf("TTFF\n");
+            PR("%.lf END FORDEADNODE %d\n",get_time_now_second(),c->node);
+            end_simulation();
+        }
+        else if(entitydata->prMax!=0)
+        {
+            int n=get_node_count();
+            int nbrdead=0,i;
+
+            for(i=0;i<n;i++)
+                if(!is_node_alive(i)) nbrdead++;
+            nbrdead++;
+            entitydata->pourcentage = (1 - (double) nbrdead/(double) get_node_count())*100;
+            printf("POURCENTAGE %lf   MIN %lf\n",entitydata->pourcentage,entitydata->prMax);
+
+            PR("%.lf %.2lf FORDEADNODE %d\n",get_time_now_second(),entitydata->pourcentage,c->node);
+            if(entitydata->pourcentage<=entitydata->prMax)
+            {
+                printf("END - POURCENTAGE %lf\n",entitydata->pourcentage);
+                end_simulation();
+            }
+        }
+
         node_kill(c->node);
     }
     return;
 }
+
+
 
 double energy_consumed(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);

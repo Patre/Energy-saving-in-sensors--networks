@@ -47,7 +47,7 @@ struct protocoleData {
 	double    c;                 //le C de modele d'energie
 	double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)
 	uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
-	uint64_t  periodEVE;       //delta temps entre chaque evenement
+        uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
 
 /* ************************************************** */
@@ -66,8 +66,8 @@ struct _packet_bip
     /**************************************************/
     list    *destinations;            //les noeuds de destination de packet
     arbre   *pere_arbre;              //ARBRE du pere (redirected_by)
-	
-	
+
+
 };
 typedef struct _packet_bip packet_PROTOCOLE;
 

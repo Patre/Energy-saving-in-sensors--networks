@@ -1,0 +1,33 @@
+cd results
+rm -R 0.xml~
+rm -R 1.xml~
+rm -R 2.xml~
+rm -R 3.xml~
+rm -R 4.xml~
+rm -R 5.xml~
+
+rm -R 0.xml
+rm -R 1.xml
+rm -R 2.xml
+rm -R 3.xml
+rm -R 4.xml
+rm -R 5.xml
+
+rm 0
+rm 1
+rm 2
+rm 3
+rm 4
+rm 5
+
+
+cd ..
+
+cd XMLs
+rm  0.xml~
+rm  1.xml~
+rm  2.xml~
+rm  3.xml~
+rm  4.xml~
+rm  5.xml~
+cd ..

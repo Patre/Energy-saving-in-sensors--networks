@@ -19,7 +19,7 @@ int broadcast_hello(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata=get_entity_private_data(c);
     if(entitydata->debug)
-        printf("LBOP - ONE HOP ON %d AT %lf\n",c->node,get_time_now_second());
+        DBG("LBOP - ONE HOP ON %d AT %lf\n",c->node,get_time_now_second());
 
 
     //recuperer le support de communication DOWN

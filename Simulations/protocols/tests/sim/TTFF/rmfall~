@@ -1,0 +1,42 @@
+cd 0.006289
+source rmf
+wsnet-run-simulations -d Xmls/ results/ 1
+source lancer
+./final 6
+cd ..
+
+cd 0.009081
+source rmf
+wsnet-run-simulations -d Xmls/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+cd 0.012114
+source rmf
+wsnet-run-simulations -d Xmls/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+cd 0.017714
+source rmf
+wsnet-run-simulations -d Xmls/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+cd 0.019947
+source rmf
+wsnet-run-simulations -d Xmls/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+source genCourbe
+
+ 

@@ -134,6 +134,8 @@ int destroy(call_t *c) {
 /* ************************************************** */
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = (struct nodedata *) malloc(sizeof(struct nodedata));
+    struct entitydata *entitydata = get_node_private_data(c);
+
     param_t *param;
 
     nodedata->range = 30;
@@ -148,6 +150,11 @@ int setnode(call_t *c, void *params) {
     }
 
     nodedata->buffer    = das_create();
+
+
+    /*if(entitydata->debug)
+        printf("MAC - SET RANGE  %.2lf\n",nodedata->range);//*/
+
 
 #ifdef ONE_PACKET_AT_A_TIME
     nodedata->scheduler = 0;
@@ -277,22 +284,14 @@ void tx(call_t *c, packet_t *packet) {
 
     das_insert(nodedata->buffer, (void *) packet);
     int duration = packet->size / entitydata->bandwidth * ONE_MS;
-    if(entitydata->debug)
-    {
-        printf("la duration est %d\n", duration);
-    }
 
     double energy=pow(nodedata->range,entitydata->alpha)+entitydata->c;
-	if(entitydata->debug)
+    if(entitydata->debug)
     {
-        printf("energie consommee par le noeud %d : %.1lf...\n", c->node, energy);
-    }
+        printf("MAC BROADCAST- FROM %d  WITH RANGE %.2lf\n", c->node,nodedata->range);
+    }//*/
 	
     battery_consume(c,energy);
-	if(entitydata->debug)
-    {
-        printf("energie restante : %.1lf.\n", battery_remaining(c));
-    }
 
 #ifdef ONE_PACKET_AT_A_TIME
    if (nodedata->scheduler == 0) {
@@ -309,7 +308,8 @@ void tx(call_t *c, packet_t *packet) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
-
+    if(!is_node_alive(c->node))
+        return;
     struct entitydata *entitydata = get_entity_private_data(c);
     struct _mac_header *header = (struct _mac_header *) packet->data;
     array_t *up = get_entity_bindings_up(c);

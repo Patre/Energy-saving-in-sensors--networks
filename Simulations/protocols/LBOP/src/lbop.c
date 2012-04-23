@@ -130,23 +130,10 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 
-
-
     get_one_hop(c,entitydata->eps);
-
-
     get_PROTOCOLE_init(c,entitydata->eps);
-
-
     //LMST elimination
     get_lmst(c,entitydata->eps);
-
-    /*if(c->node==0)
-    {
-        uint64_t at=entitydata->debut;
-        scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }//*/
-
 
    return 0;
 }
@@ -155,9 +142,17 @@ int bootstrap(call_t *c) {
 /* ************************************************** */
 /* ************************************************** */
 void rx(call_t *c, packet_t *packet) {
+
+
+    if(!is_node_alive(c->node))
+        return;
+
+
     struct nodedata *nodedata = get_node_private_data(c);
 
     struct packet_general *packetType= (struct packet_general *)(packet->data + nodedata->overhead);
+
+
     /*******************************HELLO 1 voisinage***************************/
         switch(packetType->type)
 	{	
@@ -180,6 +175,7 @@ void rx(call_t *c, packet_t *packet) {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
             if(list_recherche(data->destinations,c->node))
                     {
+                        SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
                         if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
                              PROTOCOLE_reception(c,packet);
                     }
@@ -197,6 +193,19 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
+
+    int i=0;
+    call_t *inter=malloc(sizeof(call_t));
+    inter->entity=c->entity;
+    inter->from=c->from;
+
+    for(i=0;i<get_node_count();i++)
+        if(is_node_alive(i))
+        {
+            inter->node=i;
+            struct nodedata *internodedata = get_node_private_data(inter);
+            list_delete(nodedata->LMST_voisin,c->node);
+        }
 
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
@@ -220,11 +229,11 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 
 void tx( call_t *c , packet_t * packet )
 {
+    struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
     if(entitydata->debug)
-        printf("LBOP BROADCAST - ON %d  \n",c->node);
+        DBG("LBOP BROADCAST - ON %d  WITH RANGE %.2lf At %lf \n",c->node,get_range_Tr(c), get_time_now_second());
 
-    struct nodedata *nodedata = get_node_private_data(c);
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
 
@@ -241,7 +250,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     nodedata->nbr_evenement++;
 
     if(entitydata->debug)
-        printf("LBOP - %d SET HEADER  \n",c->node);
+        DBG("LBOP - %d SET HEADER  \n",c->node);
 
     //Fixé le rayon
     if(nodedata->range<0)
@@ -262,8 +271,9 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
         }
         set_range_Tr(c,distMax);
         nodedata->range=get_range_Tr(c);
+
         if(entitydata->debug)
-            printf("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
+            DBG("LBOP BROADCAST - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
 
     }
 

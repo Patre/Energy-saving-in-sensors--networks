@@ -113,12 +113,14 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 	free(pere);
 	free(cle);
 	freeHeap(F);
-	
-	printf("Graphe de voisinage complet : \n");
-	 printf("Graphe de voisinage : \n");
-	 afficherGraphe(nodedata->g2hop);
-	 printf("arbre de BIP de %d construit : \n", c->node);
-	 arbre_affiche(bipTree);
+        if(debug)
+        {
+            printf("Graphe de voisinage complet : \n");
+             printf("Graphe de voisinage : \n");
+             afficherGraphe(nodedata->g2hop);
+             printf("arbre de BIP de %d construit : \n", c->node);
+             arbre_affiche(bipTree);
+        }
 	
 	return bipTree;
 }
@@ -198,7 +200,7 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	call_t c0 = {mac->elts[0], c->node, c->entity};
 	struct macnodedata* macdata = get_node_private_data(&c0);
 	macdata->range = distMax;
-	printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
+        //printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
 	
 	return coutMax;
 }

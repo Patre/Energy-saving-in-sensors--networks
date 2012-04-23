@@ -180,7 +180,7 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			//printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
 				break;
 			else

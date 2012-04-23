@@ -37,7 +37,7 @@ void init_files()
 	
     //GRAPH
     FILE *topo;
-    topo=fopen("graphBIP","w");
+    topo=fopen("graphDLBIP","w");
     fclose(topo);
 	
 }
@@ -85,6 +85,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
+    entitydata->debug   =0;
     //entitydata->debut   = time_seconds_to_nanos(3);
     //entitydata->periodEVE = time_seconds_to_nanos(1);
 	
@@ -109,20 +110,16 @@ int init(call_t *c, void *params) {
             }
         }
 		
-        /*if (!strcmp(param->key, "debut")) {
-			if (get_param_time(param->value, &(entitydata->debut))) {
+        if (!strcmp(param->key, "debut")) {
+                        if (get_param_integer(param->value, &(entitydata->debug))) {
 				goto error;
 			}
         }
 		
-        if (!strcmp(param->key, "period_evnt")) {
-			if (get_param_time(param->value, &(entitydata->periodEVE))) {
-				goto error;
-			}
-        }*/
+
     }
-	
-	// init_files();
+
+    init_files();
 	
     set_entity_private_data(c, entitydata);
     return 0;
@@ -350,14 +347,11 @@ int get_header_real_size( call_t * c )
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
-	printf("Unset node %d\n",c->node);
-	
-    DEBUG; /* Voisinage 1-hop */
+
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
     
 	
-    DEBUG;/* Voisinage 2-hop */
-	listeNodes_detruire(&nodedata->twoHopNeighbourhood);
+    listeNodes_detruire(&nodedata->twoHopNeighbourhood);
 	
 	
 	DEBUG; /* Graphe DE LBIP */

@@ -63,8 +63,6 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);
     struct protocoleData *entitydata=get_entity_private_data(c);
-
-
     if(nodedata->range<0)
     {
 
@@ -125,7 +123,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
 
 
 
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
+//	("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
     //L'envoi
     TX(&c0,packetRecu);//*/
 

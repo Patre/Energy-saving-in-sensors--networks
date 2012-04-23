@@ -10,7 +10,7 @@
 #include <graphe.h>
 
 
-#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
+#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphLBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
 void tx( call_t *c , packet_t * packet );
@@ -27,6 +27,7 @@ struct nodedata {
 
 
 struct protocoleData {
+        int       debug;
 	double    alpha; //alpha de modele d'energie
 	double    c; //le C de modele d'energie
 	double    eps; //la duree avant le lancement du premier evenement

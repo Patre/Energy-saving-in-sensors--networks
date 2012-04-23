@@ -14,7 +14,7 @@ void set_range_Tr(call_t *c,double range)
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
     struct macnodedata* macdata = get_node_private_data(&c0);
-    macdata->range = ceil(range);
+    macdata->range = range;
 }
 
 
@@ -152,8 +152,8 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
         array_t *mac=get_mac_entities(c);
         call_t c0 = {mac->elts[0], c->node, c->entity};
         struct macnodedata* macdata = get_node_private_data(&c0);
-        macdata->range = ceil(distMax);
-       // printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
+        macdata->range = distMax;
+        //printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
 
         return distMax;
 }

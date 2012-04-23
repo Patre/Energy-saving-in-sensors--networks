@@ -1,0 +1,25 @@
+Sim=2
+cd 0.xml
+./FLOOD $Sim
+cd ..
+
+cd 1.xml
+./RBOP $Sim 
+cd ..
+
+cd 2.xml
+./LBOP $Sim
+cd ..
+
+cd 3.xml
+./BIP $Sim
+cd ..
+
+cd 4.xml
+./LBIP $Sim 
+cd ..
+
+cd 5.xml
+./DLBIP $Sim
+cd ..
+ 
