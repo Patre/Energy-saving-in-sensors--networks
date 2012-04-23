@@ -4,8 +4,6 @@
 \chapter{État de l'art}\label{etat_art}
 
 \section{Modélisation des réseaux de capteurs sans fil}
-
-
 Dans les différents articles du domaine, les réseaux sans fils sont modélisés sous forme de graphe. Cependant, d'autres paramètres (comme les capteurs) sont modélisés de façon différentes par chaque auteur. Nous allons présenter quelques modélisations possibles pour chaque aspect du problème d'économie d'énergie dans les réseaux de capteurs sans fils.
 
 Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux de capteurs. Nous formaliserons ensuite la modélisation d'un réseau par les graphes. Puis nous aborderons les différents modèles énergétiques. Enfin, nous nous pencherons sur les définitions de durée de vie d'un réseau. Une table récapitulative des notations est disponible à la fin de cette partie.
@@ -15,7 +13,8 @@ Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux d
 
 Différents modèles sont possibles :
 
-La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} \cite{Cartigny2003LMEB} :
+% TODO : citer les articles qui utilisent telle ou telle modélisation
+La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$}:
 
 \begin{itemize}
  \item \textit{Uniformité.} Tout les capteurs sont identiques (batterie, portée, capacité de calcul…).
@@ -37,24 +36,14 @@ D'autres modèles plus complexes mais plus réalistes prennent en compte:
    
  \item L'ajout de capteurs: le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.
  \item Les capteurs peuvent tomber en panne en raison de divers facteurs. Une loi de probabilité modélise ce phénomène.   
- \item La mobilité des capteurs. La position de chaque capteur varie au cours du temps \cite{Giordano2003}.
- \item Les capteurs ne sont pas forcément identiques (batterie, portée, capacité de calcul, connaissance du réseau...) \cite{Akyildiz2002}.
+ \item La mobilité des capteurs. La position de chaque capteur varie au cours du temps.
+ \item Les capteurs ne sont pas forcément identiques (batterie, portée, capacité de calcul, connaissance du réseau...).
  \item Espace en 3 dimensions.
- \item Interférences radio \cite{Agarwal2005}.
- \item Modèle de consommation énergétique complexe \cite{Deng2005}.
+ \item Interférences radio.
+ \item Modèle de consommation énergetique complexe.
  \item ...
 \end{itemize}
 
-
-\begin{figure}[h]
-\centering
-\includegraphics[scale=0.9]{Etat_de_l'art/source/layer.pdf}
-\caption{\label{Layer} Les couches dans les WSNs}
-\end{figure}
-
-Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (WSN), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
-
-Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_1$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit ci dessous.
 
 \subsection{Modèle d'un réseau de capteurs : un graphe}
 
@@ -84,11 +73,6 @@ Nous noterons $d_G(u,v)$ la \textit{distance} entre $ u $ et $ v $ : $d_G(u,v)= 
 \end{mydef}
 
 
-\begin{figure}[h]
-\centering
-\includegraphics[angle=90, scale= 0.35]{Etat_de_l'art/source/GrapheUnit.pdf} 
-\caption{\label{Layer} Graphe Unité}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Voisinage
 \begin{mydef}
@@ -107,9 +91,19 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 \end{mydef}
  
 
+\begin{figure}[tb]
+    \centering
+    \begin{tabular}{cccc}
+%      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheUnit.pdf} &
+%      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
+%      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
+      \\
+      (a) & (b) & (c) \\
+    \end{tabular}
+    \caption{Graphe unité(a), graphe RNG(b) et graphe MST(c) \label{fig:ex}}
+\end{figure}
 
-
-
+\
 
 
 
@@ -128,22 +122,6 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù RNG& MST
 \begin{mydef}
  Nous notons $MST(G)$ un des arbres couvrants de poids minimum de G. Nous pouvons calculer rapidement un tel arbre de façon globale (MST) ou distribuée (LMST).
- 
-
-\begin{figure}[tb]
-    \centering
-    \begin{tabular}{cccc}
-      
-      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
-      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
-   \\
-      (a) & (b) \\
-    \end{tabular}
-    \caption{Graphe RNG(a) et graphe MST(b) \label{fig:ex}}
-\end{figure}
-
-
-
 \end{mydef}
 
 \begin{mydef}
@@ -159,7 +137,7 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
 \subsection{Modèle énergétique}
 \subsubsection{Energie d'un capteur}
 Dans \cite{Dong2005}, Dong présente les deux modèles de consommation énergétique communément utilisés.
-\paragraph{The Packet based model.\label{packet_based_model}}
+\paragraph{The Packet based model.}
 Nous utiliserons pour notre analyse le modèle de consommation d'énergie idéal suivant:
 nous considèrerons que chaque capteur $i$ a une énergie initiale $E_{init}=\beta$.
 L'envoi de message est le seul facteur de perte d'énergie. L'énergie consommée lors de la réception de message, l'acquisition et traitement des informations sera considérée comme négligeable.
@@ -181,9 +159,10 @@ Dans beaucoup d'applications, la densité du réseau étant élevée, le coût p
  L'énergie potentielle de G est la somme des énergies des capteurs :$$E_G=\sum_{i=1}^n{E_i}$$
  La consommation de  G est :$$C_G=n\beta - E_G$$
  Le coût moyen de transmission de  G est :$$c_G=E(d_e(G))$$
- Le cout moyen d'une transmission est $C(1)$.\\
- Le cout moyen de $k$ transmissions est $C(k)$
+ Le cout moyen d'un broadcast est $C(1)$.\\
+ Le cout moyen de $k$ broadcasts est $C(k)$
 \end{mydef}
+% TODO : singlecast
 
 
 \subsection{Durée de vie du réseau}
@@ -194,6 +173,7 @@ Dans un réseau de capteurs sans fil, la contrainte majeure est l'efficacité de
 est leur petite taille et leur micro-batterie. Dans la majeure partie des cas, remplacer les batteries est impossible. Cependant la durée de vie d'un WSN est difficile à définir et à mesurer.
 Il n'y a pas de définition absolue. Elle indique combien de temps le réseau sera 'efficace' par rapport à l'application donnée (nombre de transmissions effectuées, connexité du réseau, pourcentage de noeuds vivants...).
 
+% TODO : citer les articles correspondants aux deux approches ci-dessous
 Dans la littérature, deux approches apparaissent clairement en matière de maximisation de la durée de vie des WSNs. Une approche indirecte consiste à minimiser la consommation d'énergie de façon locale tandis que l'autre a pour but 
 de maximiser la directement la durée de vie du réseau de façon plus globale. Bien que l'approche indirecte puisse améliorer la durée de vie du réseau, elle ne suffit pas à elle seule à appréhender le problème de la durée de vie.
 Parmi ces approches figurent  par exemple le fait de maximiser le nombre de transmissions effectuées avant qu'un capteur ne meurt.
@@ -271,12 +251,14 @@ Les éléments de classification cités ci-dessous sont inspirés des articles \
 Dans un réseau $G(V,E,\gamma)$, deux capteurs peuvent communiquer directement uniquement s'ils sont 1-voisins dans G. A cause l'atténuation du signal wifi, le rayon de transmission est relativement limité, c'est pourquoi les communications doivent se faire par multi-sauts. Tout ceci est géré par un algorithme de routage. Les algorithmes de routage peuvent gérer le broadcast (un nœud vers tous les autres) et/ou le single-cast (un nœud vers un autre). Chacune des approches a des avantages dans un contexte précis.
 
 \subsubsection{Broadcast}
+% TODO : citer des articles
 La procédure de broadcast consiste à transmettre une information à tous les autres nœuds du graphe. C'est un mécanisme fondamental pour la propagation des données ainsi que pour la découverte de routes. En effet le broadcast est utilisé pour acquérir une connaissance du voisinage des capteurs. Ce mode de communication est naturel pour des périphériques en wifi avec antenne omnidirectionnelle car les ondes sont réparties uniformément dans un cercle de rayon donné. Tout le voisinage est donc touché et le coût en énergie est celui d'une seule transmission.
 
 Le routage des broadcasts nécessite de s'assurer que le message ne soit pas indéfiniment retransmis mais que tous les nœuds du graphe soient touchés. Parfois même si le destinataire est à distance 1 dans le graphe unité, il est nécessaire que le message soit relayé par un nœud tiers pour des raisons énergétiques.
 
 \subsubsection{Single-cast}
-La transmission par single-cast est le moyen classique de transmettre les messages : un expéditeur fait parvenir un message à un destinataire. Ce moyen de communication est valable lorsqu'on ne cherche qu'à atteindre un seul nœud. En effet, le routage d'un single-cast coûte moins cher que le broadcast (en moyenne, moins de transmissions sont nécessaires).
+La transmission par single-cast est le moyen classique de transmettre les messages : un expéditeur fait parvenir un message à un destinataire. Ce moyen de communication est valable lorsqu'on ne cherche qu'à atteindre un seul nœud car il coûte moins cher que le broadcast.
+% TODO : single-cast / multi-cast
 
 
 \subsection{Algorithme à rayon d'émission fixe vs variable}
@@ -285,6 +267,7 @@ Dans les réseaux de capteurs, les transmissions s'effectuent sans fils. Un bon 
 Notons que les algorithmes qui émettent en single-cast ont, par définition, un rayon d'émission variable.
 
 \subsubsection{Déterminer le rayon optimal d'émission pour un broadcast}
+% TODO : relecture Rayon optimal d'émission et ajout à l'intro de la section
 \begin{myth}
 Sans chevauchement et sans vide, un plan ne peut être découpé de façon uniforme que par des polygones réguliers de type triangle, carrés ou hexagones.
 \end{myth}
@@ -372,14 +355,16 @@ Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au ré
 
 
 \subsection{Algorithme déterministe vs probabiliste}
-Un algorithme déterministe est un algorithme qui, confronté à un choix, prendra toujours la même décision : celle prévue par le concepteur. Chaque nœud prendra donc, dans des conditions similaires, la même décision.
-
-À l'inverse, un protocole de routage peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire. Il en existe deux types : l'un qui prend toujours la décision optimale mais au bout d'un temps qui peut être long ; l'autre qui décide rapidement mais dont la décision peut être mauvaise.
+Un protocole de broadcast peut utiliser des fonctions probabilistes pour prendre certaines décisions de manière aléatoire.
+À l'inverse, un algorithme déterministe prendra toujours la même décision lorsqu'il se trouve dans une situation précise.
+% TODO : développement
 
 
 
 \section{Quelques algorithmes de routage}
-Tous les algorithmes présentés ci-dessous utilisent la modélisation $M1$ (\ref{modelePratique}) des réseaux avec pour modèle énergétique le 'Packet based model' (\ref{packet_based_model}).
+% TODO : harmoniser les durées de vie ou poser les notations dans l'intro de la subsection
+% TODO : citation de tous les articles (ou références)
+% TODO : compléter les mots-clés
 
 
 \subsubsection{Flow augmentation \cite{Chang2000}}
@@ -538,7 +523,6 @@ Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds q
 \emph{Durée de vie} : $$ LC $$
 
 \section{Quelques algorithmes de broadcast}
-Model de reseau: $M1$ avec pour modele energetique 'Packet based model'.
 
 \subsubsection{Blind Flooding\label{blind_flooding}}
 \emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
@@ -630,9 +614,10 @@ $$\begin{cases}
 
 Le coût d'ajout d'une arête dépend des nœuds déjà dans l'arbre de la façon suivante : 
 $$ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P_{ij}-P(i)$$
-où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est sélectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
+où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est selectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
 
 
+% TODO : revoir l'algo
 \begin{algorithm}[h]
 \caption{Procédure de construction du BIP-Tree}
 \label{algo_BIP_tree}
@@ -708,13 +693,15 @@ BIP ne construit pas forcément un arbre de poids minimum. Cependant, contrairem
 \FOR{chaque noeud $i$}
 	\STATE Broadcaster <HELLO, $i$, $N_1(i)$> contenant $N_1(i)$ le 1-voisinage de $i$
 	\STATE A la réception de <HELLO, $j$, $N_1(j)$> , ajouter $N_1(j)$ à son 2-voisinage.
-	
+
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
 
-\emph{Consommation :} Pour une 2-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un consommation de $2n\cdot \gamma^\alpha +  n\cdot c$.
-Pour une 1-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un consommation de $n\cdot \gamma^\alpha +  n\cdot c$.
+
+
+\emph{Consommation :} 
+
 
 
 
@@ -741,11 +728,11 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 		\STATE soit $v$ le nœud que $u$ doit atteindre d'après les instructions du paquet
 		\STATE $u$ construit son BIP-tree à partir des informations du paquet :
 			 \INDSTATE l'arbre est construit à partir du 2-voisinage de $u$ auquel on enlève :
-			 	 \INDSTATE[2]-le nœud $s$ source du broadcast
-				 \INDSTATE[2]-les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
-				 \INDSTATE[2]-le nœud $v$ qui a redirigé le paquet vers $u$
-				 \INDSTATE[2]-les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
-				 \INDSTATE[2]-les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
+			 	 \INDSTATE[2]le nœud $s$ source du broadcast
+				 \INDSTATE[2]les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
+				 \INDSTATE[2]le nœud $v$ qui a redirigé le paquet vers $u$
+				 \INDSTATE[2]les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
+				\INDSTATE[2]les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
 			\INDSTATE[1] pour chaque paire de nœuds ($r_i$ qui doit retransmettre, $t_i$ qui doit être atteint)
 				\INDSTATE[2] dans la construction de l'arbre de BIP on initialise $P_{r_i} = P_{r_i t_i}$
 			\INDSTATE[1] $u$ remplace dans le paquet les instructions pour les nœuds voisins
@@ -761,6 +748,11 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 %\caption{ }
 %\end{figure} 
 
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
 
 
 
@@ -778,110 +770,162 @@ ou $P_{ij}$ est le coût réel de transmission et $E_i$ l'énergie restante du n
 
 
 
-\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomènes de chemins de fourmis en lorsque les source des broadcast sont toujours les mêmes.
+\emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomenes de chemins de fourmis en lorsque les source des broadcast sont toujours les memes.Si les sources des broadcast sont aléatoires, 
+DLBIP présente la meme durée de vie que LBIP.
 
 
 
 
-\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
+\subsubsection{LMST Broadcast Oriented Protocol(LBOP)\cite{Cartigny2005}}
+\emph{Mots clés :} 
 
-\emph{Description :} LBOP et RBOP sont des protocoles de diffusion s'appuyant respectivement sur l'arbre couvrant de coût minimum local (LMST) et le graphe de voisinage (RNG).\\
-Le graphe RNG peut être obtenu rapidement de façon locale et nécessite la connaissance du 1-voisinage. Etant donné que chaque site connait sa position et celle de son 1-voisinage, il peut construire son graphe RNG sur celui-ci. La réunion de tous ses sous-graphes est exactement RNG(G). Une fois ce graphe construit, le message est diffusé via celui-ci, chaque noeud  transmettant à 'ses voisins les plus proches' n'ayant pas encore reçu le message.\\
+\emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
+\paragraph{Algorithme LMST}
+Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud connaît la position de ses voisins à 1 saut et chaque nœud calcule son propre MST (Minimum Spanning Tree) sur son voisinage. Puis, si un nœud u est dans le LMST calculé par un nœud v et que le nœud v est dans le LMST du nœud u alors le lien (u, v) est retenu dans le LMST global. La construction du LMST global est ainsi basée sur la construction locale d’un MST par chaque nœud.
 
-
-
-LMST est la version distribuée pour calculer un arbre couvrant de coût minimum. Cependant LMST n'est pas forcément de coût minimum. Pour calculer le graphe LMST, chaque site $u$ construit $LMST(N_1(u))$ : \\
- $(u,v) \in LMST(N_1(u)) \Leftrightarrow v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$\\
-Avec $N_{MST(N_1(u))}(v)$ les voisins de $v$ dans l'arbre couvrant calculé sur son 1-voisinage (avec PRIM par exemple).\\
-Une fois l'arbre construit, le message est diffusé via celui-ci, chaque nœud père transmettant à ses fils.
-
-
-
-
-\begin{algorithm}[h]
-\caption{RNG}
-\label{RNG}
+\begin{algorithm}[H]
+\caption{MST}
+\label{alg MST}
 \begin{algorithmic}
-\FOR{chaque noeud $u$}
-	\STATE Appel de Découverte de 1-voisinage
-\ENDFOR
-\FOR{chaque noeud $u$ }
-	\STATE  $RNG(u) \leftarrow graphe_{vide}$
-	\FOR{chaque noeud $v \in N_1(u)$ }
-	  \IF{$ \nexists w\in N_1(u)\cap N_1(v): d_e(u,w)<d_e(u,v) \wedge d_e(v,w)<d_e(u,v)  \}$}
-	    \STATE Ajouter $v$ à $RNG(u)$
-	  \ENDIF
-        \ENDFOR
-\ENDFOR
-\RETURN $\bigcap_{u \in G} RNG(u)$
+\STATE ENTREES : $G=(V,E)$ un graphe connexe
+\STATE SORTIE : $G(V_{mst}, E_{mst})$ arbre de poids minimum connexe
+\STATE REQUIERE : x un nœud arbitraire de V
+\STATE $V_{mst}$=x , $E_{mst}$ = {}
+
+\REPEAT 
+		\STATE Choisir (u, v)  $E$, tel que u $\in$ $V_{mst}$, v $\notin$ V
+		\STATE Vmst = $V_{mst}$ + {v}
+		\STATE Emst = $E_{mst}$ + (u, v)
+
+\UNTIL{<$V_{mst}$ = V>}
+\STATE return G($V_{mst}$, $E_{mst}$)
+
 \end{algorithmic}
 \end{algorithm}
 
-\begin{algorithm}[h]
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
+
+\begin{algorithm}[H]
 \caption{LMST}
-\label{LMST}
+\label{alg LMST}
 \begin{algorithmic}
-\FOR{chaque noeud $u$}
-	\STATE Appel de Découverte de 1-voisinage
-	\STATE $u$ calcul $MST(N_1(u))$ et l'envoie à ses voisins
-\ENDFOR
-\FOR{chaque noeud $u$ }
-	\FOR{chaque noeud $v \in N_1(u)$ }
-	  \IF{$ v \in N_{MST(N_1(u))}(u)$ et $ u \in N_{MST(N_1(v))}(v)$}
-	    \STATE Ajouter $v$ à $LMST(u)$
-	  \ENDIF
-        \ENDFOR
-\ENDFOR
-\RETURN $\bigcap_{u \in G}( LMST(u))$
+\STATE ENTREES : $G=(V,E)$ un graphe connexe
+\STATE SORTIE : graphe réduit connexe
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE $E_{lmst}$ = $\oslash$
+	\FOR {chaque u,v $\in$ V }
+		\STATE Calculer le MST(u) et MST (v)
+				\IF{v $\in$ MST(u) et u $\in$ MST(v)}
+				\STATE $E_{lmst}$ = $E_{lmst}$ + (u,v)				
+				\ENDIF
+	\ENDFOR
+\STATE return G(V, $E_{lmst}$)	
+
 \end{algorithmic}
 \end{algorithm}
 
 
 \begin{algorithm}[H]
-\caption{RBOP}
-\label{algo_RBOP}
+\caption{LBOP}
+\label{alg LBOP}
 \begin{algorithmic}
-\STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
+\STATE ENTREES : G=(V,$E_{lmst}$) un graphe connexe, $s$ une source, un message $M$
 \STATE SORTIE : message broadcasté
-\STATE REQUIERE : connaissance du 1-voisinage
-\STATE $s$ calcul $RNG(U)$ et envoie $M$ avec pour rayon $\max\limits_{v\in N_{RNG(s)}}(d_e(s,v))$
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{lmst}$) le graphe LMST de G
 
-\IF{ $u$ reçoit <M,$v$> }
-	\IF {$M$ est un nouveau message}
-		\STATE -si $v\in RNG(u)$: $RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$ $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
-		\STATE -sinon: attendre $\Delta$, si $RNG(u)$ est non vide  $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
-			 	
+\STATE s broadcaste <M,s>
+\FOR {chaque u $\in$ V}
+\STATE u ajuste son rayon de transmission au plus loin voisin LMST
+	\IF {u $\in$ V reçoit <M,s> pour la premiere fois}
+	\STATE 	rebrodcaster <M,s>
+	\ELSE 
+	\STATE ignorer le message
 	\ENDIF
-	\IF{$M$ a deja eté reçu par $u$}
-		\STATE -si $u$ a déja retransmit ce message: $M$ est ignoré
-		\STATE -$RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$:
-		\INDSTATE   -si $RNG(u)$ est vide: $M$ est ignoré
-		\INDSTATE   -si $RNG(u)$ est non vide: $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
-			 	
-	\ENDIF
+\ENDFOR
+\STATE return
 
-\ENDIF
 \end{algorithmic}
 \end{algorithm}
 
-En remplaçant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons LBOP.\\
+\subsection{ RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
 
-\emph{Consommation :}
+\emph{Description :}
+Le protocole RBOP, comme celui de LBOP, se base sur le contrôle de topologie.
+la différence c’est que RBOP prend comme graphe de départ le graphe dit Graphe RNG, ce
+dernier est obtenu en appliquant l’algorithme RNG.
 
-\emph{Durée de vie :} 
+\paragraph{Algorithme RNG}
+Le RNG est basé sur la connaissance de la position de nœuds. En effet, chaque capteur
+connaît sa position et la diffuse à son voisinage direct. Grâce à la position de son voisinage à 1 saut,
+un nœud va désélectionner les liens les plus longs de la façon suivante :
+Soit deux nœuds voisins u et v. S’il existe un nœud w tel que d(u, v) > d(u,w) et d(v, u) > d(v,w) avec
+d(u,v) la distance euclidienne entre les sommets u et v alors l’arête (u, v) est désélectionnée.
+
+\begin{algorithm}[H]
+\caption{RNG}
+\label{alg RNG}
+\begin{algorithmic}
+\STATE ENTREES : G=(V,$E_{lmst}$) un graphe connexe
+\STATE SORTIE : graphe réduit connexe
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{rng}$) =G(V, E)
+\FOR {chaque u $\in$ V}
+\STATE diffuser sa position au voisinage direct
+	\FOR {chaque v $\in$ V}
+		\FOR {chaque w $in$ V}
+			\IF {d(u,v)>d(u,w) et d(v,u)>d(v,w)}
+			\STATE 	$E_{rng}$= $E_{rng}$ – (u, v)
+			\ENDIF
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\STATE return G (V,$E_{rng}$)
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+\caption{RBOP}
+\label{alg RBOP}
+\begin{algorithmic}
+\STATE ENTREES : G=(V,$E_{rng}$) un graphe connexe, $s$ une source, un message $M$
+\STATE SORTIE : message broadcasté
+\STATE REQUIERE : connaissance de 1-voisinage
+\STATE G (V,$E_{rng}$) le graphe RNG de G
+
+\STATE s broadcaste <M,s>
+\FOR {chaque u $\in$ V}
+\STATE u ajuste son rayon de transmission au plus loin voisin RNG
+	\IF {u $\in$ V reçoit <M,s> pour la premiere fois}
+	\STATE 	rebrodcaster <M,s>
+	\ELSE 
+	\STATE ignorer le message
+	\ENDIF
+\ENDFOR	
+\STATE return
+
+\end{algorithmic}
+\end{algorithm}
 
 
-\subsubsection{Target Radius LMST Broadcast Oriented Protocol \cite{Ingelrest2004}}
+\subsubsection{TR-LBOP \cite{Ingelrest2004}}
+'Target Transmission Radius over LMST for Energy-Efficient Broadcast Protocol in Ad Hoc Networks'.\\
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
-\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d_e(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
+\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe de choisir les noeuds relais pour qu'ils se rapproche le plus possible d'un maillage
+ hexagonale de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$.
 
-Soient : 
-$$L(u)= N_{LMST}(u)$$
-$$L'(u)=N_1(u)\backslash L(u)$$
-$$D_L=\max(d_e(u,v)\mid v \in L(u))$$
-$$D_{L'}=(d_e(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))\ avec\ \delta_{uv}=\mid d_e(u,v)-R_{opt}\mid$$
-Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
+
+\emph{Exemple :} 
+
+\emph{Consommation :} 
+
+\emph{Durée de vie :} 
 
 
 
@@ -891,14 +935,15 @@ Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})
 
 \subsection{Synthèse}
 
-%\subsubsection{Schéma récapitulatif}
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
-%\caption{Graphe de synthèse}
-%\end{figure} 
+\subsubsection{Schéma récapitulatif}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
+\caption{Graphe de synthèse}
+\end{figure} 
 
 \subsubsection{Tableau récapitulatif}
+% TODO : ajouter tableau récapitulatif avec chaque algo sur les lignes et chaque type d'algo sur les colonnes + complexité si possible
 \noindent\makebox[\textwidth]{
 \resizebox{0.95\paperwidth}{!}{
 \rowcolors{3}{gray!25}{white}
@@ -926,15 +971,17 @@ LBIP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & 
 \hline
 DLBIP \cite{Champ2009DLBIP} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
 \hline
-LBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+RRS \cite{Cartigny2003RNG} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
 \hline
-RBOP \cite{Cartigny2005} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+LBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
 \hline
-TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo & \tickNo & \tickYes & \tickNo & \tickYes & \tickYes & \tickNo & \tickYes & \tickNo \\
+RBOP \cite{Cartigny2005} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+\hline
+TR-LBOP \cite{Ingelrest2004} & \tickYes & \tickNo &  &  &  &  &  &  &  &  \\
+%>>>>>>> 1893df8ee14e584385a58441d27c3c8189d12db0
 \hline
 \end{tabular}
 }
 }
-
 
 
