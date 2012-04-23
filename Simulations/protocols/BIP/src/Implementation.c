@@ -115,7 +115,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
         if (SET_HEADER(&c0, packetRecu, &destination) == -1) {
             packet_dealloc(packetRecu);
-            return;
+            return -1;
         }
 
 
