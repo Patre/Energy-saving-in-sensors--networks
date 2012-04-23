@@ -1,15 +1,28 @@
 \begin{thebibliography}{10}
 
+\bibitem{Agarwal2005}
+Manish Agarwal, Lixin Gao, Joon~Ho Cho, and Jie Wu.
+\newblock {Energy Efficient Broadcast in Wireless Ad hoc Networks with
+  Hitch-hiking.}
+\newblock {\em MONET}, 10(6):897--910, 2005.
+
+\bibitem{Akyildiz2002}
+I.~F. Akyildiz, W.~Su, Y.~Sankarasubramaniam, and E.~Cayirci.
+\newblock {Wireless sensor networks: a survey}.
+\newblock {\em Computer Networks}, 4(38):393--422, 2002.
+
 \bibitem{Cartigny2005}
 J.~Cartigny, F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovic.
 \newblock {Localized LMST and RNG based minimum-energy broadcast protocols in
   ad hoc networks}.
 \newblock {\em Ad Hoc Networks}, 3(1):1--16, 2005.
 
-\bibitem{Cartigny2003RNG}
-Julien Cartigny, Fran\c{c}ois Ingelrest, and David Simplot.
-\newblock {RNG Relay Subset Flooding Protocols in Mobile Ad-Hoc Networks.}
-\newblock {\em Int. J. Found. Comput. Sci.}, 14(2):253--265, 2003.
+\bibitem{Cartigny2003LMEB}
+J.~Cartigny, D.~Simplot, and I.~Stojmenovic.
+\newblock {Localized minimum-energy broadcasting in ad-hoc networks}.
+\newblock In {\em {INFOCOM 2003. Twenty-Second Annual Joint Conference of the
+  IEEE Computer and Communications. IEEE Societies}}, volume~3, pages
+  2210--2217. IEEE, 2003.
 
 \bibitem{Champ2009DLBIP}
 J.~Champ, A.E. Baert, and V.~Boudet.
@@ -28,6 +41,14 @@ Jae-Hwan Chang and Leandros Tassiulas.
 \newblock {Energy conserving routing in wireless ad-hoc networks}.
 \newblock {\em INFOCOM}, pages 22--31, 2000.
 
+\bibitem{Deng2005}
+J.~Deng, Y.~S. Han, W.~B. Heinzelman, and P.~K. Varshney.
+\newblock {Scheduling sleeping nodes in high density cluster-based sensor
+  networks}.
+\newblock {\em ACM/Kluwer Mobile Networks and Applications (MONET), Special
+  Issue on ``Energy Constraints and Lifetime Performance in Wireless Sensor
+  Networks''}, 2005.
+
 \bibitem{Dietrich2009}
 Isabel Dietrich and Falko Dressler.
 \newblock {On the lifetime of wireless sensor networks.}
@@ -44,6 +65,11 @@ Abdelrahman Elleithy and Gonhsin Liu.
 \newblock {A simulation model for the lifetime of wireless sensor networks}.
 \newblock {\em CoRR}, abs/1201.2237, 2012.
 
+\bibitem{Giordano2003}
+S.~Giordano, I.~Stojmenovic, and L.~Blazevic.
+\newblock {Position based routing algorithms for ad hoc networks: a taxonomy}.
+\newblock {\em Ad Hoc Wireless Networking}, pages 103--136, 2003.
+
 \bibitem{Ingelrest2004}
 F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovic.
 \newblock {Target transmission radius over LMST for energy-efficient broadcast
@@ -56,6 +82,12 @@ F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovi{\'c}.
 \newblock {Energy-efficient broadcasting in wireless mobile ad hoc networks}.
 \newblock {\em Resource Management in Wireless Networking}, pages 543--582,
   2005.
+
+\bibitem{Ingelrest2008}
+Fran\c{c}ois Ingelrest and David Simplot-Ryl.
+\newblock {Localized broadcast incremental power protocol for wireless ad hoc
+  networks}.
+\newblock {\em Wirel. Netw.}, 14:309--319, June 2008.
 
 \bibitem{Kasten2001}
 O.~Kasten.
