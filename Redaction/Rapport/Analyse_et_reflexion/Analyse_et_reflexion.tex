@@ -5,10 +5,23 @@
 
 
 \section{Critique de l'existant}
+\subsection{Consommation de l'énergie}
+	
+Le modéle énergetique choisi dans beaucoup d'articles (dont ceux présentant les algorithmes cités dans l'état de l'Art) n'est pas du tout réaliste.
+Hors, la conception d'algorithmes a pour but de maximiser la durée de vie des réseau de capteurs sur le terrain. Pour etre fidèle au contraintes 
+réelle associées à la nature des capteurs, il faudrait avant tout choisir un type capteur(Ultra Wideband,Wi-fi) dépendant de l'application voulu et, en se basant sur ses données constructeur prendre en considération :
+\begin{itemize}
+\item l'energie de capture: traitement de signal et activation de la sonde de capture.
+\item L’énergie de traitement: l’énergie d'alimentation et l’énergie de veille. L’énergie d'alimentation est déterminée par la tension d’alimentation de l'unité de traitment. L'énergie de veille correspond au courant de fuite lorsque le capteur est en mode veille.
+à l’énergie consommée lorsque l’unité de calcul n’effectue aucun traitement.
+\item L’énergie de communication: l’énergie de réception et l’énergie de l’émission. Cette énergie est déterminée par la taille des message à
+communiquer et la distance de transmission, ainsi que par les propriétés physiques du module
+radio. L’émission d’un signal est caractérisée par sa puissance. 
+\end{itemize}
+\subsection{Critères de comparaison}
 
 
 
- 
 
 
 \section{Nos idées}
@@ -46,6 +59,9 @@ Nous l'avons modifié légerement en lui appliquant l'idée du rayon optimale.
 
 
 \subsection{}
+
+
+
 
 
 
