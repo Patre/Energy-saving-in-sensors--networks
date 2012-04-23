@@ -13,7 +13,7 @@ Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux d
 \subsection{Critères pratiques}\label{modelePratique}
 
 
-Différents modèles sont possibles :
+Différents modèles sont possibles.
 
 La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} \cite{Cartigny2003LMEB} :
 
@@ -49,38 +49,38 @@ D'autres modèles plus complexes mais plus réalistes prennent en compte:
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.9]{Etat_de_l'art/source/layer.pdf}
-\caption{\label{Layer} Les couches dans les WSNs}
+\caption{\label{Layer} Les couches dans les réseau de capteur sans fils}
 \end{figure}
 
-Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (WSN), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
+Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (réseau de capteur sans fil), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
 
 Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_1$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit ci dessous.
 
 \subsection{Modèle d'un réseau de capteurs : un graphe}
 
- \paragraph*{} Un WSN peut être représenté par un graphe $G= (V,E,\gamma)$ où :
+ \paragraph*{} Un réseau de capteur sans fil peut être représenté par un graphe $G= (V,E,\gamma)$ où :
  \begin{itemize}
  \item $V$ est un ensemble de noeuds (capteurs)
  \item $E \subseteq V \textsuperscript{2}$ est l'ensemble des arêtes représentant les communications possibles entre les capteurs: $(u,v)$ appartient à $E$ signifie que $u$ peut envoyer un  message à $v$
  \item $\gamma$ est le rayon d'émission maximum
  \end{itemize}
  
- On note $ n=|V| $ la taille du WSN. Notons que les éléments de E dépendent de la
+ On note $ |V|=n $ la taille du réseau de capteur sans fil. Notons que les éléments de E dépendent de la
  position des capteurs ainsi que de leur portée. Nous supposerons que tout les capteurs ont la même portée maximale notée $\gamma$. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Distance
 
 \begin{mydef}
-Nous noterons $ij$ l'arête allant de $i$ à $j$. \\
-Nous noterons $d_e(u,v)$ la \textit{distance euclidienne} dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$:
+Soit $ij$ l'arête allant de $i$ à $j$. \\
+Soit $d_e(u,v)$ la \textit{distance euclidienne} dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$:
 $$E = \{ (u,v) \in V ^{2} \mid d(u,v) \leq \gamma \}$$
-Nous noterons $d_G(u,v)$ la \textit{distance} entre $ u $ et $ v $ : $d_G(u,v)= \min\limits_{k \in \mathbb{N}}(k \mid v \in N_k(u))$
+Soit $d_G(u,v)$ la \textit{distance} entre $ u $ et $ v $ : $d_G(u,v)= \min\limits_{k \in \mathbb{N}}(k \mid v \in N_k(u))$
 \end{mydef}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Graphe unité
 \begin{mydef}
- On appelera $G= (V,E,\gamma)$ le \textit{graphe unité} du WSN et $\gamma$ son rayon de communication.
+ Soit $G= (V,E,\gamma)$ le \textit{graphe unité} du réseau de capteur sans fil et $\gamma$ son rayon de communication.
 \end{mydef}
 
 
@@ -202,30 +202,30 @@ Dans beaucoup d'applications, la densité du réseau étant élevée, le coût p
 
 
 Dans un réseau de capteurs sans fil, la contrainte majeure est l'efficacité de l'algorithme utilisé en matière de consommation énergétique. En effet, la principale caractéristique des capteurs
-est leur petite taille et leur micro-batterie. Dans la majeure partie des cas, remplacer les batteries est impossible. Cependant la durée de vie d'un WSN est difficile à définir et à mesurer.
+est leur petite taille et leur micro-batterie. Dans la majeure partie des cas, remplacer les batteries est impossible. Cependant la durée de vie d'un réseau de capteur sans fil est difficile à définir et à mesurer.
 Il n'y a pas de définition absolue. Elle indique combien de temps le réseau sera 'efficace' par rapport à l'application donnée (nombre de transmissions effectuées, connexité du réseau, pourcentage de noeuds vivants...).
 
-Dans la littérature, deux approches apparaissent clairement en matière de maximisation de la durée de vie des WSNs. Une approche indirecte consiste à minimiser la consommation d'énergie de façon locale tandis que l'autre a pour but 
+Dans la littérature, deux approches apparaissent clairement en matière de maximisation de la durée de vie des réseau de capteur sans fils. Une approche indirecte consiste à minimiser la consommation d'énergie de façon locale tandis que l'autre a pour but 
 de maximiser la directement la durée de vie du réseau de façon plus globale. Bien que l'approche indirecte puisse améliorer la durée de vie du réseau, elle ne suffit pas à elle seule à appréhender le problème de la durée de vie.
 Parmi ces approches figurent  par exemple le fait de maximiser le nombre de transmissions effectuées avant qu'un capteur ne meurt.
 
 Dans \cite{Liang2002}, Liang prouve que le  problème THE MINIMUM-ENERGY BROADCAST
 TREE PROBLEM est NP-complet par réduction à (3-CNF SAT):
 \begin{myth}
-Soient un WSN $G$ dans lequel chaque noeud a $k$ rayons de transmission possibles, une source $s$ et un entier positif $w$.
+Soient un réseau de capteur sans fil $G$ dans lequel chaque noeud a $k$ rayons de transmission possibles, une source $s$ et un entier positif $w$.
 Déterminer s'il existe un arbre de broadcast de source $s$ tel que la somme des coûts de transmission aux noeuds relais (qui ne sont pas des feuilles) soit inférieure à $w$ est NP-Complet.
 \end{myth}
 Ainsi, pour un broadcast donné il n'existe pas d'algorithme centralisé polynomial pour trouver l'arbre de diffusion optimale. Il est évident qu'il n'en existe pas de distribués. 
 Dans \cite{Dong2005}, Dong prouve que le  problème BROADCAST LIFETIME est NP-Complet par réduction à (3DM):
 \begin{myth}
-Soient un WSN $G$, une source $s$ et un entier positif $k$.
+Soient un réseau de capteur sans fil $G$, une source $s$ et un entier positif $k$.
 Déterminer si G a assez d'énergie pour broadcaster $k$ messages a partir de $s$ est NP-Complet.
 \end{myth}
 
 De façon formelle, il est donc souvent impossible de calculer le nombre total de broadcasts réussis étant donné un réseau et un protocole (sauf quand le protocole est très simple). Nous analyserons donc \textit{les performances moyennes} des algorithmes quand cela est possible. Sinon, les simulations nous permettront de mesurer les performances en fonction de différentes topologies.
 
 \subsubsection{Définitions}
-Les définitions et critères de durée de vie d'un WSN sont tirés des articles \cite{Dietrich2009},\cite{Champ2009lifetime},\cite{Elleithy2011}. 
+Les définitions et critères de durée de vie d'un réseau de capteur sans fil sont tirés des articles \cite{Dietrich2009},\cite{Champ2009lifetime},\cite{Elleithy2011}. 
 
 \begin{mylt}\label{TTFF}
 Nombre moyen de transmissions réussies avant qu'un capteur n'ai plus de batterie (TTFF).
@@ -312,7 +312,7 @@ $$m \in \{ 3,4,6 \}$$
 \end{proof}
 
 \begin{myth}
-Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue WSN. Nous admettrons ce théorème.
+Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue réseau de capteur sans fil. Nous admettrons ce théorème.
 \end{myth}
 
 %\begin{figure}[H]
@@ -371,7 +371,7 @@ Si le réseau est dynamique (mobilité des capteurs), maintenir une connaissance
  \item[Local :]protocole distribué nécessitant une connaissance très locale du réseau. Tous les algorithmes de 1 ou 2-voisinage appartiennent à cette catégorie.
 \end{description}
 
-Remarquons que pour qu'un protocole soit extensible, il doit être avant tout distribué et local :  le comportement de chaque noeud, bien qu'il nécessite qu'une connaissance locale du réseau, permet d'atteindre l'objectif global. Il est facile d'admettre que l'extensibilité d'un WSN est inversement proportionnelle à la localité du protocole.
+Remarquons que pour qu'un protocole soit extensible, il doit être avant tout distribué et local :  le comportement de chaque noeud, bien qu'il nécessite qu'une connaissance locale du réseau, permet d'atteindre l'objectif global. Il est facile d'admettre que l'extensibilité d'un réseau de capteur sans fil est inversement proportionnelle à la localité du protocole.
 
 
 
