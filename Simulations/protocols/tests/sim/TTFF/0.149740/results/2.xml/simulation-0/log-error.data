@@ -56,6 +56,7 @@ Entity 'app-sensor' (6)
     author       : LAOUADI RABAH
     version      : 0.1
     description  : Broadcast Application
+<<<<<<< HEAD
 
 Entity 'routing-protocole' (7)
     using model  : routing_lbop
@@ -110,3 +111,6 @@ Simulation stats:
   speedup: 8999.550244
   events in queue: 8
   events executed: 4028
+=======
+config: entity routing-protocole: Unable to load model 'routing_lbop' (Not found) (parse_entity())
+>>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0

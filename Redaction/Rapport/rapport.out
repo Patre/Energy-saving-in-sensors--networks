@@ -1,0 +1,54 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}
+\BOOKMARK [1][-]{section.1.1}{Capteurs}{chapter.1}
+\BOOKMARK [1][-]{section.1.2}{Caract\351ristiques techniques des capteurs actuels}{chapter.1}
+\BOOKMARK [1][-]{section.1.3}{R\351seau de capteurs sans fil \(Wireless sensors network\)}{chapter.1}
+\BOOKMARK [2][-]{subsection.1.3.1}{Architecture}{section.1.3}
+\BOOKMARK [2][-]{subsection.1.3.2}{Caract\351ristiques}{section.1.3}
+\BOOKMARK [2][-]{subsection.1.3.3}{Probl\351matique et D\351fis}{section.1.3}
+\BOOKMARK [0][-]{chapter.2}{\311tat de l'art}{}
+\BOOKMARK [1][-]{section.2.1}{Mod\351lisation des r\351seaux de capteurs sans fil}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.1.1}{Crit\350res pratiques}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.2}{Mod\350le d'un r\351seau de capteurs : un graphe}{section.2.1}
+\BOOKMARK [2][-]{subsection.2.1.3}{Mod\350le \351nerg\351tique}{section.2.1}
+\BOOKMARK [3][-]{section*.3}{Energie d'un capteur}{subsection.2.1.3}
+\BOOKMARK [2][-]{subsection.2.1.4}{Dur\351e de vie du r\351seau}{section.2.1}
+\BOOKMARK [3][-]{section*.7}{Probl\351matique}{subsection.2.1.4}
+\BOOKMARK [3][-]{section*.8}{D\351finitions}{subsection.2.1.4}
+\BOOKMARK [1][-]{section.2.2}{El\351ments de classification des algorithmes existants}{chapter.2}
+\BOOKMARK [2][-]{subsection.2.2.1}{Transmissions en broadcast vs transmissions en single-cast}{section.2.2}
+\BOOKMARK [3][-]{section*.9}{Broadcast}{subsection.2.2.1}
+\BOOKMARK [3][-]{section*.10}{Single-cast}{subsection.2.2.1}
+\BOOKMARK [2][-]{subsection.2.2.2}{Algorithme \340 rayon d'\351mission fixe vs variable}{section.2.2}
+\BOOKMARK [3][-]{section*.11}{D\351terminer le rayon optimal d'\351mission pour un broadcast}{subsection.2.2.2}
+\BOOKMARK [3][-]{section*.12}{Rayon d'\351mission fixe pour tous les n\234uds}{subsection.2.2.2}
+\BOOKMARK [3][-]{section*.13}{Rayon d'\351mission variable}{subsection.2.2.2}
+\BOOKMARK [2][-]{subsection.2.2.3}{Algorithme global vs local}{section.2.2}
+\BOOKMARK [3][-]{section*.14}{Cat\351gories}{subsection.2.2.3}
+\BOOKMARK [2][-]{subsection.2.2.4}{Algorithme \340 balisage vs algorithme sans balisage \(beaconless\)}{section.2.2}
+\BOOKMARK [2][-]{subsection.2.2.5}{Algorithme d\351terministe vs probabiliste}{section.2.2}
+\BOOKMARK [1][-]{section.2.3}{Quelques algorithmes de routage}{chapter.2}
+\BOOKMARK [2][-]{section*.15}{Flow augmentation Chang2000}{section.2.3}
+\BOOKMARK [3][-]{section*.16}{Flow redirection Chang2000}{section*.15}
+\BOOKMARK [3][-]{section*.17}{Energy Aware Routing Shah2002}{section*.15}
+\BOOKMARK [1][-]{section.2.4}{Quelques algorithmes de broadcast}{chapter.2}
+\BOOKMARK [2][-]{section*.18}{Blind Flooding}{section.2.4}
+\BOOKMARK [3][-]{section*.19}{Probabilistic Flooding}{section*.18}
+\BOOKMARK [3][-]{section*.20}{Area-based Beaconless Broadcasting Algorithms Ovalle2006}{section*.18}
+\BOOKMARK [3][-]{section*.21}{Broadcast Incremental-power Protocol Wieselthier2000}{section*.18}
+\BOOKMARK [3][-]{section*.22}{D\351couverte des 1- et 2-voisinages}{section*.18}
+\BOOKMARK [3][-]{section*.23}{Localized Broadcast Incremental-power Protocol Ingelrest2004}{section*.18}
+\BOOKMARK [3][-]{section*.24}{Dynamic Localized Broadcast Incremental-power Protocol Champ2009DLBIP}{section*.18}
+\BOOKMARK [3][-]{section*.25}{LMST Broadcast Oriented Protocol\(LBOP\) et RNG Broadcast Oriented Protocol\(RBOP\) Cartigny2005}{section*.18}
+\BOOKMARK [3][-]{section*.28}{ RNG Broadcast Oriented Protocol\(RBOP\) }{section*.18}
+\BOOKMARK [3][-]{section*.29}{LMST\046RNG Broadcast Oriented Protocol \(LBOP\046RBOP\)Cartigny2005}{section*.18}
+\BOOKMARK [3][-]{section*.30}{Target Radius LMST Broadcast Oriented Protocol Ingelrest2004}{section*.18}
+\BOOKMARK [2][-]{subsection.2.4.1}{Synth\350se}{section.2.4}
+\BOOKMARK [3][-]{section*.31}{Tableau r\351capitulatif}{subsection.2.4.1}
+\BOOKMARK [0][-]{chapter.3}{Analyse et reflexion}{}
+\BOOKMARK [1][-]{section.3.1}{Critique de l'existant}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.1.1}{Consommation de l'\351nergie}{section.3.1}
+\BOOKMARK [1][-]{section.3.2}{Nos id\351es}{chapter.3}
+\BOOKMARK [2][-]{subsection.3.2.1}{Application du rayon optimal \340 DLBIP: TR-DLBIP}{section.3.2}
+\BOOKMARK [2][-]{subsection.3.2.2}{}{section.3.2}
+\BOOKMARK [0][-]{chapter.4}{Simulations et r\351sultats}{}
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}

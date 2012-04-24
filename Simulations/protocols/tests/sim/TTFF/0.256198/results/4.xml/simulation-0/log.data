@@ -242,7 +242,11 @@ le Range  30.000000
 	2-voisinage de 118 recupere : {109,116,105,108,106,97,95} (total : 7)
 	2-voisinage de 119 recupere : {117,107,106,98,96,95,87} (total : 7)
 	2-voisinage de 120 recupere : {117,107,98,97,96} (total : 5)
+<<<<<<< HEAD
 9 est Mort a 600.000070
+=======
+114 est Mort a 410.000000
+>>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 TTFF
 9 59 
 120 38 

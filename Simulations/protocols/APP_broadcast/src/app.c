@@ -279,6 +279,7 @@ int setnode(call_t *c, void *params) {
  }
 
 int unsetnode(call_t *c) {
+	printf("Unset node app %d\n",c->node);
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
 
