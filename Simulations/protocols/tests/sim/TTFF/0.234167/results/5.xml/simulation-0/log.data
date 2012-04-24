@@ -1,5 +1,5 @@
 le Range  30.000000
-2.810000 286.699433 0.009801
+2.810000 12.000000 0.234167
 	1-voisinage de 0 recupere : {11,10,1} (total : 3)
 	1-voisinage de 1 recupere : {12,11,2,0} (total : 4)
 	1-voisinage de 2 recupere : {13,12,3,1} (total : 4)
@@ -182,23 +182,4 @@ le Range  30.000000
 	2-voisinage de 79 recupere : {99,98,97,87,77,68,59,58} (total : 8)
 	2-voisinage de 80 recupere : {91,82,72,71,61,60} (total : 6)
 	2-voisinage de 81 recupere : {93,92,90,83,73,62,61,60} (total : 8)
-	2-voisinage de 82 recupere : {94,90,84,74,80,73,70,62,61,60} (total : 10)
-	2-voisinage de 83 recupere : {95,94,91,85,75,64,63,81,71,62} (total : 10)
-	2-voisinage de 84 recupere : {96,86,93,92,82,76,66,65,72,64,63} (total : 11)
-	2-voisinage de 85 recupere : {97,96,87,94,77,66,65,83,73,64} (total : 10)
-	2-voisinage de 86 recupere : {94,98,88,84,74,78,67,75,66,65} (total : 10)
-	2-voisinage de 87 recupere : {99,95,85,89,79,68,76,67,66} (total : 9)
-	2-voisinage de 88 recupere : {96,86,69,77,68} (total : 5)
-	2-voisinage de 89 recupere : {97,69,87,77,68} (total : 5)
-	2-voisinage de 90 recupere : {92,82,81,70} (total : 4)
-	2-voisinage de 91 recupere : {93,83,80,72,71,70} (total : 6)
-	2-voisinage de 92 recupere : {94,90,84,74,73,81,72,71} (total : 8)
-	2-voisinage de 93 recupere : {95,84,74,73,91,81,72,71} (total : 8)
-	2-voisinage de 94 recupere : {96,86,92,82,85,83,75,74,73} (total : 9)
-	2-voisinage de 95 recupere : {93,97,87,77,76,83,75,74,73} (total : 9)
-	2-voisinage de 96 recupere : {94,84,98,88,78,85,77,76} (total : 8)
-	2-voisinage de 97 recupere : {99,89,79,78,95,85,77,76} (total : 8)
-	2-voisinage de 98 recupere : {79,96,86,78,77} (total : 5)
-	2-voisinage de 99 recupere : {97,87,79,78} (total : 4)
-68 est Mort a 690.000073
-TTFF
+	2-vo

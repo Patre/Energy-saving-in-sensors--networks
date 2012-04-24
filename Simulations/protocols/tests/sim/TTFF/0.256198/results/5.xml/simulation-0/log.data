@@ -1,5 +1,5 @@
 le Range  30.000000
-5.071006 254.227618 0.019947
+5.071006 11.000000 0.461001
 	1-voisinage de 0 recupere : {15,14,13,2,1} (total : 5)
 	1-voisinage de 1 recupere : {15,14,13,3,2,0} (total : 6)
 	1-voisinage de 2 recupere : {29,16,15,14,3,1,0} (total : 7)
@@ -338,5 +338,3 @@ le Range  30.000000
 	2-voisinage de 166 recupere : {164,151,150,139,138,137,142,140,129,128,127} (total : 11)
 	2-voisinage de 167 recupere : {165,164,152,151,139,138,116,115,140,129,128,127} (total : 12)
 	2-voisinage de 168 recupere : {165,152,153,142,140,129,128,127} (total : 8)
-141 est Mort a 640.000066
-TTFF

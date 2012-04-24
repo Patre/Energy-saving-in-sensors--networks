@@ -36,7 +36,7 @@
 -->
 
 <entity name="app-sensor" library="application_broadcast">
-<init period="10s" debut="3s" debug="0"/>
+<init period="10s" debut="30s" debug="0"/>
 <default />
 </entity>
 

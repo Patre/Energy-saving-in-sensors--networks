@@ -1,5 +1,5 @@
 le Range  30.000000
-3.330579 274.946763 0.012114
+3.330579 13.000000 0.256198
 	1-voisinage de 0 recupere : {11,1} (total : 2)
 	1-voisinage de 1 recupere : {23,13,12,11,3,2,0} (total : 7)
 	1-voisinage de 2 recupere : {23,13,12,3,1} (total : 5)
@@ -242,5 +242,5 @@ le Range  30.000000
 	2-voisinage de 118 recupere : {109,116,105,108,106,97,95} (total : 7)
 	2-voisinage de 119 recupere : {117,107,106,98,96,95,87} (total : 7)
 	2-voisinage de 120 recupere : {117,107,98,97,96} (total : 5)
-9 est Mort a 580.000070
+114 est Mort a 410.000000
 TTFF
