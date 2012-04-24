@@ -103,13 +103,10 @@ Bundle 'sensor' (0)
                                down: mac
                             app-sensor
                                down: routing-protocole
-<<<<<<< HEAD
 
 Simulation stats:
-  simulated time: 730000070308
-  simulation time: 228014000
-  speedup: 3201.558107
-  events in queue: 8
-  events executed: 6941
-=======
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
+  simulated time: 740000029295
+  simulation time: 248015000
+  speedup: 2983.690621
+  events in queue: 13
+  events executed: 6910

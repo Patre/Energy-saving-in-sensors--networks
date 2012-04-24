@@ -105,8 +105,8 @@ Bundle 'sensor' (0)
                                down: routing-protocole
 
 Simulation stats:
-  simulated time: 960000105462
-  simulation time: 988061000
-  speedup: 971.600038
-  events in queue: 4
-  events executed: 13008
+  simulated time: 1010000029295
+  simulation time: 1116069000
+  speedup: 904.961995
+  events in queue: 8
+  events executed: 13354

@@ -56,7 +56,6 @@ Entity 'app-sensor' (6)
     author       : LAOUADI RABAH
     version      : 0.1
     description  : Broadcast Application
-<<<<<<< HEAD
 
 Entity 'routing-protocole' (7)
     using model  : routing_rbop
@@ -106,11 +105,8 @@ Bundle 'sensor' (0)
                                down: routing-protocole
 
 Simulation stats:
-  simulated time: 610000039840
-  simulation time: 188011000
-  speedup: 3244.491226
+  simulated time: 590000033200
+  simulation time: 144009000
+  speedup: 4096.966392
   events in queue: 11
-  events executed: 6853
-=======
-config: entity routing-protocole: Unable to load model 'routing_rbop' (Not found) (parse_entity())
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
+  events executed: 6639

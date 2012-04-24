@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 echo Simulation de 0.14
-=======
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 cd 0.149740
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
@@ -9,7 +6,6 @@ source lancer
 ./final 6
 cd ..
 
-<<<<<<< HEAD
 
 
 
@@ -33,9 +29,6 @@ cd ..
 
 echo Simulation de 0.30
 cd 0.307051
-=======
-cd 0.234167
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
@@ -43,12 +36,8 @@ source lancer
 cd ..
 
 
-<<<<<<< HEAD
 echo Simulation de 0.40
 cd 0.402146
-=======
-cd 0.256198
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
@@ -56,12 +45,8 @@ source lancer
 cd ..
 
 
-<<<<<<< HEAD
 echo Simulation de 0.46
 cd 0.461001
-=======
-cd 0.307051
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
@@ -69,33 +54,8 @@ source lancer
 cd ..
 
 
-<<<<<<< HEAD
 echo Simulation de 0.51
 cd 0.517949
-=======
-cd 0.402146
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1
-source lancer
-./final 6
-cd ..
-
-cd 0.461001
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1
-source lancer
-./final 6
-cd ..
-
-cd 0.517949
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1
-source lancer
-./final 6
-cd ..
-
-cd 0.667556
->>>>>>> 2b835be376fab58add4b16d25fc98c869ce77da0
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
