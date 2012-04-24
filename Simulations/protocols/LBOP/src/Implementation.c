@@ -67,7 +67,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
     //Fixer le rayon
-    if(nodedata->range<0)
+    //if(nodedata->range<0)
     {
         listeNodes *tmp=nodedata->oneHopNeighbourhood;
         position_t pos1 = *get_node_position(c->node);
@@ -112,7 +112,7 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,newdes);
 
-if(list_taille(newdes)!=0)
+    if(list_taille(newdes)!=0)
     {
     //ENVOI
     //recuperer le support de communication DOWN

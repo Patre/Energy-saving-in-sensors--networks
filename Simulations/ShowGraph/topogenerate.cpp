@@ -41,8 +41,8 @@ bool TopoGenerate::genererNeoudes()
         for(int w=0;w<Wi;w++)
             for(int h=0;h<He;h++)
             {
-                carreau[w][h].w= w*this->widthCarreau+qrand()%this->widthCarreau;
-                carreau[w][h].h= h*this->heigthCarreau+qrand()%this->heigthCarreau;
+                carreau[w][h].w= w*this->widthCarreau+qrand()%(this->widthCarreau/2)+(this->widthCarreau/4);
+                carreau[w][h].h= h*this->heigthCarreau+qrand()%(this->heigthCarreau/2)+(this->heigthCarreau/4);
             }
         this->boolfinish=true;
         return true;

@@ -113,18 +113,40 @@ void MainWindow::chargerGraph()
     QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph","/home/bibouh/wsnet-module/user_models/tests");
     lireFile(file);
     calculerDegree();
-    QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
+    //QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
     ui->graphFinale->setEnabled(true);
     ui->clearButton->setEnabled(true);
+    //ui->etapeSuivante->setEnabled(true);
 }
 
 void MainWindow::afficherNodes()
 {
     graph_view->setNodes(nodes);
+    if(!nodes.isEmpty())
+    {
+        list_etape.append(list_graph.at(0).nodeDeb.node);
+        ui->etapeSuivante->setEnabled(true);
+    }
     graph_view->repaint();
 }
+void MainWindow::afficherEtape()
+{
+    QList<int> tmp;
+    for(int i=0;i<list_graph.count();i++)
+        if(list_etape.contains(list_graph.at(i).nodeDeb.node))
+        {
+            tmp.append(list_graph.at(i).nodeFin.node);
+            list_graph_etape.append(list_graph.at(i));
+        }
+    list_etape.clear();
+    list_etape=tmp;
+
+    graph_view->setGraph(list_graph_etape);
+    graph_view->repaint();
+}
+
 void MainWindow::afficherGraph()
 {
     graph_view->setGraph(list_graph);
@@ -136,8 +158,10 @@ void MainWindow::clearGraph()
     ui->charger->setEnabled(true);
     ui->afficherNodes->setEnabled(false);
     ui->graphFinale->setEnabled(false);
+    ui->etapeSuivante->setEnabled(false);
     list_graph.clear();
     nodes.clear();
+    list_graph_etape.clear();
     graph_view->clearGraph();
     graph_view->repaint();
 }

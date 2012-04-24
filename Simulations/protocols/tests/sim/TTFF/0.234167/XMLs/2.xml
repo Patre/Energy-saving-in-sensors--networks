@@ -42,7 +42,7 @@
 
 <!-- == ROUTING ========================================= -->
 <entity name="routing-protocole" library="routing_lbop">
-<init alpha="4" c="100000" eps="0.01" debug="0"/>
+<init alpha="4" c="100000" eps="0.01" debug="1"/>
 <default />
 </entity>
 <!--

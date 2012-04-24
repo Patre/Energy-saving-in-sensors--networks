@@ -288,7 +288,7 @@ void tx(call_t *c, packet_t *packet) {
     double energy=pow(nodedata->range,entitydata->alpha)+entitydata->c;
     if(entitydata->debug)
     {
-        //printf("MAC BROADCAST- FROM %d  WITH RANGE %.2lf\n", c->node,nodedata->range);
+        printf("MAC BROADCAST- FROM %d  WITH RANGE %.2lf\n", c->node,nodedata->range);
     }//*/
 	
     battery_consume(c,energy);

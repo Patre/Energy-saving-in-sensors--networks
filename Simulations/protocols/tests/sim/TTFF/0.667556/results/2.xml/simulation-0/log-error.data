@@ -4,7 +4,7 @@ Found 1 environment...
 Found 1 bundles...
 
 Simulation will run using:
-  nodes       : 169
+  nodes       : 225
   (x,y,z)     : (200.000000, 200.000000, 0.000000)
   duration    : 10000000000000ns
 
@@ -105,8 +105,8 @@ Bundle 'sensor' (0)
                                down: routing-protocole
 
 Simulation stats:
-  simulated time: 1760000086320
-  simulation time: 984061000
-  speedup: 1788.507101
-  events in queue: 17
-  events executed: 31922
+  simulated time: 1470000132800
+  simulation time: 1480092000
+  speedup: 993.181595
+  events in queue: 14
+  events executed: 34920

@@ -6,7 +6,7 @@ Found 1 bundles...
 Simulation will run using:
   nodes       : 64
   (x,y,z)     : (200.000000, 200.000000, 0.000000)
-  duration    : 2000000000000ns
+  duration    : 10000000000000ns
 
 Entity 'range' (0)
     using model  : propagation_range
@@ -105,8 +105,8 @@ Bundle 'sensor' (0)
                                down: routing-protocole
 
 Simulation stats:
-  simulated time: 540000019920
-  simulation time: 68004000
-  speedup: 7940.709663
-  events in queue: 9
-  events executed: 3122
+  simulated time: 570000039840
+  simulation time: 76004000
+  speedup: 7499.605808
+  events in queue: 10
+  events executed: 3624

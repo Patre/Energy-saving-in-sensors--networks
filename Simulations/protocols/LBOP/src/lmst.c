@@ -16,8 +16,8 @@ void get_lmst(call_t *c, double eps)
 int broadcast_lmst(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata=get_entity_private_data(c);
-    if(entitydata->debug)
-        DBG("LBOP - LMST ON %d AT %lf\n",c->node,get_time_now_second());
+    /*if(entitydata->debug)
+        DBG("LBOP - LMST ON %d AT %lf\n",c->node,get_time_now_second());*/
 
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);

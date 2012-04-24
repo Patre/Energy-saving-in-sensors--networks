@@ -176,8 +176,10 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+        //end_simulation();
         node_kill(c->node);
     }
+    return;
 }
 
 void consume_rx(call_t *c, uint64_t duration) {
@@ -187,8 +189,10 @@ void consume_rx(call_t *c, uint64_t duration) {
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+        //end_simulation();
         node_kill(c->node);
     }
+    return;
 }
 
 void consume_idle(call_t *c, uint64_t duration) {
@@ -200,6 +204,7 @@ void consume_idle(call_t *c, uint64_t duration) {
         nodedata->energy = 0;
         node_kill(c->node);
     }
+    return;
 }
 
 void consume(call_t *c, double energy) {
@@ -246,6 +251,7 @@ void consume(call_t *c, double energy) {
 
         node_kill(c->node);
     }
+    return;
 }
 
 

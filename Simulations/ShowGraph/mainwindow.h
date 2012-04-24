@@ -29,6 +29,7 @@ public:
 public slots:
     void chargerGraph();
     void afficherNodes();
+    void afficherEtape();
     void afficherGraph();
     void clearGraph();
     void genererTopologie();
@@ -38,6 +39,8 @@ private:
     Ui::MainWindow  *ui;
     GraphView       *graph_view;
     QList<GraphElement> list_graph;
+    QList<int> list_etape;
+    QList<GraphElement> list_graph_etape;
     QList<Element>  nodes;
     double degreeMoy;
     double zoom;

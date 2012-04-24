@@ -349,6 +349,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>etapeSuivante</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>afficherEtape()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>77</x>
+     <y>156</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>chargerGraph()</slot>
@@ -356,5 +372,6 @@
   <slot>afficherGraph()</slot>
   <slot>clearGraph()</slot>
   <slot>genererTopologie()</slot>
+  <slot>afficherEtape()</slot>
  </slots>
 </ui>

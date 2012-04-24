@@ -6,7 +6,7 @@ Found 1 bundles...
 Simulation will run using:
   nodes       : 64
   (x,y,z)     : (200.000000, 200.000000, 0.000000)
-  duration    : 2000000000000ns
+  duration    : 10000000000000ns
 
 Entity 'range' (0)
     using model  : propagation_range
@@ -106,7 +106,7 @@ Bundle 'sensor' (0)
 
 Simulation stats:
   simulated time: 550000000000
-  simulation time: 88005000
-  speedup: 6249.644907
+  simulation time: 104006000
+  speedup: 5288.156453
   events in queue: 4
   events executed: 3849

@@ -70,6 +70,8 @@ void init_lbop(call_t *c)
     prim_tree(debut,&MST,connexions,graphElements);//*/
     arbre_get_fils(&nodedata->LMST_intial,MST,c->node);
 
+//    list_copy(&nodedata->LMST_voisin,nodedata->LMST_intial);
+
     if(entitydata->debug)
     {
         DBG("LMST %d ",c->node);

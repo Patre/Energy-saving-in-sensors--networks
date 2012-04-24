@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Fri Apr 20 10:23:26 2012
+** Created: Tue Apr 24 07:32:58 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       7,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,16 +35,18 @@ static const uint qt_meta_data_MainWindow[] = {
       27,   11,   11,   11, 0x0a,
       43,   11,   11,   11, 0x0a,
       59,   11,   11,   11, 0x0a,
-      72,   11,   11,   11, 0x0a,
-      91,   11,   11,   11, 0x0a,
+      75,   11,   11,   11, 0x0a,
+      88,   11,   11,   11, 0x0a,
+     107,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0chargerGraph()\0afficherNodes()\0"
-    "afficherGraph()\0clearGraph()\0"
-    "genererTopologie()\0calculerDegree()\0"
+    "afficherEtape()\0afficherGraph()\0"
+    "clearGraph()\0genererTopologie()\0"
+    "calculerDegree()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -78,13 +80,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: chargerGraph(); break;
         case 1: afficherNodes(); break;
-        case 2: afficherGraph(); break;
-        case 3: clearGraph(); break;
-        case 4: genererTopologie(); break;
-        case 5: calculerDegree(); break;
+        case 2: afficherEtape(); break;
+        case 3: afficherGraph(); break;
+        case 4: clearGraph(); break;
+        case 5: genererTopologie(); break;
+        case 6: calculerDegree(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 7;
     }
     return _id;
 }

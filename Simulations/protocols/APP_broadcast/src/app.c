@@ -13,6 +13,7 @@
 /* ************************************************** */
 #define ENDERR(x...)  { FILE *topo; topo=fopen("ERREUR","w+"); fprintf(topo,x); fclose(topo);}
 #define END(x...)  { FILE *topo; topo=fopen("END","w+"); fprintf(topo,x); fclose(topo);}
+#define RAYON(x...)  { FILE *topo; topo=fopen("rayon","a+"); fprintf(topo,x); fclose(topo);}
 #define PR(x...)  { FILE *topo; topo=fopen("lifetime","a+"); fprintf(topo,x); fclose(topo);}
 
 
@@ -229,6 +230,9 @@ int init(call_t *c, void *params) {
   por=fopen("lifetime","w");
   fclose(por);
 
+  FILE *ray;
+  ray=fopen("rayon","w");
+  fclose(ray);
 
   //verfier la disponibilité de noued
   if(entitydata->nodeBroadcast>get_node_count())
@@ -278,7 +282,9 @@ int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
 
-    //printf("%d %d \n",c->node,list_PACKET_taille(nodedata->paquets));
+
+
+    printf("%d %d \n",c->node,list_PACKET_taille(nodedata->paquets));
     //DEBUG PAQUETs
     /*if(entitydata->debug)
     {
@@ -446,6 +452,9 @@ void rx(call_t *c, packet_t *packet) {
 
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
 
+    double range=get_range_Tr(c);
+    if(range!=0)
+        RAYON("%lf\n",range)
     if(entitydata->connexe)
     {
         PR("%lf %d %d\n",get_time_now_second(),c->node,list_PACKET_taille(nodedata->paquets));

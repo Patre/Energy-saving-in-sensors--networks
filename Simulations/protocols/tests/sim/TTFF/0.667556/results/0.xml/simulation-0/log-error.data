@@ -4,7 +4,7 @@ Found 1 environment...
 Found 1 bundles...
 
 Simulation will run using:
-  nodes       : 169
+  nodes       : 225
   (x,y,z)     : (200.000000, 200.000000, 0.000000)
   duration    : 10000000000000ns
 
@@ -106,7 +106,7 @@ Bundle 'sensor' (0)
 
 Simulation stats:
   simulated time: 550000000000
-  simulation time: 524032000
-  speedup: 1049.554226
+  simulation time: 940058000
+  speedup: 585.070283
   events in queue: 4
-  events executed: 9624
+  events executed: 12704

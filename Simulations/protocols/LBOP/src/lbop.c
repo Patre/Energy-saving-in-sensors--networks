@@ -194,6 +194,9 @@ void rx(call_t *c, packet_t *packet) {
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
+
+
+
     int i=0;
     call_t *inter=malloc(sizeof(call_t));
     inter->entity=c->entity;
@@ -204,7 +207,7 @@ int unsetnode(call_t *c) {
         {
             inter->node=i;
             struct nodedata *internodedata = get_node_private_data(inter);
-            list_delete(nodedata->LMST_voisin,c->node);
+            list_delete(&internodedata->LMST_voisin,c->node);
         }
 
     //liberation d'espace memoire
@@ -253,7 +256,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
         DBG("LBOP - %d SET HEADER  \n",c->node);
 
     //Fixé le rayon
-    if(nodedata->range<0)
+    //if(nodedata->range<0)
     {
 
         listeNodes *tmp=nodedata->oneHopNeighbourhood;

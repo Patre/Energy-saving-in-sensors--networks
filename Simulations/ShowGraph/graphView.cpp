@@ -80,12 +80,19 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
     if(haveGraph && haveNodes)
     {
+        int r=qrand()%127;
+        int v=qrand()%127;
+        int b=qrand()%127;
+
+        painter.setPen(qRgb(r,v,b));
+
+        painter.setBrush(QBrush(QColor(r,v,b)));
         for(int i=0;i<list_graph.size();i++)
         {
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
         }
     }
-
+    painter.setPen(qRgb(0,0,0));
     if(haveNodes)
     {
         for(int i=0;i<nodes.size();i++)
@@ -97,8 +104,9 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
             painter.fillRect(rec,QBrush(qRgb(255,255,255)));
 
-            painter.drawArc(rec,0,16*360);
-            painter.drawText(nodes.at(i).nodePosition,QVariant(nodes.at(i).node).toString());
+            painter.drawArc(rec,0,30*360);
+            if(i>9)painter.drawText(nodes.at(i).nodePosition.x()-7,nodes.at(i).nodePosition.y()+5,QVariant(nodes.at(i).node).toString());
+            else painter.drawText(nodes.at(i).nodePosition.x()-4,nodes.at(i).nodePosition.y()+5,QVariant(nodes.at(i).node).toString());
         }
     }
 

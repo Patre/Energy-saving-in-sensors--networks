@@ -40,6 +40,8 @@ void init_bip_tree(call_t *c, void *args)
                 addEdgeUndirected(nodedata->g2hop, i, j, cout);
             }
         }
+    //deleteVertex(nodedata->g2hop,0);
+    //end_simulation();
 
 }
 

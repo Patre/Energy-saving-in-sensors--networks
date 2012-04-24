@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Apr 20 10:17:50 2012
+** Created: Tue Apr 24 07:19:37 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -151,6 +151,7 @@ public:
         QObject::connect(graphFinale, SIGNAL(clicked()), MainWindow, SLOT(afficherGraph()));
         QObject::connect(clearButton, SIGNAL(clicked()), MainWindow, SLOT(clearGraph()));
         QObject::connect(pushButton, SIGNAL(clicked()), MainWindow, SLOT(genererTopologie()));
+        QObject::connect(etapeSuivante, SIGNAL(clicked()), MainWindow, SLOT(afficherEtape()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi

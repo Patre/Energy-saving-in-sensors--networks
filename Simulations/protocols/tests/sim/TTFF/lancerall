@@ -1,19 +1,5 @@
-cd 0.006289
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1
-source lancer
-./final 6
-cd ..
-
-cd 0.009081
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1
-source lancer
-./final 6
-cd ..
-
-
-cd 0.012114
+echo Simulation de 0.14
+cd 0.149740
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
@@ -21,7 +7,10 @@ source lancer
 cd ..
 
 
-cd 0.017714
+
+
+echo Simulation de 0.23
+cd 0.234167
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
@@ -29,13 +18,59 @@ source lancer
 cd ..
 
 
-cd 0.019947
+echo Simulation de 0.25
+cd 0.256198
 source rmf
 wsnet-run-simulations -d XMLs/ results/ 1
 source lancer
 ./final 6
 cd ..
 
+
+echo Simulation de 0.30
+cd 0.307051
+source rmf
+wsnet-run-simulations -d XMLs/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+echo Simulation de 0.40
+cd 0.402146
+source rmf
+wsnet-run-simulations -d XMLs/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+echo Simulation de 0.46
+cd 0.461001
+source rmf
+wsnet-run-simulations -d XMLs/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+echo Simulation de 0.51
+cd 0.517949
+source rmf
+wsnet-run-simulations -d XMLs/ results/ 1
+source lancer
+./final 6
+cd ..
+
+
+
+echo Simulation de 0.66
+cd 0.667556
+source rmf
+wsnet-run-simulations -d XMLs/ results/ 1
+source lancer
+./final 6
+cd ..
 
 source genCourbe
 
