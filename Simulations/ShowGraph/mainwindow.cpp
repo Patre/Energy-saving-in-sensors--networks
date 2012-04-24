@@ -110,7 +110,7 @@ void MainWindow::lireFile(QString filename)
 void MainWindow::chargerGraph()
 {
     //zoom=ui->zoomEdit->value();
-    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph","/home/bibouh/wsnet-module/user_models/tests");
+    QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
     lireFile(file);
     calculerDegree();
     //QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());

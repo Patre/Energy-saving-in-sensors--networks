@@ -200,18 +200,32 @@ int setnode(call_t *c, void *params) {
  }
 
 int unsetnode(call_t *c) {
+<<<<<<< HEAD
 	//printf("Unset node app %d\n",c->node);
+=======
+        //printf("Unset node app %d\n",c->node);
+>>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
 
 
+<<<<<<< HEAD
+=======
+
+    //printf("%d %d \n",c->node,list_PACKET_taille(nodedata->paquets));
+>>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
     //DEBUG PAQUETs
-    /*if(entitydata->debug)
+    if(entitydata->debug)
     {
         printf("\tPaquets (APP): %d ->",c->node);
+<<<<<<< HEAD
         list_PACKET_affiche(nodedata->paquets);
     }*/
 	printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
+=======
+        list_PACKET_affiche(nodedata->paquets);//*/
+    }
+>>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
 
 
     list_PACKET_detruire(&nodedata->paquets);
