@@ -169,7 +169,7 @@ error:
 }
 
 int unsetnode(call_t *c) {
-	printf("Unset node mac %d\n",c->node);
+	//printf("Unset node mac %d\n",c->node);
     struct nodedata *nodedata = get_node_private_data(c);
 
     packet_t *packet;

@@ -7,21 +7,24 @@
 #include <include/modelutils.h>
 #include <time_wsnet.h>
 
-#define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
-#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
+//#define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
+//#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
 
 
 void init_files()
 {
     //REPLAY
-    FILE *replay;
+    /*FILE *replay;
     replay=fopen("energy","w");
-    fclose(replay);
+    fclose(replay);*/
 
     //POURCENTAGE des NEUD VIVANT
-    FILE *por;
+    /*FILE *por;
     por=fopen("lifetime","w");
-    fclose(por);
+    fclose(por);*/
+	
+	FILE* lt = fopen("lifetime", "w");
+	fclose(lt);
 }
 /* ************************************************** */
 /* ************************************************** */
@@ -36,9 +39,8 @@ model_t model =  {
 /* Entity private data */
 struct entitydata {
     int debug;
-    int ttff;
-    double pourcentage;
     double prMax;
+	int nbDead;
 };
 
 /* ************************************************** */
@@ -50,10 +52,9 @@ int init(call_t *c, void *params) {
     param_t *param;
 
     /* init entity variables */
-    entitydata->ttff = 0;
     entitydata->debug = 0;
-    entitydata->pourcentage =100.00;
-    entitydata->prMax = 0;
+    entitydata->prMax = 75.00;
+	entitydata->nbDead = 0;
 
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
@@ -63,7 +64,7 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
-        if (!strcmp(param->key, "TTFF")) {
+        /*if (!strcmp(param->key, "TTFF")) {
             if (get_param_integer(param->value, &(entitydata->ttff))) {
                 goto error;
             }
@@ -72,7 +73,7 @@ int init(call_t *c, void *params) {
             if (get_param_double(param->value, &(entitydata->prMax))) {
                 goto error;
             }
-        }
+        }*/
     }
 
     init_files();
@@ -140,7 +141,7 @@ int setnode(call_t *c, void *params) {
         }
     }
     
-    ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+    //ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
     nodedata->initial = nodedata->energy;
     set_node_private_data(c, nodedata);
     return 0;
@@ -216,7 +217,7 @@ void consume(call_t *c, double energy) {
     struct entitydata *entitydata =get_entity_private_data(c);
 
     nodedata->energy -= energy; 
-    ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
+    //ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if(entitydata->debug)
         printf("CONSUME (%d): consome %lf  ,reste %lf\n",c->node,energy,nodedata->energy);
@@ -224,7 +225,7 @@ void consume(call_t *c, double energy) {
     if (nodedata->energy <= 0) {
         printf("%d est Mort a %lf\n",c->node,get_time_now_second());
         nodedata->energy = 0;
-        if(entitydata->ttff)
+        /*if(entitydata->ttff)
         {
             printf("TTFF\n");
             PR("%.lf END FORDEADNODE %d\n",get_time_now_second(),c->node);
@@ -247,7 +248,26 @@ void consume(call_t *c, double energy) {
                 printf("END - POURCENTAGE %lf\n",entitydata->pourcentage);
                 end_simulation();
             }
-        }
+        }*/
+		
+		
+		double pourcentageAvant = (1 - (double)entitydata->nbDead/(double) get_node_count())*100;
+		
+		if(entitydata->nbDead == 0)
+		{
+			FILE* lt = fopen("lifetime", "a");
+			fprintf(lt, "TTFF %ld\n", get_time_now());
+			fclose(lt);
+		}
+		entitydata->nbDead++;
+		
+		double pourcentageApres = (1 - (double)entitydata->nbDead/(double) get_node_count())*100;
+		if(pourcentageApres < entitydata->prMax && pourcentageAvant >= entitydata->prMax)
+		{
+			FILE* lt = fopen("lifetime", "a");
+			fprintf(lt, "PRN %ld\n", get_time_now());
+			fclose(lt);
+		}
 
         node_kill(c->node);
     }

@@ -11,10 +11,10 @@
 #include <list_paquet.h>
 /* ************************************************** */
 /* ************************************************** */
-#define ENDERR(x...)  { FILE *topo; topo=fopen("ERREUR","w+"); fprintf(topo,x); fclose(topo);}
+/*#define ENDERR(x...)  { FILE *topo; topo=fopen("ERREUR","w+"); fprintf(topo,x); fclose(topo);}
 #define END(x...)  { FILE *topo; topo=fopen("END","w+"); fprintf(topo,x); fclose(topo);}
 #define RAYON(x...)  { FILE *topo; topo=fopen("rayon","a+"); fprintf(topo,x); fclose(topo);}
-#define PR(x...)  { FILE *topo; topo=fopen("lifetime","a+"); fprintf(topo,x); fclose(topo);}
+#define PR(x...)  { FILE *topo; topo=fopen("lifetime","a+"); fprintf(topo,x); fclose(topo);}*/
 
 
 #define MAXDBL 999999999999999999999.00
@@ -86,85 +86,6 @@ double min(double x,double y)
 
 }
 
-void calculeDensite(call_t *c)
-{
-    //NOMBRE DE NODES
-    int N=get_node_count();
-
-    double range=get_range_Tr(c);
-    printf("le Range  %lf\n",range);
-
-    //CALCULE DE DEGREE
-    int Degree=0;
-    int i,j,k;
-
-
-    //WRL ALGO
-    double W[N][N];
-    double WP[N][N];
-
-    for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
-            W[i][j]=MAXDBL;
-
-
-    double dist;
-    for(i=0;i<get_node_count();i++)
-        for(j=0;j<get_node_count();j++)
-        {
-            dist=distance(get_node_position(i),get_node_position(j));
-            if(i!=j && dist<= range)
-            {
-                Degree++;
-                W[i][j]=1;
-            }
-            else if(i==j)
-                W[i][j]=0;
-        }
-
-    for(k=0;k<N;k++)
-    {
-        for(i=0;i<N;i++)
-            for(j=0;j<N;j++)
-                WP[i][j]=W[i][j];
-
-        for(i=0;i<N;i++)
-            for(j=0;j<N;j++)
-            {
-                W[i][j] = min(W[i][j],W[i][k]+W[k][j]);
-            }
-    }
-
-    /*for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
-            printf("(%d,%d) %lf\n",i,j,W[i][j]);//*/
-
-    //CALCUL DENSITé
-    double degreeMo=(double)Degree/(double)2;
-    degreeMo=degreeMo /(double)N;
-
-
-    double diametre=0;
-    for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
-            if(W[i][j]>diametre) diametre=W[i][j];
-
-
-
-    double densite=degreeMo/diametre;
-    printf("%lf %lf %lf\n",degreeMo,diametre,densite);
-
-    if(diametre == MAXDBL)
-    {
-        printf("End Of Simulation (un node est isolé)\n");
-        ENDERR("un NODE est ISOLe\n");
-        //end_simulation();
-        return;
-    }
-
-    END("%lf",densite);//*/
-
-}
 /* ************************************************** */
 /* ************************************************** */
 
@@ -226,13 +147,13 @@ int init(call_t *c, void *params) {
       }
   }
 
-  FILE *por;
+  /*FILE *por;
   por=fopen("lifetime","w");
   fclose(por);
 
   FILE *ray;
   ray=fopen("rayon","w");
-  fclose(ray);
+  fclose(ray);*/
 
   //verfier la disponibilité de noued
   if(entitydata->nodeBroadcast>get_node_count())
@@ -279,19 +200,18 @@ int setnode(call_t *c, void *params) {
  }
 
 int unsetnode(call_t *c) {
-	printf("Unset node app %d\n",c->node);
+	//printf("Unset node app %d\n",c->node);
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
 
 
-
-    printf("%d %d \n",c->node,list_PACKET_taille(nodedata->paquets));
     //DEBUG PAQUETs
     /*if(entitydata->debug)
     {
         printf("\tPaquets (APP): %d ->",c->node);
-        list_PACKET_affiche(nodedata->paquets);//*/
-    //}
+        list_PACKET_affiche(nodedata->paquets);
+    }*/
+	printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
 
 
     list_PACKET_detruire(&nodedata->paquets);
@@ -322,10 +242,6 @@ int bootstrap(call_t *c) {
         } else {
             nodedata->overhead[i] = GET_HEADER_SIZE(&c0);
         }
-    }
-    if(c->node==get_node_count()-1)
-    {
-        calculeDensite(c);
     }
 
 
@@ -377,11 +293,11 @@ int callmeback(call_t *c, void *args) {
 	    return -1;
     }
 
-    if(entitydata->connexe)
+    /*if(entitydata->connexe)
     {
         PR("----\n");
         PR("%lf %d %d\n",get_time_now_second(),c->node,list_PACKET_taille(nodedata->paquets));
-    }
+    }*/
 
     // we schedule a new callback after actualtime+period
     if(entitydata->nodeBroadcast == -1)
@@ -454,12 +370,12 @@ void rx(call_t *c, packet_t *packet) {
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
 
     double range=get_range_Tr(c);
-    if(range!=0)
+    /*if(range!=0)
         RAYON("%lf\n",range)
     if(entitydata->connexe)
     {
         PR("%lf %d %d\n",get_time_now_second(),c->node,list_PACKET_taille(nodedata->paquets));
-    }
+    }*/
 
     packet_dealloc(packet);
 }

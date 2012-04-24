@@ -1,0 +1,65 @@
+<worldsens xmlns="http://worldsens.citi.insa-lyon.fr">
+<simulation nodes="50" duration="10000s" x="200" y="200" z="0"/>
+<entity name="range" library="propagation_range"> <init range="30"/> </entity>
+<entity name="interf" library="interferences_none"></entity>
+<entity name="none" library="modulation_none"></entity>
+<entity name="omnidirectionnal" library="antenna_omnidirectionnal"> <default loss="0" angle-xy="random" angle-z="0"/> </entity>
+<entity name="radio" library="radio_half1d"> <default sensibility="-92" T_b="727" dBm="10" channel="0" modulation="none"/> </entity>
+<entity name="static-pos" library="mobility_static"> <default x="random" y="random" z="0.0"/> </entity>
+<entity name="app-sensor" library="application_broadcast"> <init period="10s" debut="30s" node="-1" debug="0"/> <default /> </entity>
+<entity name="routing-protocole" library="routing_flood"> <init alpha="4" c="100000000" eps="0.01" debug="0"/> <default /> </entity>
+<entity name="mac" library="mac_macter"> <init  debit="10"  alpha="4" c="100000000" debug="0"/> <default range ="30"/> </entity>
+<entity name="theorie" library="energy_theorie"> <init  debug="0"/> <default energy="5000000000" rx="1"  tx="1" /> </entity>
+<environment> <propagation entity="range" range="30"/> <interferences entity="interf"/> <modulation entity="none"/> </environment>
+<bundle name="sensor" worldsens="false" default="true" birth="0"> <mobility entity="static-pos"/> <energy entity="theorie" /> <antenna entity="omnidirectionnal"> <up entity="radio"/> </antenna> <with entity="radio"> <up entity="mac"/> <down entity="omnidirectionnal"/> </with> <with entity="mac"> <up entity="routing-protocole"/> <down entity="radio"/> </with> <with entity="routing-protocole"> <up entity="app-sensor"/> <down entity="mac"/> </with> <with entity="app-sensor"> <down entity="routing-protocole"/> </with> </bundle>
+<node id="0"> <for entity="static-pos" x="111.51" y="141.861" z="0.0" /> </node>
+<node id="1"> <for entity="static-pos" x="95.4564" y="135.466" z="0.0" /> </node>
+<node id="2"> <for entity="static-pos" x="101.312" y="154.993" z="0.0" /> </node>
+<node id="3"> <for entity="static-pos" x="91.3018" y="109.387" z="0.0" /> </node>
+<node id="4"> <for entity="static-pos" x="89.8015" y="93.7798" z="0.0" /> </node>
+<node id="5"> <for entity="static-pos" x="84.1515" y="133.806" z="0.0" /> </node>
+<node id="6"> <for entity="static-pos" x="71.1788" y="101.885" z="0.0" /> </node>
+<node id="7"> <for entity="static-pos" x="104.046" y="106.274" z="0.0" /> </node>
+<node id="8"> <for entity="static-pos" x="124.754" y="132.989" z="0.0" /> </node>
+<node id="9"> <for entity="static-pos" x="56.2554" y="85.0356" z="0.0" /> </node>
+<node id="10"> <for entity="static-pos" x="54.8262" y="63.1034" z="0.0" /> </node>
+<node id="11"> <for entity="static-pos" x="88.0149" y="65.79" z="0.0" /> </node>
+<node id="12"> <for entity="static-pos" x="84.1644" y="150.25" z="0.0" /> </node>
+<node id="13"> <for entity="static-pos" x="115.521" y="162.35" z="0.0" /> </node>
+<node id="14"> <for entity="static-pos" x="58.8883" y="135.099" z="0.0" /> </node>
+<node id="15"> <for entity="static-pos" x="45.0191" y="36.497" z="0.0" /> </node>
+<node id="16"> <for entity="static-pos" x="60.0441" y="161.038" z="0.0" /> </node>
+<node id="17"> <for entity="static-pos" x="66.8381" y="148.666" z="0.0" /> </node>
+<node id="18"> <for entity="static-pos" x="22.3865" y="49.1365" z="0.0" /> </node>
+<node id="19"> <for entity="static-pos" x="36.3664" y="10.7414" z="0.0" /> </node>
+<node id="20"> <for entity="static-pos" x="124.918" y="90.9843" z="0.0" /> </node>
+<node id="21"> <for entity="static-pos" x="41.0678" y="26.5403" z="0.0" /> </node>
+<node id="22"> <for entity="static-pos" x="62.5542" y="147.645" z="0.0" /> </node>
+<node id="23"> <for entity="static-pos" x="63.1799" y="63.854" z="0.0" /> </node>
+<node id="24"> <for entity="static-pos" x="53.0831" y="167.584" z="0.0" /> </node>
+<node id="25"> <for entity="static-pos" x="100.452" y="96.8211" z="0.0" /> </node>
+<node id="26"> <for entity="static-pos" x="71.6631" y="42.5345" z="0.0" /> </node>
+<node id="27"> <for entity="static-pos" x="77.6891" y="121.062" z="0.0" /> </node>
+<node id="28"> <for entity="static-pos" x="146.836" y="74.3238" z="0.0" /> </node>
+<node id="29"> <for entity="static-pos" x="137.934" y="49.4144" z="0.0" /> </node>
+<node id="30"> <for entity="static-pos" x="107.068" y="99.9425" z="0.0" /> </node>
+<node id="31"> <for entity="static-pos" x="97.6398" y="31.3767" z="0.0" /> </node>
+<node id="32"> <for entity="static-pos" x="3.84669" y="51.3152" z="0.0" /> </node>
+<node id="33"> <for entity="static-pos" x="53.7427" y="54.1146" z="0.0" /> </node>
+<node id="34"> <for entity="static-pos" x="104.19" y="129.499" z="0.0" /> </node>
+<node id="35"> <for entity="static-pos" x="94.9617" y="21.1147" z="0.0" /> </node>
+<node id="36"> <for entity="static-pos" x="74.7742" y="129.302" z="0.0" /> </node>
+<node id="37"> <for entity="static-pos" x="33.0083" y="169.804" z="0.0" /> </node>
+<node id="38"> <for entity="static-pos" x="98.7332" y="8.65592" z="0.0" /> </node>
+<node id="39"> <for entity="static-pos" x="80.0236" y="156.168" z="0.0" /> </node>
+<node id="40"> <for entity="static-pos" x="115.482" y="109.392" z="0.0" /> </node>
+<node id="41"> <for entity="static-pos" x="144.564" y="85.7616" z="0.0" /> </node>
+<node id="42"> <for entity="static-pos" x="127.577" y="179.517" z="0.0" /> </node>
+<node id="43"> <for entity="static-pos" x="137.903" y="137.102" z="0.0" /> </node>
+<node id="44"> <for entity="static-pos" x="69.7642" y="126.673" z="0.0" /> </node>
+<node id="45"> <for entity="static-pos" x="73.0946" y="100.208" z="0.0" /> </node>
+<node id="46"> <for entity="static-pos" x="90" y="29.7321" z="0.0" /> </node>
+<node id="47"> <for entity="static-pos" x="107.462" y="105.63" z="0.0" /> </node>
+<node id="48"> <for entity="static-pos" x="120.406" y="63.3775" z="0.0" /> </node>
+<node id="49"> <for entity="static-pos" x="15.4622" y="72.7239" z="0.0" /> </node>
+</worldsens>
