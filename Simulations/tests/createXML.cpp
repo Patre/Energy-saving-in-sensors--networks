@@ -286,9 +286,12 @@ int main(int argc, char* argv[], char* env[])
 
         double densite=computeDensity(nbNoeuds,tabNoeuds);
         char s[200];
+        char s1[200];
+
+        sprintf(s1,"%lf/results",densite);
         sprintf(s,"%lf",densite);
         mkdir(s,01777);
-
+        mkdir(s1,01777);
         sprintf(s,"%s/XMLs",s);
 
         for(int i=0;i<atoi(argv[3]);i++)
