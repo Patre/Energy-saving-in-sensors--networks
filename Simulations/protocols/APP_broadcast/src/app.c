@@ -248,7 +248,7 @@ int bootstrap(call_t *c) {
     }
     else if(c->node==entitydata->nodeBroadcast)
         scheduler_add_callback(entitydata->debut, c, callmeback, NULL);*/
-	if(entitydata->nodeBroadcast == -1)
+	if(c->node==0 && entitydata->nodeBroadcast == -1)
     {
 		call_t c0 = {c->entity,-1,c->from};
 		c0.node = get_random_integer_range(0,get_node_count()-1);
