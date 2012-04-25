@@ -68,8 +68,8 @@ int setnode(call_t *c, void *params) {
     set_node_private_data(c, nodedata);
 	
 	
-    DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+    //DEBUG;
+    //SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
 //	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
@@ -183,7 +183,7 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			//printf("BIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			printf("DLBIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			nodedata->energiesRem[data->pred] = data->energyRem;
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
 				break;
@@ -211,7 +211,7 @@ void rx(call_t *c, packet_t *packet) {
 					trans2 = trans2->suiv;
 				}
 				
-                                SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
+				//SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
 				
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
@@ -219,7 +219,7 @@ void rx(call_t *c, packet_t *packet) {
 				
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
-
+					printf("forward\n");
 					forward(c, packet);
 				}
 			}
@@ -250,7 +250,7 @@ void tx( call_t *c , packet_t * packet )
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
-    //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", data->type, data->src, data->dst, get_time_now_second());
+    printf("DLBIP - Paquet de type %d envoye depuis %d par %d a %d (at %lf s).\n", data->type, data->src, c->node, data->dst, get_time_now_second());
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
@@ -347,11 +347,10 @@ int get_header_real_size( call_t * c )
 
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
+	printf("Unset node %d\n", c->node);
     struct nodedata *nodedata = get_node_private_data(c);
 
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
-    
-	
     listeNodes_detruire(&nodedata->twoHopNeighbourhood);
 	
 	

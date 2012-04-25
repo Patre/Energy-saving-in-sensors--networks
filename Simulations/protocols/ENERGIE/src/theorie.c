@@ -6,6 +6,7 @@
  **/
 #include <include/modelutils.h>
 #include <time_wsnet.h>
+#include <list.h>
 
 //#define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
 //#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
@@ -41,7 +42,61 @@ struct entitydata {
     int debug;
     double prMax;
 	int nbDead;
+	list* articulations;
+	int range;
+	int alpha;
+	int c;
+	int LC;
 };
+
+
+void getArticulationNodes(call_t* c)
+{
+    struct entitydata *entitydata = get_entity_private_data(c);
+	
+	FILE* grapheJava = fopen("grapheForJava", "w");
+	int nbNoeuds = get_node_count(), i, j, aretes = 0;
+	
+	fprintf(grapheJava, "%d\n", nbNoeuds);
+	for(i = 0 ; i < nbNoeuds ; i++)
+	{
+		if(!is_node_alive(i))
+			continue;
+		for(j = 0 ; j < nbNoeuds ; j++)
+		{
+			if(i != j && is_node_alive(j) && distance(get_node_position(i), get_node_position(j)) < entitydata->range)
+			{
+				aretes++;
+				fprintf(grapheJava, "%d %d\n", i, j);
+			}
+		}
+	}
+	fclose(grapheJava);
+	//printf("scanf...\n");
+	//scanf("%d", &i);
+	if(aretes != 0)
+	{
+		system("java -cp ../ArticPointDFS/ ArticPointDFS grapheForJava\n");
+		
+		if(entitydata->articulations != 0)
+			list_detruire(&entitydata->articulations);
+		entitydata->articulations = 0;
+		
+		int aPoint, num;
+		grapheJava = fopen("grapheForJava", "r");
+		fscanf(grapheJava, "%d", &num);
+		for(i = 0 ; i < num ; i++)
+		{
+			fscanf(grapheJava, "%d", &aPoint);
+			//printf("\tajout dans liste : %d\n", aPoint);
+			list_insert(&entitydata->articulations, aPoint);
+		}
+		fclose(grapheJava);
+	}
+	//printf("scanf...\n");
+	//scanf("%d", &i);
+	system("rm grapheForJava\n");
+}
 
 /* ************************************************** */
 /* ************************************************** */
@@ -55,6 +110,12 @@ int init(call_t *c, void *params) {
     entitydata->debug = 0;
     entitydata->prMax = 75.00;
 	entitydata->nbDead = 0;
+	entitydata->articulations = 0;
+	entitydata->range = 30;
+	entitydata->alpha = 4;
+	entitydata->c = 100000000;
+	entitydata->LC = 0;
+	
 
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
@@ -64,13 +125,28 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
-        /*if (!strcmp(param->key, "TTFF")) {
-            if (get_param_integer(param->value, &(entitydata->ttff))) {
+		if (!strcmp(param->key, "range")) {
+            if (get_param_integer(param->value, &(entitydata->range))) {
                 goto error;
             }
         }
-        if (!strcmp(param->key, "pourcentageMin")) {
+        if (!strcmp(param->key, "PRNmin")) {
             if (get_param_double(param->value, &(entitydata->prMax))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "alpha")) {
+            if (get_param_integer(param->value, &(entitydata->alpha))) {
+                goto error;
+            }
+        }
+        if (!strcmp(param->key, "c")) {
+            if (get_param_integer(param->value, &(entitydata->c))) {
+                goto error;
+            }
+        }
+        /*if (!strcmp(param->key, "TTFF")) {
+            if (get_param_integer(param->value, &(entitydata->ttff))) {
                 goto error;
             }
         }*/
@@ -78,6 +154,9 @@ int init(call_t *c, void *params) {
 
     init_files();
     set_entity_private_data(c, entitydata);
+	
+	
+	
     return 0;
 
 error:
@@ -152,6 +231,9 @@ int setnode(call_t *c, void *params) {
 }
 
 int unsetnode(call_t *c) {
+    struct entitydata *entitydata =get_entity_private_data(c);
+	if(entitydata->articulations != 0)
+		list_detruire(&entitydata->articulations);
     free(get_node_private_data(c));
     return 0;
 }
@@ -159,7 +241,9 @@ int unsetnode(call_t *c) {
 
 /* ************************************************** */
 /* ************************************************** */
-int bootstrap(call_t *c) {
+int bootstrap(call_t *c)
+{
+	
     return 0;
 }
 
@@ -176,7 +260,7 @@ void consume_tx(call_t *c, uint64_t duration, double txdBm) {
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
-        printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+        //printf("%d est Mort a %lf\n",c->node,get_time_now_second());
         //end_simulation();
         node_kill(c->node);
     }
@@ -189,7 +273,7 @@ void consume_rx(call_t *c, uint64_t duration) {
 
     if (nodedata->energy <= 0) {
         nodedata->energy = 0;
-        printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+        //printf("%d est Mort a %lf\n",c->node,get_time_now_second());
         //end_simulation();
         node_kill(c->node);
     }
@@ -200,7 +284,7 @@ void consume_idle(call_t *c, uint64_t duration) {
     struct nodedata *nodedata = get_node_private_data(c);
     nodedata->energy -= duration * nodedata->idle; 
     if (nodedata->energy <= 0) {
-        printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+        //printf("%d est Mort a %lf\n",c->node,get_time_now_second());
         //end_simulation();
         nodedata->energy = 0;
         node_kill(c->node);
@@ -220,56 +304,71 @@ void consume(call_t *c, double energy) {
     //ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
     if(entitydata->debug)
-        printf("CONSUME (%d): consome %lf  ,reste %lf\n",c->node,energy,nodedata->energy);
+        printf("CONSUME (%d): consomme %lf, reste %lf\n",c->node,energy,nodedata->energy);
 
-    if (nodedata->energy <= 0) {
-        printf("%d est Mort a %lf\n",c->node,get_time_now_second());
+	
+	if (nodedata->energy <= 0)
+	{
+		node_kill(c->node);
+		return;
+	}
+	
+    if (nodedata->energy < pow(entitydata->range, entitydata->alpha)+entitydata->c) {
+		if(entitydata->debug)
+			printf("%d est Mort a %.1lf\n",c->node,get_time_now_second());
         nodedata->energy = 0;
-        /*if(entitydata->ttff)
-        {
-            printf("TTFF\n");
-            PR("%.lf END FORDEADNODE %d\n",get_time_now_second(),c->node);
-            end_simulation();
-        }
-        else if(entitydata->prMax!=0)
-        {
-            int n=get_node_count();
-            int nbrdead=0,i;
-
-            for(i=0;i<n;i++)
-                if(!is_node_alive(i)) nbrdead++;
-            nbrdead++;
-            entitydata->pourcentage = (1 - (double) nbrdead/(double) get_node_count())*100;
-            printf("POURCENTAGE %lf   MIN %lf\n",entitydata->pourcentage,entitydata->prMax);
-
-            PR("%.lf %.2lf FORDEADNODE %d\n",get_time_now_second(),entitydata->pourcentage,c->node);
-            if(entitydata->pourcentage<=entitydata->prMax)
-            {
-                printf("END - POURCENTAGE %lf\n",entitydata->pourcentage);
-                end_simulation();
-            }
-        }*/
 		
-		
-		double pourcentageAvant = (1 - (double)entitydata->nbDead/(double) get_node_count())*100;
+		// Debut calcul lifetime
+		double pourcentageAvant = ((double)entitydata->nbDead*100.0/(double) get_node_count());
+		//printf("pourcentage avant : %.1lf\n", pourcentageAvant);
 		
 		if(entitydata->nbDead == 0)
 		{
 			FILE* lt = fopen("lifetime", "a");
-			fprintf(lt, "TTFF %ld\n", get_time_now());
+			fprintf(lt, "TTFF %.1lf\n", get_time_now_second());
 			fclose(lt);
 		}
 		entitydata->nbDead++;
 		
-		double pourcentageApres = (1 - (double)entitydata->nbDead/(double) get_node_count())*100;
-		if(pourcentageApres < entitydata->prMax && pourcentageAvant >= entitydata->prMax)
+		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double) get_node_count());
+		//printf("pourcentage apres : %.1lf\n", pourcentageApres);
+		if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
 		{
 			FILE* lt = fopen("lifetime", "a");
-			fprintf(lt, "PRN %ld\n", get_time_now());
+			fprintf(lt, "PRN %.1lf\n", get_time_now_second());
 			fclose(lt);
 		}
-
-        node_kill(c->node);
+		
+		if(!entitydata->LC)
+		{
+			getArticulationNodes(c);
+			if(list_recherche(entitydata->articulations, c->node))
+			{
+				FILE* lt = fopen("lifetime", "a");
+				fprintf(lt, "LC %.1lf\n", get_time_now_second());
+				fclose(lt);
+				entitydata->LC = 1;
+			}
+		}
+		// Fin calcul lifetime
+		
+		
+		if(pourcentageApres > (100-entitydata->prMax)
+		   &&
+		   entitydata->nbDead > 0
+		   &&
+		   entitydata->LC == 1)
+		{
+			if(entitydata->debug)
+				printf("Toutes les mesures ont ete effectuees...\n");
+			end_simulation();
+		}
+		else if(entitydata->nbDead == get_node_count())
+		{
+			if(entitydata->debug)
+				printf("Plus aucun noeud en vie...\n");
+			end_simulation();
+		}
     }
     return;
 }

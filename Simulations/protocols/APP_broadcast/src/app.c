@@ -59,8 +59,7 @@ struct nodedata {
 /* Entity private data */
 struct entitydata {
     int nodeBroadcast;
-    int debug ;
-    int connexe ;
+    int debug;
     graphe *graph;
     uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
     uint64_t  periodEVE;       //delta temps entre chaque evenement
@@ -114,7 +113,6 @@ int init(call_t *c, void *params) {
   entitydata->debug = 0;
   entitydata->debut   = time_seconds_to_nanos(3);
   entitydata->periodEVE = time_seconds_to_nanos(1);
-  entitydata->connexe = 0;
 
   /* reading the "init" markup from the xml config file */
   das_init_traverse(params);
@@ -137,11 +135,6 @@ int init(call_t *c, void *params) {
       }
       if (!strcmp(param->key, "node")) {
           if (get_param_integer(param->value, &(entitydata->nodeBroadcast))) {
-              goto error;
-          }
-      }
-      if (!strcmp(param->key, "connexe")) {
-          if (get_param_integer(param->value, &(entitydata->connexe))) {
               goto error;
           }
       }
@@ -200,32 +193,19 @@ int setnode(call_t *c, void *params) {
  }
 
 int unsetnode(call_t *c) {
-<<<<<<< HEAD
 	//printf("Unset node app %d\n",c->node);
-=======
-        //printf("Unset node app %d\n",c->node);
->>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
 
-
-<<<<<<< HEAD
-=======
-
     //printf("%d %d \n",c->node,list_PACKET_taille(nodedata->paquets));
->>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
     //DEBUG PAQUETs
-    if(entitydata->debug)
+    /*if(entitydata->debug)
     {
         printf("\tPaquets (APP): %d ->",c->node);
-<<<<<<< HEAD
         list_PACKET_affiche(nodedata->paquets);
     }*/
-	printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
-=======
-        list_PACKET_affiche(nodedata->paquets);//*/
-    }
->>>>>>> a34790e9e1162d74ab5d4ede8095f55aac0f67af
+	if(entitydata->debug)
+		printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
 
 
     list_PACKET_detruire(&nodedata->paquets);
@@ -260,15 +240,20 @@ int bootstrap(call_t *c) {
 
 
     /* if the node type is source, we schedule a new callback */
-    if(c->node==0 && entitydata->nodeBroadcast == -1)
+    /*if(c->node==0 && entitydata->nodeBroadcast == -1)
     {
         call_t *inter=c;
         inter->node= get_random_integer_range(0,get_node_count()-1);
-        scheduler_add_callback(entitydata->debut, inter, callmeback, NULL);//*/
+        scheduler_add_callback(entitydata->debut, inter, callmeback, NULL);
     }
     else if(c->node==entitydata->nodeBroadcast)
-        scheduler_add_callback(entitydata->debut, c, callmeback, NULL);//*/
-
+        scheduler_add_callback(entitydata->debut, c, callmeback, NULL);*/
+	if(entitydata->nodeBroadcast == -1)
+    {
+		call_t c0 = {c->entity,-1,c->from};
+		c0.node = get_random_integer_range(0,get_node_count()-1);
+		scheduler_add_callback(entitydata->debut, &c0, callmeback, NULL);
+    }
 
 
     return 0;
@@ -299,7 +284,7 @@ int callmeback(call_t *c, void *args) {
     call_t c0 = {down[0], c->node, c->entity};
 	
     if(entitydata->debug)
-        printf("APP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
+        printf("\nAPP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
@@ -316,22 +301,27 @@ int callmeback(call_t *c, void *args) {
     // we schedule a new callback after actualtime+period
     if(entitydata->nodeBroadcast == -1)
     {
-        call_t *inter=malloc(sizeof(call_t));
-        inter->entity=c->entity;
-        inter->from=c->from;
-        inter->node= get_random_integer_range(0,get_node_count()-1);
+        /*call_t inter={-1,-1,-1};
+        inter.entity=c->entity;
+        inter.from=c->from;
+        inter.node= get_random_integer_range(0,get_node_count()-1);
 
-        while(!is_node_alive(inter->node))
-            inter->node= get_random_integer_range(0,get_node_count()-1);
+        while(!is_node_alive(inter.node))
+            inter.node= get_random_integer_range(0,get_node_count()-1);
 
         uint64_t  at= get_time_now()+entitydata->periodEVE;
-        scheduler_add_callback(at, inter, callmeback, NULL);
+		 scheduler_add_callback(at, &inter, callmeback, NULL);*/
+		call_t c0 = {c->entity,-1,c->from};
+		c0.node = get_random_integer_range(0,get_node_count()-1);
+        while(!is_node_alive(c0.node))
+			c0.node = get_random_integer_range(0,get_node_count()-1);
+		scheduler_add_callback(get_time_now()+entitydata->periodEVE, &c0, callmeback, NULL);
     }
-    else if(c->node==entitydata->nodeBroadcast)
+    /*else if(c->node==entitydata->nodeBroadcast)
     {
            uint64_t  at= get_time_now()+entitydata->periodEVE;
            scheduler_add_callback(at, c, callmeback, NULL);
-    }
+    }*/
     TX(&c0, packet);
     return 0;
 }

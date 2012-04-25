@@ -215,7 +215,7 @@ void tx( call_t *c , packet_t * packet )
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node};
     struct protocoleData *entitydata = get_entity_private_data(c);
-    //if(entitydata->debug)
+    if(entitydata->debug)
         printf("BIP BROADCAST - FROM %d WITH RANGE %.2lf AT %lf\n",c->node,get_range_Tr(c),get_time_now_second());
 
     TX(&c0,packet);

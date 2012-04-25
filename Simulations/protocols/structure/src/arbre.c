@@ -134,13 +134,22 @@ void arbre_copy(arbre **a,arbre *c)
 /***************************************RECHERCE****************/
 int arbre_recherche(arbre *a,int node)
 {
-    if(a == Nullptr(arbre)) return 0;
-    else if(a->node==node)   return 1;
+    if(a == Nullptr(arbre))
+	{
+		return 0;
+	}
+    else if(a->node==node)
+	{
+		return 1;
+	}
     else
     {
         int bol =0,i=0;
         i=a->size;
-        while(i--)      bol+=arbre_recherche(a->fils[i],node);
+        while(i--)
+		{
+			bol+=arbre_recherche(a->fils[i],node);
+		}
         return bol;
     }
 

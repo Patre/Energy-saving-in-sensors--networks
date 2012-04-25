@@ -290,10 +290,10 @@ void tx(call_t *c, packet_t *packet) {
     if(entitydata->debug)
     {
         printf("MAC BROADCAST- FROM %d  WITH RANGE %.2lf\n", c->node,nodedata->range);
-    }//*/
+    }
 	
     battery_consume(c,energy);
-
+	
 #ifdef ONE_PACKET_AT_A_TIME
    if (nodedata->scheduler == 0) {
         nodedata->scheduler = 1;
@@ -304,6 +304,7 @@ void tx(call_t *c, packet_t *packet) {
    uint64_t delay = get_time() + duration;
    scheduler_add_callback(delay, c, tx_delay, NULL);   
 #endif
+	
 }
 
 /* ************************************************** */
