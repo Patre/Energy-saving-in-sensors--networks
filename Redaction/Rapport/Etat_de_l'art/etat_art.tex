@@ -6,16 +6,33 @@
 \section{Modélisation des réseaux de capteurs sans fil}
 
 
-Dans les différents articles du domaine, les réseaux sans fils sont modélisés sous forme de graphe. Cependant, d'autres paramètres (comme les capteurs) sont modélisés de façon différentes par chaque auteur. Nous allons présenter quelques modélisations possibles pour chaque aspect du problème d'économie d'énergie dans les réseaux de capteurs sans fils.
+Dans les différents articles du domaine, les réseaux sans fils sont modélisés sous forme de graphe. Cependant, d'autres paramètres (comme les capteurs) sont modélisés de façon différentes par chaque auteur. Nous allons présenter
+ quelques modélisations possibles pour le problème d'économie d'énergie dans les réseaux de capteurs sans fils.
 
-Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux de capteurs. Nous formaliserons ensuite la modélisation d'un réseau par les graphes. Puis nous aborderons les différents modèles énergétiques. Enfin, nous nous pencherons sur les définitions de durée de vie d'un réseau. Une table récapitulative des notations est disponible à la fin de cette partie.
+Tout d'abord, nous allons aborder les paramètres pratiques liés aux réseaux de capteurs. Nous formaliserons ensuite la modélisation d'un réseau par les graphes. Puis nous aborderons les différents modèles énergétiques. Enfin, nous 
+nous pencherons sur les définitions de durée de vie d'un réseau. Une table récapitulative des notations est disponible à la fin de cette partie.
 
 \subsection{Critères pratiques}\label{modelePratique}
 
 
-Différents modèles sont possibles.
+La modélisation générale d'un réseau de capteur sans fil \textbf{$M_1$} prends en compte: 
 
-La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} \cite{Cartigny2003LMEB} :
+\begin{itemize}
+
+ \item \textit{Singularité.} Tout les capteurs ne sont pas forcement identiques (batterie, portée, capacité de calcul…)\cite{Akyildiz2002}. 
+ \item \textit{Connexité.} Le réseau est initialement connexe (chaque capteur est lié directement ou indirectement à tous les autres). 
+ \item \textit{Dimension.} Le réseau est réparti dans un environement en 3 dimentions.
+ \item \textit{Mobilité.} Les capteurs sont peuvent changer de position au cour du temps \cite{Giordano2003}.
+ \item \textit{Uniformité.} Tout les capteurs sont identiques (batterie, portée, capacité de calcul…).  
+ \item \textit{L'ajout de capteurs.} le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.
+ \item \textit{Panne.} Les capteurs peuvent tomber en panne en raison de divers facteurs. Une loi de probabilité modélise ce phénomène.   
+ \item \textit{Interférences} Les transmissions radio peuvent etre perturbées par des interferences du à l'environnement ou à des conflits interne au réseau \cite{Agarwal2005}.
+ \item \textit{Modèle de consommation énergétique} Un modéle énergétique complexe prenant en compte l'énergie de capture, de traitement, de transmition ainsi que de la taille des messages\cite{Deng2005}.
+ 
+\end{itemize}
+
+Cepandant, un tel modéle est extremement complexe à étudier. C'est pourquoi nous nous ramenerons à un modèle plus simple mais moins réaliste choisi dans la beaucoup d'articles  \cite{Cartigny2003LMEB,Ingelrest2004}.
+Notre modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} est la suivante :
 
 \begin{itemize}
  \item \textit{Uniformité.} Tout les capteurs sont identiques (batterie, portée, capacité de calcul…).
@@ -31,19 +48,7 @@ La modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} \cite{
  \item \textit{GPS.} Chaque site connait sa position absolue.  \\
 \end{itemize}
 
-D'autres modèles plus complexes mais plus réalistes prennent en compte:
-  
-\begin{itemize}
-   
- \item L'ajout de capteurs: le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.
- \item Les capteurs peuvent tomber en panne en raison de divers facteurs. Une loi de probabilité modélise ce phénomène.   
- \item La mobilité des capteurs. La position de chaque capteur varie au cours du temps \cite{Giordano2003}.
- \item Les capteurs ne sont pas forcément identiques (batterie, portée, capacité de calcul, connaissance du réseau...) \cite{Akyildiz2002}.
- \item Espace en 3 dimensions.
- \item Interférences radio \cite{Agarwal2005}.
- \item Modèle de consommation énergétique complexe \cite{Deng2005}.
- \item ...
-\end{itemize}
+
 
 
 \begin{figure}[h]
@@ -52,107 +57,113 @@ D'autres modèles plus complexes mais plus réalistes prennent en compte:
 \caption{\label{Layer} Les couches dans les réseau de capteur sans fils}
 \end{figure}
 
-Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (réseau de capteur sans fil), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés. Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
+Pour l'étude et la conception d'algorithmes dans les réseaux de capteurs sans fil (réseau de capteur sans fil), il est indispensable de définir le problème précis, d'établir un cadre rigoureux, formel et sans ambiguïtés.
+ Au vue de la figure \ref{Layer}, notre étude se placera dans la couche 'Broadcast Protocols'. Nous ne développerons pas la couche MAC ni la couche application.
 
-Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_1$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit ci dessous.
+Dans le cadre de notre travail d'étude et de recherche, nous utiliserons, sauf mention du contraire, la modélisation de capteurs simplifiée $M_2$ (cf \ref{modelePratique}) avec pour modèle énergétique celui décrit ci dessous.
 
 \subsection{Modèle d'un réseau de capteurs : un graphe}
 
  \paragraph*{} Un réseau de capteur sans fil peut être représenté par un graphe $G= (V,E,\gamma)$ où :
  \begin{itemize}
  \item $V$ est un ensemble de noeuds (capteurs)
- \item $E \subseteq V \textsuperscript{2}$ est l'ensemble des arêtes représentant les communications possibles entre les capteurs: $(u,v)$ appartient à $E$ signifie que $u$ peut envoyer un  message à $v$
+ \item $E \subseteq V \textsuperscript{2}$ est l'ensemble des arêtes représentant les communications possibles entre les capteurs: $(u,v)$ appartient à $E$ signifie que $v$ est à portée de $u$
  \item $\gamma$ est le rayon d'émission maximum
  \end{itemize}
  
- On note $ |V|=n $ la taille du réseau de capteur sans fil. Notons que les éléments de E dépendent de la
- position des capteurs ainsi que de leur portée. Nous supposerons que tout les capteurs ont la même portée maximale notée $\gamma$. 
-
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Distance
 
-\begin{mydef}
-Soit $ij$ l'arête allant de $i$ à $j$. \\
-Soit $d_e(u,v)$ la \textit{distance euclidienne} dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$:
+\begin{mynot}
+Soit $ n=|V| $ la taille du réseau de capteur sans fil. Notons que les éléments de E dépendent de la position des capteurs ainsi que de leur portée. Tout les capteurs ont la même portée maximale notée $\gamma$. 
+Soit $ij$ l'arête allant de $i$ à $j$. 
+Soit $d(u,v)$ la \textit{distance euclidienne} dans $\mathbb{R} \textsuperscript{2}$ entre $u$ et $v$
+\end{mynot}
+Nous avons:
 $$E = \{ (u,v) \in V ^{2} \mid d(u,v) \leq \gamma \}$$
-Soit $d_G(u,v)$ la \textit{distance} entre $ u $ et $ v $ : $d_G(u,v)= \min\limits_{k \in \mathbb{N}}(k \mid v \in N_k(u))$
-\end{mydef}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Graphe unité
 \begin{mydef}
- Soit $G= (V,E,\gamma)$ le \textit{graphe unité} du réseau de capteur sans fil et $\gamma$ son rayon de communication.
+Soit $d_G(u,v)$ la \textit{distance unitaire} entre $ u $ et $ v $ : $d_G(u,v)$ est la taille du plus court un chemin $c(u,v)$ en terme du nombre d'aretes parcourues. 
 \end{mydef}
 
 
-\begin{figure}[h]
-\centering
-\includegraphics[angle=90, scale= 0.35]{Etat_de_l'art/source/GrapheUnit.pdf} 
-\caption{\label{Layer} Graphe Unité}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Graphe unité&Disque
+\begin{mydef}
+ Soit $G= (V,E,\gamma)$ le \textit{graphe Unité} du réseau de capteur sans fil et $\gamma$ son rayon de communication (cf fig.\ref{Unit} (a)).
+\end{mydef}
+\begin{mydef}
+Nous définissons le \textit{graphe Disque} comme $G= (V,D,\gamma)$ où $D=\{ Cercle(u,\gamma), u\in V\}$ (cf fig.\ref{Unit} (b)).
+\end{mydef}
+
+
+\begin{figure}[tb]
+    \centering
+    \begin{tabular}{cccc}
+      
+      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheUnit.pdf} &
+      \includegraphics[angle=90, scale= 0.5,width=.5\linewidth]{Etat_de_l'art/source/GrapheUnitDisk.pdf} 
+   \\
+      (a) & (b) \\
+    \end{tabular}
+    \caption{Graphe Unité(a) et Graphe Disque(b) \label{Unit}}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Voisinage
 \begin{mydef}
-Nous noterons le 1-voisinage de $u$ : $N_1(u) = \{ v \in V  \mid (u,v) \in E \}$ \\
-Nous noterons le 2-voisinage de $u$ : $N_2(u) = \{ v \in V \mid  \exists w \in V :\{(u,w);(w,v)\} \in E ^2\}$ \\
-Nous noterons le $k$-voisinage de $u$, $k \in \mathbb{N} : N_k(u) = \{ v \in V  \mid \exists $ un chemin $c (u,v): |c| \leq k\}$.\\
+Soit $N_1(u)$ le 1-voisinage de $u$ : $N_1(u) = \{ v \in V  \mid (u,v) \in E \}$.
+\end{mydef}
+\begin{mydef}
+Soit $N_1(u)$ le 2-voisinage de $u$ : $N_2(u) = \{ v \in V \mid  \exists w \in V :\{(u,w);(w,v)\} \in E ^2\}$.
+\end{mydef}
+\begin{mydef}
+Soit $N_1(u)$ le $k$-voisinage de $u$, $k \in \mathbb{N} : N_k(u) = \{ v \in V  \mid d_G(u,v)=k \}$.
+\end{mydef}
+\begin{myvoc}
 Nous parlerons de 1- 2- et k-voisins de $i$ pour désigner des noeuds appartenant respectivement
- à $N_1(i), N_2(i),N_k(i)$. \\
-Soit $A \subseteq V$, on note $N(A) = \{ v \in V\textbackslash  A \mid \forall u\in A,(u,v) \in E \}$ \\
-Le degré de $ u $ est le nombre  $N(u)=|N_1(u)|$.\\
+ à $N_1(i), N_2(i),N_k(i)$. 
+\end{myvoc}
+\begin{mydef}
+Le voisinage de  $A \subseteq V$ est l'ensemble $N(A) = \{ v \in V\textbackslash  A \mid \forall u\in A,(u,v) \in E \}$ .
+\end{mydef}
+\begin{mydef}
+Le degré de $ u $ est le nombre  $N(u)=|N_1(u)|$.
 \end{mydef}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Diametre
 \begin{mydef}
-Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j} (d_G(i,j))$.
+Le diametre de $G$ est  $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j} (d_G(i,j))$.
 \end{mydef}
  
-
-<<<<<<< HEAD
-%\begin{figure}[tb]
-%   \centering
-%    \begin{tabular}{cccc}
-%      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]v{Etat_de_l'art/source/GrapheUnit.pdf} &
-%      \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheRNG.pdf} &
- %     \includegraphics[angle=90, scale= 0.5,width=.3\linewidth]{Etat_de_l'art/source/GrapheMST.pdf} 
- %     \\
- %     (a) & (b) & (c) \\
- %   \end{tabular}
- %   \caption{Graphe unité(a), graphe RNG(b) et graphe MST(c) \label{fig:ex}}
-%\end{figure}
-=======
->>>>>>> 5cc53678ec99c2c26435dd9c36a31e60a0fca5de
-
-
-
-
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  Densité, distance moyenne
 \begin{mydef}
- 
- Le degré de $G$ est la moyenne des degrés de chaque sommet : $$N_G=\sum_{i=1}^n{\frac1n N(i)}$$\\
- La densité de $G$ est le nombre $D_G=N_G/diametre_G$\\
- La distance de $G$ est la moyenne des distances entre toutes paires de sommets:$$d_G=\sum_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j}{\frac1n d_G(i,j)}$$
- La distance euclidienne de $G$ est la moyenne des distances euclidienne entre toutes paires de sommets:$$d_e(G)=\sum_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j}{\frac1n d_e1(i,j)}$$
-
+ Le degré de $G$ est la moyenne des degrés de chaque sommet : $$N_G=\sum_{i=1}^n{\frac1n N(i)}$$.
+\end{mydef}
+\begin{mydef}
+ La densité de $G$ est le nombre $D_G=N_G/diametre_G$.
+\end{mydef}
+\begin{mydef}
+ La distance unitaire de $G$ est la moyenne des distances entre toutes paires de sommets:$$d_G=\sum_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j}{\frac1n d_G(i,j)}$$
+\end{mydef}
+\begin{mydef}
+ La distance euclidienne de $G$ est la moyenne des distances euclidienne entre toutes paires de sommets:$$d(G)=\sum_{i,j\in \textlbrackdbl 1,n \textrbrackdbl,i<j}{\frac1n d(i,j)}$$
 \end{mydef}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù RNG& MST
+\begin{mynot}
+Nous notons $MST(G)$ un des arbres couvrants de poids minimum de G.
+\end{mynot}
 \begin{mydef}
- Nous notons $MST(G)$ un des arbres couvrants de poids minimum de G. Nous pouvons calculer rapidement un tel arbre de façon globale (MST) ou distribuée (LMST).
-
-
+Soit $RNG(G)$(pour Relative Neighborhood Graph) le graphe de voisinage .
+ $RNG(G)=(V,E_{rng})$ avec $$E_{rng}=\{ (u,v)\in E \mid \nexists w\in N_1(u)\cap N_1(v): d(u,w)<d(u,v) \wedge d(v,w)<d(u,v)  \}$$
+Le graphe de voisinage est noté $RNG(G)$ (pour Relative Neighborhood Graph).
 \end{mydef}
-
-\begin{mydef}
- Le graphe de voisinage est noté $RNG(G)$ (pour Relative Neighborhood Graph).\\
- $RNG(G)=(V,E_{rng})$ avec $$E_{rng}=\{ (u,v)\in E \mid \nexists w\in N_1(u)\cap N_1(v): d_e(u,w)<d_e(u,v) \wedge d_e(v,w)<d_e(u,v)  \}$$
- De façon intuitive, pour construire le graphe RNG, pour chaque noeud $u,(u,v)$ est ajouté à $E_{rng}$ si $u$ n'a pas de voisin $w$ plus proche de $v$.\\
- Nous avons la propriété suivante, $Del(G)$ étant la triangulation de delaunay: $$  MST\subseteq RNG(G)\subseteq Del(G) \subseteq G$$
-
-\end{mydef}
+\begin{myrmq}
+ De façon intuitive, pour construire le graphe RNG, pour chaque noeud $u,(u,v)$ est ajouté à $E_{rng}$ si $u$ n'a pas de voisin $w$ plus proche de $v$.
+ \end{myrmq}
+\begin{myprop}
+Nous avons la propriété suivante: $$  MST\subseteq RNG(G)\ \subseteq G$$
+\end{myprop}
 
 \begin{figure}[tb]
     \centering
@@ -163,7 +174,7 @@ Nous noterons $diametre_G= \max\limits_{i,j\in \textlbrackdbl 1,n \textrbrackdbl
    \\
       (a) & (b) \\
     \end{tabular}
-    \caption{Graphe RNG(a) et graphe MST(b) \label{fig:ex}}
+    \caption{Graphe RNG(a) et Graphe MST(b) \label{fig:ex}}
 \end{figure}
 
 
@@ -177,7 +188,7 @@ L'envoi de message est le seul facteur de perte d'énergie. L'énergie consommé
 Tous les capteurs $i$ offrant les mêmes caractéristiques, ils peuvent modifier leur rayon d'émission $r_i$ en respectant l'inégalité suivante : $0 \leq r_i \leq \gamma$.
 Nous noterons $E_i$ l'énergie restante de $i$.
 L'envoi d'un message de $i$ avec un rayon $r$ coûte $$ E(r)= \begin{cases} r^\alpha + c & \text{si }i\neq j \\ 0 & \text{sinon}  \end{cases}$$
-L'envoi d'un message de $i$ à $j$ ($d_e(i,j)\leq \gamma$) coûte  $ E_{ij}=E(d_e(i,j))$.
+L'envoi d'un message de $i$ à $j$ ($d(i,j)\leq \gamma$) coûte  $ E_{ij}=E(d(i,j))$.
 
 \paragraph{The Time based model.}
 Ce modèle plus réaliste prend en compte l'énergie de réception des messages, de traitement ainsi que d'écoute inactive du réseau (mode veille).
@@ -187,13 +198,19 @@ Dans beaucoup d'applications, la densité du réseau étant élevée, le coût p
 
 
 
-\paragraph{Energie globale.}
+\paragraph{Energie du réseau.}
 \begin{mydef}
  L'énergie potentielle de G est la somme des énergies des capteurs :$$E_G=\sum_{i=1}^n{E_i}$$
+\end{mydef}
+\begin{mydef}
  La consommation de  G est :$$C_G=n\beta - E_G$$
- Le coût moyen de transmission de  G est :$$c_G=E(d_e(G))$$
+\end{mydef}
+\begin{mydef}
+ Le coût moyen de transmission de  G est :$$c_G=E(d(G))$$
+\end{mydef}
+\begin{mydef}
  Le cout moyen d'une transmission est $C(1)$.\\
- Le cout moyen de $k$ transmissions est $C(k)$
+ Le cout moyen de $k$ transmissions est $C(k)$.
 \end{mydef}
 
 
@@ -209,8 +226,8 @@ Dans la littérature, deux approches apparaissent clairement en matière de maxi
 de maximiser la directement la durée de vie du réseau de façon plus globale. Bien que l'approche indirecte puisse améliorer la durée de vie du réseau, elle ne suffit pas à elle seule à appréhender le problème de la durée de vie.
 Parmi ces approches figurent  par exemple le fait de maximiser le nombre de transmissions effectuées avant qu'un capteur ne meurt.
 
-Dans \cite{Liang2002}, Liang prouve que le  problème THE MINIMUM-ENERGY BROADCAST
-TREE PROBLEM est NP-complet par réduction à (3-CNF SAT):
+Dans \cite{Liang2002}, Liang prouve que le  problème 'THE MINIMUM-ENERGY BROADCAST
+TREE PROBLEM' est NP-complet par réduction à (3-CNF SAT):
 \begin{myth}
 Soient un réseau de capteur sans fil $G$ dans lequel chaque noeud a $k$ rayons de transmission possibles, une source $s$ et un entier positif $w$.
 Déterminer s'il existe un arbre de broadcast de source $s$ tel que la somme des coûts de transmission aux noeuds relais (qui ne sont pas des feuilles) soit inférieure à $w$ est NP-Complet.
@@ -238,7 +255,7 @@ Nombre moyen de transmissions réussies jusqu'à ce qu'il ne reste que $X\%$ de 
 \end{mylt}
 
 
-
+%TODO Reduire taille tableau
 \begin{table}[H]
 {%
 \newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
@@ -255,11 +272,11 @@ $E_i$ & \mc{1}{c|}{Energie restante de $i$}\\\hline
 $E_{ij}$ & \mc{1}{c|}{Coût d'envoi d'un message de $i$ à $j$}\\\hline
 $N(u) $& \mc{1}{c|}{Degré de u}\\\hline
 $d_G(i,j)$ & \mc{1}{c|}{Distance dans G entre $i$ et $j$}\\\hline
-$d_e(i,j)$ & \mc{1}{c|}{Distance euclidienne entre $i$ et $j$}\\\hline
+$d(i,j)$ & \mc{1}{c|}{Distance euclidienne entre $i$ et $j$}\\\hline
 $N_k(u)$ & \mc{1}{c|}{Nombre de k-voisins de u }\\\hline
 $N_G$ & \mc{1}{c|}{Degré de G}\\\hline
 $d_G$ & \mc{1}{c|}{Distance de G}\\\hline
-$d_e(G)$ & \mc{1}{c|}{Distance euclidienne de G}\\\hline
+$d(G)$ & \mc{1}{c|}{Distance euclidienne de G}\\\hline
 $diametre_G$ & \mc{1}{c|}{Diametre de G}\\\hline
 $D_G$ & \mc{1}{c|}{Densité de G}\\\hline
 $C(k)$ & \mc{1}{c|}{Coût de $k$ broadcasts}\\\hline
@@ -302,24 +319,19 @@ Sans chevauchement et sans vide, un plan ne peut être découpé de façon unifo
 \begin{proof}
 Soit $m$ le nombre de sommets d'un $m$-polygone et $n$ le nombre de $m$-polygones nécessaires pour couvrir $2\pi$ degrés. La somme des angles internes étant égale au produit d'un 
 angle interne par le nombre de côtés $m$, elle sera égale à $\pi m-2 \pi$  radian. Un angle interne vaut donc $\frac{(m-2)\pi }{m}$ . Nous avons: 
-$$\frac{(m-2)n\pi}{m}=2\pi$$
-$$\Leftrightarrow$$
-$$(m-2)(n-2)=4$$
+$$\frac{(m-2)n\pi}{m}=2\pi \Leftrightarrow (m-2)(n-2)=4$$
 Comme $n$ et $m$ sont des entiers, les seules solutions sont : 
-$$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \}$$
-$$\Leftrightarrow$$
-$$m \in \{ 3,4,6 \}$$
+$$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \} \Leftrightarrow m \in \{ 3,4,6 \}$$
 \end{proof}
 
 \begin{myth}
-Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue réseau de capteur sans fil. Nous admettrons ce théorème.
+Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue réseau de capteur sans fil. 
 \end{myth}
+\begin{proof}
+ %TODO
+\end{proof}
 
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.7]{Etat_de_l'art/source/hexagone1.png}
-%\caption{ Chevauchement d'un maillage hexagonale}
-%\end{figure} 
+
 
 Soit $P$ un plan sur lequel $n$ capteurs sont placés. Chaque capteur peut émettre des messages avec un rayon compris entre 0 et $\gamma$. Nous allons déterminer pour tous les nœuds un même rayon d'émission fixe $R$.
 Etant donnée une source $s$ et un message $M$ à broadcaster, nous devons placer les noeuds relais de façon à minimiser leur nombre $m$. Bien sûr, leur nombre dépend directement du rayon $R$.
@@ -331,20 +343,31 @@ Soit $h$ le nombre d'hexagones couvrant $P$, on a :
 $$h \simeq \frac{Surface ( P)}{Surface(hexagone)}=\frac{2S}{3R^2 \sqrt{3}}$$
 
 Comme il faut deux nœuds par hexagone,
-$$n=2h=\frac{4S}{3R^2 \sqrt{3}}= \frac{k}{R^2}$$ où $$k=\frac{4S}{3 \sqrt{3}}$$
+\begin{eqnarray*}
+n & = & 2h \label{eq:3}\\
+ & = & \frac{4S}{3R^2 \sqrt{3}}\\
+ & = & \frac{k}{R^2}\label{eq:4}
+\end{eqnarray*}
 
-Ainsi, le coût d'un broadcast vaut: $$C(1)(R)= n\cdot E(R)=\frac{k}{R^2}\cdot E(R)=\frac{k}{R^2}\cdot (R^\alpha+c)$$
+Ainsi, le coût d'un broadcast vaut:
+\begin{eqnarray*}
+C(1)(R) & = & 2h \label{eq:3}\\
+ & = & n\cdot E(R)\\
+ & = & \frac{k}{R^2}\cdot E(R)\\
+ & = &  \frac{k}{R^2}\cdot (R^\alpha+c) \label{eq:4}
+\end{eqnarray*}
+ 
 Nous cherchons le rayon optimal minimisant $C(1)(R)$. Comme $\alpha\geq 2$, $c\geq 0$ et $R>0$, nous avons 4 cas possibles:
 \begin{itemize}
- \item $\alpha=2$, $c=0$: nous avons $C(1)(R)=k$. $R_{opt}$ ne dépend pas de $r$.
- \item $\alpha=2$, $c\neq0$: nous avons $C(1)(R)=k(1+cR^{-2})$. Le rayon doit être le plus grand possible donc : $R_{opt}=\gamma$.
- \item $\alpha>2$, $c=0$: nous avons $C(1)(R)=kR^{\alpha-2}$. $R_{opt}=0$
- \item $\alpha>2$, $c\neq 0$: nous avons $C(1)(R)=k(R^{\alpha-2} + c R^{-2} ) $.\\
- En dérivant, nous obtenons: $C'(1)(R)= k( (\alpha 2) R^{\alpha-3}- 2cR^{-3} ) $.\\
-D'où: $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
+ \item $\alpha=2$, $c=0$:  $C(1)(R)=k$. $R_{opt}$ ne dépend pas de $r$.
+ \item $\alpha=2$, $c\neq0$: $C(1)(R)=k(1+cR^{-2})$. Le rayon doit être le plus grand possible donc : $R_{opt}=\gamma$.
+ \item $\alpha>2$, $c=0$: $C(1)(R)=kR^{\alpha-2}$. $R_{opt}=0$
+ \item $\alpha>2$, $c\neq 0$: $C(1)(R)=k(R^{\alpha-2} + c R^{-2} ) $.\\
+ En dérivant, nous obtenons: $C'(1)(R)= k( (\alpha-2) R^{\alpha-3}- 2cR^{-3} ) $.\\
+Cette fonction admet un minimum en $$R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$$
 \end{itemize}
 
-Bien sûr, en pratique il est impossible, sur une topologie quelconque, d'extraire un tel maillage hexagonal.
+Bien sûr, en pratique il est impossible, sur une topologie quelconque, d'extraire un tel maillage hexagonal de rayon $R_{opt}$. Cepandant il est possible de s'en approcher le plus possible.
 
 
 \subsubsection{Rayon d'émission fixe pour tous les nœuds}
@@ -352,7 +375,7 @@ Certains algorithmes de broadcast les plus primitifs ($cf$ \ref{blind_flooding},
 
 
 \subsubsection{Rayon d'émission variable}
-La plupart des algorithmes de routage de broadcast utilisent un rayon d'émission variable pour les raisons citées ci-dessus. Tous les algorithmes de routage de single-cast utilisent un rayon d'émission variable car ils ajustent leur transmission pour toucher uniquement le nœud destinataire.
+La plupart des algorithmes  de broadcast utilisent un rayon d'émission variable pour les raisons citées ci-dessus. Tous les algorithmes de routage de single-cast utilisent un rayon d'émission variable car ils ajustent leur transmission pour toucher uniquement le nœud destinataire.
 
 
 
@@ -376,7 +399,7 @@ Remarquons que pour qu'un protocole soit extensible, il doit être avant tout di
 
 
 \subsection{Algorithme à balisage vs algorithme sans balisage (beaconless)}
-Les algorithmes 'beaconless' ne nécessitent pas de phase d'initialisation ni de mise à jour. Les nouveaux capteurs sont immédiatement opérationnels mais n'ont aucune connaissance de leur environnement et notamment de leur voisinage dans G. 
+Les algorithmes ``beaconless'' ne nécessitent pas de phase d'initialisation ni de mise à jour. Les nouveaux capteurs sont immédiatement opérationnels mais n'ont aucune connaissance de leur environnement et notamment de leur voisinage dans G. 
 
 Dans les algorithmes avec balisage, tout capteur, lorsqu'il est connecté au réseau, commence par une procédure d'initialisation et stocke en mémoire un certain nombre d'informations (voisins, groupe, topologie locale...). Au cœur de l'algorithme, chaque noeud met périodiquement à jour ces informations. Il est possible, par exemple, que chaque site envoie régulièrement à ses voisins un message de type
 'Hello' contenant par exemple son Id, sa position, sa dominante connexe, son degré, ses voisins, etc.
@@ -391,11 +414,10 @@ Un algorithme déterministe est un algorithme qui, confronté à un choix, prend
 
 
 \section{Quelques algorithmes de routage}
-Tous les algorithmes présentés ci-dessous utilisent la modélisation $M1$ (\ref{modelePratique}) des réseaux avec pour modèle énergétique le 'Packet based model' (\ref{packet_based_model}).
+Tous les algorithmes présentés ci-dessous utilisent la modélisation $M2$ (\ref{modelePratique}) des réseaux avec pour modèle énergétique le 'Packet based model' (\ref{packet_based_model}).
 
 
 \subsubsection{Flow augmentation \cite{Chang2000}}
-\emph{Mots clés :} single-cast, local, sans balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :}
 L'algorithme $FA(x_1, x_2, x_3)$ est un algorithme d'augmentation de flot. L'idée consiste à utiliser un algorithme de plus court chemin existant (comme l'algorithme distribué de Bellman-Ford) et de lui passer trois paramètres ($x_1$, $x_2$ et $x_3$) qui détermineront sa fonction de poids sur les arcs. Ces paramètres coefficienteront les trois facteurs suivants : le coût de transmission du nœud $i$ au nœud $j$ ($e_{ij}$) ; l'énergie résiduelle du nœud $i$ ($\underline{E}_i$), et l'énergie initiale du nœud $i$ ($E_i$). Voici la formule qui donne le poids de l'arc $(i,j)$ en fonction des paramètres :
@@ -438,7 +460,7 @@ avec :
 
 
 \subsubsection{Flow redirection \cite{Chang2000}}
-\emph{Mots clés :} single-cast, global, sans balisage, rayon d'émission variable, déterministe.
+
 
 \emph{Description :}
 Cet algorithme est basé sur le fait que le flot trouvé est optimal ssi pour tous les chemins de l'origine à la destination portants un flot positif, la durée de vie minimum est la même. Le principe consiste donc à rediriger une partie du flot de chaque nœud à travers un autre chemin vers la destination tel que la durée de vie de chaque chemin portant du flot augmente (ou au moins reste stable). Le flot initial a pour valeur la quantité totale d'informations générées par le réseau.
@@ -487,7 +509,6 @@ let $q$ be the initial flow
 
 
 \subsubsection{Energy Aware Routing \cite{Shah2002}}
-\emph{Mots clés :} single-cast, local, avec balisage, rayon d'émission variable, probabiliste.
 
 \emph{Description :}
 Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds qu’en cas de besoin) et les requêtes sont initiées depuis la destination. Il se décline en trois phases : la phase d'initialisation qui permet de trouver tous les chemins de la source à la destination ; la phase de communication de données ; et la maintenance des routes. Les deux premières phases sont détaillées dans les algorithmes ci-dessous.
@@ -539,10 +560,9 @@ Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds q
 
 
 \section{Quelques algorithmes de broadcast}
-Model de reseau: $M1$ avec pour modele energetique 'Packet based model'.
 
 \subsubsection{Blind Flooding\label{blind_flooding}}
-\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
+
 
 \emph{Description :} le "blind flooding" ou "broadcast aveugle" est un algorithme glouton de broadcast sans balisage. Lors de la réception d'un message par un noeud, si c'est la première fois qu'il le reçoit, il le broadcast à ses voisins (avec le rayon maximum), sinon il ne fait rien.
 
@@ -555,7 +575,7 @@ Le coût global de $k$ broadcasts est $C(k) = k\cdot n \cdot E( \gamma )= k\cdot
 
 
 \subsubsection{Probabilistic Flooding\label{proba_flooding}}
-\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, probabiliste.
+
 \emph{Description :} Afin d'éviter le redondance et les collisions, une idée est que chaque noeud retransmette le message suivant une probabilité $P$ lorsqu'il le reçoit pour la première fois. Si $P=1$ cela équivaut au blind flooding.
 \emph{Consommation :} Chaque noeud ayant un probabilité $P$ de retransmettre le message <$M$,$\gamma$>, en moyenne $P\cdot n$ nœuds envoient ce message lors d'un broadcast.
 Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût global de $k$ broadcasts est $C(k) = P\cdot k\cdot n \cdot E( \gamma ) $ .
@@ -563,14 +583,14 @@ Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût
 
 
 \subsubsection{Area-based Beaconless Broadcasting Algorithms \cite{Ovalle2006}}
-\emph{Mots clés :} broadcast, local, sans balisage, rayon d'émission fixe, déterministe.
+
 
 \emph{Description :} Nous supposons que les noeuds n'ont aucune connaissance de leur voisinage. Cependant ceux-ci connaissent leur position géographique (GPS par exemple). Chaque capteur a un rayon d'émission fixe $R$ et couvre une zone circulaire.
-%\begin{figure}[H]
-%\centering
-%\includegraphics{Etat_de_l'art/source/abba.png}
-%\caption{ }
-%\end{figure} 
+\begin{figure}[H]
+\centering
+\includegraphics{Etat_de_l'art/source/abba.png}
+\caption{ }
+\end{figure} 
 
 L'idée maitresse de ABBA est assez simple. A la première réception d'un message, le nœud initialise un timer. Avant expiration du timer, le noeud peut recevoir d'autres copies du même message. Si un nœud $u$ reçoit le même message de différentes sources et que ces sources couvrent sa zone, cela signifie que chacun de ses voisins potentiels a déjà reçu le message. Alors $u$ ne retransmet pas le message et quand que son timer expire, il ne fait rien. Sinon si le voisinage de $u$ n'est pas couvert alors $u$ retransmet.
 
@@ -606,7 +626,7 @@ Un noeud source $s$, un message $M$
 
 \subsubsection{Broadcast Incremental-power Protocol \cite{Wieselthier2000}}
 
-\emph{Mots clés :} broadcast, global, avec balisage, rayon d'émission variable, déterministe.
+
 
 \emph{Description :} Rappelons les désavantages des transmissions longue portée: interférences, cout énergétique (le modèle de consommation énergétique des noeuds est non linéaire par rapport au rayon à cause de l'atténuation du signal radio).
 C'est pourquoi il est nécessaire de trouver le bon compromis entre le rayon de transmission et le nombre de messages circulant. En effet, un large rayon de transmission coûte cher mais atteint beaucoup de nœuds ; un court rayon coûte très peu cher mais augmente le nombre de messages. 
@@ -653,12 +673,6 @@ construit, le broadcast se fait naturellement via celui-ci. Chaque sommet connai
 sa position et ses fils si il en a.
 
 
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.3]{Etat_de_l'art/source/Dessin2.pdf}
-%\caption{ Arbre Prim(gauche); Arbre Bip(droite)}
-%\end{figure} 
-
 
 \begin{algorithm}[h]
 \caption{BIP}
@@ -677,11 +691,7 @@ sa position et ses fils si il en a.
 \end{algorithm}
 
 \subsubsection{Découverte des 1- et 2-voisinages}
-
-\emph{Mots clés :} broadcast, local, phase de balisage, rayon d'émission fixe, déterministe.
-
 \emph{Description :} la connaissance du 2-voisinage est un très bon compromis conservant la localité du protocole tout en minimisant le nombre de messages.
-
 
 \begin{algorithm}[h]
 \caption{Découverte 2-voisinage}
@@ -708,7 +718,6 @@ Pour une 1-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un conso
 
 
 \subsubsection{Localized Broadcast Incremental-power Protocol \cite{Ingelrest2004}}
-\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} LBIP est l'application locale de BIP: au lieu de construire l'arbre de diffusion BIP de façon centralisée, il le construit de façon locale.
 Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree sur son 2-voisinage à partir des informations du paquet et diffuse le message à ses voisins dans l'arbre.
@@ -744,17 +753,9 @@ Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree 
 \end{algorithmic}
 \end{algorithm}
 
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.65]{Etat_de_l'art/source/LBIP.png}
-%\caption{ }
-%\end{figure} 
-
-
 
 
 \subsubsection{Dynamic Localized Broadcast Incremental-power Protocol \cite{Champ2009DLBIP}}
-\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} DLBIP est une amélioration de LBIP. Le principe est de répartir l'énergie consommée lors 
 d'un broadcast en empreintant des chemins (arbre couvrants) différents en fonction de l'énergie restantes des 
@@ -779,7 +780,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 
 
 
-<<<<<<< HEAD
+
 \subsubsection{LMST Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
 \emph{Mots clés :} 
 
@@ -818,14 +819,6 @@ Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud co
 \ENDIF
 \end{algorithmic}
 \end{algorithm}
-=======
-
->>>>>>> 5cc53678ec99c2c26435dd9c36a31e60a0fca5de
-
-\subsubsection{ RNG Broadcast Oriented Protocol(RBOP) }
-
-
-
 
 
 \subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP\&RBOP)\cite{Cartigny2005}}
@@ -863,7 +856,7 @@ Une fois l'arbre construit, le message est diffusé via celui-ci, chaque nœud p
 \FOR{chaque noeud $u$ }
 	\STATE  $RNG(u) \leftarrow graphe_{vide}$
 	\FOR{chaque noeud $v \in N_1(u)$ }
-	  \IF{$ \nexists w\in N_1(u)\cap N_1(v): d_e(u,w)<d_e(u,v) \wedge d_e(v,w)<d_e(u,v)  \}$}
+	  \IF{$ \nexists w\in N_1(u)\cap N_1(v): d(u,w)<d(u,v) \wedge d(v,w)<d(u,v)  \}$}
 	    \STATE Ajouter $v$ à $RNG(u)$
 	  \ENDIF
         \ENDFOR
@@ -899,19 +892,19 @@ Une fois l'arbre construit, le message est diffusé via celui-ci, chaque nœud p
 \STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
 \STATE SORTIE : message broadcasté
 \STATE REQUIERE : connaissance du 1-voisinage
-\STATE $s$ calcul $RNG(U)$ et envoie $M$ avec pour rayon $\max\limits_{v\in N_{RNG(s)}}(d_e(s,v))$
+\STATE $s$ calcul $RNG(U)$ et envoie $M$ avec pour rayon $\max\limits_{v\in N_{RNG(s)}}(d(s,v))$
 
 \IF{ $u$ reçoit <M,$v$> }
 	\IF {$M$ est un nouveau message}
-		\STATE -si $v\in RNG(u)$: $RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$ $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
-		\STATE -sinon: attendre $\Delta$, si $RNG(u)$ est non vide  $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
+		\STATE -si $v\in RNG(u)$: $RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$ $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d(u,w))$
+		\STATE -sinon: attendre $\Delta$, si $RNG(u)$ est non vide  $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d(u,w))$
 			 	
 	\ENDIF
 	\IF{$M$ a deja eté reçu par $u$}
 		\STATE -si $u$ a déja retransmit ce message: $M$ est ignoré
 		\STATE -$RNG(u)\leftarrow RNG(u)\backslash(RNG(u)\cap RNG(v))$:
 		\INDSTATE   -si $RNG(u)$ est vide: $M$ est ignoré
-		\INDSTATE   -si $RNG(u)$ est non vide: $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d_e(u,w))$
+		\INDSTATE   -si $RNG(u)$ est non vide: $u$ envoie $M$ avec pour rayon $\max\limits_{w\in N_{RNG(u)}}(d(u,w))$
 			 	
 	\ENDIF
 
@@ -926,24 +919,17 @@ Comme LMST(G) est un sous graphe de RNG(G), LBOP a de meilleur performances que 
 \subsubsection{Target Radius LMST Broadcast Oriented Protocol \cite{Ingelrest2004}}
 \emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
-\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d_e(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
+\emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
 
 Soient : 
 $$L(u)= N_{LMST}(u)$$
 $$L'(u)=N_1(u)\backslash L(u)$$
-$$D_L=\max(d_e(u,v)\mid v \in L(u))$$
-$$D_{L'}=(d_e(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))\ avec\ \delta_{uv}=\mid d_e(u,v)-R_{opt}\mid$$
+$$D_L=\max(d(u,v)\mid v \in L(u))$$
+$$D_{L'}=(d(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))\ avec\ \delta_{uv}=\mid d(u,v)-R_{opt}\mid$$
 Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
 
 
 \subsection{Synthèse}
-
-%\subsubsection{Schéma récapitulatif}
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=0.8]{Etat_de_l'art/source/classification}
-%\caption{Graphe de synthèse}
-%\end{figure} 
 
 \subsubsection{Tableau récapitulatif}
 \noindent\makebox[\textwidth]{
