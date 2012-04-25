@@ -1,18 +1,13 @@
 
-#include <stdio.h>
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <fstream>
 #include <math.h>
 #include <cstdlib>
 #include <vector>
-#include<iomanip>
-#include<fstream>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 using namespace std;
-#define DBLMAX 99999999999;
+
 #define RANGE 30
 
 
@@ -29,12 +24,8 @@ double distanceEuc(pos a, pos b)
 
 void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 {
-    char s[200];
-    strcpy(s,nomFichier.c_str());
-
-    mkdir(s,01777);
-    sprintf(s,"%s/%d.xml",s,algo);
-
+	char s[25];
+	sprintf(s,"%d.xml",algo);
 	ofstream sortie(s, ios::out|ios::trunc);
 	
 	if (!sortie)
@@ -147,7 +138,7 @@ double computeAvDegree(int nbNoeuds, pos* tabNoeuds)
 	return avDegree;
 }
 
-double computeDensity(int N,pos *tabNoeuds)
+void computeDensity(int nbNoeuds)
 {
     int Degree=0;
     int i,j,k;
@@ -159,15 +150,15 @@ double computeDensity(int N,pos *tabNoeuds)
 	
     for(i=0;i<N;i++)
         for(j=0;j<N;j++)
-            W[i][j]=DBLMAX;
+            W[i][j]=MAXDBL;
 	
 	
     double dist;
-    for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
+    for(i=0;i<get_node_count();i++)
+        for(j=0;j<get_node_count();j++)
         {
-            dist=distanceEuc(tabNoeuds[i], tabNoeuds[j]);
-            if(i!=j && dist<= RANGE)
+            dist=distance(get_node_position(i),get_node_position(j));
+            if(i!=j && dist<= range)
             {
                 Degree++;
                 W[i][j]=1;
@@ -203,17 +194,16 @@ double computeDensity(int N,pos *tabNoeuds)
 	
 	
     double densite=degreeMo/diametre;
-    //printf("Degre moyen : %lf\nDiametre : %lf\nDensite : %lf\n",degreeMo,diametre,densite);
+    printf("Degre moyen : %lf\nDiametre : %lf\nDensite : %lf\n",degreeMo,diametre,densite);
 	
-    /*if(diametre == DBLMAX)
+    if(diametre == MAXDBL)
     {
         printf("End Of Simulation (un node est isolé)\n");
         //ENDERR("un NODE est ISOLe\n");
         //end_simulation();
-        return -1;
-    }*/
+        return;
+    }
 	
-    return densite;
     //END("%lf",densite);//
 	
 }
@@ -275,7 +265,7 @@ int main(int argc, char* argv[], char* env[])
 	// args : nomFichier, nbNoeuds, algo
 	if(argc < 4)
 	{
-                cerr << "createXML [filename] [nodesNb] [Nbr ALGO]" << endl;
+		cerr << "createXML [filename] [nodesNb] [algoNb]" << endl;
 		return -1;
 	}
 	int nbNoeuds = atoi(argv[2]);
@@ -284,15 +274,9 @@ int main(int argc, char* argv[], char* env[])
 	computeAvDegree(nbNoeuds, tabNoeuds);
 
 
-        double densite=computeDensity(nbNoeuds,tabNoeuds);
-        char s[200];
-        sprintf(s,"%lf",densite);
-        mkdir(s,01777);
 
-        sprintf(s,"%s/XMLs",s);
-
-        for(int i=0;i<atoi(argv[3]);i++)
-                writeFile(s, nbNoeuds, tabNoeuds, i);
+	for(int i=0;i<atoi(argv[3]);i++)
+		writeFile(argv[1], nbNoeuds, tabNoeuds, i);
 
 
 	createVisuGraph(nbNoeuds, tabNoeuds);
