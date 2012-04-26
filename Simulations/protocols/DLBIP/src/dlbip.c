@@ -36,9 +36,9 @@ void init_files()
     fclose(replay);
 	
     //GRAPH
-    FILE *topo;
+    /*FILE *topo;
     topo=fopen("graphDLBIP","w");
-    fclose(topo);
+    fclose(topo);*/
 	
 }
 
@@ -60,6 +60,7 @@ int setnode(call_t *c, void *params) {
 	nodedata->twoHopNeighbourhood = 0;
 	nodedata->g2hop = malloc(sizeof(graphe));
 	initGraphe(nodedata->g2hop, c->node);
+	nodedata->BIP_tree = 0;
 	nodedata->nbr_evenement = 0; //STATS
 	nodedata->lastIDs = malloc(get_node_count()*sizeof(int));
 	nodedata->energiesRem = malloc(get_node_count()*sizeof(double));
@@ -85,7 +86,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 2;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
-    entitydata->debug   =0;
+    entitydata->debug   = 0;
     //entitydata->debut   = time_seconds_to_nanos(3);
     //entitydata->periodEVE = time_seconds_to_nanos(1);
 	
@@ -183,12 +184,16 @@ void rx(call_t *c, packet_t *packet) {
 		}
 		case APP:
 		{
-			printf("DLBIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
+			//printf("DLBIP - Paquet de type APP recu par %d depuis %d ; source : %d et destine a %d\n", c->node, data->pred, data->src, data->dst);
 			nodedata->energiesRem[data->pred] = data->energyRem;
 			if(nodedata->lastIDs[data->src] == data->id || data->src == c->node)
+			{
 				break;
+			}
 			else
+			{
 				nodedata->lastIDs[data->src] = data->id;
+			}
 			if(data->dst == BROADCAST_ADDR)
 			{
 				double cout;
@@ -219,7 +224,6 @@ void rx(call_t *c, packet_t *packet) {
 				
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
-					printf("forward\n");
 					forward(c, packet);
 				}
 			}
@@ -250,7 +254,7 @@ void tx( call_t *c , packet_t * packet )
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
-    printf("DLBIP - Paquet de type %d envoye depuis %d par %d a %d (at %lf s).\n", data->type, data->src, c->node, data->dst, get_time_now_second());
+    //printf("DLBIP - Paquet de type %d envoye depuis %d par %d a %d (at %lf s).\n", data->type, data->src, c->node, data->dst, get_time_now_second());
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
@@ -290,22 +294,26 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 			trans = g->listeVoisins[i];
 			while(trans != 0)
 			{
-				trans->cout /= nodedata->energiesRem[g->sommets[i]];
+				trans->cout /= nodedata->energiesRem[getLabelFromNum(g, i)];
 				trans = trans->vSuiv;
 			}
 		}
-		arbre* BIP_tree = computeBIPtree(c, g, 0, 0, 0);
+		
+		if(nodedata->BIP_tree != 0)
+		{
+			arbre_detruire(&nodedata->BIP_tree);
+		}
+		nodedata->BIP_tree = computeBIPtree(c, g, 0, 0, 0);
+		//afficherGraphe(nodedata->g2hop);
+		//arbre_affiche(nodedata->BIP_tree);
+		cout = setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->BIP_tree);
+		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);
 		deleteGraphe(g);
 		free(g);
-		
-		cout = setRangeToFarestNeighbour(c, nodedata->g2hop, BIP_tree);
-		setRelayNodes(c, nodedata->g2hop, BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);
 		
 		call_t c0 = {-1,c->node,-1};
 		header->energyRem = battery_remaining(&c0) - cout;
 		nodedata->energiesRem[c->node] = header->energyRem;
-		
-		arbre_detruire(&BIP_tree);
 	}
 	else
 	{
@@ -347,12 +355,16 @@ int get_header_real_size( call_t * c )
 
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
-	printf("Unset node %d\n", c->node);
+	//printf("Unset node %d\n", c->node);
     struct nodedata *nodedata = get_node_private_data(c);
 
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);
     listeNodes_detruire(&nodedata->twoHopNeighbourhood);
 	
+	if(nodedata->BIP_tree != 0)
+	{
+		arbre_detruire(&nodedata->BIP_tree);
+	}
 	
 	DEBUG; /* Graphe DE LBIP */
 	deleteGraphe(nodedata->g2hop);

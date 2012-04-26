@@ -23,6 +23,7 @@ struct nodedata {
 	int nbr_evenement; // stats
 	int* lastIDs;
 	double* energiesRem;
+	arbre* BIP_tree;
 };
 
 

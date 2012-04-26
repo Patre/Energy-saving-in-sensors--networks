@@ -12,7 +12,7 @@ void init_two_hop(call_t *c, double eps)
     uint64_t time = at + 100 + 110000*c->node;
     scheduler_add_callback(time, c, broadcast_hello2, NULL);
     uint64_t timeFinish = at+110000*get_node_count();
-    scheduler_add_callback(timeFinish, c, print_two_hop_neighbourhood, NULL);
+    //scheduler_add_callback(timeFinish, c, print_two_hop_neighbourhood, NULL);
 	//scheduler_add_callback(timeFinish, c, afficherGraphe, nodedata->g2hop);
 }
 

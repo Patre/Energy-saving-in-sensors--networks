@@ -11,7 +11,7 @@ void init_one_hop(call_t *c, double eps)
     scheduler_add_callback(at, c, broadcast_hello, NULL);
 	
 	uint64_t timeFinish = get_time_now() + eps*1000000 + 110000*get_node_count();
-	scheduler_add_callback(timeFinish, c, print_one_hop_neighbourhood, NULL);
+	//scheduler_add_callback(timeFinish, c, print_one_hop_neighbourhood, NULL);
 	init_two_hop(c, eps);
 }
 

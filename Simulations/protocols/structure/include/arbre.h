@@ -2,7 +2,6 @@
 #define ARBRE_RBH
 
 #include "list.h"
-#define FILS_MAX    20
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +10,7 @@ struct _arbre
 {
     int node;
     int size;
-    struct _arbre *fils[FILS_MAX];
+    struct _arbre **fils;
 };
 typedef struct _arbre arbre;
 

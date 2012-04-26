@@ -95,8 +95,6 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 					printf("\tpere[%d] devient %d...\n", trans->vLabel, minNode);
 				pere[numVoisin] = minNode;
 			}
-			if(debug)
-				printf("\tApres la recherche dans l'arbre\n");
 			if(devientEmetteur)
 			{
 				if(debug)
@@ -116,14 +114,14 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 	free(pere);
 	free(cle);
 	freeHeap(F);
-        if(debug)
-        {
-            printf("Graphe de voisinage complet : \n");
-             printf("Graphe de voisinage : \n");
-             afficherGraphe(nodedata->g2hop);
-             printf("arbre de BIP de %d construit : \n", c->node);
-             arbre_affiche(bipTree);
-        }
+	if(debug)
+	{
+		printf("arbre de BIP de %d construit : \n", c->node);
+		arbre_affiche(bipTree);
+		printf("Graphe de voisinage : \n");
+		afficherGraphe(nodedata->g2hop);
+		printf("Sortie de computeBipTree\n");
+	}
 	
 	return bipTree;
 }
@@ -284,9 +282,9 @@ void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRed
 		fils = fils->suiv;
 	}
 	
-        //printf("Relayer : \n");
-        //listeNodes_affiche(*askedToRedirect);
-        //listeNodes_affiche(*needsToBeCovered);
+	/*printf("Relayer : \n");
+	listeNodes_affiche(*askedToRedirect);
+	listeNodes_affiche(*needsToBeCovered);*/
 }
 
 graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode)
@@ -378,12 +376,11 @@ graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode)
 
 void forward(call_t* c, packet_t *packet)
 {
-	printf("here0\n");
 	struct nodedata *nodedata = get_node_private_data(c);
 	array_t *down = get_entity_bindings_down(c);
 	packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	printf("%d doit relayer depuis %d\n", c->node, data->pred);
+	//printf("%d doit relayer depuis %d\n", c->node, data->pred);
 	
 	// construire le bip tree pour relayer a partir des infos du paquet
 	int indice = listeNodes_get_index(data->askedToRedirect, c->node);
@@ -400,20 +397,16 @@ void forward(call_t* c, packet_t *packet)
 			trans = trans->vSuiv;
 		}
 	}
-	printf("here1\n");
-	printf("data->askedToRedirect : ");
-	listeNodes_affiche(data->askedToRedirect);
-	printf("data->needsToBeCovered : ");
-	listeNodes_affiche(data->needsToBeCovered);
+	/*printf("data->askedToRedirect : ");
+	 listeNodes_affiche(data->askedToRedirect);
+	 printf("data->needsToBeCovered : ");
+	 listeNodes_affiche(data->needsToBeCovered);*/
 	
 	arbre* bipTree = computeBIPtree(c, g, data->askedToRedirect, data->needsToBeCovered, 0);
 	
-	printf("here16\n");
 	// relayer le paquet
 	destination_t dst = {-1,{-1,-1,-1}};
 	double cout = setRangeToFarestNeighbour(c, nodedata->g2hop, bipTree);
-	
-	printf("here2\n");
 	
 	//free(data->askedToRedirect);
 	data->askedToRedirect = 0;
@@ -425,16 +418,13 @@ void forward(call_t* c, packet_t *packet)
 	//data->energyRem = battery_remaining(&c0) - cout;
 	//nodedata->energiesRem[c->node] = data->energyRem;
 	
-	printf("here3\n");
 	setRelayNodes(c, g, bipTree, &data->askedToRedirect, &data->needsToBeCovered, c->node);
 	call_t c_down = {down->elts[0], c->node, c->entity};
 	SET_HEADER(&c_down, packet, &dst);
 	c_down.entity = c->entity;
 	c_down.node = c->node;
 	c_down.from = -1;
-	printf("here4\n");
 	tx(&c_down, packet);
-	printf("here5\n");
 	arbre_detruire(&bipTree);
 	deleteGraphe(g);
 	free(g);

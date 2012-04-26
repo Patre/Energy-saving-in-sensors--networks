@@ -7,8 +7,7 @@ void arbre_add_pere(arbre **a, int val)
     *a=malloc(sizeof(arbre));
     (*a)->node=val;
     (*a)->size=0;
-    int i=FILS_MAX-1;
-    while(i--)  (*a)->fils[i]=Nullptr(arbre);
+    (*a)->fils=0;
 
 }
 
@@ -18,6 +17,7 @@ void arbre_add_fils(arbre *l,int in,int fils)
     if(l->node==in)
     {
         //printf("je suis la ajoute %d dans le pere %d a l'indice %d\n",fils,in,l->size);
+		l->fils = realloc(l->fils, (l->size+1)*sizeof(arbre*));
         arbre_add_pere(&l->fils[l->size],fils);
         l->size++;
         return;
@@ -37,6 +37,11 @@ void arbre_add_fils(arbre *l,int in,int fils)
 /***************affichage *****************/
 void arbre_affiche(arbre *l)
 {
+	if(l == 0)
+	{
+		printf("Arbre vide\n");
+		return;
+	}
     printf("N %d : {",l->node);
     int i=l->size;
     while(i--)
@@ -64,8 +69,10 @@ void arbre_detruire(arbre **l)
     {
         int i=0;
         i=(*l)->size;
-        while(i--)      arbre_detruire(&(*l)->fils[i]);
+        while(i--)
+			arbre_detruire(&(*l)->fils[i]);
         //printf("je detrruit le Noeud %d\n",(*l)->node);
+		free((*l)->fils);
         free(*l);
     }
 
@@ -77,17 +84,19 @@ void arbre_delete_fils(arbre *l1,int val)
     int i=0;
     int deleted=0;
     arbre *l=l1;
-    for(i=0;i<l->size && !deleted;i++)
+    for(i=0 ; i<l->size&&!deleted ; i++)
     {
         if(l->fils[i]->node==val)
         {
             arbre *tmp=l->fils[i];
             int j=0;
-            for(j=i;j<l->size-1;j++)    l->fils[j]=l->fils[j+1];
+            for(j=i;j<l->size-1;j++)
+				l->fils[j]=l->fils[j+1];
             i=l->size;
             l->size--;
             deleted=1;
             arbre_detruire(&tmp);
+			l->fils = realloc(l->fils, (l->size)*sizeof(arbre*));
         }
     }
     if(!deleted)
@@ -112,12 +121,14 @@ void arbre_moins_list(arbre *a,list *l)
 
 
 /*********************COPY******************************/
-void arbre_copy_fils(arbre *a, arbre *c,int pere)
+/*void arbre_copy_fils(arbre *a, arbre *c,int pere)
 {
-    if(c == Nullptr(arbre)) return;
+    if(c == Nullptr(arbre))
+		return;
     else
     {
-        if(c->node!=pere)   arbre_add_fils(a,pere,c->node);
+        if(c->node!=pere)
+			arbre_add_fils(a,pere,c->node);
         int i=c->size;
         i=c->size;
         while(i--)      arbre_copy_fils(a,c->fils[i],c->node);
@@ -129,7 +140,7 @@ void arbre_copy(arbre **a,arbre *c)
 {
     arbre_add_pere(a,c->node);
     arbre_copy_fils(*a,c,c->node);
-}
+}*/
 
 /***************************************RECHERCE****************/
 int arbre_recherche(arbre *a,int node)
@@ -162,13 +173,15 @@ void arbre_get_fils(list **l, arbre *a,int pere)
     {
         int i =0;
         i=a->size;
-        while(i--)      list_insert(l,a->fils[i]->node);
+        while(i--)
+			list_insert(l,a->fils[i]->node);
     }
     else
     {
         int i =0;
         i=a->size;
-        while(i--)      arbre_get_fils(l,a->fils[i],pere);
+        while(i--)
+			arbre_get_fils(l,a->fils[i],pere);
     }
 }
 
