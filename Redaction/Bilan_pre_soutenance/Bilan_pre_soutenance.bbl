@@ -1,10 +1,15 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Agarwal2005}
 Manish Agarwal, Lixin Gao, Joon~Ho Cho, and Jie Wu.
 \newblock {Energy Efficient Broadcast in Wireless Ad hoc Networks with
   Hitch-hiking.}
 \newblock {\em MONET}, 10(6):897--910, 2005.
+
+\bibitem{Akyildiz2002}
+I.~F. Akyildiz, W.~Su, Y.~Sankarasubramaniam, and E.~Cayirci.
+\newblock {Wireless sensor networks: a survey}.
+\newblock {\em Computer Networks}, 4(38):393--422, 2002.
 
 \bibitem{Cartigny2005}
 J.~Cartigny, F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovic.
@@ -41,16 +46,55 @@ Isabel Dietrich and Falko Dressler.
 \newblock {On the lifetime of wireless sensor networks.}
 \newblock {\em TOSN}, 5(1), 2009.
 
+\bibitem{Dong2005}
+Q.~Dong.
+\newblock {Maximizing system lifetime in wireless sensor networks}.
+\newblock {\em IPSN '05: Proceedings of the 4th international symposium on
+  Information processing in sensor networks}, page~3, 2005.
+
+\bibitem{Giordano2003}
+S.~Giordano, I.~Stojmenovic, and L.~Blazevic.
+\newblock {Position based routing algorithms for ad hoc networks: a taxonomy}.
+\newblock {\em Ad Hoc Wireless Networking}, pages 103--136, 2003.
+
 \bibitem{Ingelrest2005}
 F.~Ingelrest, D.~Simplot-Ryl, and I.~Stojmenovi{\'c}.
 \newblock {Energy-efficient broadcasting in wireless mobile ad hoc networks}.
 \newblock {\em Resource Management in Wireless Networking}, pages 543--582,
   2005.
 
+\bibitem{Kasten2001}
+O.~Kasten.
+\newblock {Energy consumption}, 2001.
+
+\bibitem{Liang2002}
+W.~Liang.
+\newblock {Constructing minimum-energy broadcast trees in wireless ad hoc
+  networks}.
+\newblock In {\em {Proceedings of the 3rd ACM international symposium on Mobile
+  ad hoc networking \& computing}}, pages 112--122. ACM, 2002.
+
+\bibitem{Ovalle2006}
+Francisco~Javier Ovalle-Mart{\'i}nez, Amiya Nayak, Ivan Stojmenovic, Jean
+  Carle, and David Simplot-Ryl.
+\newblock {Area-based beaconless reliable broadcasting in sensor networks.}
+\newblock {\em IJSNet}, 1(1/2):20--33, 2006.
+
+\bibitem{Prim1957}
+R.C. Prim.
+\newblock {Shortest connection networks and some generalizations}.
+\newblock {\em Bell system technical journal}, 36(6):1389--1401, 1957.
+
 \bibitem{Shah2002}
 R.~C. Shah and J.~M. Rabaey.
 \newblock {Energy aware routing for low energy ad hoc sensor networks}.
 \newblock {\em Energy aware routing for low energy ad hoc sensor networks},
   1:350--355, 2002.
+
+\bibitem{Wieselthier2000}
+Jeffrey~E. Wieselthier, Gam~D. Nguyen, and Anthony Ephremides.
+\newblock {On the Construction of Energy-Efficient Broadcast and Multicast
+  Trees in Wireless Networks.}
+\newblock In {\em {INFOCOM}}, pages 585--594, 2000.
 
 \end{thebibliography}

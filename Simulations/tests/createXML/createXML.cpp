@@ -12,7 +12,7 @@ using namespace std;
 
 #define RANGE 30
 #define WIDTH 1000
-#define DUREE 1000000
+#define DUREE 10000
 #define PERIOD_BROADCAST 2
 
 
@@ -300,7 +300,7 @@ void createBroadcastingNodes(int nbNoeuds)
 	ofstream topo("topologie.txt", ios::out|ios::app);
 	for(int i = 0 ; i < DUREE ; i+=PERIOD_BROADCAST)
 	{
-		topo << i << rand() % nbNoeuds << endl;
+		topo << i << " " << rand() % nbNoeuds << endl;
 	}
 	topo.close();
 }
@@ -341,6 +341,7 @@ int main(int argc, char* argv[], char* env[])
 		writeFile(argv[2], nbNoeuds, tabNoeuds, atoi(argv[2]));
 		createVisuGraph(nbNoeuds, tabNoeuds);
 	}
+	createBroadcastingNodes(nbNoeuds);
 	vector<int>* articulations = getArticulationNodes(nbNoeuds, tabNoeuds);
 	/*cout << "Points d'articulation : ";
 	for(unsigned int i = 0 ; i < articulations->size() ; i++)

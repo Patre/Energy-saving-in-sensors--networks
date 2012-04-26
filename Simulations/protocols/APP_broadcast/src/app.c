@@ -17,7 +17,6 @@
 #define PR(x...)  { FILE *topo; topo=fopen("lifetime","a+"); fprintf(topo,x); fclose(topo);}*/
 
 
-#define MAXDBL 999999999999999999999.00
 /* Defining module informations*/
 model_t model =  {
     "Broadcast Application",
@@ -50,6 +49,8 @@ struct nodedata {
 
   //Nombre d'evenement
   int nbr_evenement;
+	
+	FILE* broadcastingNodes;
 };
 
 /* ************************************************** */
@@ -58,11 +59,9 @@ struct nodedata {
 
 /* Entity private data */
 struct entitydata {
-    int nodeBroadcast;
     int debug;
     graphe *graph;
     uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
-    uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
 
 /* ************************************************** */
@@ -109,10 +108,8 @@ int init(call_t *c, void *params) {
   param_t *param;
 
   /* init entity variables */
-  entitydata->nodeBroadcast = -1;
   entitydata->debug = 0;
   entitydata->debut   = time_seconds_to_nanos(3);
-  entitydata->periodEVE = time_seconds_to_nanos(1);
 
   /* reading the "init" markup from the xml config file */
   das_init_traverse(params);
@@ -122,35 +119,12 @@ int init(call_t *c, void *params) {
                               goto error;
                       }
       }
-
-      if (!strcmp(param->key, "period")) {
-          if (get_param_time(param->value, &(entitydata->periodEVE))) {
-              goto error;
-          }
-      }
       if (!strcmp(param->key, "debug")) {
           if (get_param_integer(param->value, &(entitydata->debug))) {
               goto error;
           }
       }
-      if (!strcmp(param->key, "node")) {
-          if (get_param_integer(param->value, &(entitydata->nodeBroadcast))) {
-              goto error;
-          }
-      }
   }
-
-  /*FILE *por;
-  por=fopen("lifetime","w");
-  fclose(por);
-
-  FILE *ray;
-  ray=fopen("rayon","w");
-  fclose(ray);*/
-
-  //verfier la disponibilité de noued
-  if(entitydata->nodeBroadcast>get_node_count())
-      entitydata->nodeBroadcast = -1;
 
   set_entity_private_data(c, entitydata);
   return 0;
@@ -186,6 +160,12 @@ int setnode(call_t *c, void *params) {
     } else {
         nodedata->overhead = NULL;
     }
+	nodedata->broadcastingNodes = fopen("../../topologie.txt", "r");
+	if(nodedata->broadcastingNodes == NULL)
+	{
+		printf("Fichier de topologie manquant.\n");
+		end_simulation();
+	}
     
     set_node_private_data(c, nodedata);
     return 0;
@@ -207,7 +187,8 @@ int unsetnode(call_t *c) {
 	if(entitydata->debug)
 		printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
 
-
+	
+	fclose(nodedata->broadcastingNodes);
     list_PACKET_detruire(&nodedata->paquets);
     if (nodedata->overhead) {
         free(nodedata->overhead);
@@ -237,25 +218,22 @@ int bootstrap(call_t *c) {
             nodedata->overhead[i] = GET_HEADER_SIZE(&c0);
         }
     }
-
-
-    /* if the node type is source, we schedule a new callback */
-    /*if(c->node==0 && entitydata->nodeBroadcast == -1)
-    {
-        call_t *inter=c;
-        inter->node= get_random_integer_range(0,get_node_count()-1);
-        scheduler_add_callback(entitydata->debut, inter, callmeback, NULL);
-    }
-    else if(c->node==entitydata->nodeBroadcast)
-        scheduler_add_callback(entitydata->debut, c, callmeback, NULL);*/
-	if(c->node==0 && entitydata->nodeBroadcast == -1)
-    {
-		call_t c0 = {c->entity,-1,c->from};
-		c0.node = get_random_integer_range(0,get_node_count()-1);
-		scheduler_add_callback(entitydata->debut, &c0, callmeback, NULL);
-    }
-
-
+	
+	call_t c0 = {c->entity,-1,c->from};
+	c0.node = c->node;
+	int node, temps;
+	float density;
+	fscanf(nodedata->broadcastingNodes, "%d", &node);
+	fscanf(nodedata->broadcastingNodes, "%f", &density);
+	
+	while(fscanf(nodedata->broadcastingNodes, "%d %d", &temps, &node) != EOF)
+	{
+		if(node == c->node)
+		{
+			scheduler_add_callback(entitydata->debut+time_seconds_to_nanos(temps), &c0, callmeback, NULL);
+		}
+	}
+	
     return 0;
 }
 
@@ -292,75 +270,10 @@ int callmeback(call_t *c, void *args) {
 	    return -1;
     }
 
-    /*if(entitydata->connexe)
-    {
-        PR("----\n");
-        PR("%lf %d %d\n",get_time_now_second(),c->node,list_PACKET_taille(nodedata->paquets));
-    }*/
-
-    // we schedule a new callback after actualtime+period
-    if(entitydata->nodeBroadcast == -1)
-    {
-        /*call_t inter={-1,-1,-1};
-        inter.entity=c->entity;
-        inter.from=c->from;
-        inter.node= get_random_integer_range(0,get_node_count()-1);
-
-        while(!is_node_alive(inter.node))
-            inter.node= get_random_integer_range(0,get_node_count()-1);
-
-        uint64_t  at= get_time_now()+entitydata->periodEVE;
-		 scheduler_add_callback(at, &inter, callmeback, NULL);*/
-		call_t c0 = {c->entity,-1,c->from};
-		c0.node = get_random_integer_range(0,get_node_count()-1);
-        while(!is_node_alive(c0.node))
-			c0.node = get_random_integer_range(0,get_node_count()-1);
-		scheduler_add_callback(get_time_now()+entitydata->periodEVE, &c0, callmeback, NULL);
-    }
-    /*else if(c->node==entitydata->nodeBroadcast)
-    {
-           uint64_t  at= get_time_now()+entitydata->periodEVE;
-           scheduler_add_callback(at, c, callmeback, NULL);
-    }*/
     TX(&c0, packet);
     return 0;
 }
 
-/*int verfier(call_t *c, void *args) {
-
-    if(!is_node_alive(c->node))
-        return 0;
-    struct nodedata *nodedata = get_node_private_data(c);
-
-    printf("%d JE VERFIE at %lf",c->node,get_time_now_second());
-    call_t *inter=malloc(sizeof(call_t));
-    inter->entity=c->entity;
-    inter->from=c->from;
-
-    printf(" (%d %d)le dernier\n",nodedata->paquets->packet.source,nodedata->paquets->packet.seq);
-    //list_PACKET_affiche(nodedata->paquets);
-
-
-    int i;
-    for(i=0;i<get_node_count();i++)
-    {
-        inter->node=i;
-        struct nodedata *internodedata = get_node_private_data(inter);
-        printf("%d (%d,%d)\n",i,internodedata->paquets->packet.source,internodedata->paquets->packet.seq);
-
-        if(is_node_alive(i) && list_PACKET_recherche_tout(internodedata->paquets,c->node,nodedata->nbr_evenement)==0)
-        {
-
-            printf("%lf FORNOTRECP %d  for(%d,%d)",get_time_now_second(),i,c->node,nodedata->nbr_evenement);
-            printf(" (%d,%d)\n",internodedata->paquets->packet.source,internodedata->paquets->packet.seq);
-            PR("%lf FORNOTRECP %d\n",get_time_now_second(),i);
-            //end_simulation();
-            //return -1;
-        }
-    }
-
-    return 0;
-}//*/
 
 /* ************************************************** */
 /* ************************************************** */

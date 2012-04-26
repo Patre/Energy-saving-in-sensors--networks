@@ -23,8 +23,8 @@ do
 	do
 		mv "$i".xml ../XMLs/"$i".xml
 	done
-	mv topologie.txt ../resultats/
 	mv topoVisu.txt ../resultats/
+	mv topologie.txt ../resultats/
 	cd ..
 	wsnet-run-simulations -d ./XMLs/ ./resultats/ $5
 	cd resultats
