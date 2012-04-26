@@ -1,0 +1,82 @@
+\documentclass[a4paper]{article}
+
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[final]{pdfpages}
+
+
+\pagestyle{headings}
+\thispagestyle{empty}
+\geometry{a4paper,twoside,left=2.5cm,right=2.5cm,marginparwidth=1.2cm,marginparsep=3mm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\large
+\setlength{\parskip}{6mm plus2mm minus2mm}
+\setlength{\textwidth}{530pt}
+\setlength{\parindent}{0cm}
+
+21 janvier 2012 \hfill M1 Informatique
+
+
+{\centering \Large \bfseries Analyse et conception d'algorithmes économes en énergie dans les réseaux de capteurs \par}
+
+{\emph{Nom du groupe} : WSN\\ 
+\emph{Etudiants} :
+\begin{description}
+\item Chloé DESDOUITS \hfill chloe.desdouits@etud.univ-montp2.fr
+\item Sofiane Zahir KALI \hfill zahir.kali@etud.univ-montp2.fr
+\item Rabah LAOUADI \hfill rabah.laouadi@etud.univ-montp2.fr
+\item Samuel ROUQUIE \hfill samuel.rouquie@etud.univ-montp2.fr
+\end{description}
+
+\emph{Encadrante} : Anne-Elisabeth BAERT
+\par}
+
+{\bfseries Les tâches réalisées à ce jour sont les suivantes :}\\
+\begin{itemize}\addtolength{\itemsep}{0.2cm}
+\renewcommand\labelitemi{\textbullet}
+	\item Lecture et écriture des résumés de dix articles
+	\begin{description}
+	\renewcommand{\makelabel}[1]{\normalsize \textbf{#1}}
+		\item[Chloé Desdouits] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Chang2000} \cite{Shah2002}
+		\item[Sofiane Zahir Kali] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Cartigny2003LMEB} \cite{Cartigny2005}
+		\item[Rabah Laouadi] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Ingelrest2005}
+		\item[Samuel Rouquie] \cite{Champ2009DLBIP} \cite{Champ2009lifetime} \cite{Abba2006} \cite{Dietrich2009} \cite{Agarwal2005}
+	\end{description}
+	\item Correction et mise au point du rapport(Samuel Rouquie, Sofiane Zahir Kali).
+	\item Réalisation de la présentation sous PowerPoint(Chloé Desdouits, Sofiane Zahir Kali).
+	\item Dernière simulations sous WSNET (Chloé Desdouits, Rabah Laouadi).
+	\item Pré-soutenance(24/04).
+	
+\end{itemize}
+~\\
+{\bfseries Voici les problèmes que nous avons rencontrés :}\\
+\begin{itemize}\addtolength{\itemsep}{0.3cm}
+\renewcommand\labelitemi{\textbullet}
+	\item La mise en place et l'utilisation d'un outil de travail collaboratif : git.
+	\item L'utilisation de \LaTeX{} pour la rédaction des documents.
+	\item La prise en main de WSNET car ce framework est en langage C mais événementiel et possède une architecture particulière.
+
+\end{itemize}
+~\\
+{\bfseries Les tâches qui nous reste à effectuer sont les suivantes :}\\
+\begin{itemize}\addtolength{\itemsep}{0.2cm}
+\renewcommand\labelitemi{\textbullet}
+	\item Finalisation du Rapport
+	\item Finalisation des simulations et insertion dans le rapport.
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{../Bib}
+
+\end{document}

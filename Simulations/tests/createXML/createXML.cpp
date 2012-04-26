@@ -13,6 +13,7 @@ using namespace std;
 #define RANGE 30
 #define WIDTH 1000
 #define DUREE 1000000
+#define PERIOD_BROADCAST 2
 
 
 struct pos
@@ -111,7 +112,7 @@ void createAleaNodes(int nbNoeuds, pos tabNoeuds[])
 
 void createHoleNodes(int nbNoeuds, pos tabNoeuds[])
 {
-	int connexe;
+	/*int connexe;
 	for(int i = 0 ; i < nbNoeuds ; i++)
 	{
 		connexe = 0;
@@ -132,7 +133,7 @@ void createHoleNodes(int nbNoeuds, pos tabNoeuds[])
 		}
 		
 		//cout << '(' << tabNoeuds[i].x << ';' << tabNoeuds[i].y << ')' << endl;
-	}
+	}*/
 }
 
 double computeAvDegree(int nbNoeuds, pos* tabNoeuds)
@@ -292,6 +293,16 @@ void createNodes(int topoType, int nbNoeuds, pos* tabNoeuds)
 		default:
 			break;
 	}
+}
+
+void createBroadcastingNodes(int nbNoeuds)
+{
+	ofstream topo("topologie.txt", ios::out|ios::app);
+	for(int i = 0 ; i < DUREE ; i+=PERIOD_BROADCAST)
+	{
+		topo << i << rand() % nbNoeuds << endl;
+	}
+	topo.close();
 }
 
 

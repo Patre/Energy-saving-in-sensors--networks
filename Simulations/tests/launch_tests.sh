@@ -1,5 +1,5 @@
 #!/bin/bash
-#launch_tests [nbTests] [nbNodesMin] [nbNodesMax] [topoType]
+#launch_tests [nbTests] [nbNodesMin] [nbNodesMax] [topoType] [nbTestsParTopo]
 
 ecart=`expr $3 - $2 `
 ecart=`expr $ecart / $(($1 - 1)) `
@@ -26,19 +26,22 @@ do
 	mv topologie.txt ../resultats/
 	mv topoVisu.txt ../resultats/
 	cd ..
-	wsnet-run-simulations -d ./XMLs/ ./resultats/ 1
+	wsnet-run-simulations -d ./XMLs/ ./resultats/ $5
 	cd resultats
-	cat topologie.txt | awk 'NR == 2 {printf "%s ; ", $1 >> "ttff.txt"; printf "%s ; ", $1 >> "pcn.txt"; printf "%s ; ", $1 >> "lc.txt"}'
-	for i in $(seq 0 5);
+	for j in $(seq 0 $(($5 - 1)));
 	do
-		cat "$i".xml/simulation-0/lifetime | awk '{if($1 == "TTFF") {printf "%.1f ", $2 >> "ttff.txt"}; if($1 == "PCN") {printf "%.1f ", $2 >> "pcn.txt"}; if($1 == "LC") {printf "%.1f ", $2 >> "lc.txt"}; }'
-		printf "; " >> "ttff.txt"
-		printf "; " >> "pcn.txt"
-		printf "; " >> "lc.txt"
-	done
+		cat topologie.txt | awk 'NR == 2 {printf "%s ; ", $1 >> "ttff.txt"; printf "%s ; ", $1 >> "pcn.txt"; printf "%s ; ", $1 >> "lc.txt"}'
+		for i in $(seq 0 5);
+		do
+			cat "$i".xml/simulation-"$j"/lifetime | awk '{if($1 == "TTFF") {printf "%.1f ", $2 >> "ttff.txt"}; if($1 == "PCN") {printf "%.1f ", $2 >> "pcn.txt"}; if($1 == "LC") {printf "%.1f ", $2 >> "lc.txt"}; }'
+			printf "; " >> "ttff.txt"
+			printf "; " >> "pcn.txt"
+			printf "; " >> "lc.txt"
+		done
 	echo "" >> ttff.txt
 	echo "" >> pcn.txt
 	echo "" >> lc.txt
+	done
 	cd ../createXML
 done
 cd ../resultats
