@@ -782,7 +782,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 
 
 \subsubsection{LMST Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
-\emph{Mots clés :} 
+
 
 \emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
 
@@ -823,7 +823,7 @@ Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud co
 
 \subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP\&RBOP)\cite{Cartigny2005}}
 
-\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
+
 
 \emph{Description :}LBOP et RBOP se basent sur le contrôle de topologie pour réduire le nombre d'arcs, donc 
 le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité
@@ -917,7 +917,6 @@ En remplaçant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons L
 Comme LMST(G) est un sous graphe de RNG(G), LBOP a de meilleur performances que RBOP.
 
 \subsubsection{Target Radius LMST Broadcast Oriented Protocol \cite{Ingelrest2004}}
-\emph{Mots clés :} broadcast, local, avec balisage, rayon d'émission variable, déterministe.
 
 \emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
 
