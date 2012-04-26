@@ -6,17 +6,10 @@
 #include <math.h>
 #include <cstdlib>
 #include <vector>
-<<<<<<< HEAD
 #include <float.h>
-=======
-#include<iomanip>
-#include<fstream>
-#include <sys/stat.h>
-#include <sys/types.h>
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
 
 using namespace std;
-#define DBLMAX 99999999999;
+
 #define RANGE 30
 #define WIDTH 1000
 #define DUREE 1000000
@@ -35,18 +28,8 @@ double distanceEuc(pos a, pos b)
 
 void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 {
-<<<<<<< HEAD
 	nomFichier += ".xml";
 	ofstream sortie(nomFichier.c_str(), ios::out|ios::trunc);
-=======
-    char s[200];
-    strcpy(s,nomFichier.c_str());
-
-    mkdir(s,01777);
-    sprintf(s,"%s/%d.xml",s,algo);
-
-	ofstream sortie(s, ios::out|ios::trunc);
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
 	
 	if (!sortie)
 		cerr << "Impossible de creer le fichier !" << endl;
@@ -126,6 +109,32 @@ void createAleaNodes(int nbNoeuds, pos tabNoeuds[])
 	}
 }
 
+void createHoleNodes(int nbNoeuds, pos tabNoeuds[])
+{
+	int connexe;
+	for(int i = 0 ; i < nbNoeuds ; i++)
+	{
+		connexe = 0;
+		while(!connexe)
+		{
+			tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * 200;
+			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * 200;
+			for(int j = 0 ; j < i ; j++)
+			{
+				if(distanceEuc(tabNoeuds[i], tabNoeuds[j]) < RANGE)
+				{
+					connexe = 1;
+					break;
+				}
+			}
+			if(i == 0)
+				connexe = 1;
+		}
+		
+		//cout << '(' << tabNoeuds[i].x << ';' << tabNoeuds[i].y << ')' << endl;
+	}
+}
+
 double computeAvDegree(int nbNoeuds, pos* tabNoeuds)
 {
 	int degrees[nbNoeuds];
@@ -157,11 +166,7 @@ double computeAvDegree(int nbNoeuds, pos* tabNoeuds)
 	return avDegree;
 }
 
-<<<<<<< HEAD
 double computeDiameter(int N, pos* tabNoeuds)
-=======
-double computeDensity(int N,pos *tabNoeuds)
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
 {
     int i,j,k;
 	
@@ -172,21 +177,12 @@ double computeDensity(int N,pos *tabNoeuds)
 	
     for(i=0;i<N;i++)
         for(j=0;j<N;j++)
-<<<<<<< HEAD
             W[i][j]= DBL_MAX;
 	
 	
     double dist;
     for(i=0 ; i<N ; i++)
         for(j=0 ; j<N ; j++)
-=======
-            W[i][j]=DBLMAX;
-	
-	
-    double dist;
-    for(i=0;i<N;i++)
-        for(j=0;j<N;j++)
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
         {
             dist=distanceEuc(tabNoeuds[i], tabNoeuds[j]);
             if(i!=j && dist<= RANGE)
@@ -221,31 +217,13 @@ double computeDensity(int N,pos *tabNoeuds)
 
 double computeDensity(int nbNoeuds, pos* tabNoeuds)
 {
-	ofstream densityFile("density.txt", ios::out|ios::trunc);
+	ofstream densityFile("topologie.txt", ios::out|ios::app);
 	double densite = computeAvDegree(nbNoeuds, tabNoeuds)/computeDiameter(nbNoeuds, tabNoeuds);
 	densityFile << densite << endl;
 	printf("\tDensite : %lf\n", densite);
 	densityFile.close();
 	
-<<<<<<< HEAD
 	return densite;
-=======
-	
-    double densite=degreeMo/diametre;
-    //printf("Degre moyen : %lf\nDiametre : %lf\nDensite : %lf\n",degreeMo,diametre,densite);
-	
-    /*if(diametre == DBLMAX)
-    {
-        printf("End Of Simulation (un node est isolé)\n");
-        //ENDERR("un NODE est ISOLe\n");
-        //end_simulation();
-        return -1;
-    }*/
-	
-    return densite;
-    //END("%lf",densite);//
-	
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
 }
 
 
@@ -299,26 +277,42 @@ vector<int>* getArticulationNodes(int nbNoeuds, pos* tabNoeuds)
 	return articulations;
 }
 
+void createNodes(int topoType, int nbNoeuds, pos* tabNoeuds)
+{
+	switch (topoType)
+	{
+		case 0:
+			createAleaNodes(nbNoeuds, tabNoeuds);
+			break;
+			
+		case 1:
+			createHoleNodes(nbNoeuds, tabNoeuds);
+			break;
+			
+		default:
+			break;
+	}
+}
+
 
 int main(int argc, char* argv[], char* env[])
 {
 	srand(time(NULL));
 	// args : nbNoeuds, algo
-	if(argc < 3)
+	if(argc < 4)
 	{
-<<<<<<< HEAD
-		cerr << "createXML [nodesNb] [algoNb]" << endl;
-=======
-                cerr << "createXML [filename] [nodesNb] [Nbr ALGO]" << endl;
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
+		cerr << "createXML [nodesNb] [algoNb] [topoType]" << endl;
 		return -1;
 	}
 	int nbNoeuds = atoi(argv[1]);
 	pos* tabNoeuds = new pos[nbNoeuds];
-<<<<<<< HEAD
+	ofstream topo("topologie.txt", ios::out|ios::trunc);
+	topo << argv[3] << endl;
+	topo.close();
+	
 	if(atoi(argv[2]) == -1)
 	{
-		createAleaNodes(nbNoeuds, tabNoeuds);
+		createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
 		computeDensity(nbNoeuds, tabNoeuds);
 		for(int i = 0 ; i <= 5 ; i++)
 		{
@@ -331,7 +325,7 @@ int main(int argc, char* argv[], char* env[])
 	else
 	{
 		//cout << "Creation du fichier XML " << argv[2] << " : " << endl;
-		createAleaNodes(nbNoeuds, tabNoeuds);
+		createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
 		computeDensity(nbNoeuds, tabNoeuds);
 		writeFile(argv[2], nbNoeuds, tabNoeuds, atoi(argv[2]));
 		createVisuGraph(nbNoeuds, tabNoeuds);
@@ -342,34 +336,6 @@ int main(int argc, char* argv[], char* env[])
 		cout << articulations->at(i) << " ";
 	cout << endl;*/
 	delete articulations;
-=======
-	createAleaNodes(nbNoeuds, tabNoeuds);
-	computeAvDegree(nbNoeuds, tabNoeuds);
-
-
-        double densite=computeDensity(nbNoeuds,tabNoeuds);
-        char s[200];
-        char s1[200];
-
-        sprintf(s1,"%lf/results",densite);
-        sprintf(s,"%lf",densite);
-        mkdir(s,01777);
-        mkdir(s1,01777);
-        sprintf(s,"%s/XMLs",s);
-
-        for(int i=0;i<atoi(argv[3]);i++)
-                writeFile(s, nbNoeuds, tabNoeuds, i);
-
-
-	createVisuGraph(nbNoeuds, tabNoeuds);
-
-	/*vector<int>* articulations = getArticulationNodes(nbNoeuds, tabNoeuds);
-	cout << "Points d'articulation : ";
-	for(unsigned int i = 0 ; i < articulations->size() ; i++)
-		cout << articulations->at(i) << " ";
-	cout << endl;
-	delete articulations;//*/
->>>>>>> 9ec28f26d0d3140a50d4dbd415bc612a714b4213
 	delete tabNoeuds;
 	
 	return 0;

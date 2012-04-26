@@ -1,4 +1,0 @@
-source rmf
-wsnet-run-simulations -d XMLs/ results/ 1 
-source lancer
-./final 6

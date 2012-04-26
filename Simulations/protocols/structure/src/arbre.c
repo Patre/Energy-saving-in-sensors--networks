@@ -121,17 +121,18 @@ void arbre_moins_list(arbre *a,list *l)
 
 
 /*********************COPY******************************/
-/*void arbre_copy_fils(arbre *a, arbre *c,int pere)
+void arbre_copy_fils(arbre *a, arbre *c, int pere)
 {
     if(c == Nullptr(arbre))
 		return;
     else
     {
         if(c->node!=pere)
-			arbre_add_fils(a,pere,c->node);
+			arbre_add_fils(a, pere, c->node);
         int i=c->size;
         i=c->size;
-        while(i--)      arbre_copy_fils(a,c->fils[i],c->node);
+        while(i--)
+			arbre_copy_fils(a, c->fils[i], c->node);
     }
 
 }
@@ -140,7 +141,7 @@ void arbre_copy(arbre **a,arbre *c)
 {
     arbre_add_pere(a,c->node);
     arbre_copy_fils(*a,c,c->node);
-}*/
+}
 
 /***************************************RECHERCE****************/
 int arbre_recherche(arbre *a,int node)

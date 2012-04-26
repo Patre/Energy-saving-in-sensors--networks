@@ -335,7 +335,7 @@ void consume(call_t *c, double energy) {
 		if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
 		{
 			FILE* lt = fopen("lifetime", "a");
-			fprintf(lt, "PRN %.1lf\n", get_time_now_second());
+			fprintf(lt, "PCN %.1lf\n", get_time_now_second());
 			fclose(lt);
 		}
 		
