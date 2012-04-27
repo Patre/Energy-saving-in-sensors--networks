@@ -331,14 +331,6 @@ void consume(call_t *c, double energy) {
 		entitydata->nbDead++;
 		
 		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double) get_node_count());
-		//printf("pourcentage apres : %.1lf\n", pourcentageApres);
-		if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
-		{
-			FILE* lt = fopen("lifetime", "a");
-			fprintf(lt, "PCN %.1lf\n", get_time_now_second());
-			fclose(lt);
-		}
-		
 		if(!entitydata->LC)
 		{
 			getArticulationNodes(c);
@@ -348,8 +340,27 @@ void consume(call_t *c, double energy) {
 				fprintf(lt, "LC %.1lf\n", get_time_now_second());
 				fclose(lt);
 				entitydata->LC = 1;
+				
+				
+				if(pourcentageAvant <= (100-entitydata->prMax))
+				{
+					FILE* lt = fopen("lifetime", "a");
+					fprintf(lt, "PCN %.1lf\n", get_time_now_second());
+					fclose(lt);
+					if(entitydata->debug)
+						printf("Toutes les mesures ont ete effectuees...\n");
+					end_simulation();
+				}
 			}
 		}
+		else if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
+		{
+			FILE* lt = fopen("lifetime", "a");
+			fprintf(lt, "PCN %.1lf\n", get_time_now_second());
+			fclose(lt);
+		}
+		
+		
 		// Fin calcul lifetime
 		
 		
