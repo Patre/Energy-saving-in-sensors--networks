@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //INITALISATION
     graph_view=new GraphView();
-
+    ui->dockWidget_3->setVisible(false);
     zoom = 3;
     //AFFICHAGE
     setCentralWidget(graph_view);
@@ -112,7 +112,6 @@ void MainWindow::chargerGraph()
     //zoom=ui->zoomEdit->value();
     QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
     lireFile(file);
-    calculerDegree();
     //QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);

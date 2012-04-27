@@ -76,23 +76,20 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
     QPainter painter(this);
     painter.setPen(pen);
-    //painter.setBrush(brush);
 
     if(haveGraph && haveNodes)
     {
-        int r=qrand()%127;
-        int v=qrand()%127;
-        int b=qrand()%127;
-
-        painter.setPen(qRgb(r,v,b));
-
-        painter.setBrush(QBrush(QColor(r,v,b)));
         for(int i=0;i<list_graph.size();i++)
         {
+            //QPointF center((list_graph.at(i).nodeDeb.nodePosition.x()-list_graph.at(i).nodeFin.nodePosition)/2);
+            //QPointF distance((list_graph.at(i).nodeDeb.nodePosition-list_graph.at(i).nodeFin.nodePosition)/2);
+            //painter.drawText(center+list_graph.at(i).nodeDeb.nodePosition,"LOL");
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
         }
     }
-    painter.setPen(qRgb(0,0,0));
+
+    painter.setPen(qRgb(255,0,0));
+
     if(haveNodes)
     {
         for(int i=0;i<nodes.size();i++)
@@ -109,7 +106,6 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             else painter.drawText(nodes.at(i).nodePosition.x()-4,nodes.at(i).nodePosition.y()+5,QVariant(nodes.at(i).node).toString());
         }
     }
-
 }
 
 void GraphView::clearGraph()

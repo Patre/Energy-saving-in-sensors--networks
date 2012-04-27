@@ -55,7 +55,6 @@ bool TopoGenerate::genererFichier()
 
     if(this->boolfinish)
     {
-
         int i=0;
         FILE *f;
         f=fopen("topo.txt","w");
