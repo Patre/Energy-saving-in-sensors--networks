@@ -75,35 +75,44 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
 
     QPainter painter(this);
-    painter.setPen(pen);
 
     if(haveGraph && haveNodes)
     {
         for(int i=0;i<list_graph.size();i++)
         {
-            //QPointF center((list_graph.at(i).nodeDeb.nodePosition.x()-list_graph.at(i).nodeFin.nodePosition)/2);
-            //QPointF distance((list_graph.at(i).nodeDeb.nodePosition-list_graph.at(i).nodeFin.nodePosition)/2);
-            //painter.drawText(center+list_graph.at(i).nodeDeb.nodePosition,"LOL");
+            QPointF center((list_graph.at(i).nodeDeb.nodePosition-list_graph.at(i).nodeFin.nodePosition)/2);
+            painter.drawText(center+list_graph.at(i).nodeDeb.nodePosition,"LOL");
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
         }
     }
 
-    painter.setPen(qRgb(255,0,0));
+    //painter.setPen(qRgb(255,0,0));
+
 
     if(haveNodes)
     {
         for(int i=0;i<nodes.size();i++)
         {
             QPointF inter=nodes.at(i).nodePosition;
-            inter.setX(inter.x()-10);
-            inter.setY(inter.y()-10);
-            QRectF rec(inter,QSizeF(20,20));
+            inter.setX(inter.x()-12);
+            inter.setY(inter.y()-12);
+            QRectF rec(inter,QSizeF(24,24));
 
-            painter.fillRect(rec,QBrush(qRgb(255,255,255)));
 
-            painter.drawArc(rec,0,30*360);
-            if(i>9)painter.drawText(nodes.at(i).nodePosition.x()-7,nodes.at(i).nodePosition.y()+5,QVariant(nodes.at(i).node).toString());
-            else painter.drawText(nodes.at(i).nodePosition.x()-4,nodes.at(i).nodePosition.y()+5,QVariant(nodes.at(i).node).toString());
+
+            QRadialGradient radialGradient( inter, 70);
+            radialGradient.setColorAt(0.0, Qt::white);
+            radialGradient.setColorAt(0.3, Qt::gray);
+            radialGradient.setColorAt(1.0, Qt::black);
+
+
+            painter.setBrush(radialGradient);
+            painter.drawEllipse(rec);
+
+            painter.setPen(qRgb(255,255,255));
+            painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
+            //painter.drawArc(rec,0,30*360);
+
         }
     }
 }

@@ -251,6 +251,8 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     }
 
+
+
     //remplissage de data
     data->type=RBOP;
     data->src=c->node;
@@ -260,6 +262,9 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,nodedata->RNG);
+
+    list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
+
 
 
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};

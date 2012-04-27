@@ -252,6 +252,7 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     //augmenter le nbr d'evenement
     nodedata->nbr_evenement++;
 
+
     if(entitydata->debug)
         DBG("LBOP - %d SET HEADER  \n",c->node);
 
@@ -286,6 +287,8 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     data->src_pos=*get_node_position(c->node);
     data->seq=nodedata->nbr_evenement;
     data->redirected_by=c->node;
+
+    list_PACKET_insert_tout(&nodedata->paquets,data->src,data->seq,data->redirected_by);
 
     data->destinations=Nullptr(list);
     list_copy(&data->destinations,nodedata->LMST_voisin);
