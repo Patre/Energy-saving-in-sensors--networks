@@ -44,7 +44,7 @@ void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 	sortie << "<default loss=\"0\" angle-xy=\"random\" angle-z=\"0\"/> </entity>" << endl;
 	sortie << "<entity name=\"radio\" library=\"radio_half1d\"> <default sensibility=\"-92\" T_b=\"727\" dBm=\"10\" channel=\"0\" modulation=\"none\"/> </entity>" << endl;
 	sortie << "<entity name=\"static-pos\" library=\"mobility_static\"> <default x=\"random\" y=\"random\" z=\"0.0\"/> </entity>" << endl;
-	sortie << "<entity name=\"app-sensor\" library=\"application_broadcast\"> <init period=\"2s\" debut=\"30s\" node=\"-1\" debug=\"0\"/> <default /> </entity>" << endl;
+	sortie << "<entity name=\"app-sensor\" library=\"application_broadcast\"> <init period=\"2s\" debut=\"30s\" debug=\"0\"/> <default /> </entity>" << endl;
 	sortie << "<entity name=\"routing-protocole\" library=\"";
 	switch (algo) {
 		case 0:
@@ -341,7 +341,7 @@ void createBroadcastingNodes(int nbNoeuds)
 	ofstream topo("topologie.txt", ios::out|ios::app);
 	for(int i = 0 ; i < DUREE ; i+=PERIOD_BROADCAST)
 	{
-		topo << i << " " << rand() % nbNoeuds << endl;
+		topo << rand() % nbNoeuds << endl;
 	}
 	topo.close();
 }

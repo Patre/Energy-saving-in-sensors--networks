@@ -50,7 +50,6 @@ struct nodedata {
   //Nombre d'evenement
   int nbr_evenement;
 	
-	FILE* broadcastingNodes;
 };
 
 /* ************************************************** */
@@ -60,8 +59,9 @@ struct nodedata {
 /* Entity private data */
 struct entitydata {
     int debug;
-    graphe *graph;
+	int period;
     uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
+	FILE* broadcastingNodes;
 };
 
 /* ************************************************** */
@@ -109,7 +109,8 @@ int init(call_t *c, void *params) {
 
   /* init entity variables */
   entitydata->debug = 0;
-  entitydata->debut   = time_seconds_to_nanos(3);
+	entitydata->debut = time_seconds_to_nanos(3);
+	entitydata->period = time_seconds_to_nanos(2);
 
   /* reading the "init" markup from the xml config file */
   das_init_traverse(params);
@@ -124,7 +125,20 @@ int init(call_t *c, void *params) {
               goto error;
           }
       }
+      if (!strcmp(param->key, "period")) {
+          if (get_param_integer(param->value, &(entitydata->period))) {
+              goto error;
+          }
+		  entitydata->period = time_seconds_to_nanos(entitydata->period);
+      }
   }
+	
+	entitydata->broadcastingNodes = fopen("../../topologie.txt", "r");
+	if(entitydata->broadcastingNodes == NULL)
+	{
+		printf("Fichier de topologie manquant.\n");
+		end_simulation();
+	}
 
   set_entity_private_data(c, entitydata);
   return 0;
@@ -160,12 +174,6 @@ int setnode(call_t *c, void *params) {
     } else {
         nodedata->overhead = NULL;
     }
-	nodedata->broadcastingNodes = fopen("../../topologie.txt", "r");
-	if(nodedata->broadcastingNodes == NULL)
-	{
-		printf("Fichier de topologie manquant.\n");
-		end_simulation();
-	}
     
     set_node_private_data(c, nodedata);
     return 0;
@@ -187,8 +195,6 @@ int unsetnode(call_t *c) {
 	if(entitydata->debug)
 		printf("Nombre de paquets recus par %d : %d\n", c->node, list_PACKET_taille(nodedata->paquets));
 
-	
-	fclose(nodedata->broadcastingNodes);
     list_PACKET_detruire(&nodedata->paquets);
     if (nodedata->overhead) {
         free(nodedata->overhead);
@@ -219,18 +225,18 @@ int bootstrap(call_t *c) {
         }
     }
 	
-	call_t c0 = {c->entity,-1,c->from};
-	c0.node = c->node;
-	int node, temps;
-	float density;
-	fscanf(nodedata->broadcastingNodes, "%d", &node);
-	fscanf(nodedata->broadcastingNodes, "%f", &density);
-	
-	while(fscanf(nodedata->broadcastingNodes, "%d %d", &temps, &node) != EOF)
+	if(c->node == 0)
 	{
-		if(node == c->node)
+		call_t c0 = {c->entity,-1,c->from};
+		int node;
+		float density;
+		fscanf(entitydata->broadcastingNodes, "%d", &node);
+		fscanf(entitydata->broadcastingNodes, "%f", &density);
+		
+		if(fscanf(entitydata->broadcastingNodes, "%d", &node) != EOF)
 		{
-			scheduler_add_callback(entitydata->debut+time_seconds_to_nanos(temps), &c0, callmeback, NULL);
+			c0.node = node;
+			scheduler_add_callback(entitydata->debut, &c0, callmeback, NULL);
 		}
 	}
 	
@@ -247,7 +253,20 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 int callmeback(call_t *c, void *args) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct entitydata *entitydata =get_entity_private_data(c);
-
+	
+	call_t c_callback = {c->entity,-1,c->from};
+	int node = -1;
+	
+	do{
+		if(fscanf(entitydata->broadcastingNodes, "%d", &node) != EOF)
+		{
+			c_callback.node = node;
+		}
+	} while(node == -1 || !is_node_alive(node));
+	if(node != -1)
+		scheduler_add_callback(get_time_now()+entitydata->period, &c_callback, callmeback, NULL);
+	
+	
     /* broadcast a new data packet */
     packet_t *packet = packet_create(c, nodedata->overhead[0] + sizeof(struct packet_header), -1);
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
