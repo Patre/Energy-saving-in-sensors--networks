@@ -16,7 +16,6 @@ GraphView::GraphView(QWidget *parent)
     transformed = false;
     pixmap.load(":/images/qt-logo.png");
 
-
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 }
@@ -80,9 +79,17 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
     {
         for(int i=0;i<list_graph.size();i++)
         {
-            QPointF center((list_graph.at(i).nodeDeb.nodePosition-list_graph.at(i).nodeFin.nodePosition)/2);
+            QPointF center(list_graph.at(i).nodeDeb.nodePosition.x()+list_graph.at(i).nodeFin.nodePosition.x(),
+                           list_graph.at(i).nodeDeb.nodePosition.y()+list_graph.at(i).nodeFin.nodePosition.y());
+            center.setX(center.x()/(qreal)2);
+            center.setY(center.y()/(qreal)2);
+
+
+            QMessageBox::information(0,"DEBUG de GARPH ELEMENT",QVariant(center).toString());
+
             painter.drawText(center+list_graph.at(i).nodeDeb.nodePosition,"LOL");
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
+
         }
     }
 
@@ -111,7 +118,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
             painter.setPen(qRgb(255,255,255));
             painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
-            //painter.drawArc(rec,0,30*360);
+
 
         }
     }

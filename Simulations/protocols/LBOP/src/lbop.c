@@ -197,7 +197,7 @@ int unsetnode(call_t *c) {
 
 
 
-    int i=0;
+    /*int i=0;
     call_t *inter=malloc(sizeof(call_t));
     inter->entity=c->entity;
     inter->from=c->from;
@@ -208,7 +208,10 @@ int unsetnode(call_t *c) {
             inter->node=i;
             struct nodedata *internodedata = get_node_private_data(inter);
             list_delete(&internodedata->LMST_voisin,c->node);
-        }
+        }*/
+
+    printf("%d ",c->node);
+    list_PACKET_affiche(nodedata->paquets);
 
     //liberation d'espace memoire
     //PAR USER PROTOCOLE

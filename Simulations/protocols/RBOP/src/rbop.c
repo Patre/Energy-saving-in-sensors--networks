@@ -180,6 +180,9 @@ int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
 
 
+    printf("%d ",c->node);
+    list_PACKET_affiche(nodedata->paquets);
+
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
     list_PACKET_detruire(&nodedata->paquets);               //packets
@@ -248,7 +251,6 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
         nodedata->range=get_range_Tr(c);
         if(entitydata->debug)
             DBG("RBOP  - %d FIXE RANGE TO %.2lf  \n",c->node,get_range_Tr(c));
-
     }
 
 
