@@ -114,14 +114,53 @@ void createAleaNodes(int nbNoeuds, pos tabNoeuds[])
 
 void createHoleNodes(int nbNoeuds, pos tabNoeuds[])
 {
+	int connexe;
+	for(int i = 0 ; i < nbNoeuds ; i++)
+	{
+		connexe = 0;
+		while(!connexe)
+		{
+			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * WIDTH;
+			if(tabNoeuds[i].y<0.15*WIDTH || tabNoeuds[i].y>0.85*WIDTH)
+			{
+				tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * WIDTH;
+			}
+			else
+			{
+				double aux= 2*sqrt(0.35*WIDTH*0.35*WIDTH+(WIDTH/2-tabNoeuds[i].y)*(WIDTH/2-tabNoeuds[i].y));
+				tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * WIDTH;
+				if(tabNoeuds[i].x< WIDTH/4+aux/2 &&  tabNoeuds[i].x> WIDTH/4-aux/2)
+				{
+					tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * WIDTH;
+				}
+			}
+						
+			for(int j = 0 ; j < i ; j++)
+			{
+				if(distanceEuc(tabNoeuds[i], tabNoeuds[j]) < RANGE)
+				{
+					connexe = 1;
+					break;
+				}
+			}
+			if(i == 0)
+				connexe = 1;
+		}
+		
+		//cout << '(' << tabNoeuds[i].x << ';' << tabNoeuds[i].y << ')' << endl;
+	}
+}
+
+void createRegularNodes(int nbNoeuds, pos tabNoeuds[])
+{
 	/*int connexe;
 	for(int i = 0 ; i < nbNoeuds ; i++)
 	{
 		connexe = 0;
 		while(!connexe)
 		{
-			tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * 200;
-			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * 200;
+			tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * 100;
+			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * 100;
 			for(int j = 0 ; j < i ; j++)
 			{
 				if(distanceEuc(tabNoeuds[i], tabNoeuds[j]) < RANGE)
