@@ -87,16 +87,18 @@ void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 void createAleaNodes(int nbNoeuds, pos tabNoeuds[])
 {
 	int connexe;
+	double dist;
 	for(int i = 0 ; i < nbNoeuds ; i++)
 	{
 		connexe = 0;
 		while(!connexe)
 		{
-			tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * 200;
-			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * 200;
+			tabNoeuds[i].x = (double)rand()/(double)RAND_MAX * WIDTH;
+			tabNoeuds[i].y = (double)rand()/(double)RAND_MAX * WIDTH;
 			for(int j = 0 ; j < i ; j++)
 			{
-				if(distanceEuc(tabNoeuds[i], tabNoeuds[j]) < RANGE)
+				dist = distanceEuc(tabNoeuds[i], tabNoeuds[j]);
+				if(dist < RANGE && dist > 0)
 				{
 					connexe = 1;
 					break;
