@@ -3,10 +3,13 @@
 
 #include <QMainWindow>
 #include <QFile>
+#include <QHBoxLayout>
+#include <QBoxLayout>
+#include <QScrollArea>
+
 #include "graphView.h"
 #include "graphelement.h"
 #include "topogenerate.h"
-#include "arbreteststage.h"
 
 //ADDED Function Prototypes
 double distanceEuclidienne(double x1,double y1, double x2, double y2);

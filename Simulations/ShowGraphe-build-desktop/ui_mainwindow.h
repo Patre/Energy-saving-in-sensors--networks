@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Apr 27 07:58:05 2012
+** Created: Sat Apr 28 00:33:40 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -17,7 +17,7 @@
 #include <QtGui/QDockWidget>
 #include <QtGui/QDoubleSpinBox>
 #include <QtGui/QHeaderView>
-#include <QtGui/QLCDNumber>
+#include <QtGui/QLabel>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -56,8 +56,11 @@ public:
     QPushButton *graphFinale;
     QPushButton *clearButton;
     QDoubleSpinBox *zoomEdit;
-    QLCDNumber *nbrNodes;
-    QLCDNumber *rayonMax;
+    QSpinBox *nbrNodes;
+    QSpinBox *rayonMax;
+    QLabel *label;
+    QLabel *label_2;
+    QLabel *label_3;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -123,38 +126,55 @@ public:
         MainWindow->setStatusBar(statusBar);
         dockWidget = new QDockWidget(MainWindow);
         dockWidget->setObjectName(QString::fromUtf8("dockWidget"));
-        dockWidget->setMinimumSize(QSize(100, 100));
+        dockWidget->setMinimumSize(QSize(180, 100));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
         charger = new QPushButton(dockWidgetContents);
         charger->setObjectName(QString::fromUtf8("charger"));
-        charger->setGeometry(QRect(0, 0, 101, 31));
+        charger->setGeometry(QRect(0, 40, 171, 31));
         afficherNodes = new QPushButton(dockWidgetContents);
         afficherNodes->setObjectName(QString::fromUtf8("afficherNodes"));
         afficherNodes->setEnabled(false);
-        afficherNodes->setGeometry(QRect(0, 40, 101, 31));
+        afficherNodes->setGeometry(QRect(0, 80, 171, 31));
         etapeSuivante = new QPushButton(dockWidgetContents);
         etapeSuivante->setObjectName(QString::fromUtf8("etapeSuivante"));
         etapeSuivante->setEnabled(false);
-        etapeSuivante->setGeometry(QRect(0, 80, 101, 31));
+        etapeSuivante->setGeometry(QRect(0, 120, 171, 31));
         graphFinale = new QPushButton(dockWidgetContents);
         graphFinale->setObjectName(QString::fromUtf8("graphFinale"));
         graphFinale->setEnabled(false);
-        graphFinale->setGeometry(QRect(0, 120, 101, 31));
+        graphFinale->setGeometry(QRect(0, 160, 171, 31));
         clearButton = new QPushButton(dockWidgetContents);
         clearButton->setObjectName(QString::fromUtf8("clearButton"));
         clearButton->setEnabled(false);
-        clearButton->setGeometry(QRect(0, 170, 101, 31));
+        clearButton->setGeometry(QRect(0, 210, 171, 31));
         zoomEdit = new QDoubleSpinBox(dockWidgetContents);
         zoomEdit->setObjectName(QString::fromUtf8("zoomEdit"));
-        zoomEdit->setGeometry(QRect(0, 310, 101, 22));
-        zoomEdit->setValue(0.5);
-        nbrNodes = new QLCDNumber(dockWidgetContents);
+        zoomEdit->setGeometry(QRect(110, 0, 61, 22));
+        zoomEdit->setValue(3);
+        nbrNodes = new QSpinBox(dockWidgetContents);
         nbrNodes->setObjectName(QString::fromUtf8("nbrNodes"));
-        nbrNodes->setGeometry(QRect(20, 220, 64, 23));
-        rayonMax = new QLCDNumber(dockWidgetContents);
+        nbrNodes->setEnabled(false);
+        nbrNodes->setGeometry(QRect(120, 260, 51, 22));
+        nbrNodes->setMinimum(0);
+        nbrNodes->setMaximum(999);
+        nbrNodes->setValue(0);
+        rayonMax = new QSpinBox(dockWidgetContents);
         rayonMax->setObjectName(QString::fromUtf8("rayonMax"));
-        rayonMax->setGeometry(QRect(20, 260, 64, 23));
+        rayonMax->setEnabled(false);
+        rayonMax->setGeometry(QRect(120, 300, 51, 22));
+        rayonMax->setMinimum(10);
+        rayonMax->setMaximum(999);
+        rayonMax->setValue(30);
+        label = new QLabel(dockWidgetContents);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(10, 0, 91, 17));
+        label_2 = new QLabel(dockWidgetContents);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(10, 260, 91, 17));
+        label_3 = new QLabel(dockWidgetContents);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+        label_3->setGeometry(QRect(10, 300, 91, 17));
         dockWidget->setWidget(dockWidgetContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
         QWidget::setTabOrder(charger, afficherNodes);
@@ -199,6 +219,9 @@ public:
         etapeSuivante->setText(QApplication::translate("MainWindow", "Etape Suivante", 0, QApplication::UnicodeUTF8));
         graphFinale->setText(QApplication::translate("MainWindow", "Graph Finale", 0, QApplication::UnicodeUTF8));
         clearButton->setText(QApplication::translate("MainWindow", "Clear", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("MainWindow", "Zoom", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("MainWindow", "Nbr Nodes", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("MainWindow", "Rayon Max", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

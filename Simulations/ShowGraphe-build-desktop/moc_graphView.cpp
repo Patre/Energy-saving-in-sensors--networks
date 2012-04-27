@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'graphView.h'
 **
-** Created: Fri Apr 27 07:39:58 2012
+** Created: Fri Apr 27 21:04:19 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_GraphView[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,13 +33,14 @@ static const uint qt_meta_data_GraphView[] = {
  // slots: signature, parameters, type, tag, flags
       21,   11,   10,   10, 0x0a,
       52,   46,   10,   10, 0x0a,
-      82,   10,   10,   10, 0x0a,
-     101,   95,   10,   10, 0x0a,
-     121,  117,   10,   10, 0x0a,
-     140,  134,   10,   10, 0x0a,
-     169,  157,   10,   10, 0x0a,
-     202,  190,   10,   10, 0x0a,
-     228,  223,   10,   10, 0x0a,
+      86,   82,   10,   10, 0x0a,
+     112,   10,   10,   10, 0x0a,
+     131,  125,   10,   10, 0x0a,
+     151,  147,   10,   10, 0x0a,
+     170,  164,   10,   10, 0x0a,
+     199,  187,   10,   10, 0x0a,
+     232,  220,   10,   10, 0x0a,
+     258,  253,   10,   10, 0x0a,
 
        0        // eod
 };
@@ -47,6 +48,7 @@ static const uint qt_meta_data_GraphView[] = {
 static const char qt_meta_stringdata_GraphView[] = {
     "GraphView\0\0nodesPere\0setNodes(QList<Element>)\0"
     "graph\0setGraph(QList<GraphElement>)\0"
+    "dep\0setGraphEtape(QList<int>)\0"
     "clearGraph()\0shape\0setShape(Shape)\0"
     "pen\0setPen(QPen)\0brush\0setBrush(QBrush)\0"
     "antialiased\0setAntialiased(bool)\0"
@@ -85,16 +87,17 @@ int GraphView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: setNodes((*reinterpret_cast< QList<Element>(*)>(_a[1]))); break;
         case 1: setGraph((*reinterpret_cast< QList<GraphElement>(*)>(_a[1]))); break;
-        case 2: clearGraph(); break;
-        case 3: setShape((*reinterpret_cast< Shape(*)>(_a[1]))); break;
-        case 4: setPen((*reinterpret_cast< const QPen(*)>(_a[1]))); break;
-        case 5: setBrush((*reinterpret_cast< const QBrush(*)>(_a[1]))); break;
-        case 6: setAntialiased((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 7: setTransformed((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 8: setZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 2: setGraphEtape((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 3: clearGraph(); break;
+        case 4: setShape((*reinterpret_cast< Shape(*)>(_a[1]))); break;
+        case 5: setPen((*reinterpret_cast< const QPen(*)>(_a[1]))); break;
+        case 6: setBrush((*reinterpret_cast< const QBrush(*)>(_a[1]))); break;
+        case 7: setAntialiased((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 8: setTransformed((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 9: setZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

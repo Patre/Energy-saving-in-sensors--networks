@@ -2,13 +2,22 @@
 #include "graphView.h"
 
 //! [0]
+
+double distance (GraphElement s)
+{
+    double dx=s.nodeDeb.nodePosition.x()-s.nodeFin.nodePosition.x();
+    double dy=s.nodeDeb.nodePosition.y()-s.nodeFin.nodePosition.y();
+    return qSqrt(dx*dx+dy*dy);
+}
+
 GraphView::GraphView(QWidget *parent)
     : QWidget(parent)
 {
     //INITAILISATION
     haveNodes=false;
     haveGraph=false;
-    zoom = 1;
+    haveDepart=false;
+    zoom = 3;
 
 
     shape = Polygon;
@@ -29,6 +38,11 @@ void GraphView::setGraph(QList<GraphElement> graph)
 {
     list_graph=graph;
     haveGraph=true;
+}
+void GraphView::setGraphEtape(QList<int> dep)
+{
+    depart=dep;
+    haveDepart=true;
 }
 
 QSize GraphView::minimumSizeHint() const
@@ -69,26 +83,47 @@ void GraphView::setTransformed(bool transformed)
     this->transformed = transformed;
     update();
 }
+
+
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
-
-
     QPainter painter(this);
+    QMap<int,QVector2D> rayonMax;
+    /*if(haveDepart)
+    {
+        for(int i=0;i<list_graph.size();i++)
+        {
+            GraphElement encours =list_graph.at(i);
+            if(depart.contains(encours.nodeDeb.node))
+                    if(!rayonMax.contains(encours.nodeDeb.node))
+                        rayonMax.insert(encours.nodeDeb.node, QVector2D(encours.node,distance(encours)));
+                    else if(distance(encours)<rayonMax.keys().//**/
+
+
+
+
+    //}
 
     if(haveGraph && haveNodes)
     {
         for(int i=0;i<list_graph.size();i++)
         {
-            QPointF center(list_graph.at(i).nodeDeb.nodePosition.x()+list_graph.at(i).nodeFin.nodePosition.x(),
-                           list_graph.at(i).nodeDeb.nodePosition.y()+list_graph.at(i).nodeFin.nodePosition.y());
-            center.setX(center.x()/(qreal)2);
-            center.setY(center.y()/(qreal)2);
+
+            int dist=(int)distance(list_graph.at(i));
+            QPointF center((list_graph.at(i).nodeDeb.nodePosition+list_graph.at(i).nodeFin.nodePosition)/2);
+
+            painter.setPen(qRgb(110, 110, 200));
 
 
-            QMessageBox::information(0,"DEBUG de GARPH ELEMENT",QVariant(center).toString());
+            painter.drawText(center,QVariant((int)(dist/zoom)).toString());
+            painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
 
-            painter.drawText(center+list_graph.at(i).nodeDeb.nodePosition,"LOL");
-            painter.drawLine(list_graph.at(i).nodeDeb.nodePosition*zoom,list_graph.at(i).nodeFin.nodePosition*zoom);
+            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node))
+            {
+                painter.setPen(qRgba(224, 176, 255,75));
+                painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
+            }
+
 
         }
     }

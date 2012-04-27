@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     graph_view=new GraphView();
     ui->dockWidget_3->setVisible(false);
     zoom = 3;
+
     //AFFICHAGE
     setCentralWidget(graph_view);
 }
@@ -57,6 +58,10 @@ void MainWindow::lireFile(QString filename)
         return;
     }
 
+    zoom = ui->zoomEdit->value();
+    graph_view->setZoom(zoom);
+    ui->zoomEdit->setEnabled(false);
+
     while (!file.atEnd()){
         QByteArray line = file.readLine();
         QStringList lst=QVariant(line).toString().split(" ");
@@ -90,9 +95,13 @@ void MainWindow::lireFile(QString filename)
                 }
             }
 
+            bool test=true;
             GraphElement x(ndeb,nfin);
             //x.debug();
-            list_graph.append(x);
+            for(int i=0;i<list_graph.length();i++)
+                if(list_graph.at(i).nodeDeb.node==ndeb.node &&
+                        list_graph.at(i).nodeFin.node==nfin.node) test=false;
+            if(test) list_graph.append(x);
         }
     }
 
@@ -112,6 +121,7 @@ void MainWindow::chargerGraph()
     //zoom=ui->zoomEdit->value();
     QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
     lireFile(file);
+    ui->nbrNodes->setValue(nodes.length());
     //QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
@@ -139,11 +149,14 @@ void MainWindow::afficherEtape()
             tmp.append(list_graph.at(i).nodeFin.node);
             list_graph_etape.append(list_graph.at(i));
         }
+
+    graph_view->setGraph(list_graph_etape);
+    graph_view->setGraphEtape(list_etape);
+    graph_view->repaint();
+
     list_etape.clear();
     list_etape=tmp;
 
-    graph_view->setGraph(list_graph_etape);
-    graph_view->repaint();
 }
 
 void MainWindow::afficherGraph()
@@ -158,20 +171,14 @@ void MainWindow::clearGraph()
     ui->afficherNodes->setEnabled(false);
     ui->graphFinale->setEnabled(false);
     ui->etapeSuivante->setEnabled(false);
+    ui->zoomEdit->setEnabled(true);
     list_graph.clear();
     nodes.clear();
+
     list_graph_etape.clear();
     graph_view->clearGraph();
     graph_view->repaint();
 }
-
-
-
-
-
-
-
-
 
 
 

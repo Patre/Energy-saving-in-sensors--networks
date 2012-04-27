@@ -23,6 +23,8 @@ public:
 public slots:
     void setNodes(QList<Element> nodesPere);
     void setGraph(QList<GraphElement> graph);
+    void setGraphEtape(QList<int> dep);
+
     void clearGraph();
 
     void setShape(Shape shape);
@@ -43,6 +45,11 @@ private:
     //LES liens
     bool haveGraph;
     QList<GraphElement> list_graph;
+
+
+    //les depart
+    bool haveDepart;
+    QList<int> depart;
 
     double zoom;
     Shape shape;
