@@ -83,5 +83,4 @@ done
 rm lc.txt
 rm pcn.txt
 rm ttff.txt
-rm topologie.txt
 cd ..
