@@ -42,8 +42,9 @@ int broadcast_lmst(call_t *c) {
                 packet_dealloc(packet);
                 return -1;
     }
-
-    TX(&c0,packet);
+	
+	c0.entity = c->entity;
+    tx(&c0,packet);
 
     //tous c'est bien passé
     return 1;

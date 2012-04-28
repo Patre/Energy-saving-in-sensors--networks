@@ -38,9 +38,8 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     }
 
 
-//	printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
-    //L'envoi
-    TX(&c0,packet);//*/
+	c0.entity = c->entity;
+    tx(&c0,packet);
 
     //Prochaine evenement
     uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
@@ -84,17 +83,18 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         return -1;
     }
 	
-    TX(&c0,packetRecu);
+	c0.entity = c->entity;
+    tx(&c0, packetRecu);
 
     //tout c'est bien passé
     return 1;
 }
 
 double get_range_Tr(call_t *c)
-{
+{	
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
-    struct mac_data* macdata = get_entity_private_data(&c0);
+    struct mac_data* macdata = get_node_private_data(&c0);
     return macdata->range;
 }
 
@@ -102,7 +102,7 @@ void set_range_Tr(call_t *c,double range)
 {
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
-    struct mac_data* macdata = get_entity_private_data(&c0);
+    struct mac_data* macdata = get_node_private_data(&c0);
     macdata->range = range;
 }
 

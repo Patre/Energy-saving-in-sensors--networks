@@ -210,8 +210,8 @@ int unsetnode(call_t *c) {
             list_delete(&internodedata->LMST_voisin,c->node);
         }*/
 
-    printf("%d ",c->node);
-    list_PACKET_affiche(nodedata->paquets);
+    //printf("%d ",c->node);
+    //list_PACKET_affiche(nodedata->paquets);
 
     //liberation d'espace memoire
     //PAR USER PROTOCOLE
@@ -237,7 +237,7 @@ void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
-    if(entitydata->debug)
+    //if(entitydata->debug)
         DBG("LBOP BROADCAST - ON %d  WITH RANGE %.2lf At %lf \n",c->node,get_range_Tr(c), get_time_now_second());
 
     entityid_t *down = get_entity_links_down(c);

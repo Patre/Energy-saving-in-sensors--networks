@@ -115,6 +115,7 @@ int init(call_t *c, void *params) {
 
     // KB/s to B/s
     entitydata->bandwidth *= 1024;
+	//printf("mac range = %.1lf\n", entitydata->range);
 
     set_entity_private_data(c, entitydata);
     return 0;
@@ -134,20 +135,11 @@ int destroy(call_t *c) {
 /* ************************************************** */
 int setnode(call_t *c, void *params) {
     struct nodedata *nodedata = (struct nodedata *) malloc(sizeof(struct nodedata));
-    struct entitydata *entitydata = get_node_private_data(c);
+    struct entitydata *entitydata = get_entity_private_data(c);
 
     param_t *param;
 
-    nodedata->range = 30;
-
-    das_init_traverse(params);
-    while ((param = (param_t *) das_traverse(params)) != NULL) {
-        if (!strcmp(param->key, "range")) {
-            if (get_param_double(param->value, &(nodedata->range))) {
-                goto error;
-            }
-        }
-    }
+    nodedata->range = entitydata->range;
 
     nodedata->buffer    = das_create();
 
@@ -203,42 +195,42 @@ int tx_delay(call_t *c, void *args) {
     
     packet_t *packet;
     if ((packet = (packet_t *) das_pop_FIFO(nodedata->buffer)) == NULL)
-      return 0;
+		return 0;
     
     struct _mac_header *header = (struct _mac_header *) packet->data;
-
+	
     /* Broadcast packet */
     if (header->type == BROADCAST_TYPE) {
 #ifdef LOG_MAC
-      fprintf(stdout, "[MAC] node %d wants to broadcast a packet\n", c->node);
+		fprintf(stdout, "[MAC] node %d wants to broadcast a packet\n", c->node);
 #endif
-      /* sending the packet to nodes within reach communication */
-      for(i = 0; i < get_node_count(); i++) {
-	
-	if (i != c->node) {
-	  
+		/* sending the packet to nodes within reach communication */
+		for(i = 0; i < get_node_count(); i++) {
+			
+			if (i != c->node) {
+				
                 if (distance(get_node_position(i), local) <= nodedata->range) {
-		  call_t c0 = {-1, i, -1};
-		  array_t *macs = get_mac_entities(&c0);
-		  c0.entity = macs->elts[0];
-		  packet_t *packet_up = packet_clone(packet);         
-		  RX(&c0, packet_up);
+					call_t c0 = {-1, i, -1};
+					array_t *macs = get_mac_entities(&c0);
+					c0.entity = macs->elts[0];
+					packet_t *packet_up = packet_clone(packet);         
+					RX(&c0, packet_up);
 #ifdef LOG_MAC
-		  fprintf(stdout, "[MAC] node %d delivers a packet to node %d\n", c->node, i);
+					fprintf(stdout, "[MAC] node %d delivers a packet to node %d\n", c->node, i);
 #endif
                 }
-	}       
-      }
-      packet_dealloc(packet);
+			}       
+		}
+		packet_dealloc(packet);
     } 
     /* Unicast packet */
     else if (header->type == UNICAST_TYPE){
-      
-      if (distance(get_node_position(header->dst), local) <= nodedata->range) {
-	call_t c0 = {-1, header->dst, -1};
-	array_t *macs = get_mac_entities(&c0);
-	c0.entity = macs->elts[0];
-	RX(&c0, packet);
+		
+		if (distance(get_node_position(header->dst), local) <= nodedata->range) {
+			call_t c0 = {-1, header->dst, -1};
+			array_t *macs = get_mac_entities(&c0);
+			c0.entity = macs->elts[0];
+			RX(&c0, packet);
 #ifdef LOG_MAC
 	fprintf(stdout,"[MAC] node %d delivers a packet to node %d\n", c->node, header->dst);
 #endif

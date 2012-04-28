@@ -8,8 +8,11 @@
 #include <time_wsnet.h>
 #include <list.h>
 
+#define JAVAPATH "../ArticPointDFS"
+
 //#define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
 //#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
+
 
 
 void init_files()
@@ -50,7 +53,7 @@ struct entitydata {
 };
 
 
-void getArticulationNodes(call_t* c)
+void getArticulationNodes(call_t* c, char* path)
 {
     struct entitydata *entitydata = get_entity_private_data(c);
 	
@@ -76,7 +79,11 @@ void getArticulationNodes(call_t* c)
 	//scanf("%d", &i);
 	if(aretes != 0)
 	{
-		system("java -cp ../ArticPointDFS/ ArticPointDFS grapheForJava\n");
+		char add[1024];
+		strcpy(add, "java -cp ");
+		strcat(add, path);
+		strcat(add, " ArticPointDFS grapheForJava\n");
+		system(add);
 		
 		if(entitydata->articulations != 0)
 			list_detruire(&entitydata->articulations);
@@ -303,18 +310,19 @@ void consume(call_t *c, double energy) {
     nodedata->energy -= energy; 
     //ENERGY("%d R %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
 
-    if(entitydata->debug)
+    //if(entitydata->debug)
         printf("CONSUME (%d): consomme %lf, reste %lf\n",c->node,energy,nodedata->energy);
 
 	
 	if (nodedata->energy <= 0)
 	{
+		printf("Node %d kill\n", c->node);
 		node_kill(c->node);
 		return;
 	}
 	
     if (nodedata->energy < pow(entitydata->range, entitydata->alpha)+entitydata->c) {
-		if(entitydata->debug)
+		//if(entitydata->debug)
 			printf("%d est Mort a %.1lf\n",c->node,get_time_now_second());
         nodedata->energy = 0;
 		
@@ -333,7 +341,7 @@ void consume(call_t *c, double energy) {
 		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double) get_node_count());
 		if(!entitydata->LC)
 		{
-			getArticulationNodes(c);
+			getArticulationNodes(c, JAVAPATH);
 			if(list_recherche(entitydata->articulations, c->node))
 			{
 				FILE* lt = fopen("lifetime", "a");
@@ -347,7 +355,7 @@ void consume(call_t *c, double energy) {
 					FILE* lt = fopen("lifetime", "a");
 					fprintf(lt, "PCN %.1lf\n", get_time_now_second());
 					fclose(lt);
-					if(entitydata->debug)
+					//if(entitydata->debug)
 						printf("Toutes les mesures ont ete effectuees...\n");
 					end_simulation();
 				}
@@ -370,13 +378,13 @@ void consume(call_t *c, double energy) {
 		   &&
 		   entitydata->LC == 1)
 		{
-			if(entitydata->debug)
+			//if(entitydata->debug)
 				printf("Toutes les mesures ont ete effectuees...\n");
 			end_simulation();
 		}
 		else if(entitydata->nbDead == get_node_count())
 		{
-			if(entitydata->debug)
+			//if(entitydata->debug)
 				printf("Plus aucun noeud en vie...\n");
 			end_simulation();
 		}

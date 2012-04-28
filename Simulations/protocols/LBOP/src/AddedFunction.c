@@ -1,3 +1,4 @@
+
 #include "AddedFunction.h"
 
 
@@ -20,7 +21,7 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
     /*
 	 * Recuperer le minimum  a partir de node racine node
 	 */
-    double min_poids=9999999999999999999999999999.00;
+    double min_poids=DBL_MAX;
     int node_min=-1;
     int node_couvrant=-1;
 	
@@ -33,7 +34,7 @@ void prim_tree(list *nodes,arbre **a,listC *l,list *g)
         tmp2=deja_couvert;
 		
         //RENIALISER LES PARAMETRE
-        min_poids=999999999999999999999999999999999.00;
+        min_poids=DBL_MAX;
         node_min=-1;
         node_couvrant=-1;
 		

@@ -8,7 +8,12 @@ if [ $4 == 0 ]
 then
 	resFile="topologie_alea"
 else
-	resFile="topologie_hole"
+	if [ $4 == 1 ]
+	then
+		resFile="topologie_hole"
+	else
+		#resFile="topologie_hole"
+	fi
 fi
 
 echo "Compilation du programme de creation des fichiers XML..."
@@ -58,5 +63,3 @@ rm ttff.txt
 rm topologie.txt
 rm topoVisu.txt
 cd ..
-
-

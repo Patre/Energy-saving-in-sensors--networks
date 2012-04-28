@@ -42,9 +42,8 @@ int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
     }
 
 
-    //printf("BIP - Paquet de type %d envoye de %d a %d.\n", data->type, c->node, destination.id);
-    //L'envoi
-    TX(&c0,packet);//*/
+    c0.entity = c->entity;
+    tx(&c0,packet);
 
     //Prochaine evenement
     uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
@@ -125,10 +124,10 @@ int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
         packet_dealloc(packetRecu);
         return -1;
     }
-    //L'envoi
-    TX(&c0,packetRecu);//*/
+	
+	c0.entity = c->entity;
+	tx(&c0,packetRecu);
     }
-    //tout c'est bien passé
     return 1;
 }
 

@@ -784,7 +784,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 \subsubsection{LMST Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
 
 
-\emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
+\emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par la diffusion ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
 
 \paragraph{Algorithme LMST}:
 Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud connaît la position de ses voisins à 1 saut et chaque nœud calcule son propre MST (Minimum Spanning Tree) sur son voisinage. Puis, si un nœud u est dans le LMST calculé par un nœud v et que le nœud v est dans le LMST du nœud u alors le lien (u, v) est retenu dans le LMST global. La construction du LMST global est ainsi basée sur la construction locale d’un MST par chaque nœud.
@@ -826,7 +826,7 @@ Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud co
 
 
 \emph{Description :}LBOP et RBOP se basent sur le contrôle de topologie pour réduire le nombre d'arcs, donc 
-le nombre de nœuds inondés par le broadcaste ainsi que le rayon de transmission tout en maintenant la connectivité
+le nombre de nœuds inondés par la diffusion ainsi que le rayon de transmission tout en maintenant la connectivité
 du réseau. LBOP et RBOP sont des protocoles de diffusion s'appuyant respectivement sur l'arbre couvrant de 
 coût minimum local (LMST) et le graphe de voisinage (RNG).\\
 
@@ -933,6 +933,7 @@ Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})
 \subsubsection{Tableau récapitulatif}
 \noindent\makebox[\textwidth]{
 \resizebox{0.95\paperwidth}{!}{
+\renewcommand\arraystretch{1.6}
 \rowcolors{3}{gray!25}{white}
 \begin{tabular}{| c | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} | C{1.75cm} |}
 \hline
