@@ -38,8 +38,8 @@ struct _mac_header {
 /* ************************************************** */
 struct entitydata {
     int debug;
-    double c;
-    double alpha;
+    int c;
+    int alpha;
     double range;        // Communication range (m)
     double bandwidth;    // Data bandwidth (KB/s)
 };
@@ -76,8 +76,8 @@ int init(call_t *c, void *params) {
     /* default values */
 
     entitydata->debug     = 0;
-    entitydata->alpha     = 4;
-    entitydata->c         = 100000000;
+    entitydata->alpha     = 1;
+    entitydata->c         = 0;
     entitydata->range     = 10;
     entitydata->bandwidth = 15; 
 
@@ -90,12 +90,12 @@ int init(call_t *c, void *params) {
             }
         }
         if (!strcmp(param->key, "c")) {
-            if (get_param_double(param->value, &(entitydata->c))) {
+            if (get_param_integer(param->value, &(entitydata->c))) {
                 goto error;
             }
         }
         if (!strcmp(param->key, "alpha")) {
-            if (get_param_double(param->value, &(entitydata->alpha))) {
+            if (get_param_integer(param->value, &(entitydata->alpha))) {
                 goto error;
             }
         }
@@ -115,7 +115,7 @@ int init(call_t *c, void *params) {
 
     // KB/s to B/s
     entitydata->bandwidth *= 1024;
-	//printf("mac range = %.1lf\n", entitydata->range);
+	printf("mac : alpha : %d ; c : %d\n", entitydata->alpha, entitydata->c);
 
     set_entity_private_data(c, entitydata);
     return 0;

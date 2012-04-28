@@ -1,6 +1,28 @@
 #!/bin/bash
 #launch_tests [nbTests] [nbNodesMin] [nbNodesMax] [topoType] [nbTestsParTopo]
 
+WHICH=$(which "launch_tests")
+CODE_RETOUR=$?
+
+if [ $CODE_RETOUR -eq 0 ]; then
+
+    CHEMIN=$(dirname $WHICH)
+else
+
+    CHEMIN=$(dirname $0)
+    if [ "$CHEMIN" = "." ]; then
+        CHEMIN=$(pwd)
+    else 
+        if [ "${CHEMIN:0:2}" = "./" ]; then
+            CHEMIN="$(pwd)/${CHEMIN:2}"
+        fi
+    fi
+    
+fi
+
+export JAVAPATH="$CHEMIN"/ArticPointDFS
+export TOPOPATH="$CHEMIN"/resultats
+
 ecart=`expr $3 - $2 `
 ecart=`expr $ecart / $(($1 - 1)) `
 
@@ -8,12 +30,7 @@ if [ $4 == 0 ]
 then
 	resFile="topologie_alea"
 else
-	if [ $4 == 1 ]
-	then
-		resFile="topologie_hole"
-	else
-		#resFile="topologie_hole"
-	fi
+	resFile="topologie_hole"
 fi
 
 echo "Compilation du programme de creation des fichiers XML..."

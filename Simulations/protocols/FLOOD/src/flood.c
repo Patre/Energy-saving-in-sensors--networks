@@ -176,7 +176,7 @@ int ioctl(call_t *c, int option, void *in, void **out) {
 void tx( call_t *c , packet_t * packet )
 {
     struct protocoleData *entitydata=get_entity_private_data(c);
-    //if(entitydata->debug)
+    if(entitydata->debug)
         printf("FLOOD BROADCAST - ON %d WITH RANGE %.2lf At %lf \n",c->node,get_range_Tr(c), get_time_now_second());
 
     struct nodedata *nodedata = get_node_private_data(c);

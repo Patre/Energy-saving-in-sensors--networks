@@ -10,7 +10,6 @@
 #include <time_wsnet.h>
 #include <list_paquet.h>
 
-#define TOPOPATH "./"
 /* ************************************************** */
 /* ************************************************** */
 /*#define ENDERR(x...)  { FILE *topo; topo=fopen("ERREUR","w+"); fprintf(topo,x); fclose(topo);}
@@ -135,8 +134,12 @@ int init(call_t *c, void *params) {
       }
   }
 	char topopath[1024];
-	strcpy(topopath, TOPOPATH);
-	strcat(topopath, "topologie.txt");
+	if(getenv("TOPOPATH") != NULL)
+		strcpy(topopath, getenv("TOPOPATH"));
+	else
+		strcpy(topopath, ".");
+	strcat(topopath, "/topologie.txt");
+	printf("topopath : %s\n", topopath);
 	entitydata->broadcastingNodes = fopen(topopath, "r");
 	if(entitydata->broadcastingNodes == NULL)
 	{
@@ -284,7 +287,7 @@ int callmeback(call_t *c, void *args) {
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
-    //if(entitydata->debug)
+    if(entitydata->debug)
         printf("\nAPP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};

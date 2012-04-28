@@ -14,6 +14,9 @@ using namespace std;
 #define WIDTH 1000
 #define DUREE 10000
 #define PERIOD_BROADCAST 2
+#define ALPHA 4
+#define C 100000
+#define INIT_ENERGY 5000000000.0
 
 
 struct pos
@@ -69,9 +72,9 @@ void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 		default:
 			break;
 	}
-	sortie << "\"> <init alpha=\"4\" c=\"100000000\" eps=\"0.01\" debug=\"0\"/> <default /> </entity>" << endl;
-	sortie << "<entity name=\"mac\" library=\"mac_macter\"> <init  debit=\"10\"  alpha=\"4\" c=\"100000000\" debug=\"0\" range=\"" << RANGE << "\"/> </entity>" << endl;
-	sortie << "<entity name=\"theorie\" library=\"energy_theorie\"> <init  debug=\"0\"/> <default energy=\"5000000000\" rx=\"1\"  tx=\"1\" range=\"" << RANGE << "\" PRNmin=\"75.0\" alpha=\"4\" c=\"100000000\"/> </entity>" << endl;
+	sortie << "\"> <init alpha=\"" << ALPHA << "\" c=\"" << C << "\" eps=\"0.01\" debug=\"0\"/> <default /> </entity>" << endl;
+	sortie << "<entity name=\"mac\" library=\"mac_macter\"> <init  debit=\"10\"  alpha=\"" << ALPHA << "\" c=\"" << C << "\" debug=\"0\" range=\"" << RANGE << "\"/> </entity>" << endl;
+	sortie << "<entity name=\"theorie\" library=\"energy_theorie\"> <init  debug=\"0\" energy=\"" << INIT_ENERGY << "\" rx=\"1\"  tx=\"1\" range=\"" << RANGE << "\" PRNmin=\"75.0\" alpha=\"" << ALPHA << "\" c=\"" << C << "\"/> </entity>" << endl;
 	sortie << "<environment> <propagation entity=\"range\" range=\"" << RANGE << "\"/> <interferences entity=\"interf\"/> <modulation entity=\"none\"/> </environment>" << endl;
 	sortie << "<bundle name=\"sensor\" worldsens=\"false\" default=\"true\" birth=\"0\"> <mobility entity=\"static-pos\"/> <energy entity=\"theorie\" /> <antenna entity=\"omnidirectionnal\"> <up entity=\"radio\"/> </antenna> <with entity=\"radio\"> <up entity=\"mac\"/> <down entity=\"omnidirectionnal\"/> </with> <with entity=\"mac\"> <up entity=\"routing-protocole\"/> <down entity=\"radio\"/> </with> <with entity=\"routing-protocole\"> <up entity=\"app-sensor\"/> <down entity=\"mac\"/> </with> <with entity=\"app-sensor\"> <down entity=\"routing-protocole\"/> </with> </bundle>" << endl;
 	

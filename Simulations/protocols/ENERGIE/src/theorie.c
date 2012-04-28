@@ -8,8 +8,6 @@
 #include <time_wsnet.h>
 #include <list.h>
 
-#define JAVAPATH "../ArticPointDFS"
-
 //#define ENERGY(x...)  { FILE *energ; energ=fopen("energy","a+"); fprintf(energ,x); fclose(energ);}
 //#define PR(x...)  { FILE *energ; energ=fopen("lifetime","a+"); fprintf(energ,x); fclose(energ);}
 
@@ -46,14 +44,23 @@ struct entitydata {
     double prMax;
 	int nbDead;
 	list* articulations;
-	int range;
+	double range;
 	int alpha;
 	int c;
 	int LC;
 };
 
+struct nodedata {
+    double energy;
+    double initial;
+    double tx;
+    double rx;
+    double idle;
+	
+};
 
-void getArticulationNodes(call_t* c, char* path)
+
+void getArticulationNodes(call_t* c)
 {
     struct entitydata *entitydata = get_entity_private_data(c);
 	
@@ -75,13 +82,17 @@ void getArticulationNodes(call_t* c, char* path)
 		}
 	}
 	fclose(grapheJava);
-	//printf("scanf...\n");
-	//scanf("%d", &i);
 	if(aretes != 0)
 	{
+		char javapath[1024];
+		if(getenv("JAVAPATH") != NULL)
+			strcpy(javapath, getenv("JAVAPATH"));
+		else
+			strcpy(javapath, "../ArticPointDFS");
+		
 		char add[1024];
 		strcpy(add, "java -cp ");
-		strcat(add, path);
+		strcat(add, javapath);
 		strcat(add, " ArticPointDFS grapheForJava\n");
 		system(add);
 		
@@ -100,8 +111,6 @@ void getArticulationNodes(call_t* c, char* path)
 		}
 		fclose(grapheJava);
 	}
-	//printf("scanf...\n");
-	//scanf("%d", &i);
 	system("rm grapheForJava\n");
 }
 
@@ -118,9 +127,9 @@ int init(call_t *c, void *params) {
     entitydata->prMax = 75.00;
 	entitydata->nbDead = 0;
 	entitydata->articulations = 0;
-	entitydata->range = 30;
-	entitydata->alpha = 4;
-	entitydata->c = 100000000;
+	entitydata->range = 30.0;
+	entitydata->alpha = 1;
+	entitydata->c = 0;
 	entitydata->LC = 0;
 	
 
@@ -133,7 +142,7 @@ int init(call_t *c, void *params) {
             }
         }
 		if (!strcmp(param->key, "range")) {
-            if (get_param_integer(param->value, &(entitydata->range))) {
+            if (get_param_double(param->value, &(entitydata->range))) {
                 goto error;
             }
         }
@@ -152,16 +161,11 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
-        /*if (!strcmp(param->key, "TTFF")) {
-            if (get_param_integer(param->value, &(entitydata->ttff))) {
-                goto error;
-            }
-        }*/
     }
 
     init_files();
     set_entity_private_data(c, entitydata);
-	
+	printf("energie : alpha : %d ; c : %d\n", entitydata->alpha, entitydata->c);
 	
 	
     return 0;
@@ -176,17 +180,6 @@ int destroy(call_t *c) {
 }
 
 
-/* ************************************************** */
-/* ************************************************** */
-struct nodedata {
-    double energy;
-    double initial;
-    double tx;
-    double rx;
-    double idle;
-
-};
-
 
 
 /* ************************************************** */
@@ -196,8 +189,8 @@ int setnode(call_t *c, void *params) {
     param_t *param;
 
     /* default values */
-    nodedata->energy  = 1000000;
-    nodedata->initial = 1000000;
+    nodedata->energy  = 1000000.0;
+    nodedata->initial = 1000000.0;
     nodedata->tx      = 2;
     nodedata->rx      = 2;
     nodedata->idle    = 1;
@@ -227,9 +220,9 @@ int setnode(call_t *c, void *params) {
         }
     }
     
-    //ENERGY("%d I %lf %lf\n",c->node,get_time_now_second(),nodedata->energy);
     nodedata->initial = nodedata->energy;
     set_node_private_data(c, nodedata);
+	printf("Energie initiale : %.1lf\n",nodedata->energy);
     return 0;
     
  error:
@@ -328,10 +321,10 @@ void consume(call_t *c, double energy) {
 		
 		// Debut calcul lifetime
 		double pourcentageAvant = ((double)entitydata->nbDead*100.0/(double) get_node_count());
-		//printf("pourcentage avant : %.1lf\n", pourcentageAvant);
 		
 		if(entitydata->nbDead == 0)
 		{
+			printf("Mesure de TTFF effectuee : %.1lf\n", get_time_now_second());
 			FILE* lt = fopen("lifetime", "a");
 			fprintf(lt, "TTFF %.1lf\n", get_time_now_second());
 			fclose(lt);
@@ -341,28 +334,31 @@ void consume(call_t *c, double energy) {
 		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double) get_node_count());
 		if(!entitydata->LC)
 		{
-			getArticulationNodes(c, JAVAPATH);
+			getArticulationNodes(c);
 			if(list_recherche(entitydata->articulations, c->node))
 			{
+				printf("Mesure de LC effectuee : %.1lf\n", get_time_now_second());
 				FILE* lt = fopen("lifetime", "a");
 				fprintf(lt, "LC %.1lf\n", get_time_now_second());
-				fclose(lt);
 				entitydata->LC = 1;
 				
 				
 				if(pourcentageAvant <= (100-entitydata->prMax))
 				{
-					FILE* lt = fopen("lifetime", "a");
+					printf("Mesure de PCN effectuee : %.1lf\n", get_time_now_second());
 					fprintf(lt, "PCN %.1lf\n", get_time_now_second());
 					fclose(lt);
 					//if(entitydata->debug)
 						printf("Toutes les mesures ont ete effectuees...\n");
 					end_simulation();
+					return;
 				}
+				fclose(lt);
 			}
 		}
-		else if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
+		if(pourcentageApres > (100-entitydata->prMax) && pourcentageAvant <= (100-entitydata->prMax))
 		{
+			printf("Mesure de PCN effectuee : %.1lf\n", get_time_now_second());
 			FILE* lt = fopen("lifetime", "a");
 			fprintf(lt, "PCN %.1lf\n", get_time_now_second());
 			fclose(lt);
