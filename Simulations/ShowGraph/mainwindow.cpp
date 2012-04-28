@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QFileDialog>
+#include  <QLabel>
+
 
 
 
@@ -17,8 +19,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->dockWidget_3->setVisible(false);
     zoom = 3;
 
+
+    //
+
+
     //AFFICHAGE
-    setCentralWidget(graph_view);
+     setCentralWidget(graph_view );
 }
 void MainWindow::genererTopologie()
 {
@@ -174,7 +180,7 @@ void MainWindow::clearGraph()
     ui->zoomEdit->setEnabled(true);
     list_graph.clear();
     nodes.clear();
-
+    list_etape.clear();
     list_graph_etape.clear();
     graph_view->clearGraph();
     graph_view->repaint();

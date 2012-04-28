@@ -9,6 +9,13 @@ double distance (GraphElement s)
     double dy=s.nodeDeb.nodePosition.y()-s.nodeFin.nodePosition.y();
     return qSqrt(dx*dx+dy*dy);
 }
+double distance(Element a, Element b)
+{
+    double dx=a.nodePosition.x()-b.nodePosition.x();
+    double dy=a.nodePosition.y()-b.nodePosition.y();
+    return qSqrt(dx*dx+dy*dy);
+
+}
 
 GraphView::GraphView(QWidget *parent)
     : QWidget(parent)
@@ -41,6 +48,7 @@ void GraphView::setGraph(QList<GraphElement> graph)
 }
 void GraphView::setGraphEtape(QList<int> dep)
 {
+    depart.clear();
     depart=dep;
     haveDepart=true;
 }
@@ -88,21 +96,31 @@ void GraphView::setTransformed(bool transformed)
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
     QPainter painter(this);
-    QMap<int,QVector2D> rayonMax;
-    /*if(haveDepart)
+    QMap<int,int> rayonMax;
+    if(haveDepart)
     {
         for(int i=0;i<list_graph.size();i++)
         {
             GraphElement encours =list_graph.at(i);
+
             if(depart.contains(encours.nodeDeb.node))
                     if(!rayonMax.contains(encours.nodeDeb.node))
-                        rayonMax.insert(encours.nodeDeb.node, QVector2D(encours.node,distance(encours)));
-                    else if(distance(encours)<rayonMax.keys().//**/
+                        rayonMax.insert(encours.nodeDeb.node, encours.nodeFin.node);
+                    else
+                    {
+                        GraphElement *precE;
+                        int prec=rayonMax.value(encours.nodeDeb.node);
+                        for(int i=0;i<list_graph.length();i++)
+                        {
+                            if(list_graph.at(i).nodeDeb.node==encours.nodeDeb.node
+                                    && list_graph.at(i).nodeFin.node==prec)  precE=new GraphElement(encours);
+                        }
 
-
-
-
-    //}
+                        if(distance(encours)>distance(*precE))
+                            rayonMax.insert(encours.nodeDeb.node,encours.nodeFin.node);
+                    }
+        }
+    }
 
     if(haveGraph && haveNodes)
     {
@@ -118,7 +136,8 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             painter.drawText(center,QVariant((int)(dist/zoom)).toString());
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
 
-            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node))
+            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node)
+                    && rayonMax.value(list_graph.at(i).nodeDeb.node)== list_graph.at(i).nodeFin.node)
             {
                 painter.setPen(qRgba(224, 176, 255,75));
                 painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
@@ -164,5 +183,6 @@ void GraphView::clearGraph()
     haveNodes=false;
     haveGraph=false;
     list_graph.clear();
+    depart.clear();
     nodes.clear();
 }

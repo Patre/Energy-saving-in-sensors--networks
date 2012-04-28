@@ -47,6 +47,7 @@ private:
     QList<Element>  nodes;
     double degreeMoy;
     double zoom;
+    QScrollArea *scrollArea;
 };
 
 #endif // MAINWINDOW_H

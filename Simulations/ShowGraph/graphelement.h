@@ -13,6 +13,8 @@ class GraphElement
 public:
     GraphElement(int deb,int fin,qreal debx,qreal deby,qreal finx,qreal finy);
     GraphElement(Element deb,Element fin);
+    GraphElement(const  GraphElement  &autre);
+
 
 
     int getIdNodeDebut();

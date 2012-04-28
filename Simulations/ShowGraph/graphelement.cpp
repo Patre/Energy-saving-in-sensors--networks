@@ -9,6 +9,13 @@ GraphElement::GraphElement(int deb,int fin,qreal debx,qreal deby,qreal finx,qrea
     nodeDeb.nodePosition = QPointF(debx,deby);
     nodeFin.nodePosition = QPointF(finx,finy);
 }
+GraphElement::GraphElement(const GraphElement & autre)
+{
+    nodeDeb.node=autre.nodeDeb.node;
+    nodeFin.node=autre.nodeFin.node;
+    nodeDeb.nodePosition = autre.nodeDeb.nodePosition;
+    nodeFin.nodePosition =autre.nodeFin.nodePosition;
+}
 
 GraphElement::GraphElement(Element deb, Element fin)
 {
