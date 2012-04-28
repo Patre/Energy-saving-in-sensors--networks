@@ -97,6 +97,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 {
     QPainter painter(this);
     QMap<int,int> rayonMax;
+
     if(haveDepart)
     {
         for(int i=0;i<list_graph.size();i++)
@@ -105,7 +106,9 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
             if(depart.contains(encours.nodeDeb.node))
                     if(!rayonMax.contains(encours.nodeDeb.node))
+                    {
                         rayonMax.insert(encours.nodeDeb.node, encours.nodeFin.node);
+                    }
                     else
                     {
                         GraphElement *precE;
@@ -122,6 +125,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
         }
     }
 
+
     if(haveGraph && haveNodes)
     {
         for(int i=0;i<list_graph.size();i++)
@@ -136,7 +140,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             painter.drawText(center,QVariant((int)(dist/zoom)).toString());
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
 
-            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node)
+            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node) && !dejaTrai.contains(list_graph.at(i).nodeDeb.node)
                     && rayonMax.value(list_graph.at(i).nodeDeb.node)== list_graph.at(i).nodeFin.node)
             {
                 painter.setPen(qRgba(224, 176, 255,75));
@@ -176,6 +180,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
         }
     }
+    dejaTrai.append(depart);
 }
 
 void GraphView::clearGraph()
@@ -184,5 +189,6 @@ void GraphView::clearGraph()
     haveGraph=false;
     list_graph.clear();
     depart.clear();
+    dejaTrai.clear();
     nodes.clear();
 }

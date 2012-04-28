@@ -117,6 +117,8 @@ void MainWindow::lireFile(QString filename)
     //affichages des connecxion
     //for(int i=0;i<list_graph.size();i++) GraphElement::debug(list_graph.at(i));
 
+
+
 }
 
 

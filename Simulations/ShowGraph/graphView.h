@@ -51,6 +51,8 @@ private:
     bool haveDepart;
     QList<int> depart;
 
+    QList<int> dejaTrai;
+
     double zoom;
     Shape shape;
     QPen pen;
