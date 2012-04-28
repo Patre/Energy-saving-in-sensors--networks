@@ -17,11 +17,8 @@ void tx( call_t *c , packet_t * packet );
 
 struct nodedata {
 	int overhead;
-	listeNodes* oneHopNeighbourhood;
-	listeNodes* twoHopNeighbourhood;
-	graphe* g2hop;
+	graphe* g;
 	arbre* BIP_tree;
-	int nbr_evenement; // stats
 	int* lastIDs;
 };
 
@@ -40,8 +37,6 @@ typedef struct _packet_bip
     nodeid_t src;
 	nodeid_t dst;
 	nodeid_t pred;
-	listeNodes* askedToRedirect;
-	listeNodes* needsToBeCovered;
 	int id;
 } packet_PROTOCOLE;
 

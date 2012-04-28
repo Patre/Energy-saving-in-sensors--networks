@@ -23,8 +23,11 @@ struct macnodedata {
 #endif
 };
 
+void init_graphe(call_t *c);
 
-arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNodes* needsToBeCovered, int debug);
+void init_bip_tree(call_t *c, int noeudRacine);
+
+arbre* computeBIPtree(call_t *c, graphe* g, int noeudRacine, int debug);
 
 /**
  * \brief Return the tx antenna gain towards the destination direction.
@@ -32,19 +35,13 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
  * \param position the destination position.
  * \return The antenna gain in dB.
  **/
-double   calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
+double calcul_energie(position_t A, position_t B,double alpha,double c, double* distance);
 
 double getCoutFromDistance(double distance, double alpha, double c);
 
 double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree);
 
-int getNearestNeighbour(call_t *c, graphe* g);
-
-void setRelayNodes(call_t *c, graphe* g, arbre* bipTree, listeNodes** askedToRedirect, listeNodes** needsToBeCovered, int node);
-
-graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode);
-
-void forward(call_t* c, packet_t *packet);
+int getNearestNeighbour(call_t *c, graphe* g, int noeudRacine);
 
 double get_range_Tr(call_t *c);
 

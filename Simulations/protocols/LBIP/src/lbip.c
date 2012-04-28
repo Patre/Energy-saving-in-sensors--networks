@@ -30,7 +30,7 @@ model_t model =  {
 
 void init_files()
 {
-    //REPLAY
+    /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
     fclose(replay);
@@ -38,8 +38,7 @@ void init_files()
     //GRAPH
     FILE *topo;
     topo=fopen("graphLBIP","w");
-    fclose(topo);
-	
+    fclose(topo);*/
 }
 
 int destroy(call_t *c) {
@@ -71,8 +70,8 @@ int setnode(call_t *c, void *params) {
 	
     set_node_private_data(c, nodedata);
 	
-    DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+    /*DEBUG;
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);*/
 	
 //	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
@@ -85,7 +84,7 @@ int init(call_t *c, void *params) {
     param_t *param;
 	
     /* init entity variables */
-    entitydata->alpha   = 2;
+    entitydata->alpha   = 1;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
     //entitydata->debut   = time_seconds_to_nanos(3);
@@ -96,12 +95,12 @@ int init(call_t *c, void *params) {
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
         if (!strcmp(param->key, "alpha")) {
-			if (get_param_double(param->value, &(entitydata->alpha))) {
+			if (get_param_integer(param->value, &(entitydata->alpha))) {
 				goto error;
 			}
         }
         if (!strcmp(param->key, "c")) {
-			if (get_param_double(param->value, &(entitydata->c))) {
+			if (get_param_integer(param->value, &(entitydata->c))) {
 				goto error;
 			}
         }
@@ -111,23 +110,12 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
-		
-        /*if (!strcmp(param->key, "debut")) {
-			if (get_param_time(param->value, &(entitydata->debut))) {
-				goto error;
-			}
-        }
-		
-        if (!strcmp(param->key, "period_evnt")) {
-			if (get_param_time(param->value, &(entitydata->periodEVE))) {
-				goto error;
-			}
-        }*/
     }
 	
          init_files();
 	
     set_entity_private_data(c, entitydata);
+	printf("lbip : alpha : %d ; c : %d\n", entitydata->alpha, entitydata->c);
     return 0;
 	
 	
@@ -148,7 +136,9 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 	
-    init_one_hop(c,entitydata->eps);
+	broadcast_hello(c, NULL);
+    uint64_t at=get_time_now()+time_seconds_to_nanos(2);
+    scheduler_add_callback(at, c, broadcast_hello2, NULL);
 	
     return 0;
 }
@@ -187,25 +177,25 @@ void rx(call_t *c, packet_t *packet) {
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
-                            SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
-
+				//SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
+				
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
 				RX(&c_up, packet_clone(packet));
 				
 				if(listeNodes_recherche(data->askedToRedirect, c->node)) // si le paquet contient des instructions pour ce noeud
 				{
-                                    SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
-
+					//SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
+					
 					//uint64_t time = rand() % 11000000000000;
 					//scheduler_add_callback(time, c, forward, packet);
 					forward(c, packet);
 				}
 			}
-                        /*else
-			{
-				printf("Message non broadcaste pas traite ... TODO\n");
-                        }*/
+			/*else
+			 {
+			 printf("Message non broadcaste pas traite ... TODO\n");
+			 }*/
 			//packet_dealloc(packet);
 			break;
 		}
@@ -221,7 +211,7 @@ void tx( call_t *c , packet_t * packet )
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
 	
-    //printf("BIP - Paquet de type %d envoye de %d a %d (at %lf s).\n", data->type, data->src, data->dst, get_time_now_second());
+    //printf("LBIP - Paquet de type %d envoye par %d avec range = %.1lf (at %lf s).\n", data->type, c->node, get_range_Tr(c), get_time_now_second());
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};

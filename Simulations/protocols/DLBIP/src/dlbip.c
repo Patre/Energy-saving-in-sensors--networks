@@ -30,13 +30,13 @@ model_t model =  {
 
 void init_files()
 {
-    //REPLAY
+    /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
     fclose(replay);
 	
     //GRAPH
-    /*FILE *topo;
+    FILE *topo;
     topo=fopen("graphDLBIP","w");
     fclose(topo);*/
 	
@@ -83,7 +83,7 @@ int init(call_t *c, void *params) {
     param_t *param;
 	
     /* init entity variables */
-    entitydata->alpha   = 2;
+    entitydata->alpha   = 1;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
     entitydata->debug   = 0;
@@ -95,12 +95,12 @@ int init(call_t *c, void *params) {
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
         if (!strcmp(param->key, "alpha")) {
-			if (get_param_double(param->value, &(entitydata->alpha))) {
+			if (get_param_integer(param->value, &(entitydata->alpha))) {
 				goto error;
 			}
         }
         if (!strcmp(param->key, "c")) {
-			if (get_param_double(param->value, &(entitydata->c))) {
+			if (get_param_integer(param->value, &(entitydata->c))) {
 				goto error;
 			}
         }
@@ -123,6 +123,7 @@ int init(call_t *c, void *params) {
     init_files();
 	
     set_entity_private_data(c, entitydata);
+	printf("dlbip : alpha : %d ; c : %d\n", entitydata->alpha, entitydata->c);
     return 0;
 	
 	
@@ -150,7 +151,9 @@ int bootstrap(call_t *c) {
 		nodedata->energiesRem[i] = battery_remaining(c) - 2*getCoutFromDistance(getRange(c), entitydata->alpha, entitydata->c);
 	}
 	
-    init_one_hop(c,entitydata->eps);
+	broadcast_hello(c, NULL);
+    uint64_t at=get_time_now()+time_seconds_to_nanos(2);
+    scheduler_add_callback(at, c, broadcast_hello2, NULL);
 	
     return 0;
 }

@@ -55,37 +55,16 @@ int init(call_t *c, void *params) {
     param_t *param;
 	
     /* init entity variables */
-    entitydata->alpha   = 2;
     entitydata->debug   = 0;
-    entitydata->c       = 0;
-    entitydata->eps     = 0.01;
-    entitydata->debut   = time_seconds_to_nanos(10);
-    entitydata->periodEVE = time_seconds_to_nanos(10);
 	
 	
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
-        if (!strcmp(param->key, "alpha")) {
-			if (get_param_double(param->value, &(entitydata->alpha))) {
-				goto error;
-			}
-        }
         if (!strcmp(param->key, "debug")) {
-                        if (get_param_integer(param->value, &(entitydata->debug))) {
-                                goto error;
-                        }
-        }
-
-        if (!strcmp(param->key, "c")) {
-			if (get_param_double(param->value, &(entitydata->c))) {
+			if (get_param_integer(param->value, &(entitydata->debug))) {
 				goto error;
 			}
-        }
-        if (!strcmp(param->key, "eps")) {
-            if (get_param_double(param->value, &(entitydata->eps))) {
-                goto error;
-            }
         }
     }
 
@@ -113,14 +92,6 @@ int bootstrap(call_t *c) {
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
-
-
-
-    /*if(c->node==0)
-    {
-        uint64_t at=entitydata->debut;
-        scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);
-    }//*/
 
 
    return 0;

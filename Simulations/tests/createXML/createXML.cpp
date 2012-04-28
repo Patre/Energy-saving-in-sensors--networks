@@ -15,8 +15,10 @@ using namespace std;
 #define DUREE 10000
 #define PERIOD_BROADCAST 2
 #define ALPHA 4
-#define C 100000
-#define INIT_ENERGY 5000000000.0
+#define C 1000000
+#define INIT_ENERGY "500000000.0"
+#define PC_ALIVE_MIN 75.0
+#define DEBUT_APP 5
 
 
 struct pos
@@ -47,7 +49,7 @@ void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 	sortie << "<default loss=\"0\" angle-xy=\"random\" angle-z=\"0\"/> </entity>" << endl;
 	sortie << "<entity name=\"radio\" library=\"radio_half1d\"> <default sensibility=\"-92\" T_b=\"727\" dBm=\"10\" channel=\"0\" modulation=\"none\"/> </entity>" << endl;
 	sortie << "<entity name=\"static-pos\" library=\"mobility_static\"> <default x=\"random\" y=\"random\" z=\"0.0\"/> </entity>" << endl;
-	sortie << "<entity name=\"app-sensor\" library=\"application_broadcast\"> <init period=\"2s\" debut=\"30s\" debug=\"0\"/> <default /> </entity>" << endl;
+	sortie << "<entity name=\"app-sensor\" library=\"application_broadcast\"> <init period=\"2s\" debut=\"" << DEBUT_APP << "s\" debug=\"0\"/> <default /> </entity>" << endl;
 	sortie << "<entity name=\"routing-protocole\" library=\"";
 	switch (algo) {
 		case 0:
@@ -74,7 +76,7 @@ void writeFile(string  nomFichier, int nbNoeuds, pos tabNoeuds[], int algo)
 	}
 	sortie << "\"> <init alpha=\"" << ALPHA << "\" c=\"" << C << "\" eps=\"0.01\" debug=\"0\"/> <default /> </entity>" << endl;
 	sortie << "<entity name=\"mac\" library=\"mac_macter\"> <init  debit=\"10\"  alpha=\"" << ALPHA << "\" c=\"" << C << "\" debug=\"0\" range=\"" << RANGE << "\"/> </entity>" << endl;
-	sortie << "<entity name=\"theorie\" library=\"energy_theorie\"> <init  debug=\"0\" energy=\"" << INIT_ENERGY << "\" rx=\"1\"  tx=\"1\" range=\"" << RANGE << "\" PRNmin=\"75.0\" alpha=\"" << ALPHA << "\" c=\"" << C << "\"/> </entity>" << endl;
+	sortie << "<entity name=\"theorie\" library=\"energy_theorie\"> <init  debug=\"0\" energy=\"" << INIT_ENERGY << "\" range=\"" << RANGE << "\" PRNmin=\"" << PC_ALIVE_MIN << "\" alpha=\"" << ALPHA << "\" c=\"" << C << "\"/> </entity>" << endl;
 	sortie << "<environment> <propagation entity=\"range\" range=\"" << RANGE << "\"/> <interferences entity=\"interf\"/> <modulation entity=\"none\"/> </environment>" << endl;
 	sortie << "<bundle name=\"sensor\" worldsens=\"false\" default=\"true\" birth=\"0\"> <mobility entity=\"static-pos\"/> <energy entity=\"theorie\" /> <antenna entity=\"omnidirectionnal\"> <up entity=\"radio\"/> </antenna> <with entity=\"radio\"> <up entity=\"mac\"/> <down entity=\"omnidirectionnal\"/> </with> <with entity=\"mac\"> <up entity=\"routing-protocole\"/> <down entity=\"radio\"/> </with> <with entity=\"routing-protocole\"> <up entity=\"app-sensor\"/> <down entity=\"mac\"/> </with> <with entity=\"app-sensor\"> <down entity=\"routing-protocole\"/> </with> </bundle>" << endl;
 	
@@ -342,7 +344,7 @@ void createNodes(int topoType, int nbNoeuds, pos* tabNoeuds)
 void createBroadcastingNodes(int nbNoeuds)
 {
 	ofstream topo("topologie.txt", ios::out|ios::app);
-	for(int i = 0 ; i < DUREE ; i+=PERIOD_BROADCAST)
+	for(int i = 0 ; i < 3*DUREE ; i+=PERIOD_BROADCAST)
 	{
 		topo << rand() % nbNoeuds << endl;
 	}

@@ -9,8 +9,8 @@
 #include <arbre.h>
 #include <graphe.h>
 
-#define DBG(x...)  printf(x);
-#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphDLBIP","a+"); fprintf(topo,x); fclose(topo);}
+//#define DBG(x...)  printf(x);
+//#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphDLBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
 void tx( call_t *c , packet_t * packet );
@@ -29,8 +29,8 @@ struct nodedata {
 
 struct protocoleData {
         int debug;
-	double    alpha; //alpha de modele d'energie
-	double    c; //le C de modele d'energie
+	int    alpha; //alpha de modele d'energie
+	int    c; //le C de modele d'energie
 	double    eps; //la duree avant le lancement du premier evenement
 };
 
@@ -46,6 +46,14 @@ typedef struct _packet_bip
 	listeNodes* needsToBeCovered;
 	int id;
 } packet_PROTOCOLE;
+
+struct macnodedata {
+	void *buffer;
+	double range;
+#ifdef ONE_PACKET_AT_A_TIME
+	int scheduler;
+#endif
+};
 
 
 #endif //PROTOCOLE DECLARATION

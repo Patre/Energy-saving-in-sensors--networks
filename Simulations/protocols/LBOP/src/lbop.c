@@ -29,7 +29,7 @@ model_t model =  {
 
 void init_files()
 {
-    //REPLAY
+    /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
     fclose(replay);
@@ -37,8 +37,7 @@ void init_files()
     //GRAPH
     FILE *topo;
     topo=fopen("graphLBOP","w");
-    fclose(topo);
-	
+    fclose(topo);*/
 }
 
 //INITIALISATION DE NOEUD DE FICHIER XML
@@ -60,7 +59,7 @@ int setnode(call_t *c, void *params) {
 
     set_node_private_data(c, nodedata);
 	
-    DEBUG;
+    /*DEBUG;
     SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);//*/
 	
     return 0;
@@ -72,32 +71,12 @@ int init(call_t *c, void *params) {
     param_t *param;
 	
     /* init entity variables */
-    entitydata->alpha   = 2;
-    entitydata->c       = 0;
-    entitydata->eps     = 0.01;
-    entitydata->debug   =0;
-    entitydata->debut   = time_seconds_to_nanos(10);
-    entitydata->periodEVE = time_seconds_to_nanos(10);
+    entitydata->debug = 0;
 	
 	
     /* reading the "init" markup from the xml config file */
     das_init_traverse(params);
     while ((param = (param_t *) das_traverse(params)) != NULL) {
-        if (!strcmp(param->key, "alpha")) {
-			if (get_param_double(param->value, &(entitydata->alpha))) {
-				goto error;
-			}
-        }
-        if (!strcmp(param->key, "c")) {
-			if (get_param_double(param->value, &(entitydata->c))) {
-				goto error;
-			}
-        }
-        if (!strcmp(param->key, "eps")) {
-            if (get_param_double(param->value, &(entitydata->eps))) {
-                goto error;
-            }
-        }
         if (!strcmp(param->key, "debug")) {
             if (get_param_integer(param->value, &(entitydata->debug))) {
                 goto error;
@@ -130,10 +109,11 @@ int bootstrap(call_t *c) {
 	/* get mac header overhead */
     nodedata->overhead = GET_HEADER_SIZE(&c0);
 
-    get_one_hop(c,entitydata->eps);
-    get_PROTOCOLE_init(c,entitydata->eps);
-    //LMST elimination
-    get_lmst(c,entitydata->eps);
+    broadcast_hello(c, NULL);
+    uint64_t at=get_time_now()+time_seconds_to_nanos(2);
+    scheduler_add_callback(at, c, init_lbop, NULL);
+    at=get_time_now()+time_seconds_to_nanos(3);
+    scheduler_add_callback(at, c, broadcast_lmst, NULL);
 
    return 0;
 }
@@ -175,7 +155,7 @@ void rx(call_t *c, packet_t *packet) {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
             if(list_recherche(data->destinations,c->node))
                     {
-                        SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
+                       //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
                         if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
                              PROTOCOLE_reception(c,packet);
                     }
@@ -193,27 +173,7 @@ void rx(call_t *c, packet_t *packet) {
 //LA FIN DE LA SUMULATION
 int unsetnode(call_t *c) {
     struct nodedata *nodedata = get_node_private_data(c);
-
-
-
-
-    /*int i=0;
-    call_t *inter=malloc(sizeof(call_t));
-    inter->entity=c->entity;
-    inter->from=c->from;
-
-    for(i=0;i<get_node_count();i++)
-        if(is_node_alive(i))
-        {
-            inter->node=i;
-            struct nodedata *internodedata = get_node_private_data(inter);
-            list_delete(&internodedata->LMST_voisin,c->node);
-        }*/
-
-    //printf("%d ",c->node);
-    //list_PACKET_affiche(nodedata->paquets);
-
-    //liberation d'espace memoire
+	
     //PAR USER PROTOCOLE
     list_PACKET_detruire(&nodedata->paquets);               //packets
     listeNodes_detruire(&nodedata->oneHopNeighbourhood);                     //1-HOP
@@ -237,7 +197,7 @@ void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
-    //if(entitydata->debug)
+    if(entitydata->debug)
         DBG("LBOP BROADCAST - ON %d  WITH RANGE %.2lf At %lf \n",c->node,get_range_Tr(c), get_time_now_second());
 
     entityid_t *down = get_entity_links_down(c);

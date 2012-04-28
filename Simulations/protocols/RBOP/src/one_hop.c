@@ -45,8 +45,10 @@ int broadcast_hello(call_t *c, void *args) {
                 packet_dealloc(packet);
                 return -1;
     }
-
-    TX(&c0,packet);
+	
+	
+	c0.entity = c->entity;
+    tx(&c0, packet);
 
     //tous c'est bien passé
     return 1;

@@ -19,22 +19,18 @@
 
 struct nodedata {
 	int overhead;
-
-        double range;
 	
+	double range;
 	//packet REcus
 	list_PACKET *paquets;
-	
-
-        //Integration a la version clhoé
-        listeNodes* oneHopNeighbourhood;
-
+	//Integration a la version chloé
+	listeNodes* oneHopNeighbourhood;
 	//PROTOCOLE
-        list *RNG;
+	list *RNG;
 	//ajouter par rabah
 	int nbr_evenement;
-
-
+	
+	
 };
 
 /* ************************************************** */
@@ -42,11 +38,6 @@ struct nodedata {
 /* VARIABLE de L'APPLICATION LBIP */
 struct protocoleData {
         int debug;
-	double    alpha;           //alpha de modele d'energie
-	double    c;                 //le C de modele d'energie
-	double    eps;              //la duree de ropos (ordonneunceur de l'initialisation)
-	uint64_t  debut;           //l'instant de debut de l'application (detection de premier evenement
-	uint64_t  periodEVE;       //delta temps entre chaque evenement
 };
 
 /* ************************************************** */
@@ -93,5 +84,7 @@ struct macnodedata {
     int scheduler;
 #endif
 };
+
+void tx( call_t *c , packet_t * packet );
 
 #endif //PROTOCOLE DECLARATION

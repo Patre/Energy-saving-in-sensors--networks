@@ -1,58 +1,7 @@
 
 #include "Implementation.h"
 
-/* ************************************************** */
-/*************************************************** */
-//LANCEMENT
-int PROTOCOLE_appelle(call_t *c, packet_t * packetUP) {
-    struct nodedata *nodedata=get_node_private_data(c);
-    struct protocoleData *entitydata = get_entity_private_data(c);
 
-    //augmanter le nbr d'evenement
-    nodedata->nbr_evenement++;
-
-    /*
-         Creation de Packet
-     */
-
-    //creation de paquet et initialisation de son data
-    packet_t *packet = packet_create(c, nodedata->overhead + sizeof(packet_PROTOCOLE), -1);
-    packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
-
-    //remplissage de data
-    data->type=LBOP;
-    data->src=c->node;
-    data->seq=nodedata->nbr_evenement;
-    data->redirected_by=c->node;
-
-    //ENVOI
-    //recuperer le support de communication DOWN
-    entityid_t *down = get_entity_links_down(c);
-    call_t c0 = {down[0], c->node};
-
-    //destination de paquet
-    destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
-    if (SET_HEADER(&c0, packet, &destination) == -1) {
-        packet_dealloc(packet);
-        return -1;
-    }
-
-
-	c0.entity = c->entity;
-    tx(&c0,packet);
-
-    //Prochaine evenement
-    uint64_t at=get_time_next(entitydata->debut,entitydata->periodEVE,get_time_now());
-    scheduler_add_callback(at, c, PROTOCOLE_appelle, NULL);//*/
-
-    //tous c'est bien passé
-    return 1;
-}
-
-
-/***********************************************************************************************/
-/***********************************************************************************************/
-//RECEPTION
 int PROTOCOLE_reception(call_t *c, packet_t *packetRecu) {
     struct nodedata *nodedata=get_node_private_data(c);
     packet_PROTOCOLE *data=(packet_PROTOCOLE *) (packetRecu->data + nodedata->overhead);

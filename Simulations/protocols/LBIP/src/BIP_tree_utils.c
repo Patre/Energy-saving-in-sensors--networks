@@ -152,25 +152,20 @@ double getCoutFromDistance(double distance, double alpha, double c)
     return par1+c;
 }
 
-double getDistanceFromCout(double cout, double alpha, double c)
-{
-	double res = cout - c;
-	res = pow(res, 1.0/alpha);
-	return res;
-}
-
 double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 {
+	struct nodedata *nodedata = get_node_private_data(c);
 	struct protocoleData *entitydata = get_entity_private_data(c);
 	
 	// calcul de la distance entre ce noeud et son voisin 1-hop (dans l'arbre de BIP) le plus eloigne
 	list *fils = 0;
 	double distMax = 0, dist;
+	position_t pos;
 	arbre_get_fils(&fils, bipTree, c->node);
 	while(fils != 0)
 	{
-		dist = getEdgeCost(g, c->node, fils->val);
-		dist = getDistanceFromCout(dist, entitydata->alpha, entitydata->c);
+		pos = listeNodes_getPos(nodedata->oneHopNeighbourhood, fils->val);
+		dist = distance(get_node_position(c->node), &pos);
 		if(dist > distMax)
 		{
 			distMax = dist;
@@ -178,16 +173,6 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 		fils = fils->suiv;
 	}
 	
-	
-	
-	
-	struct macnodedata {
-		void *buffer;
-		double range;
-#ifdef ONE_PACKET_AT_A_TIME
-		int scheduler;
-#endif
-	};
 	
 	// set le range du module propagation a la valeur desiree
 	array_t *mac=get_mac_entities(c);
@@ -376,6 +361,22 @@ void forward(call_t* c, packet_t *packet)
 	arbre_detruire(&bipTree);
 	deleteGraphe(g);
 	free(g);
+}
+
+double get_range_Tr(call_t *c)
+{
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    return macdata->range;
+}
+
+void set_range_Tr(call_t *c,double range)
+{
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    macdata->range = range;
 }
 
 

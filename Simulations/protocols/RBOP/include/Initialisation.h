@@ -15,10 +15,5 @@ void get_PROTOCOLE_init(call_t *c, double eps);
 double get_range_Tr(call_t *c);
 void set_range_Tr(call_t *c,double range);
 
-
-
-
-
-
 #endif // INIT_PROTOCOLE_H
 
