@@ -14,9 +14,9 @@ using namespace std;
 #define WIDTH 1000
 #define DUREE 10000
 #define PERIOD_BROADCAST 2
-#define ALPHA 4
-#define C 1000000
-#define INIT_ENERGY "500000000.0"
+#define ALPHA 2
+#define C 0
+#define INIT_ENERGY "50000.0"
 #define PC_ALIVE_MIN 75.0
 #define DEBUT_APP 5
 

@@ -65,45 +65,52 @@ arbre* computeBIPtree(call_t *c, graphe* g, listeNodes* askedToRedirect, listeNo
 		else
 		{
 			arbre_add_fils(bipTree, pere[numMinNode], minNode);
+			int numPere = getNumFromLabel(g, pere[numMinNode]);
+			if(poids[numPere] < getEdgeCost(g, pere[numMinNode], minNode))
+			{
+				if(debug)
+					printf("\tChangement du poids de %d\n", pere[numMinNode]);
+				poids[numPere] = getEdgeCost(g,pere[numMinNode], minNode);
+			}
 		}
-		devientEmetteur = 0;
-		// pour chacun des voisins de minNode dans le graphe
-		if(debug)
-			printf("Recuperation du voisinage...\n");
-		trans = getNeighboursFromLabel(g,minNode);
-		while(trans != 0)
+		// pour chacun des noeuds pas dans l'arbre ie : dans le tas
+		for(i = 0 ; i < g->nbSommets ; i++)
 		{
-			numVoisin = getNumFromLabel(g,trans->vLabel);
-			if(debug)
-				printf("\tVoisin label : %d ; num : %d\n", trans->vLabel, numVoisin);
-			coutIncremental = trans->cout - poids[numMinNode];
-			if(!(arbre_recherche(bipTree, trans->vLabel)) && (coutIncremental < cle[getNumFromLabel(g,trans->vLabel)]))
+			if(h_contains(F, i))
+				h_changeLabel(F, i, DBL_MAX);
+		}
+		
+		// pour chacun des noeuds dans l'arbre ie : pas dans le tas
+		for(i = 0 ; i < g->nbSommets ; i++)
+		{
+			if(!h_contains(F, i))
 			{
+				// pour chacun des voisins dans le tas ie : pas dans l'arbre
 				if(debug)
-					printf("\tVoisin pas dans l'arbre et cout a ameliorer.\n");
-				h_changeLabel(F, getNumFromLabel(g,trans->vLabel), coutIncremental);
-				if(poids[numMinNode] < trans->cout)
+					printf("Recuperation du voisinage...\n");
+				trans = getNeighboursFromLabel(g,getLabelFromNum(g,i));
+				while(trans != 0)
 				{
-					if(debug)
-						printf("\tAmelioration du poids de minNode\n");
-					if(poids[numMinNode] == 0)
-						devientEmetteur = 1;
-					poids[numMinNode] = trans->cout;
+					numVoisin = getNumFromLabel(g,trans->vLabel);
+					if(h_contains(F, numVoisin))
+					{
+						if(debug)
+							printf("\tVoisin pas dans l'arbre : label : %d ; num : %d\n", trans->vLabel, numVoisin);
+						coutIncremental = trans->cout - poids[i];
+						if(coutIncremental < cle[numVoisin])
+						{
+							if(debug)
+							{
+								printf("\tCout a ameliorer : %.1lf < %.1lf\n", coutIncremental, cle[numVoisin]);
+							}
+							h_changeLabel(F, numVoisin, coutIncremental);
+							if(debug)
+								printf("\tpere[%d] devient %d...\n", trans->vLabel, getLabelFromNum(g,i));
+							pere[numVoisin] = getLabelFromNum(g,i);
+						}
+					}
+					trans = trans->vSuiv;
 				}
-				if(debug)
-					printf("\tpere[%d] devient %d...\n", trans->vLabel, minNode);
-				pere[numVoisin] = minNode;
-			}
-			if(devientEmetteur)
-			{
-				if(debug)
-					printf("\tOn repart au debut de la liste de voisins...\n");
-				devientEmetteur = 0;
-				trans = getNeighboursFromLabel(g,minNode);
-			}
-			else
-			{
-				trans = trans->vSuiv;
 			}
 		}
 	}
@@ -329,6 +336,7 @@ graphe* purgeGraphe(call_t* c, int farestNode, int fromNode, int predNode)
 void forward(call_t* c, packet_t *packet)
 {
 	struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
 	array_t *down = get_entity_bindings_down(c);
 	packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
@@ -338,6 +346,12 @@ void forward(call_t* c, packet_t *packet)
 	int indice = listeNodes_get_index(data->askedToRedirect, c->node);
 	graphe* g = purgeGraphe(c, listeNodes_get(data->needsToBeCovered, indice), data->src, data->pred);
 	arbre* bipTree = computeBIPtree(c, g, data->askedToRedirect, data->needsToBeCovered, 0);
+	
+	if(entitydata->debug)
+	{
+		printf("%d relai depuis %d :\n", c->node, data->pred);
+		arbre_affiche(bipTree);
+	}
 	
 	// relayer le paquet
 	destination_t dst = {-1,{-1,-1,-1}};

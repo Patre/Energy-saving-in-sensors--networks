@@ -87,8 +87,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 1;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
-    //entitydata->debut   = time_seconds_to_nanos(3);
-    //entitydata->periodEVE = time_seconds_to_nanos(1);
+    entitydata->debug = 0;
 	
 	
     /* reading the "init" markup from the xml config file */
@@ -107,6 +106,12 @@ int init(call_t *c, void *params) {
 		
         if (!strcmp(param->key, "eps")) {
             if (get_param_double(param->value, &(entitydata->eps))) {
+                goto error;
+            }
+        }
+		
+        if (!strcmp(param->key, "debug")) {
+            if (get_param_integer(param->value, &(entitydata->debug))) {
                 goto error;
             }
         }
@@ -177,8 +182,6 @@ void rx(call_t *c, packet_t *packet) {
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
-				//SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
-				
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
 				RX(&c_up, packet_clone(packet));
@@ -208,10 +211,11 @@ void rx(call_t *c, packet_t *packet) {
 void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	
-    //printf("LBIP - Paquet de type %d envoye par %d avec range = %.1lf (at %lf s).\n", data->type, c->node, get_range_Tr(c), get_time_now_second());
+	if(entitydata->debug)
+		printf("LBIP - Paquet de type %d envoye par %d avec range = %.1lf (at %lf s).\n", data->type, c->node, get_range_Tr(c), get_time_now_second());
 	
 	//retransmettre
     call_t c0 = {get_entity_bindings_down(c)->elts[0], c->node, c->entity};
@@ -221,6 +225,7 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
 	
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
@@ -245,6 +250,11 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
 			/*printf("Graphe de 2-voisinage de %d :\n", c->node);
 			afficherGraphe(nodedata->g2hop);*/
 			nodedata->BIP_tree = computeBIPtree(c, nodedata->g2hop, 0, 0, 0);
+		}
+		if(entitydata->debug)
+		{
+			printf("arbre de %d :\n", c->node);
+			arbre_affiche(nodedata->BIP_tree);
 		}
 		setRangeToFarestNeighbour(c, nodedata->g2hop, nodedata->BIP_tree);
 		setRelayNodes(c, nodedata->g2hop, nodedata->BIP_tree, &header->askedToRedirect, &header->needsToBeCovered, c->node);

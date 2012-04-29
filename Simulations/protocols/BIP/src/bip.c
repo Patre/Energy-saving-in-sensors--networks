@@ -77,8 +77,7 @@ int init(call_t *c, void *params) {
     entitydata->alpha   = 1;
     entitydata->c       = 0;
     entitydata->eps     = 0.01;
-    //entitydata->debut   = time_seconds_to_nanos(3);
-    //entitydata->periodEVE = time_seconds_to_nanos(1);
+	entitydata->debug = 0;
 	
 	
     /* reading the "init" markup from the xml config file */
@@ -100,9 +99,13 @@ int init(call_t *c, void *params) {
                 goto error;
             }
         }
+		
+        if (!strcmp(param->key, "debug")) {
+            if (get_param_integer(param->value, &(entitydata->debug))) {
+                goto error;
+            }
+        }
     }
-	
-         init_files();
 	
     set_entity_private_data(c, entitydata);
 	printf("bip : alpha : %d ; c : %d\n", entitydata->alpha, entitydata->c);
@@ -138,6 +141,7 @@ void rx(call_t *c, packet_t *packet) {
 	if(!is_node_alive(c->node))
 		return;
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
 	array_t *up = get_entity_bindings_up(c);
 	
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
@@ -157,10 +161,21 @@ void rx(call_t *c, packet_t *packet) {
 				call_t c_up = {up->elts[0], c->node, c->entity};
 				RX(&c_up, packet_clone(packet));
 				
-				init_bip_tree(c, data->src);
+				//init_bip_tree(c, data->src);
+				call_t cSrc = {-1,-1,-1};
+				cSrc.entity = c->entity;
+				cSrc.node = data->src;
+				struct nodedata *nodedataSrc = get_node_private_data(&cSrc);
+				setRangeToFarestNeighbour(c, nodedata->g, nodedataSrc->BIP_tree);
+				
+				/*if(entitydata->debug)
+				{
+					printf("%d recoit un paquet, voici son arbre de racine %d :\n", c->node, data->src);
+					arbre_affiche(nodedataSrc->BIP_tree);
+				}*/
 				array_t *down = get_entity_bindings_down(c);
 				list* fils = 0;
-				arbre_get_fils(&fils, nodedata->BIP_tree, c->node);
+				arbre_get_fils(&fils, nodedataSrc->BIP_tree, c->node);
 				if(fils != 0)
 				{
 					// relayer le paquet
@@ -200,12 +215,18 @@ void tx( call_t *c , packet_t * packet )
 int set_header( call_t *c , packet_t * packet , destination_t * dst )
 {
     struct nodedata *nodedata = get_node_private_data(c);
+    struct protocoleData *entitydata = get_entity_private_data(c);
 	
     //recuperer le support de communication DOWN
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
 	init_bip_tree(c, c->node);
+	/*if(entitydata->debug)
+	{
+		printf("Arbre de BIP de %d : \n", c->node);
+		arbre_affiche(nodedata->BIP_tree);
+	}*/
 	
 	
 	// initialisation des donnees de routage du paquet

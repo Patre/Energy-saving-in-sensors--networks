@@ -288,7 +288,7 @@ int callmeback(call_t *c, void *args) {
     call_t c0 = {down[0], c->node, c->entity};
 	
     if(entitydata->debug)
-        printf("\nAPP - broadcast paquet depuis (%d,%d) at %.2lf\n", header->source,header->seq , get_time_now_second());
+        printf("\nAPP - broadcast paquet %d depuis %d at %.2lf\n", header->seq, header->source , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};
     if (SET_HEADER(&c0, packet, &destination) == -1) {
@@ -309,16 +309,11 @@ void rx(call_t *c, packet_t *packet) {
     struct nodedata *nodedata = get_node_private_data(c);
     struct packet_header *header = (struct packet_header *) (packet->data + nodedata->overhead[0]);
     struct entitydata *entitydata =get_entity_private_data(c);
-
+	
+	/*if(entitydata->debug)
+		printf("APP - paquet %d recu par %d depuis %d at %.2lf\n", header->seq, c->node,header->source , get_time_now_second());*/
     list_PACKET_insert_tout(&nodedata->paquets,header->source,header->seq,packet->node);
-
-    double range=get_range_Tr(c);
-    /*if(range!=0)
-        RAYON("%lf\n",range)
-    if(entitydata->connexe)
-    {
-        PR("%lf %d %d\n",get_time_now_second(),c->node,list_PACKET_taille(nodedata->paquets));
-    }*/
+	
 
     packet_dealloc(packet);
 }
