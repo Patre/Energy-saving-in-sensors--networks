@@ -16,7 +16,7 @@ using namespace std;
 #define PERIOD_BROADCAST 2
 #define ALPHA 2
 #define C 0
-#define INIT_ENERGY "50000.0"
+#define INIT_ENERGY "200000.0"
 #define PC_ALIVE_MIN 75.0
 #define DEBUT_APP 5
 
@@ -264,13 +264,16 @@ double computeDiameter(int N, pos* tabNoeuds)
 
 double computeDensity(int nbNoeuds, pos* tabNoeuds)
 {
-	ofstream densityFile("topologie.txt", ios::out|ios::app);
 	double densite = computeAvDegree(nbNoeuds, tabNoeuds)/computeDiameter(nbNoeuds, tabNoeuds);
+	return densite;
+}
+
+void writeDensity(double densite)
+{
+	ofstream densityFile("topologie.txt", ios::out|ios::app);
 	densityFile << densite << endl;
 	printf("\tDensite : %lf\n", densite);
 	densityFile.close();
-	
-	return densite;
 }
 
 
@@ -361,6 +364,7 @@ int main(int argc, char* argv[], char* env[])
 		cerr << "createXML [nodesNb] [algoNb] [topoType]" << endl;
 		return -1;
 	}
+	double densite;
 	int nbNoeuds = atoi(argv[1]);
 	pos* tabNoeuds = new pos[nbNoeuds];
 	ofstream topo("topologie.txt", ios::out|ios::trunc);
@@ -370,7 +374,8 @@ int main(int argc, char* argv[], char* env[])
 	if(atoi(argv[2]) == -1)
 	{
 		createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
-		computeDensity(nbNoeuds, tabNoeuds);
+		densite = computeDensity(nbNoeuds, tabNoeuds);
+		writeDensity(densite);
 		for(int i = 0 ; i <= 5 ; i++)
 		{
 			//cout << "Creation du fichier XML " << i << "..." << endl;
@@ -384,6 +389,7 @@ int main(int argc, char* argv[], char* env[])
 		//cout << "Creation du fichier XML " << argv[2] << " : " << endl;
 		createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
 		computeDensity(nbNoeuds, tabNoeuds);
+		writeDensity(densite);
 		writeFile(argv[2], nbNoeuds, tabNoeuds, atoi(argv[2]));
 		createVisuGraph(nbNoeuds, tabNoeuds);
 	}

@@ -21,17 +21,17 @@ La modélisation générale d'un réseau de capteur sans fil \textbf{$M_1$} pren
 
  \item \textit{Singularité.} Tout les capteurs ne sont pas forcement identiques (batterie, portée, capacité de calcul…)\cite{Akyildiz2002}. 
  \item \textit{Connexité.} Le réseau est initialement connexe (chaque capteur est lié directement ou indirectement à tous les autres). 
- \item \textit{Dimension.} Le réseau est réparti dans un environement en 3 dimentions.
+ \item \textit{Dimension.} Le réseau est réparti dans un environnement en 3 dimensions.
  \item \textit{Mobilité.} Les capteurs sont peuvent changer de position au cour du temps \cite{Giordano2003}.
  \item \textit{Uniformité.} Tout les capteurs sont identiques (batterie, portée, capacité de calcul…).  
  \item \textit{L'ajout de capteurs.} le réseau comprend un nombre variable de capteurs $n$. Les ajouts de capteurs en cours de fonctionnement sont possibles.
  \item \textit{Panne.} Les capteurs peuvent tomber en panne en raison de divers facteurs. Une loi de probabilité modélise ce phénomène.   
- \item \textit{Interférences} Les transmissions radio peuvent etre perturbées par des interferences du à l'environnement ou à des conflits interne au réseau \cite{Agarwal2005}.
- \item \textit{Modèle de consommation énergétique} Un modéle énergétique complexe prenant en compte l'énergie de capture, de traitement, de transmition ainsi que de la taille des messages\cite{Deng2005}.
+ \item \textit{Interférences} Les transmissions radio peuvent être perturbées par des interférences dues à l'environnement ou à des conflits internes au réseau \cite{Agarwal2005}.
+ \item \textit{Modèle de consommation énergétique} Un modèle énergétique complexe prenant en compte l'énergie de capture, de traitement, de transmission ainsi que de la taille des messages. \cite{Deng2005}
  
 \end{itemize}
 
-Cepandant, un tel modéle est extremement complexe à étudier. C'est pourquoi nous nous ramenerons à un modèle plus simple mais moins réaliste choisi dans la beaucoup d'articles  \cite{Cartigny2003LMEB,Ingelrest2004}.
+Cependant, un tel modèle est extremement complexe à étudier. C'est pourquoi nous nous ramènerons à un modèle plus simple mais moins réaliste choisi dans la beaucoup d'articles  \cite{Cartigny2003LMEB,Ingelrest2004}.
 Notre modélisation de base des réseaux de capteurs sans fil \textbf{$M_1$} est la suivante :
 
 \begin{itemize}
@@ -105,7 +105,7 @@ Nous définissons le \textit{graphe Disque} comme $G= (V,D,\gamma)$ où $D=\{ Ce
    \\
       (a) & (b) \\
     \end{tabular}
-    \caption{Graphe Unité(a) et Graphe Disque(b) \label{Unit}}
+    \caption{Graphe Unité (a) et Graphe Disque (b) \label{Unit}}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   Voisinage
@@ -570,7 +570,7 @@ Ce protocole est réactif (càd qu'il ne découvre un chemin entre deux nœuds q
 Le coût global d'un broadcast est $C(1) = n \cdot E( \gamma )= n\cdot \gamma^\alpha +  n\cdot c $.
 Le coût global de $k$ broadcasts est $C(k) = k\cdot n \cdot E( \gamma )= k\cdot n \cdot \gamma^\alpha +  k \cdot n\cdot c $.
 
-\emph{Durée de vie} :   $$TTFF(Blind Flooding)=\lfloor \frac{\beta}{n\cdot \gamma^\alpha +  n\cdot c} \rceil$$
+\emph{Durée de vie} :   $$TTFF(Blind Flooding)=\lfloor \frac{\beta}{n\cdot \gamma^\alpha +  n\cdot c} \rfloor$$
 
 
 
@@ -579,7 +579,7 @@ Le coût global de $k$ broadcasts est $C(k) = k\cdot n \cdot E( \gamma )= k\cdot
 \emph{Description :} Afin d'éviter le redondance et les collisions, une idée est que chaque noeud retransmette le message suivant une probabilité $P$ lorsqu'il le reçoit pour la première fois. Si $P=1$ cela équivaut au blind flooding.
 \emph{Consommation :} Chaque noeud ayant un probabilité $P$ de retransmettre le message <$M$,$\gamma$>, en moyenne $P\cdot n$ nœuds envoient ce message lors d'un broadcast.
 Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût global de $k$ broadcasts est $C(k) = P\cdot k\cdot n \cdot E( \gamma ) $ .
-\emph{Durée de vie :} $$TTFF(Probabilistic Flooding)=\lfloor \frac{\beta}{P \cdot (n\cdot \gamma^\alpha +  n\cdot c)} \rceil$$
+\emph{Durée de vie :} $$TTFF(Probabilistic Flooding)=\lfloor \frac{\beta}{P \cdot (n\cdot \gamma^\alpha +  n\cdot c)} \rfloor$$
 
 
 \subsubsection{Area-based Beaconless Broadcasting Algorithms \cite{Ovalle2006}}
@@ -646,7 +646,7 @@ $$ \forall i \in BIP, \forall j \notin BIP, P'_{ij}=P_{ij}-P(i)$$
 où $P_{ij}$ est le coût réel de transmission (poids de l'arête). $P'_{ij}$ représente donc le coût d'ajout de $j$ comme fils du noeud $i$. La paire $\{i,j\}$ minimisant $P'_{ij}$ avec $i \in BIP$ et $j \not\in BIP$ est sélectionnée et $i$ ajuste son rayon pour transmettre à $j$. Ainsi, une nouvelle arête est ajoutée à chaque étape de l'algorithme.\\
 
 
-\begin{algorithm}[h]
+\begin{algorithm}[H]
 \caption{Procédure de construction du BIP-Tree}
 \label{algo_BIP_tree}
 \begin{algorithmic}
@@ -674,7 +674,7 @@ sa position et ses fils si il en a.
 
 
 
-\begin{algorithm}[h]
+\begin{algorithm}[H]
 \caption{BIP}
 \label{algo_BIP}
 \begin{algorithmic}
@@ -693,7 +693,7 @@ sa position et ses fils si il en a.
 \subsubsection{Découverte des 1- et 2-voisinages}
 \emph{Description :} la connaissance du 2-voisinage est un très bon compromis conservant la localité du protocole tout en minimisant le nombre de messages.
 
-\begin{algorithm}[h]
+\begin{algorithm}[H]
 \caption{Découverte 2-voisinage}
 \label{algo_k_voisinage}
 \begin{algorithmic}
@@ -780,7 +780,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 
 
 
-
+% TODO : merge LBOP, RBOP
 \subsubsection{LMST Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
 
 
@@ -821,7 +821,7 @@ Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud co
 \end{algorithm}
 
 
-\subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP\&RBOP)\cite{Cartigny2005}}
+\subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP \& RBOP) \cite{Cartigny2005}}
 
 
 
@@ -914,12 +914,13 @@ Une fois l'arbre construit, le message est diffusé via celui-ci, chaque nœud p
 
 En remplaçant $RNG(u)$ par $LMST(u)$ dans l'algorithme de RBOP, nous obtenons LBOP.\\
 
-Comme LMST(G) est un sous graphe de RNG(G), LBOP a de meilleur performances que RBOP.
+Comme LMST(G) est un sous graphe de RNG(G), LBOP a de meilleures performances que RBOP.
 
 \subsubsection{Target Radius LMST Broadcast Oriented Protocol \cite{Ingelrest2004}}
 
 \emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
 
+% TODO : aligner les signes =
 Soient : 
 $$L(u)= N_{LMST}(u)$$
 $$L'(u)=N_1(u)\backslash L(u)$$

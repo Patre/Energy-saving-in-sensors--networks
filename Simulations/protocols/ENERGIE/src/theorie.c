@@ -271,7 +271,7 @@ void consume(call_t *c, double energy) {
         nodedata->energy = 0;
 		
 		// Debut calcul lifetime
-		double pourcentageAvant = ((double)entitydata->nbDead*100.0/(double) get_node_count());
+		double pourcentageAvant = ((double)entitydata->nbDead*100.0/(double)get_node_count());
 		
 		if(entitydata->nbDead == 0)
 		{
@@ -282,7 +282,7 @@ void consume(call_t *c, double energy) {
 		}
 		entitydata->nbDead++;
 		
-		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double) get_node_count());
+		double pourcentageApres = ((double)entitydata->nbDead*100.0/(double)get_node_count());
 		if(!entitydata->LC)
 		{
 			getArticulationNodes(c);
@@ -294,7 +294,7 @@ void consume(call_t *c, double energy) {
 				entitydata->LC = 1;
 				
 				
-				if(pourcentageAvant <= (100-entitydata->prMax))
+				/*if(pourcentageAvant <= (100-entitydata->prMax))
 				{
 					printf("Mesure de PCN effectuee : %.1lf\n", get_time_now_second());
 					fprintf(lt, "PCN %.1lf\n", get_time_now_second());
@@ -303,7 +303,7 @@ void consume(call_t *c, double energy) {
 						printf("Toutes les mesures ont ete effectuees...\n");
 					end_simulation();
 					return;
-				}
+				}*/
 				fclose(lt);
 			}
 		}
@@ -319,14 +319,10 @@ void consume(call_t *c, double energy) {
 		// Fin calcul lifetime
 		
 		
-		if(pourcentageApres > (100-entitydata->prMax)
-		   &&
-		   entitydata->nbDead > 0
-		   &&
-		   entitydata->LC == 1)
+		if(pourcentageApres >= 75.0)
 		{
 			//if(entitydata->debug)
-				printf("Toutes les mesures ont ete effectuees...\n");
+				printf("La plupart des noeuds du reseau sont morts...\n");
 			end_simulation();
 		}
 		else if(entitydata->nbDead == get_node_count())

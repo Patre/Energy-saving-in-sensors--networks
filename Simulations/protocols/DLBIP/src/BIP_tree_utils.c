@@ -184,10 +184,7 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	
 	
 	// set le range du module propagation a la valeur desiree
-	array_t *mac=get_mac_entities(c);
-	call_t c0 = {mac->elts[0], c->node, c->entity};
-	struct macnodedata* macdata = get_node_private_data(&c0);
-	macdata->range = distMax;
+	set_range_Tr(c, distMax);
 	//printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
 	
 	return distMax;
@@ -415,6 +412,15 @@ void forward(call_t* c, packet_t *packet)
 	arbre_detruire(&bipTree);
 	deleteGraphe(g);
 	free(g);
+}
+
+void set_range_Tr(call_t *c, double range)
+{
+	range = (floor(range*10)+1)/10.0;
+    array_t *mac=get_mac_entities(c);
+    call_t c0 = {mac->elts[0], c->node, c->entity};
+    struct macnodedata* macdata = get_node_private_data(&c0);
+    macdata->range = range;
 }
 
 

@@ -204,7 +204,7 @@ void tx( call_t *c , packet_t * packet )
     struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	if(entitydata->debug)
+	//if(entitydata->debug)
 		printf("BIP - Paquet de type %d envoye par %d avec range = %.1lf (at %lf s).\n", data->type, c->node, get_range_Tr(c), get_time_now_second());
 	
 	//retransmettre
@@ -222,12 +222,11 @@ int set_header( call_t *c , packet_t * packet , destination_t * dst )
     call_t c0 = {down[0], c->node, c->entity};
 	
 	init_bip_tree(c, c->node);
-	/*if(entitydata->debug)
+	if(entitydata->debug)
 	{
 		printf("Arbre de BIP de %d : \n", c->node);
 		arbre_affiche(nodedata->BIP_tree);
-	}*/
-	
+	}
 	
 	// initialisation des donnees de routage du paquet
     packet_PROTOCOLE *header = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);

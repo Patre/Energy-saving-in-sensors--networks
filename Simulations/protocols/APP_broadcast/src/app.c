@@ -287,7 +287,7 @@ int callmeback(call_t *c, void *args) {
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
-    if(entitydata->debug)
+    //if(entitydata->debug)
         printf("\nAPP - broadcast paquet %d depuis %d at %.2lf\n", header->seq, header->source , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};

@@ -27,7 +27,6 @@ void init_graphe(call_t *c)
             }
         }
 	}
-	
 }
 
 void init_bip_tree(call_t *c, int noeudRacine)
@@ -76,7 +75,7 @@ arbre* computeBIPtree(call_t *c, graphe* g, int noeudRacine, int debug)
 	while(!h_isEmpty(F))
 	{
 		if(debug)
-			printf("Recuperation du min du tas...\n");
+			printf("\nRecuperation du min du tas...\n");
 		numMinNode = h_remNode(F);
 		minNode = getLabelFromNum(g,numMinNode);
 		if(debug)
@@ -100,6 +99,7 @@ arbre* computeBIPtree(call_t *c, graphe* g, int noeudRacine, int debug)
 				poids[numPere] = getEdgeCost(g,pere[numMinNode], minNode);
 			}
 		}
+		
 		// pour chacun des noeuds pas dans l'arbre ie : dans le tas
 		for(i = 0 ; i < g->nbSommets ; i++)
 		{
@@ -114,7 +114,7 @@ arbre* computeBIPtree(call_t *c, graphe* g, int noeudRacine, int debug)
 			{
 				// pour chacun des voisins dans le tas ie : pas dans l'arbre
 				if(debug)
-					printf("Recuperation du voisinage...\n");
+					printf("Recuperation du voisinage de %d...\n", getLabelFromNum(g,i));
 				trans = getNeighboursFromLabel(g,getLabelFromNum(g,i));
 				while(trans != 0)
 				{
@@ -205,10 +205,7 @@ double setRangeToFarestNeighbour(call_t *c, graphe* g, arbre* bipTree)
 	
 	
 	// set le range du module propagation a la valeur desiree
-	array_t *mac=get_mac_entities(c);
-	call_t c0 = {mac->elts[0], c->node, c->entity};
-	struct macnodedata* macdata = get_node_private_data(&c0);
-	macdata->range = distMax;
+	set_range_Tr(c, distMax);
 	//printf("rayon d'emission de %d fixe a %lf\n", c->node, macdata->range);
 	
 	return distMax;
@@ -240,8 +237,9 @@ double get_range_Tr(call_t *c)
     return macdata->range;
 }
 
-void set_range_Tr(call_t *c,double range)
+void set_range_Tr(call_t *c, double range)
 {
+	range = (floor(range*10)+1)/10.0;
     array_t *mac=get_mac_entities(c);
     call_t c0 = {mac->elts[0], c->node, c->entity};
     struct macnodedata* macdata = get_node_private_data(&c0);
