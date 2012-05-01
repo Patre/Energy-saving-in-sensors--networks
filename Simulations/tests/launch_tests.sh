@@ -65,9 +65,9 @@ do
 			printf "; " >> "pcn.txt"
 			printf "; " >> "lc.txt"
 		done
-	echo "" >> ttff.txt
-	echo "" >> pcn.txt
-	echo "" >> lc.txt
+		echo "" >> ttff.txt
+		echo "" >> pcn.txt
+		echo "" >> lc.txt
 	done
 
 	cd ../createXML

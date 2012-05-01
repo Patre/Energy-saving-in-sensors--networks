@@ -586,11 +586,11 @@ Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût
 
 
 \emph{Description :} Nous supposons que les noeuds n'ont aucune connaissance de leur voisinage. Cependant ceux-ci connaissent leur position géographique (GPS par exemple). Chaque capteur a un rayon d'émission fixe $R$ et couvre une zone circulaire.
-\begin{figure}[H]
-\centering
-\includegraphics{Etat_de_l'art/source/abba.png}
-\caption{ }
-\end{figure} 
+%\begin{figure}[H]
+%\centering
+%\includegraphics{Etat_de_l'art/source/abba.png}
+%\caption{ }
+%\end{figure} 
 
 L'idée maitresse de ABBA est assez simple. A la première réception d'un message, le nœud initialise un timer. Avant expiration du timer, le noeud peut recevoir d'autres copies du même message. Si un nœud $u$ reçoit le même message de différentes sources et que ces sources couvrent sa zone, cela signifie que chacun de ses voisins potentiels a déjà reçu le message. Alors $u$ ne retransmet pas le message et quand que son timer expire, il ne fait rien. Sinon si le voisinage de $u$ n'est pas couvert alors $u$ retransmet.
 
@@ -717,7 +717,7 @@ Pour une 1-découverte, $2n$ messages de rayon $\gamma$ circulent, soit un conso
 
 
 
-\subsubsection{Localized Broadcast Incremental-power Protocol \cite{Ingelrest2004}}
+\subsubsection{Localized Broadcast Incremental-power Protocol  \cite{Ingelrest2008}}
 
 \emph{Description :} LBIP est l'application locale de BIP: au lieu de construire l'arbre de diffusion BIP de façon centralisée, il le construit de façon locale.
 Chaque site, lorsqu'il reçoit un message à retransmettre, calcul son BIP-tree sur son 2-voisinage à partir des informations du paquet et diffuse le message à ses voisins dans l'arbre.
