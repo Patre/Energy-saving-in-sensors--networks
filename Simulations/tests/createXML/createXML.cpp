@@ -373,10 +373,10 @@ int main(int argc, char* argv[], char* env[])
 	
 	if(atoi(argv[2]) == -1)
 	{
-		//do {
+		do {
 			createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
 			densite = computeDensity(nbNoeuds, tabNoeuds);
-		//} while(densite >= 0.25 && densite <= 0.45);
+		} while(densite >= 0.2 && densite <= 0.55);
 		writeDensity(densite);
 		for(int i = 0 ; i <= 5 ; i++)
 		{

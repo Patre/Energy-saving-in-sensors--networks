@@ -33,12 +33,12 @@ void init_files()
     /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
 	
     //GRAPH
     FILE *topo;
     topo=fopen("graphLBIP","w");
-    fclose(topo);*/
+    fclose(topo);
 }
 
 int destroy(call_t *c) {
@@ -70,8 +70,7 @@ int setnode(call_t *c, void *params) {
 	
     set_node_private_data(c, nodedata);
 	
-    /*DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);*/
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
 //	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
@@ -182,6 +181,7 @@ void rx(call_t *c, packet_t *packet) {
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
+				SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
 				RX(&c_up, packet_clone(packet));

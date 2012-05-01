@@ -30,12 +30,12 @@ void init_files()
     /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
 	
     //GRAPH
     FILE *topo;
     topo=fopen("graphRBOP","w");
-    fclose(topo);*/
+    fclose(topo);
 }
 
 //INITIALISATION DE NOEUD DE FICHIER XML
@@ -56,8 +56,7 @@ int setnode(call_t *c, void *params) {
 
     set_node_private_data(c, nodedata);
 	
-    /*DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);//*/
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
     return 0;
 }
@@ -136,8 +135,7 @@ void rx(call_t *c, packet_t *packet) {
         {
             if(list_recherche(data->destinations,c->node))
                     {
-                        //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
-
+                        SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
                         if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
                              PROTOCOLE_reception(c,packet);
                     }

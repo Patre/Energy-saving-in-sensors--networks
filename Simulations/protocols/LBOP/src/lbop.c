@@ -32,12 +32,12 @@ void init_files()
     /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
 	
     //GRAPH
     FILE *topo;
     topo=fopen("graphLBOP","w");
-    fclose(topo);*/
+    fclose(topo);
 }
 
 //INITIALISATION DE NOEUD DE FICHIER XML
@@ -59,8 +59,7 @@ int setnode(call_t *c, void *params) {
 
     set_node_private_data(c, nodedata);
 	
-    /*DEBUG;
-    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);//*/
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
     return 0;
 }
@@ -155,7 +154,7 @@ void rx(call_t *c, packet_t *packet) {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
             if(list_recherche(data->destinations,c->node))
                     {
-                       //SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
+                       SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
                         if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
                              PROTOCOLE_reception(c,packet);
                     }
@@ -197,7 +196,7 @@ void tx( call_t *c , packet_t * packet )
 {
     struct nodedata *nodedata = get_node_private_data(c);
     struct protocoleData *entitydata = get_entity_private_data(c);
-    //if(entitydata->debug)
+    if(entitydata->debug)
         DBG("LBOP BROADCAST - ON %d  WITH RANGE %.2lf At %lf \n",c->node,get_range_Tr(c), get_time_now_second());
 
     entityid_t *down = get_entity_links_down(c);

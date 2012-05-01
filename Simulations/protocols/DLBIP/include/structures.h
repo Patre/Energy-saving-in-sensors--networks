@@ -9,8 +9,7 @@
 #include <arbre.h>
 #include <graphe.h>
 
-//#define DBG(x...)  printf(x);
-//#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphDLBIP","a+"); fprintf(topo,x); fclose(topo);}
+#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphDLBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
 void tx( call_t *c , packet_t * packet );

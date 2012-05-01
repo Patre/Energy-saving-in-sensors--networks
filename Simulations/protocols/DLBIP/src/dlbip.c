@@ -33,12 +33,12 @@ void init_files()
     /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
 	
     //GRAPH
     FILE *topo;
     topo=fopen("graphDLBIP","w");
-    fclose(topo);*/
+    fclose(topo);
 	
 }
 
@@ -69,8 +69,7 @@ int setnode(call_t *c, void *params) {
     set_node_private_data(c, nodedata);
 	
 	
-    //DEBUG;
-    //SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
 //	printf("Node %d at ( %.1lf ; %.1lf ; %.1lf )\n", c->node,get_node_position(c->node)->x,get_node_position(c->node)->y,get_node_position(c->node)->z);
 	
@@ -199,6 +198,7 @@ void rx(call_t *c, packet_t *packet) {
 			}
 			if(data->dst == BROADCAST_ADDR)
 			{
+				SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
 				double cout;
 				listeNodes* trans = data->askedToRedirect;
 				listeNodes* trans2 = data->needsToBeCovered;

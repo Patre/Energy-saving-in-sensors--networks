@@ -15,7 +15,6 @@ model_t model =  {
     "Broadcast Incremental Protocol",
     "LAOUADI Rabah",
     "0.1",
-//    MODELTYPE_APPLICATION,
     MODELTYPE_ROUTING,
     {NULL, 0}
 };
@@ -26,10 +25,15 @@ model_t model =  {
 
 void init_files()
 {
-    //REPLAY
+    /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
+	
+    //GRAPH
+    FILE *topo;
+    topo=fopen("graphFLOOD","w");
+    fclose(topo);
 }
 
 //INITIALISATION DE NOEUD DE FICHIER XML
@@ -44,7 +48,8 @@ int setnode(call_t *c, void *params) {
 
     set_node_private_data(c, nodedata);
 	
-    DEBUG;
+    
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
     return 0;
 }
@@ -109,6 +114,7 @@ void rx(call_t *c, packet_t *packet) {
         case FLOOD:
         {
             packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
+			SHOW_GRAPH("G: %d %d\n",data->redirected_by,c->node);
 
             if(list_PACKET_recherche_tout(nodedata->paquets,data->src,data->seq)==0)
                              PROTOCOLE_reception(c,packet);

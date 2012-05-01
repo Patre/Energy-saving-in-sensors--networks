@@ -32,12 +32,12 @@ void init_files()
     /*//REPLAY
     FILE *replay;
     replay=fopen("replay","w");
-    fclose(replay);
+    fclose(replay);*/
 	
     //GRAPH
     FILE *topo;
-    topo=fopen("graphLBIP","w");
-    fclose(topo);*/
+    topo=fopen("graphBIP","w");
+    fclose(topo);
 }
 
 int destroy(call_t *c) {
@@ -65,6 +65,9 @@ int setnode(call_t *c, void *params) {
 	
 	
     set_node_private_data(c, nodedata);
+	
+	
+    SHOW_GRAPH("N: %d %lf %f\n",c->node,get_node_position(c->node)->x,get_node_position(c->node)->y);
 	
     return 0;
 }
@@ -157,6 +160,7 @@ void rx(call_t *c, packet_t *packet) {
 				nodedata->lastIDs[data->src] = data->id;
 			if(data->dst == BROADCAST_ADDR)
 			{
+				SHOW_GRAPH("G: %d %d\n",data->pred,c->node);
 				// faire remonter le paquet a la couche application
 				call_t c_up = {up->elts[0], c->node, c->entity};
 				RX(&c_up, packet_clone(packet));
@@ -204,7 +208,7 @@ void tx( call_t *c , packet_t * packet )
     struct protocoleData *entitydata = get_entity_private_data(c);
     packet_PROTOCOLE *data = (packet_PROTOCOLE *) (packet->data + nodedata->overhead);
 	
-	//if(entitydata->debug)
+	if(entitydata->debug)
 		printf("BIP - Paquet de type %d envoye par %d avec range = %.1lf (at %lf s).\n", data->type, c->node, get_range_Tr(c), get_time_now_second());
 	
 	//retransmettre

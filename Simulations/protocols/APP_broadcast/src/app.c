@@ -264,14 +264,14 @@ int callmeback(call_t *c, void *args) {
 	call_t c_callback = {c->entity,-1,c->from};
 	int node = -1;
 	
-	do{
+	/*do{
 		if(fscanf(entitydata->broadcastingNodes, "%d", &node) != EOF)
 		{
 			c_callback.node = node;
 		}
 	} while(node == -1 || !is_node_alive(node));
 	if(node != -1)
-		scheduler_add_callback(get_time_now()+entitydata->period, &c_callback, callmeback, NULL);
+		scheduler_add_callback(get_time_now()+entitydata->period, &c_callback, callmeback, NULL);*/
 	
 	
     /* broadcast a new data packet */
@@ -287,7 +287,7 @@ int callmeback(call_t *c, void *args) {
     entityid_t *down = get_entity_links_down(c);
     call_t c0 = {down[0], c->node, c->entity};
 	
-    //if(entitydata->debug)
+    if(entitydata->debug)
         printf("\nAPP - broadcast paquet %d depuis %d at %.2lf\n", header->seq, header->source , get_time_now_second());
 
     destination_t destination = {BROADCAST_ADDR, {-1, -1, -1}};

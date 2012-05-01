@@ -10,7 +10,7 @@
 #include <graphe.h>
 
 
-//#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphLBIP","a+"); fprintf(topo,x); fclose(topo);}
+#define SHOW_GRAPH(x...)  { FILE *topo; topo=fopen("graphBIP","a+"); fprintf(topo,x); fclose(topo);}
 
 
 void tx( call_t *c , packet_t * packet );
