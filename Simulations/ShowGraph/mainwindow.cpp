@@ -57,6 +57,7 @@ void MainWindow::calculerDegree()
 
 void MainWindow::lireFile(QString filename)
 {
+
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -111,14 +112,45 @@ void MainWindow::lireFile(QString filename)
         }
     }
 
+    QPointF max(0,0);
+    QPointF min(99999999,99999999);
+    for(int i=0;i<nodes.length();i++)
+    {
+        if(nodes.at(i).nodePosition.x()>max.x())    max.setX(nodes.at(i).nodePosition.x());
+        if(nodes.at(i).nodePosition.y()>max.y())    max.setY(nodes.at(i).nodePosition.y());
+        if(nodes.at(i).nodePosition.x()<min.x())    min.setX(nodes.at(i).nodePosition.x());
+        if(nodes.at(i).nodePosition.y()<min.y())    min.setY(nodes.at(i).nodePosition.y());
+    }
+
+    QString beta="MAX "+QVariant(max.x()).toString()+" "+QVariant(max.y()).toString()
+            +"\nMIN "+QVariant(min.x()).toString()+" "+QVariant(min.y()).toString();
+    QMessageBox::information(0,"INFO",beta);
+
+    if(min.x()>100)
+        for(int i=0;i<nodes.length();i++)
+        {
+            Element inter= nodes.at(i);
+            inter.nodePosition.setX(inter.nodePosition.x()-min.x()+50);
+            nodes.replace(i,inter);
+        }
+    if(min.y()>100)
+        for(int i=0;i<nodes.length();i++)
+        {
+            Element inter= nodes.at(i);
+            inter.nodePosition.setY(inter.nodePosition.y()-min.y()+50);
+            nodes.replace(i,inter);
+        }//*/
+
+
+    //graph_view->setTaille(max.x()-min.x(), max.y()-min.y());
+
+
+
     //affichage des nodes
     //for(int i=0;i<nodes.size();i++) GraphElement::debugElement(nodes.at(i));
 
     //affichages des connecxion
     //for(int i=0;i<list_graph.size();i++) GraphElement::debug(list_graph.at(i));
-
-
-
 }
 
 

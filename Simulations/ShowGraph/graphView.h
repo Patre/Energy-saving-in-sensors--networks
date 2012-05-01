@@ -28,6 +28,7 @@ public slots:
     void clearGraph();
 
     void setShape(Shape shape);
+    void setTaille(int widthV, int heightV);
     void setPen(const QPen &pen);
     void setBrush(const QBrush &brush);
     void setAntialiased(bool antialiased);
@@ -55,6 +56,12 @@ private:
     int indexIMG;
 
     double zoom;
+
+    int widthView;
+    int heightView;
+
+
+
     Shape shape;
     QPen pen;
     QBrush brush;

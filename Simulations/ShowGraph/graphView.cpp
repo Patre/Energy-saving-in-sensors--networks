@@ -26,6 +26,8 @@ GraphView::GraphView(QWidget *parent)
     haveDepart=false;
     zoom = 3;
     indexIMG=0;
+    widthView=1000;
+    heightView=1000;
 
 
     shape = Polygon;
@@ -96,7 +98,7 @@ void GraphView::setTransformed(bool transformed)
 
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
-    QImage *img=new QImage(300,300,QImage::Format_ARGB32_Premultiplied);
+    QImage *img=new QImage(widthView,heightView,QImage::Format_ARGB32_Premultiplied);
     img->fill(qRgb(255,255,255));
     QPainter painter(this);
     QPainter painterIMG(img);
@@ -208,4 +210,10 @@ void GraphView::clearGraph()
     dejaTrai.clear();
     nodes.clear();
     indexIMG=0;
+}
+
+void GraphView::setTaille(int widthV, int heightV)
+{
+    widthView=widthV;
+    heightView=heightV;
 }
