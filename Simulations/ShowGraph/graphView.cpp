@@ -25,6 +25,7 @@ GraphView::GraphView(QWidget *parent)
     haveGraph=false;
     haveDepart=false;
     zoom = 3;
+    indexIMG=0;
 
 
     shape = Polygon;
@@ -95,7 +96,10 @@ void GraphView::setTransformed(bool transformed)
 
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
+    QImage *img=new QImage(300,300,QImage::Format_ARGB32_Premultiplied);
+    img->fill(qRgb(255,255,255));
     QPainter painter(this);
+    QPainter painterIMG(img);
     QMap<int,int> rayonMax;
 
     if(haveDepart)
@@ -139,12 +143,17 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
 
             painter.drawText(center,QVariant((int)(dist/zoom)).toString());
             painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
+            painterIMG.drawText(center,QVariant((int)(dist/zoom)).toString());
+            painterIMG.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
+
 
             if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node) && !dejaTrai.contains(list_graph.at(i).nodeDeb.node)
                     && rayonMax.value(list_graph.at(i).nodeDeb.node)== list_graph.at(i).nodeFin.node)
             {
-                painter.setPen(qRgba(224, 176, 255,75));
+                painter.setPen(qRgb(224, 176, 255));
                 painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
+                painterIMG.setPen(qRgb(224, 176, 255));
+                painterIMG.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
             }
 
 
@@ -177,10 +186,17 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             painter.setPen(qRgb(255,255,255));
             painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
 
+            painterIMG.setBrush(radialGradient);
+            painterIMG.drawEllipse(rec);
 
+            painterIMG.setPen(qRgb(255,255,255));
+            painterIMG.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
         }
     }
     dejaTrai.append(depart);
+    QString imgsorti("sortis/"+QVariant(indexIMG).toString()+".bmp");
+    img->save(imgsorti,"BMP");
+    indexIMG++;
 }
 
 void GraphView::clearGraph()
@@ -191,4 +207,5 @@ void GraphView::clearGraph()
     depart.clear();
     dejaTrai.clear();
     nodes.clear();
+    indexIMG=0;
 }
