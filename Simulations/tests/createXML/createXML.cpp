@@ -14,9 +14,9 @@ using namespace std;
 #define WIDTH 1000
 #define DUREE 10000
 #define PERIOD_BROADCAST 2
-#define ALPHA 2
-#define C 0
-#define INIT_ENERGY "200000.0"
+#define ALPHA 4
+#define C 1000000
+#define INIT_ENERGY "500000000.0"
 #define PC_ALIVE_MIN 75.0
 #define DEBUT_APP 5
 
@@ -373,8 +373,10 @@ int main(int argc, char* argv[], char* env[])
 	
 	if(atoi(argv[2]) == -1)
 	{
-		createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
-		densite = computeDensity(nbNoeuds, tabNoeuds);
+		//do {
+			createNodes(atoi(argv[3]), nbNoeuds, tabNoeuds);
+			densite = computeDensity(nbNoeuds, tabNoeuds);
+		//} while(densite >= 0.25 && densite <= 0.45);
 		writeDensity(densite);
 		for(int i = 0 ; i <= 5 ; i++)
 		{
