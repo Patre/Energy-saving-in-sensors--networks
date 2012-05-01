@@ -52,6 +52,7 @@ private:
     QList<int> depart;
 
     QList<int> dejaTrai;
+    int indexIMG;
 
     double zoom;
     Shape shape;
