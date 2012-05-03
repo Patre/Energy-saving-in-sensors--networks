@@ -1,0 +1,74 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{5}{chapter.1}
+\contentsline {section}{\numberline {1.1}Capteurs}{5}{section.1.1}
+\contentsline {section}{\numberline {1.2}Caract\IeC {\'e}ristiques techniques des capteurs actuels}{7}{section.1.2}
+\contentsline {section}{\numberline {1.3}R\IeC {\'e}seau de capteurs sans fil (Wireless Sensors Network)}{8}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Architecture}{8}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}Caract\IeC {\'e}ristiques}{9}{subsection.1.3.2}
+\contentsline {subsection}{\numberline {1.3.3}Probl\IeC {\'e}matique et d\IeC {\'e}fis}{9}{subsection.1.3.3}
+\contentsline {chapter}{\numberline {2}\IeC {\'E}tat de l'art}{11}{chapter.2}
+\contentsline {section}{\numberline {2.1}Mod\IeC {\'e}lisation des r\IeC {\'e}seaux de capteurs sans fil}{11}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Crit\IeC {\`e}res pratiques}{11}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Mod\IeC {\`e}le d'un r\IeC {\'e}seau de capteurs : un graphe}{12}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Mod\IeC {\`e}le \IeC {\'e}nerg\IeC {\'e}tique}{14}{subsection.2.1.3}
+\contentsline {subsubsection}{Energie d'un capteur}{14}{section*.3}
+\contentsline {paragraph}{The Packet based model.}{14}{section*.4}
+\contentsline {paragraph}{The Time based model.}{14}{section*.5}
+\contentsline {paragraph}{Energie du r\IeC {\'e}seau.}{15}{section*.6}
+\contentsline {subsection}{\numberline {2.1.4}Dur\IeC {\'e}e de vie du r\IeC {\'e}seau}{15}{subsection.2.1.4}
+\contentsline {subsubsection}{Probl\IeC {\'e}matique}{15}{section*.7}
+\contentsline {subsubsection}{D\IeC {\'e}finitions}{16}{section*.8}
+\contentsline {section}{\numberline {2.2}El\IeC {\'e}ments de classification des algorithmes existants}{16}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Transmissions en broadcast vs transmissions en single-cast}{16}{subsection.2.2.1}
+\contentsline {subsubsection}{Broadcast}{16}{section*.9}
+\contentsline {subsubsection}{Single-cast}{17}{section*.10}
+\contentsline {subsection}{\numberline {2.2.2}Algorithme \IeC {\`a} rayon d'\IeC {\'e}mission fixe vs variable}{17}{subsection.2.2.2}
+\contentsline {subsubsection}{D\IeC {\'e}terminer le rayon optimal d'\IeC {\'e}mission pour un broadcast}{17}{section*.11}
+\contentsline {subsubsection}{Rayon d'\IeC {\'e}mission fixe pour tous les n\IeC {\oe }uds}{18}{section*.12}
+\contentsline {subsubsection}{Rayon d'\IeC {\'e}mission variable}{18}{section*.13}
+\contentsline {subsection}{\numberline {2.2.3}Algorithme global vs local}{19}{subsection.2.2.3}
+\contentsline {subsubsection}{Cat\IeC {\'e}gories}{19}{section*.14}
+\contentsline {subsection}{\numberline {2.2.4}Algorithme \IeC {\`a} balisage vs algorithme sans balisage (beaconless)}{19}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.5}Algorithme d\IeC {\'e}terministe vs probabiliste}{19}{subsection.2.2.5}
+\contentsline {section}{\numberline {2.3}Quelques algorithmes de routage}{20}{section.2.3}
+\contentsline {subsubsection}{Flow augmentation \cite {Chang2000}}{20}{section*.15}
+\contentsline {subsubsection}{Flow redirection \cite {Chang2000}}{20}{section*.16}
+\contentsline {subsubsection}{Energy Aware Routing \cite {Shah2002}}{21}{section*.17}
+\contentsline {section}{\numberline {2.4}Quelques algorithmes de broadcast}{22}{section.2.4}
+\contentsline {subsubsection}{Blind Flooding}{22}{section*.18}
+\contentsline {subsubsection}{Probabilistic Flooding}{22}{section*.19}
+\contentsline {subsubsection}{Area-based Beaconless Broadcasting Algorithms \cite {Ovalle2006}}{23}{section*.20}
+\contentsline {subsubsection}{Broadcast Incremental-power Protocol \cite {Wieselthier2000}}{23}{section*.21}
+\contentsline {subsubsection}{D\IeC {\'e}couverte des 1- et 2-voisinages}{25}{section*.22}
+\contentsline {subsubsection}{Localized Broadcast Incremental-power Protocol \cite {Ingelrest2008}}{25}{section*.23}
+\contentsline {subsubsection}{Dynamic Localized Broadcast Incremental-power Protocol \cite {Champ2009DLBIP}}{26}{section*.24}
+\contentsline {subsubsection}{LMST Broadcast Oriented Protocol(LBOP) et RNG Broadcast Oriented Protocol(RBOP) \cite {Cartigny2005}}{26}{section*.25}
+\contentsline {paragraph}{Algorithme LMST}{27}{section*.26}
+\contentsline {paragraph}{Algorithme MST}{27}{section*.27}
+\contentsline {subsubsection}{LMST\&RNG Broadcast Oriented Protocol (LBOP \& RBOP) \cite {Cartigny2005}}{27}{section*.28}
+\contentsline {subsubsection}{Target Radius LMST Broadcast Oriented Protocol \cite {Ingelrest2004}}{29}{section*.29}
+\contentsline {subsection}{\numberline {2.4.1}Synth\IeC {\`e}se}{29}{subsection.2.4.1}
+\contentsline {subsubsection}{Tableau r\IeC {\'e}capitulatif}{29}{section*.30}
+\contentsline {chapter}{\numberline {3}Analyse et reflexion}{30}{chapter.3}
+\contentsline {section}{\numberline {3.1}Critique de l'existant}{30}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Consommation de l'\IeC {\'e}nergie}{30}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}Nos id\IeC {\'e}es}{30}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Application du rayon optimal \IeC {\`a} DLBIP: TR-DLBIP}{30}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Algorithme qui pr\IeC {\'e}serve la connexit\IeC {\'e} du graphe}{31}{subsection.3.2.2}
+\contentsline {chapter}{\numberline {4}Simulations et r\'esultats}{32}{chapter.4}
+\contentsline {section}{\numberline {4.1}Outils de programmation}{32}{section.4.1}
+\contentsline {section}{\numberline {4.2}Param\IeC {\`e}tres de simulation}{33}{section.4.2}
+\contentsline {section}{\numberline {4.3}Topologie al\IeC {\'e}atoire}{33}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Mod\IeC {\`e}le \IeC {\'e}nerg\IeC {\'e}tique simple}{33}{subsection.4.3.1}
+\contentsline {subsubsection}{Time To First Fall}{34}{section*.31}
+\contentsline {subsubsection}{PerCent Node}{35}{section*.32}
+\contentsline {subsubsection}{Lose Connectivity}{37}{section*.33}
+\contentsline {subsection}{\numberline {4.3.2}Mod\IeC {\`e}le \IeC {\'e}nerg\IeC {\'e}tique plus r\IeC {\'e}aliste}{37}{subsection.4.3.2}
+\contentsline {subsubsection}{Time To First Fall}{38}{section*.34}
+\contentsline {subsubsection}{PerCent Node}{39}{section*.35}
+\contentsline {subsubsection}{Lose Connectivity}{40}{section*.36}
+\contentsline {chapter}{\numberline {5}Conclusion}{41}{chapter.5}
+\contentsline {section}{\numberline {5.1}Bilan de notre travail de groupe}{41}{section.5.1}
+\contentsline {section}{\numberline {5.2}Bilan du TER}{43}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Probl\IeC {\`e}mes rencontr\IeC {\'e}s}{43}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Contributions}{43}{subsection.5.2.2}
