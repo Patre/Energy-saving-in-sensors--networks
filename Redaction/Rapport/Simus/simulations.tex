@@ -60,7 +60,7 @@ Le modèle énergétique le plus simple (mais aussi le plus éloigné de la réa
 \subsubsection{Time To First Fall et PerCent Node}
 
 
-\begin{figure}
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/ttff_2_0}
 \caption{TTFF, pour $\alpha = 2$ et $c = 0$}
@@ -68,17 +68,14 @@ Le modèle énergétique le plus simple (mais aussi le plus éloigné de la réa
 \end{bigcenter}
 \end{figure}
 
-La figure \ref{TTFF1} représente le temps avant qu'un premier noeud soit à court d'énergie pour pouvoir envoyer un message. Ce temps ne dépends pas de la densité pour la diffusion aveugle (FLOOD) puisque ce protocol présente le même 
-comportement quelque que soit le réseau. Le fait que BIP offre les meilleures durées de vie pour les 2 définitions (figure \ref{TTFF1} et figure \ref{PCN1}) confirme les estimations théoriques que cet algorithme est à ce jour parmis ceux approximant 
-le mieux la solution optimale \cite{Liang2002}. Ainsi pour le TTFF, nous constatons que pour un densité comprise entre 0.2 et 0.45, DLBIP est  entre 1\% et 13\% moins perfomant que BIP puis LBOP entre 0.45
-et 0.65, TTFF(LBOP) représente 90\% de TTFF(BIP). Cependant lorsque l'on considere la deuxieme définitions(figure \ref{PCN1} et figure \ref{PCN1bis}) , nous constatons la nette supériorité de BIP. Cette définition est plus représentative de la réalité car elle 
-considère non plus le temps avant la mort d'un seul noeud mais de 25\% des noeuds du réseau. De plus, parmis les algorithmes locaux, DLBIP a la plus grande durée de vie.  
+La figure \ref{TTFF1} représente le temps avant qu'un premier noeud soit à court d'énergie pour pouvoir envoyer un message. Ce temps ne dépends pas de la densité pour la diffusion aveugle (FLOOD) puisque ce protocole présente le même comportement quelque que soit le réseau.
+
+Le fait que BIP offre les meilleures durées de vie pour les 2 définitions (figure \ref{TTFF1} et figure \ref{PCN1}) confirme les estimations théoriques que cet algorithme est à ce jour parmi ceux approximant le mieux la solution optimale \cite{Liang2002}. Ainsi pour le TTFF, nous constatons que pour une densité comprise entre 0.2 et 0.45, DLBIP est  entre 1\% et 13\% moins performant que BIP puis LBOP entre 0.45
+et 0.65, TTFF(LBOP) représente 90\% de TTFF(BIP). Cependant lorsque l'on considère la deuxième définition (figure \ref{PCN1} et figure \ref{PCN1bis}) , nous constatons la nette supériorité de BIP. Cette définition est plus représentative de la réalité car elle 
+considère non plus le temps avant la mort d'un seul noeud mais de 25\% des noeuds du réseau. De plus, parmi les algorithmes locaux, DLBIP a la plus grande durée de vie.  
 
 
-
-
-
-\begin{figure}
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/pcn_2_0}
 \caption{Percent Node, pour $\alpha = 2$ et $c = 0$ }
@@ -86,7 +83,7 @@ considère non plus le temps avant la mort d'un seul noeud mais de 25\% des noeu
 \end{bigcenter}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/pcn_2_0_zoom}
 \caption{Percent Node: zoom}
@@ -97,10 +94,10 @@ considère non plus le temps avant la mort d'un seul noeud mais de 25\% des noeu
 
 \subsubsection{Lose Connectivity}
 
-La connectivité du réseau et difficile à préserver. Prévoir le comportement d'un protocole vis à vis de cette propriété est un problème où il reste beaucoup à faire comme en témoigne la figure \ref{LC1}. Les résultats de nos simulations
-concernant la perte de connectivité montre que cette grandeur varie fortement en fonction de la densité et de la topologie du réseau. 
+La connectivité du réseau est difficile à préserver. Prévoir le comportement d'un protocole vis à vis de cette propriété est un problème où il reste beaucoup à faire comme en témoigne la figure \ref{LC1}. Les résultats de nos simulations
+concernant la perte de connectivité montrent que cette grandeur varie fortement en fonction de la densité et de la topologie du réseau. 
 
-\begin{figure}
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/lc_2_0}
 \caption{Perte de connectivité, pour $\alpha = 2$ et $c = 0$}
@@ -108,26 +105,22 @@ concernant la perte de connectivité montre que cette grandeur varie fortement e
 \end{bigcenter}
 \end{figure}
 
-\newpage
+
+
 \subsection{Modèle énergétique plus réaliste}
 Ce modèle énergétique un peu plus réaliste utilise les valeurs suivantes pour les constantes énergétiques : $\alpha = 4$ et $c = 10^6$ \cite{Rodoplu1998}.
 
 
-
-
-
 \subsubsection{Time To First Fall et PerCent Node }
-En ce qui s'agie du TTFF, le changement des constantes $\alpha$ et $c$ inverse les résultats: la figure \ref{TTFF2} montre que DLBIP et LBIP présentent de moins bonnes caractéritiques que LBOP et RBOP. Cepandant pour la deuxième définition qui 
-traduit le temps ecoulé jusqu'à la perte de 25\% des noeuds, la figure \ref{PC2} met en évidence la similarité des résultats avec ceux obtenus pour $\alpha = 2$ et $c = 0$: DLBIP reste le meilleur.
-\begin{figure}
+Lorsqu'il s'agit du TTFF, le changement des constantes $\alpha$ et $c$ inverse les résultats: la figure \ref{TTFF2} montre que DLBIP et LBIP présentent de moins bonnes caractéristiques que LBOP et RBOP. Cependant pour la deuxième définition qui 
+traduit le temps écoulé jusqu'à la perte de 25\% des noeuds, la figure \ref{PC2} met en évidence la similarité des résultats avec ceux obtenus pour $\alpha = 2$ et $c = 0$: DLBIP reste le meilleur.
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/ttff_4_10p6}
 \caption{TTFF, pour $\alpha = 4$ et $c = 10^6$. }
 \label{TTFF2}
 \end{bigcenter}
-\end{figure}
 
-\begin{figure}
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/pcn_4_10p6}
 \caption{Percent Node, pour $\alpha = 4$ et $c = 10^6$.}
@@ -138,10 +131,10 @@ traduit le temps ecoulé jusqu'à la perte de 25\% des noeuds, la figure \ref{PC
 
 \subsubsection{Lose Connectivity}
 
-Avec pour modéle énergétique $\alpha = 4$ et $c = 10^6$, la figure \ref{LC2} souligne de nouveau que la perte de connectivité fluctue de façon brutal. Cepandant BIP préserve dans l'ensemble mieux la connectivité du réseau.
+Avec pour modèle énergétique $\alpha = 4$ et $c = 10^6$, la figure \ref{LC2} souligne de nouveau que la perte de connectivité fluctue de façon brutale. Cependant BIP préserve dans l'ensemble mieux la connectivité du réseau.
 
 
-\begin{figure}
+\begin{figure}[H]
 \begin{bigcenter}
 \includegraphics[scale=0.75]{Simus/lc_4_10p6}
 \caption{Perte de connectivité, pour $\alpha = 4$ et $c = 10^6$.}
