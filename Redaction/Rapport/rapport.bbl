@@ -111,6 +111,12 @@ R.C. Prim.
 \newblock {Shortest connection networks and some generalizations}.
 \newblock {\em Bell system technical journal}, 36(6):1389--1401, 1957.
 
+\bibitem{Rodoplu1998}
+V.~Rodoplu and T.H. Meng.
+\newblock {Minimum energy mobile wireless networks}.
+\newblock {\em Proc. of IEEE International Conference on Communications (ICC)},
+  1998.
+
 \bibitem{Shah2002}
 R.~C. Shah and J.~M. Rabaey.
 \newblock {Energy aware routing for low energy ad hoc sensor networks}.
@@ -134,5 +140,11 @@ J.~Wu and W.~Lou.
   networks}.
 \newblock {\em Wireless Communications and Mobile Computing}, 3(2):155--173,
   2003.
+
+\bibitem{Yang2006}
+Hua Yang, Fengji Ye, and Biplab Sikdar.
+\newblock {Distributed Mobility Transparent Broadcast in Mobile Ad Hoc
+  Networks.}
+\newblock In {\em {GLOBECOM}}. IEEE, 2006.
 
 \end{thebibliography}

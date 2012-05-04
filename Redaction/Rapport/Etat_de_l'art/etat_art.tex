@@ -328,7 +328,7 @@ $$(m-2;n-2)\in\{(1,4),(2,2),(4,1) \} \Leftrightarrow m \in \{ 3,4,6 \}$$
 Le quadrillage en hexagone est celui offrant le moins de chevauchements du point de vue réseau de capteur sans fil. 
 \end{myth}
 \begin{proof}
- %TODO
+Pour cela, il suffit de calculer géométriquement les aires de chevauchement et montrer que le maillage hexagonal les minimise \cite{Yang2006}.
 \end{proof}
 
 
@@ -586,11 +586,7 @@ Le coût moyen d'un broadcast est $C(1) = P\cdot n \cdot E( \gamma ) $. Le coût
 
 
 \emph{Description :} Nous supposons que les noeuds n'ont aucune connaissance de leur voisinage. Cependant ceux-ci connaissent leur position géographique (GPS par exemple). Chaque capteur a un rayon d'émission fixe $R$ et couvre une zone circulaire.
-%\begin{figure}[H]
-%\centering
-%\includegraphics{Etat_de_l'art/source/abba.png}
-%\caption{ }
-%\end{figure} 
+
 
 L'idée maitresse de ABBA est assez simple. A la première réception d'un message, le nœud initialise un timer. Avant expiration du timer, le noeud peut recevoir d'autres copies du même message. Si un nœud $u$ reçoit le même message de différentes sources et que ces sources couvrent sa zone, cela signifie que chacun de ses voisins potentiels a déjà reçu le message. Alors $u$ ne retransmet pas le message et quand que son timer expire, il ne fait rien. Sinon si le voisinage de $u$ n'est pas couvert alors $u$ retransmet.
 
@@ -776,10 +772,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 
 \emph{Durée de vie :} L'avantage de DLBIP est de limiter le phénomènes de chemins de fourmis lorsque les sources des broadcast sont toujours les mêmes.
 
-
-
-
-\subsubsection{LMST\&RNG Broadcast Oriented Protocols (LBOP \& RBOP) \cite{Cartigny2005}}
+\subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP \& RBOP) \cite{Cartigny2005}}
 
 
 
@@ -878,12 +871,17 @@ Comme LMST(G) est un sous graphe de RNG(G), LBOP a de meilleures performances qu
 
 \emph{Description :} TRLBOP est une amélioration de LBOP. Le principe est de choisir les noeuds relais pour qu'ils se rapprochent le plus possible d'un maillage hexagonal de rayon optimal théorique $R_{opt}=\sqrt[\alpha]{\frac{2c}{\alpha-2}}$. Au lieu d'envoyer le message $M$ avec pour rayon $\max\limits_{w\in N_{LMST(u)}}(d(u,w))$, le rayon choisi est la distance entre $u$ et un voisins non encore couverts par le broadcast qui est le plus proche de $R_{opt}$.
 
-% TODO : aligner les signes =
-Soient : 
-$$L(u)= N_{LMST}(u)$$
-$$L'(u)=N_1(u)\backslash L(u)$$
-$$D_L=\max(d(u,v)\mid v \in L(u))$$
-$$D_{L'}=(d(u,v)\mid v \in L(u)\cup L'(u)\wedge \delta_{uv}=min(\delta_{uv}\mid w \in L(u)\cup L'(u)))\ avec\ \delta_{uv}=\mid d(u,v)-R_{opt}\mid$$
+
+Soient :
+\begin{eqnarray*}
+L(u) & = & N_{LMST}(u) \label{eq:3}\\
+L'(u) & = & N_1(u)\backslash L(u)\\
+D_L & = & \max(d(u,v)\mid v \in L(u))\\
+D_{L'} & = & (d(u,v)\mid v \in L(u)\cup L'(u)\wedge  \\
+\delta_{uv} & = & min(\delta_{uv}\mid w \in L(u)\cup L'(u)))  \\
+avec: \delta_{uv} & = & \mid d(u,v)-R_{opt}\mid  \label{eq:4}
+\end{eqnarray*} 
+
 Ainsi, un sommet $u$ retransmettra avec pour rayon d'émission $\max(D_L,D_{L'})$.
 
 
