@@ -779,49 +779,7 @@ Il existe deux méthode pour permettre d'actualiser les $E_i$: soit périodiquem
 
 
 
-
-% TODO : merge LBOP, RBOP
-\subsubsection{LMST Broadcast Oriented Protocol(LBOP) et  RNG Broadcast Oriented Protocol(RBOP) \cite{Cartigny2005}}
-
-
-\emph{Description :} Le protocole LBOP se base sur le contrôle de topologie pour réduire le nombre d'arcs, donc le nombre de nœuds inondés par la diffusion ainsi que le rayon de transmission tout en maintenant la connectivité du réseau. Pour cela, il prend comme graphe de départ le graphe dit Graphe LMST obtenu on appliquant l’algorithme LMST.
-
-\paragraph{Algorithme LMST}:
-Le but est de construire un arbre couvrant minimum local (LMST). Chaque nœud connaît la position de ses voisins à 1 saut et chaque nœud calcule son propre MST (Minimum Spanning Tree) sur son voisinage. Puis, si un nœud u est dans le LMST calculé par un nœud v et que le nœud v est dans le LMST du nœud u alors le lien (u, v) est retenu dans le LMST global. La construction du LMST global est ainsi basée sur la construction locale d’un MST par chaque nœud.
-\paragraph{Algorithme MST}:
-
-\begin{algorithm}[H]
-\caption{LBIP}
-\label{algo_LBIP}
-\begin{algorithmic}
-\STATE ENTREES : $G=(V,E)$ un graphe connexe, $s$ une source, un message $M$
-\STATE SORTIE : message broadcasté
-\STATE REQUIERE : connaissance du 1-voisinage
-\STATE $s$ calcul son arbre de BIP avec comme entrée son graphe de 2-voisinage
-\STATE $s$ ajoute dans le paquet les identifiants des nœuds qui devront retransmettre le message
-\STATE $s$ ajoute également les identifiants des nœuds qui devront être atteints par ceux qui retransmettent
-\STATE $s$ broadcast <M,$s$> avec un rayon suffisant pour atteindre tous ses fils dans l'arbre
-\IF{ $u$ reçoit <M,$v$> }
-	\IF{le paquet contient des instructions pour $u$}
-		\STATE soit $v$ le nœud que $u$ doit atteindre d'après les instructions du paquet
-		\STATE $u$ construit son BIP-tree à partir des informations du paquet :
-			 \INDSTATE l'arbre est construit à partir du 2-voisinage de $u$ auquel on enlève :
-			 	 \INDSTATE[2]le nœud $s$ source du broadcast
-				 \INDSTATE[2]les voisins de $s$ non compris dans le rayon de transmission que le paquet donne à $u$
-				 \INDSTATE[2]le nœud $v$ qui a redirigé le paquet vers $u$
-				 \INDSTATE[2]les voisins de $v$ non compris dans le rayon de transmission que le paquet donne à $u$
-				\INDSTATE[2]les voisins de $u$ non compris dans le rayon de transmission que le paquet donne à $u$
-			\INDSTATE[1] pour chaque paire de nœuds ($r_i$ qui doit retransmettre, $t_i$ qui doit être atteint)
-				\INDSTATE[2] dans la construction de l'arbre de BIP on initialise $P_{r_i} = P_{r_i t_i}$
-			\INDSTATE[1] $u$ remplace dans le paquet les instructions pour les nœuds voisins
-			\INDSTATE[1] $u$ broadcast <M,$s$> avec un rayon suffisant pour atteindre tous ses fils dans l'arbre
-	\ENDIF
-\ENDIF
-\end{algorithmic}
-\end{algorithm}
-
-
-\subsubsection{LMST\&RNG Broadcast Oriented Protocol (LBOP \& RBOP) \cite{Cartigny2005}}
+\subsubsection{LMST\&RNG Broadcast Oriented Protocols (LBOP \& RBOP) \cite{Cartigny2005}}
 
 
 
