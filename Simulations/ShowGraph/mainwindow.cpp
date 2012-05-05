@@ -19,12 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->dockWidget_3->setVisible(false);
     zoom = 3;
 
+    setCentralWidget(graph_view);
 
     //
 
 
     //AFFICHAGE
-     setCentralWidget(graph_view );
+//     setCentralWidget(graph_view );
 }
 void MainWindow::genererTopologie()
 {
@@ -112,7 +113,7 @@ void MainWindow::lireFile(QString filename)
         }
     }
 
-    QPointF max(0,0);
+    /*QPointF max(0,0);
     QPointF min(99999999,99999999);
     for(int i=0;i<nodes.length();i++)
     {

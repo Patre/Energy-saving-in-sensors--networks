@@ -1,6 +1,7 @@
 #ifndef GRAPHVIEW_H
 #define GRAPHVIEW_H
 
+#include <QtGui>
 #include <QBrush>
 #include <QPen>
 #include <QPixmap>
@@ -39,6 +40,7 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
+    void updateImage();
     //LES NODEs
     bool haveNodes;
     QList<Element>  nodes;
@@ -67,7 +69,11 @@ private:
     QBrush brush;
     bool antialiased;
     bool transformed;
-    QPixmap pixmap;
+
+    //SCAL
+    QImage *image;
+    QScrollArea *scrollArea;
+    QLabel *imageLabel;
 };
 
 

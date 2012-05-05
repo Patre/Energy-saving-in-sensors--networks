@@ -1,4 +1,3 @@
-#include <QtGui>
 #include "graphView.h"
 
 //! [0]
@@ -17,9 +16,27 @@ double distance(Element a, Element b)
 
 }
 
+void GraphView::updateImage()
+{
+    imageLabel->setPixmap(QPixmap::fromImage(*image));
+    scrollArea->setWidget(imageLabel);
+}
+
 GraphView::GraphView(QWidget *parent)
     : QWidget(parent)
 {
+
+
+    image=new QImage("img.jpg");
+    imageLabel = new QLabel;
+
+    scrollArea = new QScrollArea;
+
+    QVBoxLayout *lay=new QVBoxLayout();
+    lay->addWidget(scrollArea);
+    setLayout(lay);//*/
+
+    updateImage();
     //INITAILISATION
     haveNodes=false;
     haveGraph=false;
@@ -33,7 +50,6 @@ GraphView::GraphView(QWidget *parent)
     shape = Polygon;
     antialiased = false;
     transformed = false;
-    pixmap.load(":/images/qt-logo.png");
 
     setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
@@ -98,10 +114,9 @@ void GraphView::setTransformed(bool transformed)
 
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
-    QImage *img=new QImage(widthView,heightView,QImage::Format_ARGB32_Premultiplied);
-    img->fill(qRgb(255,255,255));
-    QPainter painter(this);
-    QPainter painterIMG(img);
+    image->fill(qRgb(255,255,255));
+    //QPainter painter(this);
+    QPainter painterIMG(image);
     QMap<int,int> rayonMax;
 
     if(haveDepart)
@@ -140,11 +155,11 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             int dist=(int)distance(list_graph.at(i));
             QPointF center((list_graph.at(i).nodeDeb.nodePosition+list_graph.at(i).nodeFin.nodePosition)/2);
 
-            painter.setPen(qRgb(110, 110, 200));
+            //painter.setPen(qRgb(110, 110, 200));
 
 
-            painter.drawText(center,QVariant((int)(dist/zoom)).toString());
-            painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
+            //painter.drawText(center,QVariant((int)(dist/zoom)).toString());
+            //painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
             painterIMG.drawText(center,QVariant((int)(dist/zoom)).toString());
             painterIMG.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
 
@@ -152,8 +167,8 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node) && !dejaTrai.contains(list_graph.at(i).nodeDeb.node)
                     && rayonMax.value(list_graph.at(i).nodeDeb.node)== list_graph.at(i).nodeFin.node)
             {
-                painter.setPen(qRgb(224, 176, 255));
-                painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
+              //  painter.setPen(qRgb(224, 176, 255));
+               // painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
                 painterIMG.setPen(qRgb(224, 176, 255));
                 painterIMG.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
             }
@@ -182,11 +197,11 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             radialGradient.setColorAt(1.0, Qt::black);
 
 
-            painter.setBrush(radialGradient);
-            painter.drawEllipse(rec);
+            //painter.setBrush(radialGradient);
+            //painter.drawEllipse(rec);
 
-            painter.setPen(qRgb(255,255,255));
-            painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
+            //painter.setPen(qRgb(255,255,255));
+            //painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
 
             painterIMG.setBrush(radialGradient);
             painterIMG.drawEllipse(rec);
@@ -196,9 +211,11 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
         }
     }
     dejaTrai.append(depart);
-    QString imgsorti("sortis/"+QVariant(indexIMG).toString()+".bmp");
-    img->save(imgsorti,"BMP");
+    updateImage();
+    /*QString imgsorti("sortis/"+QVariant(indexIMG).toString()+".bmp");
+    image->save(imgsorti,"BMP");//*/
     indexIMG++;
+
 }
 
 void GraphView::clearGraph()
