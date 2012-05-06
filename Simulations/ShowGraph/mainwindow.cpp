@@ -23,7 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->zoomEdit->setMaximum(200);
     ui->zoomEdit->setMinimum(50);
     ui->zoomEdit->setValue(100);
+    ui->zoomEdit->setSingleStep(10);
     ui->zoomEdit->setSuffix("%");
+    ui->zoomEdit->setEnabled(false);
 
     image= new QImage();
 
@@ -38,10 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 void MainWindow::updateImage(QImage image)
 {
-    scrollArea->;
+    int ver=scrollArea->verticalScrollBar()->value();
+    int hor=scrollArea->horizontalScrollBar()->value();
+
     QLabel *imageLabel = new QLabel;
     imageLabel->setPixmap(QPixmap::fromImage(image));
     scrollArea->setWidget(imageLabel);
+    scrollArea->verticalScrollBar()->setValue(ver);
+    scrollArea->horizontalScrollBar()->setValue(hor);
 }
 
 void MainWindow::genererTopologie()
@@ -172,6 +178,7 @@ void MainWindow::lireFile(QString filename)
 void MainWindow::updateZoom(double x)
 {
     //QMessageBox::information(0,"fuck",QVariant(x).toString());
+    ui->zoomEdit->setValue(100);
     graph_view->setZoom(x/100.0);
     graph_view->paint();
 }
