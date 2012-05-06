@@ -27,7 +27,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void lireFile(QString filename);
 
 public slots:
     void chargerGraph();
@@ -41,7 +40,11 @@ public slots:
     void updateZoomPlus();
     void updateZoomMoins();
 
+
 private:
+    void lireFile(QString filename);
+    void createActions();
+
     Ui::MainWindow  *ui;
     GraphView       *graph_view;
     QList<GraphElement> list_graph;

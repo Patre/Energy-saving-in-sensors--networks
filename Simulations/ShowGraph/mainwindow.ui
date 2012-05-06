@@ -515,12 +515,12 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   </widget>
   <action name="actionCharger_Graphe">
    <property name="text">
-    <string>Charger Graphe</string>
+    <string>Charger un Graphe</string>
    </property>
   </action>
   <action name="actionClear_Graphe">
    <property name="text">
-    <string>Clear Graphe</string>
+    <string>Effacer le Graphe</string>
    </property>
   </action>
   <action name="actionQuitter">
@@ -544,7 +544,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <hints>
     <hint type="sourcelabel">
      <x>81</x>
-     <y>56</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>240</x>
@@ -559,8 +559,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>chargerGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>52</x>
-     <y>127</y>
+     <x>53</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel">
      <x>168</x>
@@ -575,8 +575,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>afficherNodes()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>68</x>
-     <y>161</y>
+     <x>69</x>
+     <y>209</y>
     </hint>
     <hint type="destinationlabel">
      <x>314</x>
@@ -591,8 +591,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>afficherEtape()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>67</x>
-     <y>187</y>
+     <x>68</x>
+     <y>243</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -607,8 +607,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>afficherGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>55</x>
-     <y>224</y>
+     <x>56</x>
+     <y>281</y>
     </hint>
     <hint type="destinationlabel">
      <x>515</x>
@@ -623,8 +623,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>clearGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>57</x>
-     <y>251</y>
+     <x>58</x>
+     <y>317</y>
     </hint>
     <hint type="destinationlabel">
      <x>238</x>
@@ -639,8 +639,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>updateZoomPlus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>25</x>
-     <y>102</y>
+     <x>130</x>
+     <y>93</y>
     </hint>
     <hint type="destinationlabel">
      <x>168</x>
@@ -655,8 +655,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>updateZoomMoins()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>87</x>
-     <y>104</y>
+     <x>29</x>
+     <y>93</y>
     </hint>
     <hint type="destinationlabel">
      <x>310</x>

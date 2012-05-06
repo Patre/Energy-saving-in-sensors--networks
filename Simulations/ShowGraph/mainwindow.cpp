@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scrollArea = new QScrollArea;
 
-    connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
+    createActions();
 
     //AFFICHAGE
     setCentralWidget(scrollArea);
@@ -236,6 +236,15 @@ void MainWindow::updateZoomMoins()
     updateZoom(x);
 }
 
+
+void MainWindow::createActions()
+{
+    connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
+    connect(ui->actionCharger_Graphe,SIGNAL(triggered()),this,SLOT(chargerGraph()));
+    connect(ui->actionClear_Graphe,SIGNAL(triggered()),this,SLOT(clearGraph()));
+    connect(ui->actionQuitter,SIGNAL(triggered()),this,SLOT(close()));
+
+}
 
 //ADDED Function
 double distanceEuclidienne(double x1,double y1, double x2, double y2)

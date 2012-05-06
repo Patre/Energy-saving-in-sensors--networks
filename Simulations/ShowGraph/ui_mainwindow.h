@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. May 16:47:40 2012
+** Created: Sun 6. May 17:02:52 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -324,8 +324,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Visualisateur de r\303\251seau", 0, QApplication::UnicodeUTF8));
-        actionCharger_Graphe->setText(QApplication::translate("MainWindow", "Charger Graphe", 0, QApplication::UnicodeUTF8));
-        actionClear_Graphe->setText(QApplication::translate("MainWindow", "Clear Graphe", 0, QApplication::UnicodeUTF8));
+        actionCharger_Graphe->setText(QApplication::translate("MainWindow", "Charger un Graphe", 0, QApplication::UnicodeUTF8));
+        actionClear_Graphe->setText(QApplication::translate("MainWindow", "Effacer le Graphe", 0, QApplication::UnicodeUTF8));
         actionQuitter->setText(QApplication::translate("MainWindow", "Quitter", 0, QApplication::UnicodeUTF8));
         actionQui_somme_Nous->setText(QApplication::translate("MainWindow", "Qui somme Nous?", 0, QApplication::UnicodeUTF8));
         menuFichier->setTitle(QApplication::translate("MainWindow", "Fichier", 0, QApplication::UnicodeUTF8));
