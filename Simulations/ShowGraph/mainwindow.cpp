@@ -240,10 +240,6 @@ void MainWindow::updateZoomMoins()
 void MainWindow::createActions()
 {
     connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
-    connect(ui->actionCharger_Graphe,SIGNAL(triggered()),this,SLOT(chargerGraph()));
-    connect(ui->actionClear_Graphe,SIGNAL(triggered()),this,SLOT(clearGraph()));
-    connect(ui->actionQuitter,SIGNAL(triggered()),this,SLOT(close()));
-
 }
 
 //ADDED Function

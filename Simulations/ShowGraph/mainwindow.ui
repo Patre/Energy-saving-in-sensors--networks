@@ -513,17 +513,48 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     </widget>
    </widget>
   </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionCharger_Graphe"/>
+   <addaction name="actionClear_Graphe"/>
+   <addaction name="separator"/>
+   <addaction name="actionZoomPlus"/>
+   <addaction name="actionZoomMoins"/>
+   <addaction name="separator"/>
+   <addaction name="actionAfficherGraphe"/>
+   <addaction name="actionAfficherEtape"/>
+  </widget>
   <action name="actionCharger_Graphe">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/edit_add-256.png</normaloff>:/icons/ressources/edit_add-256.png</iconset>
+   </property>
    <property name="text">
     <string>Charger un Graphe</string>
    </property>
   </action>
   <action name="actionClear_Graphe">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/exit-128.png</normaloff>:/icons/ressources/exit-128.png</iconset>
+   </property>
    <property name="text">
     <string>Effacer le Graphe</string>
    </property>
   </action>
   <action name="actionQuitter">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/Gnome-Application-Exit-64.png</normaloff>:/icons/ressources/Gnome-Application-Exit-64.png</iconset>
+   </property>
    <property name="text">
     <string>Quitter</string>
    </property>
@@ -533,8 +564,46 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <string>Qui somme Nous?</string>
    </property>
   </action>
+  <action name="actionZoomPlus">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/viewmag+-256.png</normaloff>:/icons/ressources/viewmag+-256.png</iconset>
+   </property>
+   <property name="text">
+    <string>zoomPlus</string>
+   </property>
+  </action>
+  <action name="actionZoomMoins">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/viewmag--256.png</normaloff>:/icons/ressources/viewmag--256.png</iconset>
+   </property>
+   <property name="text">
+    <string>ZoomMoins</string>
+   </property>
+  </action>
+  <action name="actionAfficherGraphe">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/2rightarrow-256.png</normaloff>:/icons/ressources/2rightarrow-256.png</iconset>
+   </property>
+   <property name="text">
+    <string>afficherGraphe</string>
+   </property>
+  </action>
+  <action name="actionAfficherEtape">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/ressources/1rightarrow-256.png</normaloff>:/icons/ressources/1rightarrow-256.png</iconset>
+   </property>
+   <property name="text">
+    <string>afficherEtape</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>zoomEdit</sender>
@@ -661,6 +730,118 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <hint type="destinationlabel">
      <x>310</x>
      <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCharger_Graphe</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>chargerGraph()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionClear_Graphe</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>clearGraph()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionQuitter</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionZoomMoins</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateZoomMoins()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionZoomPlus</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateZoomPlus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAfficherGraphe</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>afficherGraph()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionAfficherEtape</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>afficherEtape()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>

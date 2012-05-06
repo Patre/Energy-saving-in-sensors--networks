@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. May 17:02:52 2012
+** Created: Sun 6. May 17:41:27 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -25,6 +25,7 @@
 #include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
+#include <QtGui/QToolBar>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
@@ -37,6 +38,10 @@ public:
     QAction *actionClear_Graphe;
     QAction *actionQuitter;
     QAction *actionQui_somme_Nous;
+    QAction *actionZoomPlus;
+    QAction *actionZoomMoins;
+    QAction *actionAfficherGraphe;
+    QAction *actionAfficherEtape;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menuFichier;
@@ -73,6 +78,7 @@ public:
     QSpinBox *nbrNodes;
     QSpinBox *rangeEdit;
     QSpacerItem *verticalSpacer_16;
+    QToolBar *toolBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -122,12 +128,41 @@ public:
 "}"));
         actionCharger_Graphe = new QAction(MainWindow);
         actionCharger_Graphe->setObjectName(QString::fromUtf8("actionCharger_Graphe"));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/icons/ressources/edit_add-256.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionCharger_Graphe->setIcon(icon);
         actionClear_Graphe = new QAction(MainWindow);
         actionClear_Graphe->setObjectName(QString::fromUtf8("actionClear_Graphe"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/icons/ressources/exit-128.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionClear_Graphe->setIcon(icon1);
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName(QString::fromUtf8("actionQuitter"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/icons/ressources/Gnome-Application-Exit-64.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionQuitter->setIcon(icon2);
         actionQui_somme_Nous = new QAction(MainWindow);
         actionQui_somme_Nous->setObjectName(QString::fromUtf8("actionQui_somme_Nous"));
+        actionZoomPlus = new QAction(MainWindow);
+        actionZoomPlus->setObjectName(QString::fromUtf8("actionZoomPlus"));
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/icons/ressources/viewmag+-256.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionZoomPlus->setIcon(icon3);
+        actionZoomMoins = new QAction(MainWindow);
+        actionZoomMoins->setObjectName(QString::fromUtf8("actionZoomMoins"));
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/icons/ressources/viewmag--256.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionZoomMoins->setIcon(icon4);
+        actionAfficherGraphe = new QAction(MainWindow);
+        actionAfficherGraphe->setObjectName(QString::fromUtf8("actionAfficherGraphe"));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/icons/ressources/2rightarrow-256.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAfficherGraphe->setIcon(icon5);
+        actionAfficherEtape = new QAction(MainWindow);
+        actionAfficherEtape->setObjectName(QString::fromUtf8("actionAfficherEtape"));
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/icons/ressources/1rightarrow-256.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAfficherEtape->setIcon(icon6);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         MainWindow->setCentralWidget(centralwidget);
@@ -299,6 +334,9 @@ public:
 
         dockWidget->setWidget(dockWidgetContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
+        toolBar = new QToolBar(MainWindow);
+        toolBar->setObjectName(QString::fromUtf8("toolBar"));
+        MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
 
         menubar->addAction(menuFichier->menuAction());
         menubar->addAction(menuAide->menuAction());
@@ -307,6 +345,14 @@ public:
         menuFichier->addSeparator();
         menuFichier->addAction(actionQuitter);
         menuAide->addAction(actionQui_somme_Nous);
+        toolBar->addAction(actionCharger_Graphe);
+        toolBar->addAction(actionClear_Graphe);
+        toolBar->addSeparator();
+        toolBar->addAction(actionZoomPlus);
+        toolBar->addAction(actionZoomMoins);
+        toolBar->addSeparator();
+        toolBar->addAction(actionAfficherGraphe);
+        toolBar->addAction(actionAfficherEtape);
 
         retranslateUi(MainWindow);
         QObject::connect(zoomEdit, SIGNAL(valueChanged(double)), MainWindow, SLOT(updateZoom(double)));
@@ -317,6 +363,13 @@ public:
         QObject::connect(clearButton, SIGNAL(clicked()), MainWindow, SLOT(clearGraph()));
         QObject::connect(zoomin, SIGNAL(clicked()), MainWindow, SLOT(updateZoomPlus()));
         QObject::connect(zoomout, SIGNAL(clicked()), MainWindow, SLOT(updateZoomMoins()));
+        QObject::connect(actionCharger_Graphe, SIGNAL(triggered()), MainWindow, SLOT(chargerGraph()));
+        QObject::connect(actionClear_Graphe, SIGNAL(triggered()), MainWindow, SLOT(clearGraph()));
+        QObject::connect(actionQuitter, SIGNAL(triggered()), MainWindow, SLOT(close()));
+        QObject::connect(actionZoomMoins, SIGNAL(triggered()), MainWindow, SLOT(updateZoomMoins()));
+        QObject::connect(actionZoomPlus, SIGNAL(triggered()), MainWindow, SLOT(updateZoomPlus()));
+        QObject::connect(actionAfficherGraphe, SIGNAL(triggered()), MainWindow, SLOT(afficherGraph()));
+        QObject::connect(actionAfficherEtape, SIGNAL(triggered()), MainWindow, SLOT(afficherEtape()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -328,6 +381,10 @@ public:
         actionClear_Graphe->setText(QApplication::translate("MainWindow", "Effacer le Graphe", 0, QApplication::UnicodeUTF8));
         actionQuitter->setText(QApplication::translate("MainWindow", "Quitter", 0, QApplication::UnicodeUTF8));
         actionQui_somme_Nous->setText(QApplication::translate("MainWindow", "Qui somme Nous?", 0, QApplication::UnicodeUTF8));
+        actionZoomPlus->setText(QApplication::translate("MainWindow", "zoomPlus", 0, QApplication::UnicodeUTF8));
+        actionZoomMoins->setText(QApplication::translate("MainWindow", "ZoomMoins", 0, QApplication::UnicodeUTF8));
+        actionAfficherGraphe->setText(QApplication::translate("MainWindow", "afficherGraphe", 0, QApplication::UnicodeUTF8));
+        actionAfficherEtape->setText(QApplication::translate("MainWindow", "afficherEtape", 0, QApplication::UnicodeUTF8));
         menuFichier->setTitle(QApplication::translate("MainWindow", "Fichier", 0, QApplication::UnicodeUTF8));
         menuAide->setTitle(QApplication::translate("MainWindow", "Aide", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_WHATSTHIS
@@ -342,6 +399,7 @@ public:
         etapeSuivante->setText(QApplication::translate("MainWindow", "Etape Suivante", 0, QApplication::UnicodeUTF8));
         graphFinale->setText(QApplication::translate("MainWindow", "Graphe Final", 0, QApplication::UnicodeUTF8));
         clearButton->setText(QApplication::translate("MainWindow", "Effacer", 0, QApplication::UnicodeUTF8));
+        toolBar->setWindowTitle(QApplication::translate("MainWindow", "toolBar", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
