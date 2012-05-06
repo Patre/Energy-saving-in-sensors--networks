@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>ressources/viewmag+-256.png</file>
+        <file>ressources/viewmag--256.png</file>
+        <file>ressources/exit-128.png</file>
+        <file>ressources/1rightarrow-256.png</file>
+        <file>ressources/2rightarrow-256.png</file>
+        <file>ressources/edit_add-256.png</file>
+        <file>ressources/Gnome-Application-Exit-64.png</file>
+    </qresource>
+</RCC>
