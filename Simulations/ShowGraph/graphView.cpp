@@ -16,27 +16,10 @@ double distance(Element a, Element b)
 
 }
 
-void GraphView::updateImage()
-{
-    imageLabel->setPixmap(QPixmap::fromImage(*image));
-    scrollArea->setWidget(imageLabel);
-}
 
 GraphView::GraphView(QWidget *parent)
     : QWidget(parent)
 {
-
-
-    image=new QImage("img.jpg");
-    imageLabel = new QLabel;
-
-    scrollArea = new QScrollArea;
-
-    QVBoxLayout *lay=new QVBoxLayout();
-    lay->addWidget(scrollArea);
-    setLayout(lay);//*/
-
-    updateImage();
     //INITAILISATION
     haveNodes=false;
     haveGraph=false;
@@ -51,7 +34,6 @@ GraphView::GraphView(QWidget *parent)
     antialiased = false;
     transformed = false;
 
-    setBackgroundRole(QPalette::Base);
     setAutoFillBackground(true);
 }
 void GraphView::setNodes(QList<Element> nodesPere)
@@ -80,43 +62,48 @@ QSize GraphView::sizeHint() const
 {
     return QSize(400, 200);
 }
-void GraphView::setShape(Shape shape)
-{
-    this->shape = shape;
-    update();
-}
-void GraphView::setPen(const QPen &pen)
-{
-    this->pen = pen;
-    update();
-}
 void GraphView::setZoom(double z)
 {
     this->zoom = z;
+    widthView = widthView*z;
+    heightView = heightView*z;
+    for(int i=0;i<nodes.length();i++)
+    {
+        Element inter=nodes.at(i);
+        qreal x=inter.nodePosition.x();
+        qreal y=inter.nodePosition.y();
+        inter.nodePosition.setX(x*z);
+        inter.nodePosition.setY(y*z);
+        nodes.replace(i,inter);
+    }
 }
-
-void GraphView::setBrush(const QBrush &brush)
-{
-    this->brush = brush;
-    update();
-}
-void GraphView::setAntialiased(bool antialiased)
-{
-    this->antialiased = antialiased;
-    update();
-}
-void GraphView::setTransformed(bool transformed)
-{
-    this->transformed = transformed;
-    update();
-}
-
-
 void GraphView::paintEvent(QPaintEvent * /* event */)
 {
+
+}
+
+void GraphView::clearGraph()
+{
+    haveNodes=false;
+    haveGraph=false;
+    list_graph.clear();
+    depart.clear();
+    dejaTrai.clear();
+    nodes.clear();
+    indexIMG=0;
+}
+
+void GraphView::setTaille(int widthV, int heightV)
+{
+    widthView=widthV;
+    heightView=heightV;
+}
+
+void GraphView::paint()
+{
+    QImage *image=new QImage(widthView,heightView,QImage::Format_ARGB32);
     image->fill(qRgb(255,255,255));
-    //QPainter painter(this);
-    QPainter painterIMG(image);
+    QPainter painter(image);
     QMap<int,int> rayonMax;
 
     if(haveDepart)
@@ -126,6 +113,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             GraphElement encours =list_graph.at(i);
 
             if(depart.contains(encours.nodeDeb.node))
+            {
                     if(!rayonMax.contains(encours.nodeDeb.node))
                     {
                         rayonMax.insert(encours.nodeDeb.node, encours.nodeFin.node);
@@ -143,6 +131,7 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
                         if(distance(encours)>distance(*precE))
                             rayonMax.insert(encours.nodeDeb.node,encours.nodeFin.node);
                     }
+            }
         }
     }
 
@@ -152,28 +141,35 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
         for(int i=0;i<list_graph.size();i++)
         {
 
-            int dist=(int)distance(list_graph.at(i));
-            QPointF center((list_graph.at(i).nodeDeb.nodePosition+list_graph.at(i).nodeFin.nodePosition)/2);
+            int distAff=(int)distance(list_graph.at(i));
 
-            //painter.setPen(qRgb(110, 110, 200));
-
-
-            //painter.drawText(center,QVariant((int)(dist/zoom)).toString());
-            //painter.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
-            painterIMG.drawText(center,QVariant((int)(dist/zoom)).toString());
-            painterIMG.drawLine(list_graph.at(i).nodeDeb.nodePosition,list_graph.at(i).nodeFin.nodePosition);
+            painter.setPen(qRgb(110, 110, 200));
 
 
-            if(haveDepart && depart.contains(list_graph.at(i).nodeDeb.node) && !dejaTrai.contains(list_graph.at(i).nodeDeb.node)
-                    && rayonMax.value(list_graph.at(i).nodeDeb.node)== list_graph.at(i).nodeFin.node)
+            Element nodeDeb,nodeFin;
+            for(int j=0;j<nodes.length();j++)
             {
-              //  painter.setPen(qRgb(224, 176, 255));
-               // painter.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
-                painterIMG.setPen(qRgb(224, 176, 255));
-                painterIMG.drawEllipse(list_graph.at(i).nodeDeb.nodePosition,dist,dist);
+                if(nodes.at(j).node==list_graph.at(i).nodeDeb.node) nodeDeb=nodes.at(j);
+                if(nodes.at(j).node==list_graph.at(i).nodeFin.node) nodeFin=nodes.at(j);
             }
+            int dist=(int)distance(nodeDeb,nodeFin);
+            QPointF center((nodeDeb.nodePosition+nodeFin.nodePosition)/2);
+
+            //GraphElement::debug(list_graph.at(i));
+            //GraphElement::debugElement(nodeDeb);
+            //GraphElement::debugElement(nodeFin);
+
+            painter.drawText(center,QVariant((distAff)).toString());
+            painter.drawLine(nodeDeb.nodePosition,nodeFin.nodePosition);
 
 
+            if(haveDepart && depart.contains(nodeDeb.node) && !dejaTrai.contains(nodeDeb.node)
+                    && rayonMax.value(nodeDeb.node)== nodeFin.node)
+            {
+                painter.setPen(qRgb(224, 176, 255));
+                painter.drawEllipse(nodeDeb.nodePosition,dist,dist);
+
+            }
         }
     }
 
@@ -197,40 +193,16 @@ void GraphView::paintEvent(QPaintEvent * /* event */)
             radialGradient.setColorAt(1.0, Qt::black);
 
 
-            //painter.setBrush(radialGradient);
-            //painter.drawEllipse(rec);
+            painter.setBrush(radialGradient);
+            painter.drawEllipse(rec);
 
-            //painter.setPen(qRgb(255,255,255));
-            //painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
+            painter.setPen(qRgb(255,255,255));
+            painter.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
 
-            painterIMG.setBrush(radialGradient);
-            painterIMG.drawEllipse(rec);
-
-            painterIMG.setPen(qRgb(255,255,255));
-            painterIMG.drawText(rec,Qt::AlignCenter, QVariant(nodes.at(i).node).toString());
         }
     }
     dejaTrai.append(depart);
-    updateImage();
-    /*QString imgsorti("sortis/"+QVariant(indexIMG).toString()+".bmp");
-    image->save(imgsorti,"BMP");//*/
-    indexIMG++;
+    indexIMG++;//*/
 
-}
-
-void GraphView::clearGraph()
-{
-    haveNodes=false;
-    haveGraph=false;
-    list_graph.clear();
-    depart.clear();
-    dejaTrai.clear();
-    nodes.clear();
-    indexIMG=0;
-}
-
-void GraphView::setTaille(int widthV, int heightV)
-{
-    widthView=widthV;
-    heightView=heightV;
+    emit updateImage(*image);
 }

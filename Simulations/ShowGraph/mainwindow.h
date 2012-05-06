@@ -37,6 +37,8 @@ public slots:
     void clearGraph();
     void genererTopologie();
     void calculerDegree();
+    void updateImage(QImage image);
+    void updateZoom(double x);
 
 private:
     Ui::MainWindow  *ui;
@@ -47,6 +49,10 @@ private:
     QList<Element>  nodes;
     double degreeMoy;
     double zoom;
+
+    QScrollArea *scrollArea;
+    QImage *image;
+
 };
 
 #endif // MAINWINDOW_H

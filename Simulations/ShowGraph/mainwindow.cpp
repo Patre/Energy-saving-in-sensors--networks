@@ -17,16 +17,33 @@ MainWindow::MainWindow(QWidget *parent) :
     //INITALISATION
     graph_view=new GraphView();
     ui->dockWidget_3->setVisible(false);
-    zoom = 3;
+    zoom = 1;
 
-    setCentralWidget(graph_view);
 
-    //
+    ui->zoomEdit->setMaximum(200);
+    ui->zoomEdit->setMinimum(50);
+    ui->zoomEdit->setValue(100);
+    ui->zoomEdit->setSuffix("%");
 
+    image= new QImage();
+
+    scrollArea = new QScrollArea;
+    //scrollArea->setBackgroundRole(QPalette::Dark);
+
+    connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
+    connect(ui->zoomEdit,SIGNAL(valueChanged(double)),this,SLOT(updateZoom(double)));
 
     //AFFICHAGE
-//     setCentralWidget(graph_view );
+    setCentralWidget(scrollArea);
 }
+void MainWindow::updateImage(QImage image)
+{
+    scrollArea->;
+    QLabel *imageLabel = new QLabel;
+    imageLabel->setPixmap(QPixmap::fromImage(image));
+    scrollArea->setWidget(imageLabel);
+}
+
 void MainWindow::genererTopologie()
 {
     TopoGenerate *ss=new TopoGenerate();
@@ -65,11 +82,6 @@ void MainWindow::lireFile(QString filename)
         QMessageBox::information(0,"fucked open","impossible d'ouvrir "+filename);
         return;
     }
-
-    zoom = ui->zoomEdit->value();
-    graph_view->setZoom(zoom);
-    ui->zoomEdit->setEnabled(false);
-
     while (!file.atEnd()){
         QByteArray line = file.readLine();
         QStringList lst=QVariant(line).toString().split(" ");
@@ -77,8 +89,8 @@ void MainWindow::lireFile(QString filename)
         {
             Element ele;
             ele.node = QVariant(lst.at(1)).toInt();
-            ele.nodePosition.setX(QVariant(lst.at(2)).toReal()*zoom);
-            ele.nodePosition.setY(QVariant(lst.at(3)).toReal()*zoom);
+            ele.nodePosition.setX(QVariant(lst.at(2)).toReal());
+            ele.nodePosition.setY(QVariant(lst.at(3)).toReal());
             nodes.append(ele);
         }
         else if(lst.at(0)=="G:")
@@ -113,7 +125,7 @@ void MainWindow::lireFile(QString filename)
         }
     }
 
-    /*QPointF max(0,0);
+    QPointF max(0,0);
     QPointF min(99999999,99999999);
     for(int i=0;i<nodes.length();i++)
     {
@@ -134,6 +146,7 @@ void MainWindow::lireFile(QString filename)
             inter.nodePosition.setX(inter.nodePosition.x()-min.x()+50);
             nodes.replace(i,inter);
         }
+
     if(min.y()>100)
         for(int i=0;i<nodes.length();i++)
         {
@@ -143,7 +156,7 @@ void MainWindow::lireFile(QString filename)
         }//*/
 
 
-    //graph_view->setTaille(max.x()-min.x(), max.y()-min.y());
+    graph_view->setTaille(max.x()-min.x()+100, max.y()-min.y()+100);
 
 
 
@@ -156,19 +169,22 @@ void MainWindow::lireFile(QString filename)
 
 
 
+void MainWindow::updateZoom(double x)
+{
+    //QMessageBox::information(0,"fuck",QVariant(x).toString());
+    graph_view->setZoom(x/100.0);
+    graph_view->paint();
+}
 
 void MainWindow::chargerGraph()
 {
-    //zoom=ui->zoomEdit->value();
     QString file=QFileDialog::getOpenFileName(this,"Ouvrir un fichier de graph");
     lireFile(file);
     ui->nbrNodes->setValue(nodes.length());
-    //QMessageBox::information(0,"fucked open","Degree Moyen est de "+QVariant(degreeMoy).toString());
     ui->charger->setEnabled(false);
     ui->afficherNodes->setEnabled(true);
     ui->graphFinale->setEnabled(true);
     ui->clearButton->setEnabled(true);
-    //ui->etapeSuivante->setEnabled(true);
 }
 
 void MainWindow::afficherNodes()
@@ -179,7 +195,8 @@ void MainWindow::afficherNodes()
         list_etape.append(list_graph.at(0).nodeDeb.node);
         ui->etapeSuivante->setEnabled(true);
     }
-    graph_view->repaint();
+    ui->zoomEdit->setEnabled(true);
+    graph_view->paint();
 }
 void MainWindow::afficherEtape()
 {
@@ -193,7 +210,7 @@ void MainWindow::afficherEtape()
 
     graph_view->setGraph(list_graph_etape);
     graph_view->setGraphEtape(list_etape);
-    graph_view->repaint();
+    graph_view->paint();
 
     list_etape.clear();
     list_etape=tmp;
@@ -203,7 +220,7 @@ void MainWindow::afficherEtape()
 void MainWindow::afficherGraph()
 {
     graph_view->setGraph(list_graph);
-    graph_view->repaint();
+    graph_view->paint();
 }
 
 void MainWindow::clearGraph()
@@ -212,7 +229,7 @@ void MainWindow::clearGraph()
     ui->afficherNodes->setEnabled(false);
     ui->graphFinale->setEnabled(false);
     ui->etapeSuivante->setEnabled(false);
-    ui->zoomEdit->setEnabled(true);
+    ui->zoomEdit->setEnabled(false);
     list_graph.clear();
     nodes.clear();
     list_etape.clear();

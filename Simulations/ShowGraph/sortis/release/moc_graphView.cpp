@@ -1,13 +1,13 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'graphView.h'
 **
-** Created: Sat 5. May 09:24:37 2012
+** Created: Sun 6. May 11:03:37 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../graphView.h"
+#include "../../graphView.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'graphView.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
@@ -23,39 +23,36 @@ static const uint qt_meta_data_GraphView[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      17,   11,   10,   10, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      21,   11,   10,   10, 0x0a,
-      52,   46,   10,   10, 0x0a,
-      86,   82,   10,   10, 0x0a,
-     112,   10,   10,   10, 0x0a,
-     131,  125,   10,   10, 0x0a,
-     162,  147,   10,   10, 0x0a,
-     185,  181,   10,   10, 0x0a,
-     204,  198,   10,   10, 0x0a,
-     233,  221,   10,   10, 0x0a,
-     266,  254,   10,   10, 0x0a,
-     292,  287,   10,   10, 0x0a,
+      47,   37,   10,   10, 0x0a,
+      78,   72,   10,   10, 0x0a,
+     112,  108,   10,   10, 0x0a,
+     138,   10,   10,   10, 0x0a,
+     166,  151,   10,   10, 0x0a,
+     190,  185,   10,   10, 0x0a,
+     206,   10,   10,   10, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_GraphView[] = {
-    "GraphView\0\0nodesPere\0setNodes(QList<Element>)\0"
+    "GraphView\0\0image\0updateImage(QImage)\0"
+    "nodesPere\0setNodes(QList<Element>)\0"
     "graph\0setGraph(QList<GraphElement>)\0"
     "dep\0setGraphEtape(QList<int>)\0"
-    "clearGraph()\0shape\0setShape(Shape)\0"
-    "widthV,heightV\0setTaille(int,int)\0pen\0"
-    "setPen(QPen)\0brush\0setBrush(QBrush)\0"
-    "antialiased\0setAntialiased(bool)\0"
-    "transformed\0setTransformed(bool)\0zoom\0"
-    "setZoom(double)\0"
+    "clearGraph()\0widthV,heightV\0"
+    "setTaille(int,int)\0zoom\0setZoom(double)\0"
+    "paint()\0"
 };
 
 const QMetaObject GraphView::staticMetaObject = {
@@ -87,21 +84,25 @@ int GraphView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: setNodes((*reinterpret_cast< QList<Element>(*)>(_a[1]))); break;
-        case 1: setGraph((*reinterpret_cast< QList<GraphElement>(*)>(_a[1]))); break;
-        case 2: setGraphEtape((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
-        case 3: clearGraph(); break;
-        case 4: setShape((*reinterpret_cast< Shape(*)>(_a[1]))); break;
+        case 0: updateImage((*reinterpret_cast< QImage(*)>(_a[1]))); break;
+        case 1: setNodes((*reinterpret_cast< QList<Element>(*)>(_a[1]))); break;
+        case 2: setGraph((*reinterpret_cast< QList<GraphElement>(*)>(_a[1]))); break;
+        case 3: setGraphEtape((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 4: clearGraph(); break;
         case 5: setTaille((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 6: setPen((*reinterpret_cast< const QPen(*)>(_a[1]))); break;
-        case 7: setBrush((*reinterpret_cast< const QBrush(*)>(_a[1]))); break;
-        case 8: setAntialiased((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 9: setTransformed((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 10: setZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 6: setZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
+        case 7: paint(); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 8;
     }
     return _id;
+}
+
+// SIGNAL 0
+void GraphView::updateImage(QImage _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

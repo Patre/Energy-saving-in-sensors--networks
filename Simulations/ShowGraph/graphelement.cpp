@@ -38,6 +38,7 @@ void GraphElement::debug()
 
 }
 
+
 void GraphElement::debugElement(Element ele)
 {
     QMessageBox::information(0,"DEBUG d'un ELEMENT","ID: "+QVariant(ele.node).toString()+"\nX: "

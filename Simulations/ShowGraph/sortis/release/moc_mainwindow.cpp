@@ -1,13 +1,13 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sat 5. May 09:24:34 2012
+** Created: Sun 6. May 11:03:35 2012
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.4)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../mainwindow.h"
+#include "../../mainwindow.h"
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainwindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 62
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -38,6 +38,8 @@ static const uint qt_meta_data_MainWindow[] = {
       75,   11,   11,   11, 0x0a,
       88,   11,   11,   11, 0x0a,
      107,   11,   11,   11, 0x0a,
+     130,  124,   11,   11, 0x0a,
+     152,  150,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -46,7 +48,8 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0chargerGraph()\0afficherNodes()\0"
     "afficherEtape()\0afficherGraph()\0"
     "clearGraph()\0genererTopologie()\0"
-    "calculerDegree()\0"
+    "calculerDegree()\0image\0updateImage(QImage)\0"
+    "x\0updateZoom(double)\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -85,9 +88,11 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: clearGraph(); break;
         case 5: genererTopologie(); break;
         case 6: calculerDegree(); break;
+        case 7: updateImage((*reinterpret_cast< QImage(*)>(_a[1]))); break;
+        case 8: updateZoom((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

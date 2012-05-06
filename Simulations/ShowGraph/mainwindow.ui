@@ -135,7 +135,7 @@
      <x>0</x>
      <y>0</y>
      <width>744</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -247,16 +247,31 @@
      </property>
     </widget>
     <widget class="QDoubleSpinBox" name="zoomEdit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>110</x>
+       <x>80</x>
        <y>0</y>
-       <width>61</width>
+       <width>91</width>
        <height>22</height>
       </rect>
      </property>
+     <property name="suffix">
+      <string>%</string>
+     </property>
+     <property name="minimum">
+      <double>50.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>200.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>10.000000000000000</double>
+     </property>
      <property name="value">
-      <double>3.000000000000000</double>
+      <double>100.000000000000000</double>
      </property>
     </widget>
     <widget class="QSpinBox" name="nbrNodes">
@@ -385,7 +400,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>35</x>
-     <y>69</y>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>183</x>
@@ -401,7 +416,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>37</x>
-     <y>114</y>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>183</x>
@@ -417,7 +432,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>19</x>
-     <y>189</y>
+     <y>223</y>
     </hint>
     <hint type="destinationlabel">
      <x>184</x>
@@ -433,7 +448,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>79</x>
-     <y>240</y>
+     <y>274</y>
     </hint>
     <hint type="destinationlabel">
      <x>184</x>
@@ -448,8 +463,8 @@
    <slot>genererTopologie()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>739</x>
-     <y>295</y>
+     <x>821</x>
+     <y>286</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -465,7 +480,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>77</x>
-     <y>156</y>
+     <y>190</y>
     </hint>
     <hint type="destinationlabel">
      <x>224</x>
@@ -481,5 +496,6 @@
   <slot>clearGraph()</slot>
   <slot>genererTopologie()</slot>
   <slot>afficherEtape()</slot>
+  <slot>updateZoom(double)</slot>
  </slots>
 </ui>

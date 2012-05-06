@@ -25,22 +25,19 @@ public slots:
     void setNodes(QList<Element> nodesPere);
     void setGraph(QList<GraphElement> graph);
     void setGraphEtape(QList<int> dep);
-
     void clearGraph();
-
-    void setShape(Shape shape);
     void setTaille(int widthV, int heightV);
-    void setPen(const QPen &pen);
-    void setBrush(const QBrush &brush);
-    void setAntialiased(bool antialiased);
-    void setTransformed(bool transformed);
     void setZoom(double zoom);
+    void paint();
+
+signals:
+    void updateImage(QImage image);
+
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    void updateImage();
     //LES NODEs
     bool haveNodes;
     QList<Element>  nodes;
@@ -59,8 +56,8 @@ private:
 
     double zoom;
 
-    int widthView;
-    int heightView;
+    qreal widthView;
+    qreal heightView;
 
 
 
@@ -71,9 +68,6 @@ private:
     bool transformed;
 
     //SCAL
-    QImage *image;
-    QScrollArea *scrollArea;
-    QLabel *imageLabel;
 };
 
 
