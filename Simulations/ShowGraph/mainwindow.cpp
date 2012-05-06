@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //INITALISATION
     ui->zoomEdit->setVisible(false);
+    ui->afficherNodes->setVisible(false);
     graph_view=new GraphView();
     zoom = 1;
     image= new QImage();

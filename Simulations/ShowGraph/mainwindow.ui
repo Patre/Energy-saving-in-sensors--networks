@@ -200,7 +200,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>zoom-</string>
+           <string>Zoom-</string>
           </property>
          </widget>
         </item>
@@ -216,7 +216,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>zoom+</string>
+           <string>Zoom+</string>
           </property>
          </widget>
         </item>
@@ -309,7 +309,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <property name="text">
-         <string>Charger un Graphe</string>
+         <string>Charger un graphe</string>
         </property>
        </widget>
       </item>
@@ -325,7 +325,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <property name="text">
-         <string>Afficher les Nœuds</string>
+         <string>Afficher les nœuds</string>
         </property>
        </widget>
       </item>
@@ -341,7 +341,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <property name="text">
-         <string>Etape Suivante</string>
+         <string>Etape suivante</string>
         </property>
        </widget>
       </item>
@@ -357,7 +357,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <property name="text">
-         <string>Graphe Final</string>
+         <string>Graphe final</string>
         </property>
        </widget>
       </item>
@@ -638,22 +638,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    </hints>
   </connection>
   <connection>
-   <sender>afficherNodes</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>afficherNodes()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>69</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>314</x>
-     <y>157</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>etapeSuivante</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
@@ -842,6 +826,22 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
     <hint type="destinationlabel">
      <x>399</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>afficherNodes</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>afficherNodes()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>69</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>314</x>
+     <y>157</y>
     </hint>
    </hints>
   </connection>
