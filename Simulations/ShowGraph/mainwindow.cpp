@@ -18,19 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->zoomEdit->setVisible(false);
     graph_view=new GraphView();
     zoom = 1;
-
-
-    /*ui->zoomEdit->setMaximum(200);
-    ui->zoomEdit->setMinimum(50);
-    ui->zoomEdit->setValue(100);
-    ui->zoomEdit->setSingleStep(10);
-    ui->zoomEdit->setSuffix("%");
-    ui->zoomEdit->setEnabled(false);//*/
-
     image= new QImage();
 
     scrollArea = new QScrollArea;
-    //scrollArea->setBackgroundRole(QPalette::Dark);
 
     connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
 
@@ -153,6 +143,7 @@ void MainWindow::lireFile(QString filename)
 
 
 
+    afficherNodes();
     //affichage des nodes
     //for(int i=0;i<nodes.size();i++) GraphElement::debugElement(nodes.at(i));
 
@@ -230,6 +221,7 @@ void MainWindow::clearGraph()
     list_graph_etape.clear();
     graph_view->clearGraph();
     graph_view->repaint();
+    updateImage(QImage());
 }
 
 

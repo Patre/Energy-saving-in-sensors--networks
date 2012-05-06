@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. May 15:55:29 2012
+** Created: Sun 6. May 16:32:47 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -16,13 +16,16 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QDockWidget>
 #include <QtGui/QDoubleSpinBox>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QMainWindow>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
+#include <QtGui/QSpacerItem>
 #include <QtGui/QSpinBox>
 #include <QtGui/QStatusBar>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -33,22 +36,42 @@ public:
     QAction *actionCharger_Graphe;
     QAction *actionClear_Graphe;
     QAction *actionQuitter;
+    QAction *actionQui_somme_Nous;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menuFichier;
+    QMenu *menuAide;
     QStatusBar *statusbar;
     QDockWidget *dockWidget;
     QWidget *dockWidgetContents;
     QDoubleSpinBox *zoomEdit;
-    QSpinBox *rangeEdit;
-    QSpinBox *nbrNodes;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *DockLayout;
+    QSpacerItem *verticalSpacer_7;
+    QSpacerItem *verticalSpacer_8;
+    QSpacerItem *verticalSpacer_9;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *zoomout;
+    QPushButton *zoomin;
+    QSpacerItem *verticalSpacer;
+    QSpacerItem *verticalSpacer_6;
+    QSpacerItem *verticalSpacer_2;
+    QSpacerItem *verticalSpacer_5;
+    QSpacerItem *verticalSpacer_3;
+    QSpacerItem *verticalSpacer_4;
     QPushButton *charger;
     QPushButton *afficherNodes;
     QPushButton *etapeSuivante;
     QPushButton *graphFinale;
     QPushButton *clearButton;
-    QPushButton *zoomin;
-    QPushButton *zoomout;
+    QSpacerItem *verticalSpacer_12;
+    QSpacerItem *verticalSpacer_13;
+    QSpacerItem *verticalSpacer_15;
+    QSpacerItem *verticalSpacer_14;
+    QSpacerItem *verticalSpacer_10;
+    QSpacerItem *verticalSpacer_11;
+    QSpinBox *nbrNodes;
+    QSpinBox *rangeEdit;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -56,12 +79,31 @@ public:
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
         MainWindow->resize(800, 600);
+        MainWindow->setStyleSheet(QString::fromUtf8("QPushButton {\n"
+"     border: 2px solid #8f8f91;\n"
+"     border-radius: 6px;\n"
+"     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                       stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
+"     min-width: 80px;\n"
+" }\n"
+"\n"
+"QSpinBox {\n"
+"     border: 2px solid gray;\n"
+"     border-radius: 10px;\n"
+"     padding: 0 8px;\n"
+"     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"                                       stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
+"\n"
+"     selection-background-color: darkgray;\n"
+" }"));
         actionCharger_Graphe = new QAction(MainWindow);
         actionCharger_Graphe->setObjectName(QString::fromUtf8("actionCharger_Graphe"));
         actionClear_Graphe = new QAction(MainWindow);
         actionClear_Graphe->setObjectName(QString::fromUtf8("actionClear_Graphe"));
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName(QString::fromUtf8("actionQuitter"));
+        actionQui_somme_Nous = new QAction(MainWindow);
+        actionQui_somme_Nous->setObjectName(QString::fromUtf8("actionQui_somme_Nous"));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         MainWindow->setCentralWidget(centralwidget);
@@ -70,6 +112,8 @@ public:
         menubar->setGeometry(QRect(0, 0, 800, 20));
         menuFichier = new QMenu(menubar);
         menuFichier->setObjectName(QString::fromUtf8("menuFichier"));
+        menuAide = new QMenu(menubar);
+        menuAide->setObjectName(QString::fromUtf8("menuAide"));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -77,7 +121,7 @@ public:
         dockWidget = new QDockWidget(MainWindow);
         dockWidget->setObjectName(QString::fromUtf8("dockWidget"));
         dockWidget->setEnabled(true);
-        dockWidget->setMinimumSize(QSize(150, 36));
+        dockWidget->setMinimumSize(QSize(220, 36));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
         zoomEdit = new QDoubleSpinBox(dockWidgetContents);
@@ -88,50 +132,148 @@ public:
         zoomEdit->setMaximum(200);
         zoomEdit->setSingleStep(10);
         zoomEdit->setValue(100);
-        rangeEdit = new QSpinBox(dockWidgetContents);
-        rangeEdit->setObjectName(QString::fromUtf8("rangeEdit"));
-        rangeEdit->setEnabled(false);
-        rangeEdit->setGeometry(QRect(30, 310, 61, 22));
-        rangeEdit->setValue(30);
-        nbrNodes = new QSpinBox(dockWidgetContents);
-        nbrNodes->setObjectName(QString::fromUtf8("nbrNodes"));
-        nbrNodes->setEnabled(false);
-        nbrNodes->setGeometry(QRect(30, 280, 61, 22));
-        charger = new QPushButton(dockWidgetContents);
+        verticalLayoutWidget = new QWidget(dockWidgetContents);
+        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(10, 0, 204, 356));
+        DockLayout = new QVBoxLayout(verticalLayoutWidget);
+        DockLayout->setObjectName(QString::fromUtf8("DockLayout"));
+        DockLayout->setContentsMargins(0, 0, 0, 0);
+        verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_7);
+
+        verticalSpacer_8 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_8);
+
+        verticalSpacer_9 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_9);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        zoomout = new QPushButton(verticalLayoutWidget);
+        zoomout->setObjectName(QString::fromUtf8("zoomout"));
+        zoomout->setMinimumSize(QSize(84, 30));
+        zoomout->setStyleSheet(QString::fromUtf8(""));
+
+        horizontalLayout->addWidget(zoomout);
+
+        zoomin = new QPushButton(verticalLayoutWidget);
+        zoomin->setObjectName(QString::fromUtf8("zoomin"));
+        zoomin->setMinimumSize(QSize(84, 30));
+        zoomin->setStyleSheet(QString::fromUtf8(""));
+
+        horizontalLayout->addWidget(zoomin);
+
+
+        DockLayout->addLayout(horizontalLayout);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer);
+
+        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_6);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_2);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_5);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_3);
+
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_4);
+
+        charger = new QPushButton(verticalLayoutWidget);
         charger->setObjectName(QString::fromUtf8("charger"));
-        charger->setGeometry(QRect(10, 80, 101, 23));
-        afficherNodes = new QPushButton(dockWidgetContents);
+        charger->setMinimumSize(QSize(84, 30));
+
+        DockLayout->addWidget(charger);
+
+        afficherNodes = new QPushButton(verticalLayoutWidget);
         afficherNodes->setObjectName(QString::fromUtf8("afficherNodes"));
         afficherNodes->setEnabled(false);
-        afficherNodes->setGeometry(QRect(10, 110, 101, 23));
-        etapeSuivante = new QPushButton(dockWidgetContents);
+        afficherNodes->setMinimumSize(QSize(84, 30));
+
+        DockLayout->addWidget(afficherNodes);
+
+        etapeSuivante = new QPushButton(verticalLayoutWidget);
         etapeSuivante->setObjectName(QString::fromUtf8("etapeSuivante"));
         etapeSuivante->setEnabled(false);
-        etapeSuivante->setGeometry(QRect(10, 140, 101, 23));
-        graphFinale = new QPushButton(dockWidgetContents);
+        etapeSuivante->setMinimumSize(QSize(84, 30));
+
+        DockLayout->addWidget(etapeSuivante);
+
+        graphFinale = new QPushButton(verticalLayoutWidget);
         graphFinale->setObjectName(QString::fromUtf8("graphFinale"));
         graphFinale->setEnabled(false);
-        graphFinale->setGeometry(QRect(10, 170, 101, 23));
-        clearButton = new QPushButton(dockWidgetContents);
+        graphFinale->setMinimumSize(QSize(84, 30));
+
+        DockLayout->addWidget(graphFinale);
+
+        clearButton = new QPushButton(verticalLayoutWidget);
         clearButton->setObjectName(QString::fromUtf8("clearButton"));
         clearButton->setEnabled(true);
-        clearButton->setGeometry(QRect(10, 200, 101, 23));
-        zoomin = new QPushButton(dockWidgetContents);
-        zoomin->setObjectName(QString::fromUtf8("zoomin"));
-        zoomin->setGeometry(QRect(10, 50, 41, 23));
-        zoomin->setStyleSheet(QString::fromUtf8("QPushButton { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(127, 127, 127, 255), stop:1 rgba(255, 255, 255, 255)); border: none; }"));
-        zoomout = new QPushButton(dockWidgetContents);
-        zoomout->setObjectName(QString::fromUtf8("zoomout"));
-        zoomout->setGeometry(QRect(70, 50, 41, 23));
-        zoomout->setStyleSheet(QString::fromUtf8(""));
+        clearButton->setMinimumSize(QSize(84, 30));
+
+        DockLayout->addWidget(clearButton);
+
+        verticalSpacer_12 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_12);
+
+        verticalSpacer_13 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_13);
+
+        verticalSpacer_15 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_15);
+
+        verticalSpacer_14 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_14);
+
+        verticalSpacer_10 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_10);
+
+        verticalSpacer_11 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_11);
+
+        nbrNodes = new QSpinBox(verticalLayoutWidget);
+        nbrNodes->setObjectName(QString::fromUtf8("nbrNodes"));
+        nbrNodes->setEnabled(false);
+
+        DockLayout->addWidget(nbrNodes);
+
+        rangeEdit = new QSpinBox(verticalLayoutWidget);
+        rangeEdit->setObjectName(QString::fromUtf8("rangeEdit"));
+        rangeEdit->setEnabled(false);
+        rangeEdit->setValue(30);
+
+        DockLayout->addWidget(rangeEdit);
+
         dockWidget->setWidget(dockWidgetContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);
 
         menubar->addAction(menuFichier->menuAction());
+        menubar->addAction(menuAide->menuAction());
         menuFichier->addAction(actionCharger_Graphe);
         menuFichier->addAction(actionClear_Graphe);
         menuFichier->addSeparator();
         menuFichier->addAction(actionQuitter);
+        menuAide->addAction(actionQui_somme_Nous);
 
         retranslateUi(MainWindow);
         QObject::connect(zoomEdit, SIGNAL(valueChanged(double)), MainWindow, SLOT(updateZoom(double)));
@@ -148,20 +290,25 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Visualisateur de r\303\251seau", 0, QApplication::UnicodeUTF8));
         actionCharger_Graphe->setText(QApplication::translate("MainWindow", "Charger Graphe", 0, QApplication::UnicodeUTF8));
         actionClear_Graphe->setText(QApplication::translate("MainWindow", "Clear Graphe", 0, QApplication::UnicodeUTF8));
         actionQuitter->setText(QApplication::translate("MainWindow", "Quitter", 0, QApplication::UnicodeUTF8));
+        actionQui_somme_Nous->setText(QApplication::translate("MainWindow", "Qui somme Nous?", 0, QApplication::UnicodeUTF8));
         menuFichier->setTitle(QApplication::translate("MainWindow", "Fichier", 0, QApplication::UnicodeUTF8));
+        menuAide->setTitle(QApplication::translate("MainWindow", "Aide", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_WHATSTHIS
+        dockWidget->setWhatsThis(QApplication::translate("MainWindow", "Dock qui permet de charger et verfi\303\251r le Graphe", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_WHATSTHIS
         zoomEdit->setPrefix(QString());
         zoomEdit->setSuffix(QApplication::translate("MainWindow", "%", 0, QApplication::UnicodeUTF8));
-        charger->setText(QApplication::translate("MainWindow", "Charger Graphe", 0, QApplication::UnicodeUTF8));
-        afficherNodes->setText(QApplication::translate("MainWindow", "Afficher Les Nodes ", 0, QApplication::UnicodeUTF8));
-        etapeSuivante->setText(QApplication::translate("MainWindow", "Etape Suivante", 0, QApplication::UnicodeUTF8));
-        graphFinale->setText(QApplication::translate("MainWindow", "Graphe Finale", 0, QApplication::UnicodeUTF8));
-        clearButton->setText(QApplication::translate("MainWindow", "Clear Graphe", 0, QApplication::UnicodeUTF8));
-        zoomin->setText(QApplication::translate("MainWindow", "zoom+", 0, QApplication::UnicodeUTF8));
         zoomout->setText(QApplication::translate("MainWindow", "zoom-", 0, QApplication::UnicodeUTF8));
+        zoomin->setText(QApplication::translate("MainWindow", "zoom+", 0, QApplication::UnicodeUTF8));
+        charger->setText(QApplication::translate("MainWindow", "Charger un Graphe", 0, QApplication::UnicodeUTF8));
+        afficherNodes->setText(QApplication::translate("MainWindow", "Afficher les N\305\223uds", 0, QApplication::UnicodeUTF8));
+        etapeSuivante->setText(QApplication::translate("MainWindow", "Etape Suivante", 0, QApplication::UnicodeUTF8));
+        graphFinale->setText(QApplication::translate("MainWindow", "Graphe Final", 0, QApplication::UnicodeUTF8));
+        clearButton->setText(QApplication::translate("MainWindow", "Effacer", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

@@ -173,8 +173,8 @@ void GraphView::paint()
         }
     }
 
-    //painter.setPen(qRgb(255,0,0));
 
+    painter.setPen(qRgb(255,255,255));
 
     if(haveNodes)
     {
