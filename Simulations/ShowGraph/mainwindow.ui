@@ -325,7 +325,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
          </size>
         </property>
         <property name="text">
-         <string>Afficher les nœuds</string>
+         <string>Afficher le graphe initial</string>
         </property>
        </widget>
       </item>
@@ -613,7 +613,7 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <hints>
     <hint type="sourcelabel">
      <x>81</x>
-     <y>510</y>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>240</x>
@@ -628,8 +628,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>chargerGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>53</x>
-     <y>171</y>
+     <x>54</x>
+     <y>207</y>
     </hint>
     <hint type="destinationlabel">
      <x>168</x>
@@ -644,8 +644,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>afficherEtape()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>68</x>
-     <y>243</y>
+     <x>69</x>
+     <y>279</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -660,8 +660,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>afficherGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>56</x>
-     <y>281</y>
+     <x>57</x>
+     <y>315</y>
     </hint>
     <hint type="destinationlabel">
      <x>515</x>
@@ -676,8 +676,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>clearGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>58</x>
-     <y>317</y>
+     <x>59</x>
+     <y>351</y>
     </hint>
     <hint type="destinationlabel">
      <x>238</x>
@@ -692,8 +692,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>updateZoomPlus()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>130</x>
-     <y>93</y>
+     <x>211</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
      <x>168</x>
@@ -708,8 +708,8 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <slot>updateZoomMoins()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>29</x>
-     <y>93</y>
+     <x>31</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
      <x>310</x>
@@ -833,11 +833,11 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
    <sender>afficherNodes</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>afficherNodes()</slot>
+   <slot>afficherGrapheInitial()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>69</x>
-     <y>209</y>
+     <x>70</x>
+     <y>243</y>
     </hint>
     <hint type="destinationlabel">
      <x>314</x>
@@ -855,5 +855,6 @@ radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
   <slot>clearGraph()</slot>
   <slot>updateZoomPlus()</slot>
   <slot>updateZoomMoins()</slot>
+  <slot>afficherGrapheInitial()</slot>
  </slots>
 </ui>

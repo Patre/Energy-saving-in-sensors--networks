@@ -13,7 +13,6 @@ double distance(Element a, Element b)
     double dx=a.nodePosition.x()-b.nodePosition.x();
     double dy=a.nodePosition.y()-b.nodePosition.y();
     return qSqrt(dx*dx+dy*dy);
-
 }
 
 

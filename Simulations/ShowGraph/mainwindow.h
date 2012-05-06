@@ -31,6 +31,7 @@ public:
 public slots:
     void chargerGraph();
     void afficherNodes();
+    void afficherGrapheInitial();
     void afficherEtape();
     void afficherGraph();
     void clearGraph();

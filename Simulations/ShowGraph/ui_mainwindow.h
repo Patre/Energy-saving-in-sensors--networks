@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. May 21:34:16 2012
+** Created: Sun 6. May 21:49:58 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -369,7 +369,7 @@ public:
         QObject::connect(actionZoomPlus, SIGNAL(triggered()), MainWindow, SLOT(updateZoomPlus()));
         QObject::connect(actionAfficherGraphe, SIGNAL(triggered()), MainWindow, SLOT(afficherGraph()));
         QObject::connect(actionAfficherEtape, SIGNAL(triggered()), MainWindow, SLOT(afficherEtape()));
-        QObject::connect(afficherNodes, SIGNAL(clicked()), MainWindow, SLOT(afficherNodes()));
+        QObject::connect(afficherNodes, SIGNAL(clicked()), MainWindow, SLOT(afficherGrapheInitial()));
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -395,7 +395,7 @@ public:
         zoomout->setText(QApplication::translate("MainWindow", "Zoom-", 0, QApplication::UnicodeUTF8));
         zoomin->setText(QApplication::translate("MainWindow", "Zoom+", 0, QApplication::UnicodeUTF8));
         charger->setText(QApplication::translate("MainWindow", "Charger un graphe", 0, QApplication::UnicodeUTF8));
-        afficherNodes->setText(QApplication::translate("MainWindow", "Afficher les n\305\223uds", 0, QApplication::UnicodeUTF8));
+        afficherNodes->setText(QApplication::translate("MainWindow", "Afficher le graphe initial", 0, QApplication::UnicodeUTF8));
         etapeSuivante->setText(QApplication::translate("MainWindow", "Etape suivante", 0, QApplication::UnicodeUTF8));
         graphFinale->setText(QApplication::translate("MainWindow", "Graphe final", 0, QApplication::UnicodeUTF8));
         clearButton->setText(QApplication::translate("MainWindow", "Effacer", 0, QApplication::UnicodeUTF8));

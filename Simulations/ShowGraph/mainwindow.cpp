@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     //INITALISATION
     ui->zoomEdit->setVisible(false);
-    ui->afficherNodes->setVisible(false);
+    //ui->afficherNodes->setVisible(false);
     graph_view=new GraphView();
     zoom = 1;
     image= new QImage();
@@ -171,6 +171,22 @@ void MainWindow::chargerGraph()
     ui->afficherNodes->setEnabled(true);
     ui->graphFinale->setEnabled(true);
     ui->clearButton->setEnabled(true);
+}
+
+void MainWindow::afficherGrapheInitial()
+{
+    QList<GraphElement> list_initial;
+    for(int i=0;i<nodes.length();i++)
+        for(int j=0;j<nodes.length();j++)
+            if(distanceEuclidienne(nodes.at(i),nodes.at(j))< ui->rangeEdit->value() && i != j)
+            {
+                GraphElement *inter= new GraphElement(nodes.at(i),nodes.at(j));
+                list_initial.append(*inter);
+            }
+
+
+    graph_view->setGraph(list_initial);
+    graph_view->paint();
 }
 
 void MainWindow::afficherNodes()
