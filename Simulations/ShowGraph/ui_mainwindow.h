@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. May 16:32:47 2012
+** Created: Sun 6. May 16:47:40 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -72,6 +72,7 @@ public:
     QSpacerItem *verticalSpacer_11;
     QSpinBox *nbrNodes;
     QSpinBox *rangeEdit;
+    QSpacerItem *verticalSpacer_16;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -79,23 +80,46 @@ public:
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->setEnabled(true);
         MainWindow->resize(800, 600);
-        MainWindow->setStyleSheet(QString::fromUtf8("QPushButton {\n"
-"     border: 2px solid #8f8f91;\n"
-"     border-radius: 6px;\n"
-"     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
-"                                       stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
-"     min-width: 80px;\n"
-" }\n"
+        MainWindow->setStyleSheet(QString::fromUtf8("#dockWidget {\n"
+"border: none;\n"
+"background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+"stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,\n"
+"stop: 0.39999 #717171, stop: 0.4 #626262,\n"
+"stop: 0.9 #4c4c4c, stop: 1 #333333);\n"
+"}\n"
 "\n"
-"QSpinBox {\n"
-"     border: 2px solid gray;\n"
+"#dockWidget QPushButton {\n"
+"color: #333;\n"
+"border: 2px solid #555;\n"
+"border-radius: 11px;\n"
+"padding: 5px;\n"
+"background: qradialgradient(cx: 0.3, cy: -0.4,\n"
+"fx: 0.3, fy: -0.4,\n"
+"radius: 1.35, stop: 0 #fff, stop: 1 #888);\n"
+"min-width: 80px;\n"
+"}\n"
+"#dockWidget QSpinBox {\n"
+"border: 2px solid gray;\n"
 "     border-radius: 10px;\n"
 "     padding: 0 8px;\n"
 "     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                       stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
 "\n"
 "     selection-background-color: darkgray;\n"
-" }"));
+"}\n"
+"\n"
+"#dockWidget QPushButton:hover {\n"
+"background: qradialgradient(cx: 0.3, cy: -0.4,\n"
+"fx: 0.3, fy: -0.4,\n"
+"radius: 1.35, stop: 0 #fff, stop: 1 #bbb);\n"
+"}\n"
+"\n"
+"#dockWidget QPushButton:pressed {\n"
+"ba"
+                        "ckground: qradialgradient(cx: 0.4, cy: -0.1,\n"
+"fx: 0.4, fy: -0.1,\n"
+"radius: 1.35, stop: 0 #fff, stop: 1 #ddd);\n"
+"}"));
         actionCharger_Graphe = new QAction(MainWindow);
         actionCharger_Graphe->setObjectName(QString::fromUtf8("actionCharger_Graphe"));
         actionClear_Graphe = new QAction(MainWindow);
@@ -122,6 +146,7 @@ public:
         dockWidget->setObjectName(QString::fromUtf8("dockWidget"));
         dockWidget->setEnabled(true);
         dockWidget->setMinimumSize(QSize(220, 36));
+        dockWidget->setStyleSheet(QString::fromUtf8(""));
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QString::fromUtf8("dockWidgetContents"));
         zoomEdit = new QDoubleSpinBox(dockWidgetContents);
@@ -134,7 +159,7 @@ public:
         zoomEdit->setValue(100);
         verticalLayoutWidget = new QWidget(dockWidgetContents);
         verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(10, 0, 204, 356));
+        verticalLayoutWidget->setGeometry(QRect(10, 0, 204, 401));
         DockLayout = new QVBoxLayout(verticalLayoutWidget);
         DockLayout->setObjectName(QString::fromUtf8("DockLayout"));
         DockLayout->setContentsMargins(0, 0, 0, 0);
@@ -154,14 +179,14 @@ public:
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         zoomout = new QPushButton(verticalLayoutWidget);
         zoomout->setObjectName(QString::fromUtf8("zoomout"));
-        zoomout->setMinimumSize(QSize(84, 30));
+        zoomout->setMinimumSize(QSize(94, 30));
         zoomout->setStyleSheet(QString::fromUtf8(""));
 
         horizontalLayout->addWidget(zoomout);
 
         zoomin = new QPushButton(verticalLayoutWidget);
         zoomin->setObjectName(QString::fromUtf8("zoomin"));
-        zoomin->setMinimumSize(QSize(84, 30));
+        zoomin->setMinimumSize(QSize(94, 30));
         zoomin->setStyleSheet(QString::fromUtf8(""));
 
         horizontalLayout->addWidget(zoomin);
@@ -195,35 +220,35 @@ public:
 
         charger = new QPushButton(verticalLayoutWidget);
         charger->setObjectName(QString::fromUtf8("charger"));
-        charger->setMinimumSize(QSize(84, 30));
+        charger->setMinimumSize(QSize(94, 30));
 
         DockLayout->addWidget(charger);
 
         afficherNodes = new QPushButton(verticalLayoutWidget);
         afficherNodes->setObjectName(QString::fromUtf8("afficherNodes"));
         afficherNodes->setEnabled(false);
-        afficherNodes->setMinimumSize(QSize(84, 30));
+        afficherNodes->setMinimumSize(QSize(94, 30));
 
         DockLayout->addWidget(afficherNodes);
 
         etapeSuivante = new QPushButton(verticalLayoutWidget);
         etapeSuivante->setObjectName(QString::fromUtf8("etapeSuivante"));
         etapeSuivante->setEnabled(false);
-        etapeSuivante->setMinimumSize(QSize(84, 30));
+        etapeSuivante->setMinimumSize(QSize(94, 30));
 
         DockLayout->addWidget(etapeSuivante);
 
         graphFinale = new QPushButton(verticalLayoutWidget);
         graphFinale->setObjectName(QString::fromUtf8("graphFinale"));
         graphFinale->setEnabled(false);
-        graphFinale->setMinimumSize(QSize(84, 30));
+        graphFinale->setMinimumSize(QSize(94, 30));
 
         DockLayout->addWidget(graphFinale);
 
         clearButton = new QPushButton(verticalLayoutWidget);
         clearButton->setObjectName(QString::fromUtf8("clearButton"));
         clearButton->setEnabled(true);
-        clearButton->setMinimumSize(QSize(84, 30));
+        clearButton->setMinimumSize(QSize(94, 30));
 
         DockLayout->addWidget(clearButton);
 
@@ -254,15 +279,23 @@ public:
         nbrNodes = new QSpinBox(verticalLayoutWidget);
         nbrNodes->setObjectName(QString::fromUtf8("nbrNodes"));
         nbrNodes->setEnabled(false);
+        nbrNodes->setMinimumSize(QSize(0, 30));
+        nbrNodes->setMaximumSize(QSize(16777215, 16));
 
         DockLayout->addWidget(nbrNodes);
 
         rangeEdit = new QSpinBox(verticalLayoutWidget);
         rangeEdit->setObjectName(QString::fromUtf8("rangeEdit"));
         rangeEdit->setEnabled(false);
+        rangeEdit->setMinimumSize(QSize(0, 30));
+        rangeEdit->setMaximumSize(QSize(16777215, 16));
         rangeEdit->setValue(30);
 
         DockLayout->addWidget(rangeEdit);
+
+        verticalSpacer_16 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        DockLayout->addItem(verticalSpacer_16);
 
         dockWidget->setWidget(dockWidgetContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), dockWidget);

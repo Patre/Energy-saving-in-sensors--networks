@@ -17,23 +17,45 @@
    <string>Visualisateur de réseau</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton {
-     border: 2px solid #8f8f91;
-     border-radius: 6px;
-     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
-     min-width: 80px;
- }
+   <string notr="true">#dockWidget {
+border: none;
+background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+stop: 0 #a6a6a6, stop: 0.08 #7f7f7f,
+stop: 0.39999 #717171, stop: 0.4 #626262,
+stop: 0.9 #4c4c4c, stop: 1 #333333);
+}
 
-QSpinBox {
-     border: 2px solid gray;
+#dockWidget QPushButton {
+color: #333;
+border: 2px solid #555;
+border-radius: 11px;
+padding: 5px;
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #888);
+min-width: 80px;
+}
+#dockWidget QSpinBox {
+border: 2px solid gray;
      border-radius: 10px;
      padding: 0 8px;
      background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                        stop: 0 #f6f7fa, stop: 1 #dadbde);
 
      selection-background-color: darkgray;
- }</string>
+}
+
+#dockWidget QPushButton:hover {
+background: qradialgradient(cx: 0.3, cy: -0.4,
+fx: 0.3, fy: -0.4,
+radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+}
+
+#dockWidget QPushButton:pressed {
+background: qradialgradient(cx: 0.4, cy: -0.1,
+fx: 0.4, fy: -0.1,
+radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -77,6 +99,9 @@ QSpinBox {
    <property name="whatsThis">
     <string>Dock qui permet de charger et verfiér le Graphe</string>
    </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
@@ -118,7 +143,7 @@ QSpinBox {
        <x>10</x>
        <y>0</y>
        <width>204</width>
-       <height>356</height>
+       <height>401</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="DockLayout">
@@ -167,7 +192,7 @@ QSpinBox {
          <widget class="QPushButton" name="zoomout">
           <property name="minimumSize">
            <size>
-            <width>84</width>
+            <width>94</width>
             <height>30</height>
            </size>
           </property>
@@ -183,7 +208,7 @@ QSpinBox {
          <widget class="QPushButton" name="zoomin">
           <property name="minimumSize">
            <size>
-            <width>84</width>
+            <width>94</width>
             <height>30</height>
            </size>
           </property>
@@ -279,7 +304,7 @@ QSpinBox {
        <widget class="QPushButton" name="charger">
         <property name="minimumSize">
          <size>
-          <width>84</width>
+          <width>94</width>
           <height>30</height>
          </size>
         </property>
@@ -295,7 +320,7 @@ QSpinBox {
         </property>
         <property name="minimumSize">
          <size>
-          <width>84</width>
+          <width>94</width>
           <height>30</height>
          </size>
         </property>
@@ -311,7 +336,7 @@ QSpinBox {
         </property>
         <property name="minimumSize">
          <size>
-          <width>84</width>
+          <width>94</width>
           <height>30</height>
          </size>
         </property>
@@ -327,7 +352,7 @@ QSpinBox {
         </property>
         <property name="minimumSize">
          <size>
-          <width>84</width>
+          <width>94</width>
           <height>30</height>
          </size>
         </property>
@@ -343,7 +368,7 @@ QSpinBox {
         </property>
         <property name="minimumSize">
          <size>
-          <width>84</width>
+          <width>94</width>
           <height>30</height>
          </size>
         </property>
@@ -435,6 +460,18 @@ QSpinBox {
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16</height>
+         </size>
+        </property>
        </widget>
       </item>
       <item>
@@ -442,10 +479,35 @@ QSpinBox {
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16</height>
+         </size>
+        </property>
         <property name="value">
          <number>30</number>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_16">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
