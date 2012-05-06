@@ -2,139 +2,27 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>744</width>
-    <height>450</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget">
-   <widget class="QDockWidget" name="dockWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>0</y>
-      <width>100</width>
-      <height>341</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>100</width>
-      <height>41</height>
-     </size>
-    </property>
-    <widget class="QWidget" name="dockWidgetContents_3">
-     <widget class="QSpinBox" name="widthTopo">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>10</y>
-        <width>101</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>100</number>
-      </property>
-      <property name="maximum">
-       <number>9999</number>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="heigthTopo">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>50</y>
-        <width>101</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>100</number>
-      </property>
-      <property name="maximum">
-       <number>9999</number>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="widthCar">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>90</y>
-        <width>101</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>10</number>
-      </property>
-      <property name="maximum">
-       <number>999</number>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="heigthCar">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>130</y>
-        <width>101</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>10</number>
-      </property>
-      <property name="maximum">
-       <number>999</number>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>210</y>
-        <width>101</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Generer Fichier</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="rangeEdit">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>170</y>
-        <width>101</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="minimum">
-       <number>10</number>
-      </property>
-      <property name="maximum">
-       <number>999</number>
-      </property>
-      <property name="value">
-       <number>30</number>
-      </property>
-     </widget>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>744</width>
+     <width>800</width>
      <height>20</height>
     </rect>
    </property>
@@ -142,121 +30,42 @@
     <property name="title">
      <string>Fichier</string>
     </property>
-    <addaction name="actionCharger_Graph"/>
-    <addaction name="actionClear_Graph"/>
+    <addaction name="actionCharger_Graphe"/>
+    <addaction name="actionClear_Graphe"/>
     <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
    <addaction name="menuFichier"/>
   </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="minimumSize">
     <size>
-     <width>180</width>
-     <height>100</height>
+     <width>150</width>
+     <height>36</height>
     </size>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
-    <widget class="QPushButton" name="charger">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>40</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Charger Graph</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="afficherNodes">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>80</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Afficher Nodes</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="etapeSuivante">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>120</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Etape Suivante</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="graphFinale">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>160</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Graph Finale</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="clearButton">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>210</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Clear</string>
-     </property>
-    </widget>
     <widget class="QDoubleSpinBox" name="zoomEdit">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>80</x>
-       <y>0</y>
-       <width>91</width>
+       <x>40</x>
+       <y>470</y>
+       <width>61</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="prefix">
+      <string/>
      </property>
      <property name="suffix">
       <string>%</string>
@@ -274,99 +83,154 @@
       <double>100.000000000000000</double>
      </property>
     </widget>
+    <widget class="QSpinBox" name="rangeEdit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>310</y>
+       <width>61</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="value">
+      <number>30</number>
+     </property>
+    </widget>
     <widget class="QSpinBox" name="nbrNodes">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>260</y>
-       <width>51</width>
+       <x>30</x>
+       <y>280</y>
+       <width>61</width>
        <height>22</height>
       </rect>
      </property>
-     <property name="minimum">
-      <number>0</number>
+    </widget>
+    <widget class="QPushButton" name="charger">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
      </property>
-     <property name="maximum">
-      <number>999</number>
-     </property>
-     <property name="value">
-      <number>0</number>
+     <property name="text">
+      <string>Charger Graphe</string>
      </property>
     </widget>
-    <widget class="QSpinBox" name="rayonMax">
+    <widget class="QPushButton" name="afficherNodes">
      <property name="enabled">
       <bool>false</bool>
      </property>
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>300</y>
-       <width>51</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="minimum">
-      <number>10</number>
-     </property>
-     <property name="maximum">
-      <number>999</number>
-     </property>
-     <property name="value">
-      <number>30</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
        <x>10</x>
-       <y>0</y>
-       <width>91</width>
-       <height>17</height>
+       <y>110</y>
+       <width>101</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Zoom</string>
+      <string>Afficher Les Nodes </string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QPushButton" name="etapeSuivante">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>260</y>
-       <width>91</width>
-       <height>17</height>
+       <y>140</y>
+       <width>101</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Nbr Nodes</string>
+      <string>Etape Suivante</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QPushButton" name="graphFinale">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>300</y>
-       <width>91</width>
-       <height>17</height>
+       <y>170</y>
+       <width>101</width>
+       <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Rayon Max</string>
+      <string>Graphe Finale</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clearButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>200</y>
+       <width>101</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clear Graphe</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="zoomin">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>41</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton { background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(127, 127, 127, 255), stop:1 rgba(255, 255, 255, 255)); border: none; }</string>
+     </property>
+     <property name="text">
+      <string>zoom+</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="zoomout">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>50</y>
+       <width>41</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>zoom-</string>
      </property>
     </widget>
    </widget>
   </widget>
-  <action name="actionCharger_Graph">
+  <action name="actionCharger_Graphe">
    <property name="text">
-    <string>Charger Graph</string>
+    <string>Charger Graphe</string>
    </property>
   </action>
-  <action name="actionClear_Graph">
+  <action name="actionClear_Graphe">
    <property name="text">
-    <string>Clear Graph</string>
+    <string>Clear Graphe</string>
    </property>
   </action>
   <action name="actionQuitter">
@@ -375,23 +239,24 @@
    </property>
   </action>
  </widget>
- <layoutdefault spacing="6" margin="11"/>
- <tabstops>
-  <tabstop>charger</tabstop>
-  <tabstop>afficherNodes</tabstop>
-  <tabstop>etapeSuivante</tabstop>
-  <tabstop>graphFinale</tabstop>
-  <tabstop>clearButton</tabstop>
-  <tabstop>zoomEdit</tabstop>
-  <tabstop>widthTopo</tabstop>
-  <tabstop>heigthTopo</tabstop>
-  <tabstop>widthCar</tabstop>
-  <tabstop>heigthCar</tabstop>
-  <tabstop>pushButton</tabstop>
-  <tabstop>rangeEdit</tabstop>
- </tabstops>
  <resources/>
  <connections>
+  <connection>
+   <sender>zoomEdit</sender>
+   <signal>valueChanged(double)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateZoom(double)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>56</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>240</x>
+     <y>72</y>
+    </hint>
+   </hints>
+  </connection>
   <connection>
    <sender>charger</sender>
    <signal>clicked()</signal>
@@ -399,12 +264,12 @@
    <slot>chargerGraph()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>35</x>
-     <y>103</y>
+     <x>52</x>
+     <y>127</y>
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>69</y>
+     <x>168</x>
+     <y>140</y>
     </hint>
    </hints>
   </connection>
@@ -415,60 +280,12 @@
    <slot>afficherNodes()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>37</x>
-     <y>148</y>
+     <x>68</x>
+     <y>161</y>
     </hint>
     <hint type="destinationlabel">
-     <x>183</x>
-     <y>111</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>graphFinale</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>afficherGraph()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>19</x>
-     <y>223</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clearButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>clearGraph()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>79</x>
-     <y>274</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>236</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>genererTopologie()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>821</x>
-     <y>286</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>255</y>
+     <x>314</x>
+     <y>157</y>
     </hint>
    </hints>
   </connection>
@@ -479,23 +296,88 @@
    <slot>afficherEtape()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>77</x>
-     <y>190</y>
+     <x>67</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
-     <x>224</x>
-     <y>156</y>
+     <x>239</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>graphFinale</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>afficherGraph()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>55</x>
+     <y>224</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>515</x>
+     <y>218</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>clearGraph()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>57</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>238</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomin</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateZoomPlus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>25</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>168</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoomout</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>updateZoomMoins()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>97</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
+  <slot>updateZoom(double)</slot>
   <slot>chargerGraph()</slot>
   <slot>afficherNodes()</slot>
+  <slot>afficherEtape()</slot>
   <slot>afficherGraph()</slot>
   <slot>clearGraph()</slot>
-  <slot>genererTopologie()</slot>
-  <slot>afficherEtape()</slot>
-  <slot>updateZoom(double)</slot>
+  <slot>updateZoomPlus()</slot>
+  <slot>updateZoomMoins()</slot>
  </slots>
 </ui>

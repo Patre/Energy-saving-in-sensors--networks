@@ -15,17 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //INITALISATION
+    ui->zoomEdit->setVisible(false);
     graph_view=new GraphView();
-    ui->dockWidget_3->setVisible(false);
     zoom = 1;
 
 
-    ui->zoomEdit->setMaximum(200);
+    /*ui->zoomEdit->setMaximum(200);
     ui->zoomEdit->setMinimum(50);
     ui->zoomEdit->setValue(100);
     ui->zoomEdit->setSingleStep(10);
     ui->zoomEdit->setSuffix("%");
-    ui->zoomEdit->setEnabled(false);
+    ui->zoomEdit->setEnabled(false);//*/
 
     image= new QImage();
 
@@ -33,7 +33,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //scrollArea->setBackgroundRole(QPalette::Dark);
 
     connect(graph_view,SIGNAL(updateImage(QImage)),this,SLOT(updateImage(QImage)));
-    connect(ui->zoomEdit,SIGNAL(valueChanged(double)),this,SLOT(updateZoom(double)));
 
     //AFFICHAGE
     setCentralWidget(scrollArea);
@@ -50,18 +49,6 @@ void MainWindow::updateImage(QImage image)
     scrollArea->horizontalScrollBar()->setValue(hor);
 }
 
-void MainWindow::genererTopologie()
-{
-    TopoGenerate *ss=new TopoGenerate();
-    ss->setSizeTopo(ui->widthTopo->value(),ui->heigthTopo->value());
-    ss->setSizeCarreau(ui->widthCar->value(),ui->heigthCar->value());
-    if(!ss->calculeIndexs())
-        QMessageBox::information(0,"ll","GEneration des index");
-    else if(!ss->genererNeoudes())
-        QMessageBox::information(0,"fff","GEneration des noueds");
-    else if(!ss->genererFichier())
-        QMessageBox::information(0,"ss","generation de ficjoier");//*/
-}
 
 MainWindow::~MainWindow()
 {
@@ -143,7 +130,7 @@ void MainWindow::lireFile(QString filename)
 
     QString beta="MAX "+QVariant(max.x()).toString()+" "+QVariant(max.y()).toString()
             +"\nMIN "+QVariant(min.x()).toString()+" "+QVariant(min.y()).toString();
-    QMessageBox::information(0,"INFO",beta);
+    //QMessageBox::information(0,"INFO",beta);
 
     if(min.x()>100)
         for(int i=0;i<nodes.length();i++)
@@ -162,7 +149,7 @@ void MainWindow::lireFile(QString filename)
         }//*/
 
 
-    graph_view->setTaille(max.x()-min.x()+100, max.y()-min.y()+100);
+    graph_view->setTaille(max.x()-min.x()+20, max.y()-min.y()+20);
 
 
 
@@ -246,7 +233,16 @@ void MainWindow::clearGraph()
 }
 
 
-
+void MainWindow::updateZoomPlus()
+{
+    double x=ui->zoomEdit->value()+10;
+    updateZoom(x);
+}
+void MainWindow::updateZoomMoins()
+{
+    double x=ui->zoomEdit->value()-10;
+    updateZoom(x);
+}
 
 
 //ADDED Function
@@ -259,3 +255,5 @@ double distanceEuclidienne(Element x1,Element x2)
 {
     return distanceEuclidienne(x1.nodePosition.x(),x1.nodePosition.y(),x2.nodePosition.x(),x2.nodePosition.y());
 }
+
+

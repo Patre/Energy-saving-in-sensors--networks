@@ -13,12 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     graphView.cpp \
-    graphelement.cpp \
-    topogenerate.cpp
+    graphelement.cpp
 
 HEADERS  += mainwindow.h \
     graphView.h \
-    graphelement.h \
-    topogenerate.h
+    graphelement.h
 
-FORMS    += mainwindow.ui
+FORMS    += \
+    mainwindow.ui
+
+RESOURCES +=

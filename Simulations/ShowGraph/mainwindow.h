@@ -9,7 +9,7 @@
 
 #include "graphView.h"
 #include "graphelement.h"
-#include "topogenerate.h"
+
 
 //ADDED Function Prototypes
 double distanceEuclidienne(double x1,double y1, double x2, double y2);
@@ -35,10 +35,11 @@ public slots:
     void afficherEtape();
     void afficherGraph();
     void clearGraph();
-    void genererTopologie();
     void calculerDegree();
     void updateImage(QImage image);
     void updateZoom(double x);
+    void updateZoomPlus();
+    void updateZoomMoins();
 
 private:
     Ui::MainWindow  *ui;
